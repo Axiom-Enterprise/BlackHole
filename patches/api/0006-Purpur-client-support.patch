@@ -5,10 +5,10 @@ Subject: [PATCH] Purpur client support
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 8086acceacbceb2c5a7228fff005e41a86d37008..be19348117cf79dea23f1fb3055a726818e7db55 100644
+index 95f0b3186e313c7fbd5c8531d52b82a69e525f94..76fd6c5377bb5b4d1c1f508456931bf27ad49e3e 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -3871,4 +3871,13 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -3911,4 +3911,13 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       */
      void sendEntityEffect(org.bukkit.@NotNull EntityEffect effect, @NotNull Entity target);
      // Paper end - entity effect API

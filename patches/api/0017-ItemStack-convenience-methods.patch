@@ -5,10 +5,10 @@ Subject: [PATCH] ItemStack convenience methods
 
 
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 77a15a99e441bd81650806142581bd5b24f30e10..3ec2154956087a370799f0fa485f3b6cae894c69 100644
+index 615eb24ffdd8f6d55ccd4f21760b809c1098bc68..fbbe9e52ed3437d2407e042f45b0a18abdd48fe1 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -5636,4 +5636,40 @@ public enum Material implements Keyed, Translatable, net.kyori.adventure.transla
+@@ -5799,4 +5799,40 @@ public enum Material implements Keyed, Translatable, net.kyori.adventure.transla
      public BlockType asBlockType() {
          return blockType.get();
      }

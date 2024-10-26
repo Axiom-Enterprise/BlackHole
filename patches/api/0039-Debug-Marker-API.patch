@@ -5,10 +5,10 @@ Subject: [PATCH] Debug Marker API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b08482b4e9f5d62882512eada787e876c4c21746..3a71f8fe73a2309f57cb06dedf204d3e37b46b03 100644
+index 676cddfc8ae317ed750701af06964a22a0c03e10..b3667b1699f6ec23697a65cd8c0cb18b07e6675f 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2959,5 +2959,89 @@ public final class Bukkit {
+@@ -2907,5 +2907,89 @@ public final class Bukkit {
      public static void removeFuel(@NotNull Material material) {
          server.removeFuel(material);
      }
@@ -99,10 +99,10 @@ index b08482b4e9f5d62882512eada787e876c4c21746..3a71f8fe73a2309f57cb06dedf204d3e
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 5c0dbd534aaab560a4f327f48e1359de0bf7d3c9..eb29794f6ca2efc9cde4dd1685822f9a3a73f3b9 100644
+index dd90bdfdf82073f87a9dfda92f743b6682d4a1b8..bda870841507e3ce728064e446cf92caa2d803a1 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2596,5 +2596,75 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2545,5 +2545,75 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       * @param material The material that will no longer be a fuel
       */
      public void removeFuel(@NotNull Material material);
@@ -260,10 +260,10 @@ index 24d39c8c449e0ea6175989295d24eee902baec17..36cf567973900d1e472616748926aecb
  
      /**
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index e93ce0e0a6cfd7c0596d50a6255151f5ef84b2ce..b310c69b68b5d7c5a1cc15db2ab21bed857bb036 100644
+index 5d449299f958cb747e62e9ccfc8ff6cc32236dcd..0b8f7c39ff90b57eb7104d3a0cf1c29ee551b522 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -3899,5 +3899,75 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -3939,5 +3939,75 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @deprecated Use {@link #resetIdleDuration()} instead
       */
      void resetIdleTimer();

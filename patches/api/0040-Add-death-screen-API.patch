@@ -5,10 +5,10 @@ Subject: [PATCH] Add death screen API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index b310c69b68b5d7c5a1cc15db2ab21bed857bb036..65260b33a13858309356d573dfa2989b92e7437c 100644
+index 0b8f7c39ff90b57eb7104d3a0cf1c29ee551b522..a7f989121c493baff9d2b6910c39145a0e12477d 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -3969,5 +3969,25 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -4009,5 +4009,25 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * Clears all debug block highlights
       */
      void clearBlockHighlights();

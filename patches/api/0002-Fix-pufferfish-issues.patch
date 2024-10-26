@@ -23,7 +23,7 @@ index 652ff54e7c50412503725d628bfe72ed03059790..a7c0936a1ee80618f9a504087c88814f
       * Gets the {@code ServerBuildInfo}.
       *
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index 88d5db2995829cba919d78f988d5c735cf70cb1b..494ba7e7bfe2c73d6ea3a348f023372f23a62b1c 100644
+index f9e4b16a21d6cc6c9cbbe06d20c8af25e72e3ddb..4028b230e7fe1c78520f227a377a2a61e8381ecc 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
 @@ -47,6 +47,10 @@ public class AnnotationTest {

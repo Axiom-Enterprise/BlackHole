@@ -5,10 +5,10 @@ Subject: [PATCH] Lagging threshold
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index a07607d6b7b6e58b5a4176759cb6dbb6988267de..8f3462f3242ec9f583a5d7a297fdd9c6f43cfc31 100644
+index 1f60816b6cd7a7bde13a49a0440ece2eb531fcd0..5fe1896c9d8c5848b1ba1220e52cbe4cfae75603 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2931,5 +2931,14 @@ public final class Bukkit {
+@@ -2879,5 +2879,14 @@ public final class Bukkit {
      public static String getServerName() {
          return server.getServerName();
      }
@@ -24,10 +24,10 @@ index a07607d6b7b6e58b5a4176759cb6dbb6988267de..8f3462f3242ec9f583a5d7a297fdd9c6
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 9f1e3815f348d16a79f590515b3ed5c47e31cad2..766b4908ba5057bcda566f8a8cf1914416ede910 100644
+index a300a50fc32497d9a33e3caa8142fb1f52d71afc..7bef0845de3a3e51b375df735520ac8cc0f08636 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2574,5 +2574,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2523,5 +2523,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      @NotNull
      String getServerName();

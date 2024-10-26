@@ -1,0 +1,47 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: granny <contact@granny.dev>
+Date: Sun, 18 Feb 2024 16:28:32 -0800
+Subject: [PATCH] register minecraft debug commands
+
+
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index cbbddb924f46203bd600b838fc22902cbcb2124b..647a3ac2aea4dadd638836f831cc3768d10c7b74 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -226,8 +226,8 @@ public class Commands {
+             JfrCommand.register(this.dispatcher);
+         }
+ 
+-        if (SharedConstants.IS_RUNNING_IN_IDE) {
+-            TestCommand.register(this.dispatcher);
++        if (org.purpurmc.purpur.PurpurConfig.registerMinecraftDebugCommands || SharedConstants.IS_RUNNING_IN_IDE) { // Purpur
++            if (!org.purpurmc.purpur.PurpurConfig.registerMinecraftDebugCommands) TestCommand.register(this.dispatcher); // Purpur
+             RaidCommand.register(this.dispatcher, commandRegistryAccess);
+             DebugPathCommand.register(this.dispatcher);
+             DebugMobSpawningCommand.register(this.dispatcher);
+diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
+index cccdf61ff0b08531ec0f2165588abe5dd4d488eb..5af4bed9602fb3bb2e5c92f97e95b97294ee6123 100644
+--- a/src/main/java/net/minecraft/server/Main.java
++++ b/src/main/java/net/minecraft/server/Main.java
+@@ -122,6 +122,7 @@ public class Main {
+             // Purpur start - load config files early
+             org.bukkit.configuration.file.YamlConfiguration purpurConfiguration = io.papermc.paper.configuration.PaperConfigurations.loadLegacyConfigFile((File) optionset.valueOf("purpur-settings"));
+             org.purpurmc.purpur.PurpurConfig.clampEnchantLevels = purpurConfiguration.getBoolean("settings.enchantment.clamp-levels");
++            org.purpurmc.purpur.PurpurConfig.registerMinecraftDebugCommands = purpurConfiguration.getBoolean("settings.register-minecraft-debug-commands");
+             // Purpur end - load config files early
+ 
+             io.papermc.paper.plugin.PluginInitializerManager.load(optionset); // Paper
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index 6d7b5a84ac541c92747d4154298c5e62c9987199..c1f14b11dbd472bc84993156d41a777167ec9ad7 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -581,4 +581,9 @@ public class PurpurConfig {
+     private static void playerDeathsAlwaysShowItem() {
+         playerDeathsAlwaysShowItem = getBoolean("settings.player-deaths-always-show-item", playerDeathsAlwaysShowItem);
+     }
++
++    public static boolean registerMinecraftDebugCommands = false;
++    private static void registerMinecraftDebugCommands() {
++        registerMinecraftDebugCommands = getBoolean("settings.register-minecraft-debug-commands", registerMinecraftDebugCommands);
++    }
+ }

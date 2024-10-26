@@ -1,0 +1,57 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Pantera <zeruskr@gmail.com>
+Date: Fri, 26 Jan 2024 15:57:24 +0900
+Subject: [PATCH] Configurable-villager-search-radius
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
+index e8aa27547e3fa1a42720889c7038d4fb0273e7b5..928f7fb89329df8cc3192af122cf6644a869b48d 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
++++ b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
+@@ -72,7 +72,7 @@ public class AcquirePoi {
+                                         }
+                                     };
+                                     Set<Pair<Holder<PoiType>, BlockPos>> set = poiManager.findAllClosestFirstWithType(
+-                                            poiPredicate, predicate2, entity.blockPosition(), 48, PoiManager.Occupancy.HAS_SPACE
++                                            poiPredicate, predicate2, entity.blockPosition(), world.purpurConfig.villagerAcquirePoiSearchRadius, PoiManager.Occupancy.HAS_SPACE
+                                         )
+                                         .limit(5L)
+                                         .collect(Collectors.toSet());
+diff --git a/src/main/java/net/minecraft/world/entity/ai/sensing/NearestBedSensor.java b/src/main/java/net/minecraft/world/entity/ai/sensing/NearestBedSensor.java
+index d5a549f08b98c80a5cf0eef02cb8a389c32dfecb..2903703a5fb09649dbbc8d640af15039cab42434 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/sensing/NearestBedSensor.java
++++ b/src/main/java/net/minecraft/world/entity/ai/sensing/NearestBedSensor.java
+@@ -54,9 +54,9 @@ public class NearestBedSensor extends Sensor<Mob> {
+                 }
+             };
+             Set<Pair<Holder<PoiType>, BlockPos>> set = poiManager.findAllWithType(
+-                    holder -> holder.is(PoiTypes.HOME), predicate, entity.blockPosition(), 48, PoiManager.Occupancy.ANY
++                    holder -> holder.is(PoiTypes.HOME), predicate, entity.blockPosition(), world.purpurConfig.villagerNearestBedSensorSearchRadius, PoiManager.Occupancy.ANY
+                 )
+-                .collect(Collectors.toSet());
++                .collect(Collectors.toSet()); // Purpur
+             Path path = AcquirePoi.findPathToPois(entity, set);
+             if (path != null && path.canReach()) {
+                 BlockPos blockPos = path.getTarget();
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 84efc4ae58a3a33ac15282c462df72982248dac3..4b01853b4aaae722738e5d1e0256f87d468b0df7 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -2988,6 +2988,8 @@ public class PurpurWorldConfig {
+     public boolean villagerDisplayTradeItem = true;
+     public int villagerSpawnIronGolemRadius = 0;
+     public int villagerSpawnIronGolemLimit = 0;
++    public int villagerAcquirePoiSearchRadius = 48;
++    public int villagerNearestBedSensorSearchRadius = 48;
+     private void villagerSettings() {
+         villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
+         villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
+@@ -3025,6 +3027,8 @@ public class PurpurWorldConfig {
+         villagerDisplayTradeItem = getBoolean("mobs.villager.display-trade-item", villagerDisplayTradeItem);
+         villagerSpawnIronGolemRadius = getInt("mobs.villager.spawn-iron-golem.radius", villagerSpawnIronGolemRadius);
+         villagerSpawnIronGolemLimit = getInt("mobs.villager.spawn-iron-golem.limit", villagerSpawnIronGolemLimit);
++        villagerAcquirePoiSearchRadius = getInt("mobs.villager.search-radius.acquire-poi", villagerAcquirePoiSearchRadius);
++        villagerNearestBedSensorSearchRadius = getInt("mobs.villager.search-radius.nearest-bed-sensor", villagerNearestBedSensorSearchRadius);
+     }
+ 
+     public boolean vindicatorRidable = false;

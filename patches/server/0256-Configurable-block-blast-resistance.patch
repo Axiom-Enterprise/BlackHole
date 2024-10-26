@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MelnCat <melncatuwu@gmail.com>
+Date: Sat, 1 Oct 2022 13:29:17 -0700
+Subject: [PATCH] Configurable block blast resistance
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
+index 6b987ee220d94b482d2aeb4ff6bf271853605dc1..852bfe68ab722a5cbdd90dbd70501b751fe81a78 100644
+--- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
++++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
+@@ -91,7 +91,7 @@ public abstract class BlockBehaviour implements FeatureElement {
+ 
+     protected static final Direction[] UPDATE_SHAPE_ORDER = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.DOWN, Direction.UP};
+     public final boolean hasCollision;
+-    protected final float explosionResistance;
++    public float explosionResistance; // Purpur - protected final -> public
+     protected final boolean isRandomlyTicking;
+     protected final SoundType soundType;
+     protected final float friction;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index 7ce9115c4a90e22befdd6b82c2e6588f2be3a07c..60f522926b5c8dada7720142573d03af34e5a330 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -497,4 +497,19 @@ public class PurpurConfig {
+         String setPattern = getString("settings.username-valid-characters", defaultPattern);
+         usernameValidCharactersPattern = java.util.regex.Pattern.compile(setPattern == null || setPattern.isBlank() ? defaultPattern : setPattern);
+     }
++
++    private static void blastResistanceSettings() {
++        getMap("settings.blast-resistance-overrides", Collections.emptyMap()).forEach((blockId, value) -> {
++            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(blockId));
++            if (block == Blocks.AIR) {
++                log(Level.SEVERE, "Invalid block for `settings.blast-resistance-overrides`: " + blockId);
++                return;
++            }
++            if (!(value instanceof Number blastResistance)) {
++                log(Level.SEVERE, "Invalid blast resistance for `settings.blast-resistance-overrides." + blockId + "`: " + value);
++                return;
++            }
++            block.explosionResistance = blastResistance.floatValue();
++        });
++    }
+ }

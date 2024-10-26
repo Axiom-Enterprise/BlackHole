@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: granny <granny@purpurmc.org>
+Date: Sun, 5 May 2024 02:27:52 -0700
+Subject: [PATCH] config for startup commands
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 195f5fa4f01a3c835bbb98e8aaf3d5666118daf5..c069393863937cbd37718ab5a93c97a63acd79dd 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1258,6 +1258,17 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+                 }
+             }
+             // Purpur end
++
++            // Purpur start
++            if (!Boolean.getBoolean("Purpur.IReallyDontWantStartupCommands") && !org.purpurmc.purpur.PurpurConfig.startupCommands.isEmpty()) {
++                LOGGER.info("Purpur: Running startup commands specified in purpur.yml.");
++                for (final String startupCommand : org.purpurmc.purpur.PurpurConfig.startupCommands) {
++                    LOGGER.info("Purpur: Running the following command: \"{}\"", startupCommand);
++                    ((DedicatedServer) this).handleConsoleInput(startupCommand, this.createCommandSourceStack());
++                }
++            }
++            // Purpur end
++
+             while (this.running) {
+                 long i;
+ 
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index c1f14b11dbd472bc84993156d41a777167ec9ad7..86e3983ff899bebbdc14493ac6b37b2371134e13 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -586,4 +586,16 @@ public class PurpurConfig {
+     private static void registerMinecraftDebugCommands() {
+         registerMinecraftDebugCommands = getBoolean("settings.register-minecraft-debug-commands", registerMinecraftDebugCommands);
+     }
++
++    public static List<String> startupCommands = new ArrayList<>();
++    private static void startupCommands() {
++        startupCommands.clear();
++        getList("settings.startup-commands", new ArrayList<String>()).forEach(line -> {
++            String command = line.toString();
++            if (command.startsWith("/")) {
++                command = command.substring(1);
++            }
++            startupCommands.add(command);
++        });
++    }
+ }

@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Wed, 5 Jul 2023 12:48:15 -0500
+Subject: [PATCH] Explorer Map API
+
+
+diff --git a/src/main/java/net/minecraft/world/item/MapItem.java b/src/main/java/net/minecraft/world/item/MapItem.java
+index 571f2540a1e9422025efe651167e26b44b437daa..c2f3c8b3d8eeb609b6d6067c4fb404aefbf94ec5 100644
+--- a/src/main/java/net/minecraft/world/item/MapItem.java
++++ b/src/main/java/net/minecraft/world/item/MapItem.java
+@@ -194,6 +194,7 @@ public class MapItem extends Item {
+     public static void renderBiomePreviewMap(ServerLevel world, ItemStack map) {
+         MapItemSavedData mapItemSavedData = getSavedData(map, world);
+         if (mapItemSavedData != null) {
++            mapItemSavedData.isExplorerMap = true; // Purpur
+             if (world.dimension() == mapItemSavedData.dimension) {
+                 int i = 1 << mapItemSavedData.scale;
+                 int j = mapItemSavedData.centerX;
+diff --git a/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java b/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
+index ae321b3b8d98e42ef07fd1f0f738c1a2b428f6db..26da9e7c25ef6a89482838010d8ed6bcf8c87511 100644
+--- a/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
++++ b/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
+@@ -81,6 +81,7 @@ public class MapItemSavedData extends SavedData {
+     private final Map<String, MapFrame> frameMarkers = Maps.newHashMap();
+     private int trackedDecorationCount;
+     private org.bukkit.craftbukkit.map.RenderData vanillaRender = new org.bukkit.craftbukkit.map.RenderData(); // Paper
++    public boolean isExplorerMap; // Purpur
+ 
+     // CraftBukkit start
+     public final CraftMapView mapView;
+diff --git a/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java b/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
+index 0cbbd915631904fe8c6effefb92895422b33eff6..aef19cfbecb4ddfc8dc71c4f3b2a011364c12dc2 100644
+--- a/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
++++ b/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
+@@ -47,4 +47,10 @@ public class CraftMapRenderer extends MapRenderer {
+         }
+     }
+ 
++    // Purpur - start
++    @Override
++    public boolean isExplorerMap() {
++        return this.worldMap.isExplorerMap;
++    }
++    // Purpur - end
+ }

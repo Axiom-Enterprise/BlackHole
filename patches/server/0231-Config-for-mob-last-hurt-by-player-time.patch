@@ -1,0 +1,59 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: BillyGalbreath <Blake.Galbreath@Gmail.com>
+Date: Tue, 8 Feb 2022 13:35:48 -0600
+Subject: [PATCH] Config for mob last hurt by player time
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 090f259115573f0ed2fb7ed79d191b3f09ac27cd..60b0cf7cd5e4bcbe882590b79a70dafb23e6772f 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -1603,13 +1603,13 @@ public abstract class LivingEntity extends Entity implements Attackable {
+                 if (entity1 instanceof net.minecraft.world.entity.player.Player) {
+                     net.minecraft.world.entity.player.Player entityhuman = (net.minecraft.world.entity.player.Player) entity1;
+ 
+-                    this.lastHurtByPlayerTime = 100;
++                    this.lastHurtByPlayerTime = this.level().purpurConfig.mobLastHurtByPlayerTime; // Purpur
+                     this.lastHurtByPlayer = entityhuman;
+                 } else if (entity1 instanceof Wolf) {
+                     Wolf entitywolf = (Wolf) entity1;
+ 
+                     if (entitywolf.isTame()) {
+-                        this.lastHurtByPlayerTime = 100;
++                        this.lastHurtByPlayerTime = this.level().purpurConfig.mobLastHurtByPlayerTime; // Purpur
+                         LivingEntity entityliving2 = entitywolf.getOwner();
+ 
+                         if (entityliving2 instanceof net.minecraft.world.entity.player.Player) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
+index bf84c9664ca6d6c3d862e592c39bcc59374b63fe..051ffc663317fe5a4fafe0750c89fafdece4d316 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
+@@ -523,7 +523,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+         net.minecraft.server.level.ServerPlayer entityPlayer = killer == null ? null : ((CraftPlayer) killer).getHandle();
+         getHandle().lastHurtByPlayer = entityPlayer;
+         getHandle().lastHurtByMob = entityPlayer;
+-        getHandle().lastHurtByPlayerTime = entityPlayer == null ? 0 : 100; // 100 value taken from EntityLiving#damageEntity
++        getHandle().lastHurtByPlayerTime = entityPlayer == null ? 0 : getHandle().level().purpurConfig.mobLastHurtByPlayerTime; // 100 value taken from EntityLiving#damageEntity // Purpur
+     }
+     // Paper end
+ 
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 1426f0f6246c4e57a66e25365609c36991a72059..bd48ba4acf41ec77f542ca7e8dfe6280bb2fbed1 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -143,6 +143,7 @@ public class PurpurWorldConfig {
+     public boolean thunderStopsAfterSleep = true;
+     public boolean persistentTileEntityLore = false;
+     public boolean persistentTileEntityDisplayName = true;
++    public int mobLastHurtByPlayerTime = 100;
+     private void miscGameplayMechanicsSettings() {
+         useBetterMending = getBoolean("gameplay-mechanics.use-better-mending", useBetterMending);
+         alwaysTameInCreative = getBoolean("gameplay-mechanics.always-tame-in-creative", alwaysTameInCreative);
+@@ -174,6 +175,7 @@ public class PurpurWorldConfig {
+         }
+         persistentTileEntityLore = getBoolean("gameplay-mechanics.persistent-tileentity-lore", persistentTileEntityLore);
+         persistentTileEntityDisplayName = getBoolean("gameplay-mechanics.persistent-tileentity-display-name", persistentTileEntityDisplayName);
++        mobLastHurtByPlayerTime = getInt("gameplay-mechanics.mob-last-hurt-by-player-time", mobLastHurtByPlayerTime);
+     }
+ 
+     public int daytimeTicks = 12000;

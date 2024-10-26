@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: BillyGalbreath <Blake.Galbreath@Gmail.com>
+Date: Mon, 3 Jan 2022 01:19:46 -0600
+Subject: [PATCH] Stop bees from dying after stinging
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
+index db382cf32d215f1b98b960e0c1a8dfaf6e19422f..4b32a783cabf05f5bae0dba22eea8ac7ba2cd285 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
+@@ -461,6 +461,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+             this.hurtServer(world, this.damageSources().drown(), 1.0F);
+         }
+ 
++        if (flag && !this.level().purpurConfig.beeDiesAfterSting) setHasStung(false); else // Purpur
+         if (flag) {
+             ++this.timeSinceSting;
+             if (this.timeSinceSting % 5 == 0 && this.random.nextInt(Mth.clamp(1200 - this.timeSinceSting, 1, 1200)) == 0) {
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 8e9c7d1d913e3ed5015f4016c96e56942ce07f5e..ad407f1b3b343244e5323d022702cc075b910b48 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -1151,6 +1151,7 @@ public class PurpurWorldConfig {
+     public boolean beeCanWorkAtNight = false;
+     public boolean beeCanWorkInRain = false;
+     public boolean beeAlwaysDropExp = false;
++    public boolean beeDiesAfterSting = true;
+     private void beeSettings() {
+         beeRidable = getBoolean("mobs.bee.ridable", beeRidable);
+         beeRidableInWater = getBoolean("mobs.bee.ridable-in-water", beeRidableInWater);
+@@ -1168,6 +1169,7 @@ public class PurpurWorldConfig {
+         beeCanWorkAtNight = getBoolean("mobs.bee.can-work-at-night", beeCanWorkAtNight);
+         beeCanWorkInRain = getBoolean("mobs.bee.can-work-in-rain", beeCanWorkInRain);
+         beeAlwaysDropExp = getBoolean("mobs.bee.always-drop-exp", beeAlwaysDropExp);
++        beeDiesAfterSting = getBoolean("mobs.bee.dies-after-sting", beeDiesAfterSting);
+     }
+ 
+     public boolean blazeRidable = false;

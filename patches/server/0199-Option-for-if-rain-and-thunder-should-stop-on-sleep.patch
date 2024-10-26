@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: 12emin34 <macanovic.emin@gmail.com>
+Date: Mon, 23 Aug 2021 17:59:29 +0200
+Subject: [PATCH] Option for if rain and thunder should stop on sleep
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index c70a1ca4ed978df1b54363e966a8344a2fe6f277..de24307e48e7bc6cc39234fae55ddb404df243b3 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -1278,6 +1278,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+     @VisibleForTesting
+     public void resetWeatherCycle() {
+         // CraftBukkit start
++        if (this.purpurConfig.rainStopsAfterSleep) // Purpur
+         this.serverLevelData.setRaining(false, org.bukkit.event.weather.WeatherChangeEvent.Cause.SLEEP); // Paper - Add cause to Weather/ThunderChangeEvents
+         // If we stop due to everyone sleeping we should reset the weather duration to some other random value.
+         // Not that everyone ever manages to get the whole server to sleep at the same time....
+@@ -1285,6 +1286,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+             this.serverLevelData.setRainTime(0);
+         }
+         // CraftBukkit end
++        if (this.purpurConfig.thunderStopsAfterSleep) // Purpur
+         this.serverLevelData.setThundering(false, org.bukkit.event.weather.ThunderChangeEvent.Cause.SLEEP); // Paper - Add cause to Weather/ThunderChangeEvents
+         // CraftBukkit start
+         // If we stop due to everyone sleeping we should reset the weather duration to some other random value.
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index cce5813f0624fabf8a9e38d2eb9d1d1d63f15b70..91debf506c8f1ece992586a1d0328304e358d88a 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -139,6 +139,8 @@ public class PurpurWorldConfig {
+     public boolean tickFluids = true;
+     public double mobsBlindnessMultiplier = 1;
+     public boolean mobsIgnoreRails = false;
++    public boolean rainStopsAfterSleep = true;
++    public boolean thunderStopsAfterSleep = true;
+     private void miscGameplayMechanicsSettings() {
+         useBetterMending = getBoolean("gameplay-mechanics.use-better-mending", useBetterMending);
+         alwaysTameInCreative = getBoolean("gameplay-mechanics.always-tame-in-creative", alwaysTameInCreative);
+@@ -160,6 +162,8 @@ public class PurpurWorldConfig {
+         tickFluids = getBoolean("gameplay-mechanics.tick-fluids", tickFluids);
+         mobsBlindnessMultiplier = getDouble("gameplay-mechanics.entity-blindness-multiplier", mobsBlindnessMultiplier);
+         mobsIgnoreRails = getBoolean("gameplay-mechanics.mobs-ignore-rails", mobsIgnoreRails);
++        rainStopsAfterSleep = getBoolean("gameplay-mechanics.rain-stops-after-sleep", rainStopsAfterSleep);
++        thunderStopsAfterSleep = getBoolean("gameplay-mechanics.thunder-stops-after-sleep", thunderStopsAfterSleep);
+     }
+ 
+     public int daytimeTicks = 12000;

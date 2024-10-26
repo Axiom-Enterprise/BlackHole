@@ -5,10 +5,10 @@ Subject: [PATCH] Give bee counts in beehives to Purpur clients
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 781eb66ada5fd2bf821453be3b14c59026217999..c3c5d392f1295e7edc0e96881f90f96cace5486f 100644
+index 2cbd4a0d12a643f1f7446d005433580fb1a81a42..a795427f35cb15a984d76391a90e702e44562e45 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1148,6 +1148,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1166,6 +1166,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
      public void safeShutdown(boolean waitForShutdown, boolean isRestarting) {
          org.purpurmc.purpur.task.BossBarTask.stopAll(); // Purpur
@@ -17,7 +17,7 @@ index 781eb66ada5fd2bf821453be3b14c59026217999..c3c5d392f1295e7edc0e96881f90f96c
          this.hasLoggedStop = true; // Paper - Debugging
          if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper - Debugging
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index dfb502be415eb0e8750b0307d908bc42f11a2988..136ac58eef2c243650ffb390459d6959b90d5202 100644
+index e73c07257395198e123019811b20fec6adf8f0ef..b18ed9645dfda3a7a12500533394fcd16d1829cd 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -390,6 +390,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface

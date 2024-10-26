@@ -41,10 +41,10 @@ index a81a332ffb80e67d7f886295099b5cd2ae8994c5..1d18cad6c32815854ff8dace256b5902
  
          public class FrostedIce extends ConfigurationPart {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 8719173e50ec2313cb44905b52e5dbe7fb264374..0fd97d9607b83fa2c2c36602c3b92ab0a6f58e27 100644
+index fd37f9256c1b2d396e855e1167a1f2ca473d58d2..f80a22d79a0ecfd9fb86911252232af6af2dd8c4 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1235,7 +1235,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1265,7 +1265,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  LOGGER.info("*************************************************************************************");
              }
              // Paper end - Add onboarding message for initial server start
@@ -62,7 +62,7 @@ index 8719173e50ec2313cb44905b52e5dbe7fb264374..0fd97d9607b83fa2c2c36602c3b92ab0
                  long i;
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 11f708ec623bba462fce8bc9c4483f855fe48366..0d8d96e5aa24e8582e32fdbb920f6ae071871765 100644
+index 3267240e8be56a6dc152805c23269f47ab0f54df..c8a575b1823c53d6caf121b77607c703a061834d 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -221,6 +221,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface

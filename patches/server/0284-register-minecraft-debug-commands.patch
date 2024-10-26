@@ -20,10 +20,10 @@ index cbbddb924f46203bd600b838fc22902cbcb2124b..647a3ac2aea4dadd638836f831cc3768
              DebugPathCommand.register(this.dispatcher);
              DebugMobSpawningCommand.register(this.dispatcher);
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index cccdf61ff0b08531ec0f2165588abe5dd4d488eb..5af4bed9602fb3bb2e5c92f97e95b97294ee6123 100644
+index 5e9a2838335179566bdcd79bca0cb849c725b73b..f0d762bd140fad27ae73bcf3e61b640b9e3f2592 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
-@@ -122,6 +122,7 @@ public class Main {
+@@ -123,6 +123,7 @@ public class Main {
              // Purpur start - load config files early
              org.bukkit.configuration.file.YamlConfiguration purpurConfiguration = io.papermc.paper.configuration.PaperConfigurations.loadLegacyConfigFile((File) optionset.valueOf("purpur-settings"));
              org.purpurmc.purpur.PurpurConfig.clampEnchantLevels = purpurConfiguration.getBoolean("settings.enchantment.clamp-levels");

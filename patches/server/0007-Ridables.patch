@@ -22,10 +22,10 @@ index f58a94efafbc01d402cd03a108bb90f60930a316..21ea63da99c5b3e2e1ab9cc1049c903b
          super(x, y, z);
      }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 38060a14181f6bcbd36ee4c91fdb20fae30c534a..000a765c2e62d7e1921b2f4b4de77fc1a56ca02b 100644
+index 79f3dc4f53dce892c4756b0850352e0ca2eb95a6..dc9e3f798bc8a9a6968a588a09122a08dc9b9774 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1805,6 +1805,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1848,6 +1848,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              worldserver.hasPhysicsEvent = org.bukkit.event.block.BlockPhysicsEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - BlockPhysicsEvent
              worldserver.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = worldserver.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
@@ -34,7 +34,7 @@ index 38060a14181f6bcbd36ee4c91fdb20fae30c534a..000a765c2e62d7e1921b2f4b4de77fc1
              gameprofilerfiller.push(() -> {
                  String s = String.valueOf(worldserver);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 3b55367865b3583e11ef886678114d4d4b294e8c..fc400624a9896f8fd29984c21df70e67b0c32c1d 100644
+index a7420e4522e0dff72ce7f8a791b9cd4bfa270106..0fa5e0c80ad09e03452c4d412390cb8f52060c01 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -231,6 +231,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -79,7 +79,7 @@ index eef96e946b80064fe211039a65db4192ea7a52d3..352ade7acc9052e4d74ef840e085a86f
                              if ((entity instanceof Bucketable && entity instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                  entity.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 3ca09f9ac97ad835feae8800a72d882af2192077..a897a9f371d44cc6d1fcc19f2da5450e61858527 100644
+index 62af796b2b883856a904647f504ff064a5fed463..49a8b0d4f4a18c91a48291c316c420bd78428ca5 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -383,7 +383,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -91,7 +91,7 @@ index 3ca09f9ac97ad835feae8800a72d882af2192077..a897a9f371d44cc6d1fcc19f2da5450e
      private float eyeHeight;
      public boolean isInPowderSnow;
      public boolean wasInPowderSnow;
-@@ -3287,6 +3287,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3329,6 +3329,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -105,7 +105,7 @@ index 3ca09f9ac97ad835feae8800a72d882af2192077..a897a9f371d44cc6d1fcc19f2da5450e
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -3326,6 +3333,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3368,6 +3375,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -120,7 +120,7 @@ index 3ca09f9ac97ad835feae8800a72d882af2192077..a897a9f371d44cc6d1fcc19f2da5450e
              if (this.passengers.size() == 1 && this.passengers.get(0) == entity) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5297,4 +5312,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5343,4 +5358,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((net.minecraft.server.level.ServerChunkCache) level.getChunkSource()).isPositionTicking(this);
      }
      // Paper end - Expose entity id counter

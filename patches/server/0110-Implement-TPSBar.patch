@@ -17,10 +17,10 @@ index 24c2568db30f970aed1a4897cfbc7d07297047d3..5d94b71bd54f99040b76cca74964a32d
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index d5efd5fdbf0acc89de3790f30b9739809f0a02d4..6bc6d24022c4f5ea3b7da7074725737fae341fcf 100644
+index 3f1271f8295151bfa7e18bffa0e70cee5f0bd71e..874535bf55b76ca2df482a191d66924f8f228c97 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1136,6 +1136,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1154,6 +1154,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.safeShutdown(waitForShutdown, false);
      }
      public void safeShutdown(boolean waitForShutdown, boolean isRestarting) {
@@ -29,7 +29,7 @@ index d5efd5fdbf0acc89de3790f30b9739809f0a02d4..6bc6d24022c4f5ea3b7da7074725737f
          this.hasLoggedStop = true; // Paper - Debugging
          if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper - Debugging
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 0d8d96e5aa24e8582e32fdbb920f6ae071871765..86c25c52e4c42074866975884ec15dc099a77591 100644
+index c8a575b1823c53d6caf121b77607c703a061834d..de85340fe0a0e057c527cc1fa91ae6bec558228a 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -365,6 +365,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -83,7 +83,7 @@ index 14640ed95dbbf99150ef1f41ff1046c2c034e552..d1a4eca112ad8698aa9025cec1b38bca
      // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e8f43bcf810b200f0dfcac6feae7761f54dda6fe..44f1048b231e56fae00feb1bcf935c4f65508b69 100644
+index ca11a05c0ba7f963c7d848a11557fd81baf6b34f..78a061dc5d7141ce4e4efca5a478e559b1d935c0 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -420,6 +420,7 @@ public abstract class PlayerList {

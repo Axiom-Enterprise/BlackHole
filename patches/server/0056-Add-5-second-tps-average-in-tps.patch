@@ -26,7 +26,7 @@ index 12b327eea95e0de9e9c39b7d039badee8ec46508..849ecc5af70901f1e40cb6c419f33f1c
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0fd97d9607b83fa2c2c36602c3b92ab0a6f58e27..e96f55191f97490bbaf5fb990c33237469fa07e0 100644
+index f80a22d79a0ecfd9fb86911252232af6af2dd8c4..b4fc561e9ad4bd4489cf1c2060c6fb6586f3c085 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -325,7 +325,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -38,7 +38,7 @@ index 0fd97d9607b83fa2c2c36602c3b92ab0a6f58e27..e96f55191f97490bbaf5fb990c332374
      // Spigot end
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations; // Paper - add paper configuration files
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
-@@ -1162,6 +1162,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1180,6 +1180,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
      private long lastTick = 0;
      private long catchupTime = 0;
@@ -46,7 +46,7 @@ index 0fd97d9607b83fa2c2c36602c3b92ab0a6f58e27..e96f55191f97490bbaf5fb990c332374
      public final RollingAverage tps1 = new RollingAverage(60);
      public final RollingAverage tps5 = new RollingAverage(60 * 5);
      public final RollingAverage tps15 = new RollingAverage(60 * 15);
-@@ -1270,14 +1271,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1300,14 +1301,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  if (++MinecraftServer.currentTick % MinecraftServer.SAMPLE_INTERVAL == 0) {
                      final long diff = currentTime - tickSection;
                      final java.math.BigDecimal currentTps = TPS_BASE.divide(new java.math.BigDecimal(diff), 30, java.math.RoundingMode.HALF_UP);

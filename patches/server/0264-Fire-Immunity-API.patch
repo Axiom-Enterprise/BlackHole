@@ -5,7 +5,7 @@ Subject: [PATCH] Fire Immunity API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 1bab4593cfb738ed6253482d36dc99b755d4e55f..285ef87b7088f905bb77c408465ccbca6644454f 100644
+index e5eadc68c1e1b0fe2b7d638d2630ab22c332b381..7976a517f56b8af3a7c2aab5a4fc829acd87fa64 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -432,6 +432,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -16,7 +16,7 @@ index 1bab4593cfb738ed6253482d36dc99b755d4e55f..285ef87b7088f905bb77c408465ccbca
  
      public void setOrigin(@javax.annotation.Nonnull Location location) {
          this.origin = location.toVector();
-@@ -1950,7 +1951,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -1992,7 +1993,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
  
      public boolean fireImmune() {
@@ -25,7 +25,7 @@ index 1bab4593cfb738ed6253482d36dc99b755d4e55f..285ef87b7088f905bb77c408465ccbca
      }
  
      public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
-@@ -2705,6 +2706,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2747,6 +2748,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  nbttagcompound.putBoolean("Paper.FreezeLock", true);
              }
              // Paper end
@@ -37,7 +37,7 @@ index 1bab4593cfb738ed6253482d36dc99b755d4e55f..285ef87b7088f905bb77c408465ccbca
              return nbttagcompound;
          } catch (Throwable throwable) {
              CrashReport crashreport = CrashReport.forThrowable(throwable, "Saving entity NBT");
-@@ -2853,6 +2859,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2895,6 +2901,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  freezeLocked = nbt.getBoolean("Paper.FreezeLock");
              }
              // Paper end

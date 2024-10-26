@@ -36,7 +36,7 @@ index eb6f95a37b26ac077423accc93492d9957456a1a..f00e708fe38454e228cf126199651b81
      public void displayClientMessage(Component message, boolean overlay) {
          this.sendSystemMessage(message, overlay);
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index bbefb529607d1cffe8917b883389494a8fa126c0..a4454289fb92cf7b97ee77db422c328f008521f1 100644
+index 511e7254d938733aca508efd5de82e61678c7620..75e5e540f03d28b64fa5fef1f342a157598c3fa7 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -985,6 +985,20 @@ public abstract class PlayerList {
@@ -81,10 +81,10 @@ index bb1a60180e58c1333e7bb33e8acf1b0225eda8a8..c83e80ebdbbfb2d0e08561a44486a308
          return this.type().msgId();
      }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index b36a915e6d337d7ec3f797bf1773b14c5b231d76..3ca09f9ac97ad835feae8800a72d882af2192077 100644
+index 6817015f0cf39df03029e36cd845d590618031dc..62af796b2b883856a904647f504ff064a5fed463 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -4426,6 +4426,20 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4468,6 +4468,20 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return SlotAccess.NULL;
      }
  

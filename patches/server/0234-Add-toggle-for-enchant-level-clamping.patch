@@ -5,10 +5,10 @@ Subject: [PATCH] Add toggle for enchant level clamping
 
 
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index e114e687f2f4503546687fd6792226a643af8793..cccdf61ff0b08531ec0f2165588abe5dd4d488eb 100644
+index 90ca25c4aaf92a5639839a7cdaee2ffcdb75efa7..5e9a2838335179566bdcd79bca0cb849c725b73b 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
-@@ -119,6 +119,11 @@ public class Main {
+@@ -120,6 +120,11 @@ public class Main {
                  JvmProfiler.INSTANCE.start(Environment.SERVER);
              }
  

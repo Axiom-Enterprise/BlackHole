@@ -5,7 +5,7 @@ Subject: [PATCH] Lagging threshold
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a95f3032d498c9f71aa89fcfdda1081ae6fca3bd..a75972eb4a4ad285982bb6dc5faf661123df9817 100644
+index 99b1c6f239a85eb82019a1bae9e91391fcb55519..a0bcb0fccadbf946e4c4bc0bbb8a1460532c636b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -329,6 +329,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -14,9 +14,9 @@ index a95f3032d498c9f71aa89fcfdda1081ae6fca3bd..a75972eb4a4ad285982bb6dc5faf6611
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
 +    public boolean lagging = false; // Purpur
  
-     public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
-         AtomicReference<S> atomicreference = new AtomicReference();
-@@ -1269,6 +1270,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public volatile Thread shutdownThread; // Paper
+     public volatile boolean abnormalExit = false; // Paper
+@@ -1299,6 +1300,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[0] = tps1.getAverage();
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();

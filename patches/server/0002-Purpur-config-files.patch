@@ -5,10 +5,10 @@ Subject: [PATCH] Purpur config files
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index 6aaed8e8bf8c721fc834da5c76ac72a4c3e92458..308d80ca27aa0edd63fba87343b12b39675462bc 100644
+index 4b002e8b75d117b726b0de274a76d3596fce015b..8cde30544e14f8fc2dac32966ae3c21f8cf3a551 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
-@@ -588,7 +588,7 @@ public class Metrics {
+@@ -593,7 +593,7 @@ public class Metrics {
              boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
              // Only start Metrics, if it's enabled in the config
              if (config.getBoolean("enabled", true)) {
@@ -17,7 +17,7 @@ index 6aaed8e8bf8c721fc834da5c76ac72a4c3e92458..308d80ca27aa0edd63fba87343b12b39
  
                  metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
                      String minecraftVersion = Bukkit.getVersion();
-@@ -597,16 +597,8 @@ public class Metrics {
+@@ -602,16 +602,8 @@ public class Metrics {
                  }));
  
                  metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
@@ -72,7 +72,7 @@ index 13bd145b1e8006a53c22f5dc0c78f29b540c7663..ae2d9c91afe13d07fd0de6d455b90a2a
          boolean flag1 = this.source.acceptsSuccess() && !this.silent;
          boolean flag2 = broadcastToOps && this.source.shouldInformAdmins() && !this.silent;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 3ed19896a0e06fe834953e6450f23abdc805a6cc..11f708ec623bba462fce8bc9c4483f855fe48366 100644
+index 7a79541db29cc47c844d617fc8a4360f61c73372..3267240e8be56a6dc152805c23269f47ab0f54df 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -92,7 +92,7 @@ index 3ed19896a0e06fe834953e6450f23abdc805a6cc..11f708ec623bba462fce8bc9c4483f85
  
          this.setPvpAllowed(dedicatedserverproperties.pvp);
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index bb2d3ba2065b6bf67af24a8630ac2d58169fe783..caa01dd419da2e18ad027e5eab828d8bcaca0279 100644
+index 044985030607bc20a61666dee7dd2659ae4553b5..580ddacce37e50e392999d45fdfa9f42f555aa6a 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -174,6 +174,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl

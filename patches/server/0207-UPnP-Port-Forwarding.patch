@@ -5,7 +5,7 @@ Subject: [PATCH] UPnP Port Forwarding
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 76f31bf31f77c8347b9436779c3701f8a87045e6..781eb66ada5fd2bf821453be3b14c59026217999 100644
+index e1cabc6af43e4342e8215a774483d5cd0db0aba8..2cbd4a0d12a643f1f7446d005433580fb1a81a42 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -331,6 +331,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -14,9 +14,9 @@ index 76f31bf31f77c8347b9436779c3701f8a87045e6..781eb66ada5fd2bf821453be3b14c590
      public boolean lagging = false; // Purpur
 +    protected boolean upnp = false; // Purpur
  
-     public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
-         AtomicReference<S> atomicreference = new AtomicReference();
-@@ -1045,6 +1046,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public volatile Thread shutdownThread; // Paper
+     public volatile boolean abnormalExit = false; // Paper
+@@ -1054,6 +1055,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          MinecraftServer.LOGGER.info("Stopping server");
          Commands.COMMAND_SENDING_POOL.shutdownNow(); // Paper - Perf: Async command map building; Shutdown and don't bother finishing
          MinecraftTimings.stopServer(); // Paper
@@ -33,7 +33,7 @@ index 76f31bf31f77c8347b9436779c3701f8a87045e6..781eb66ada5fd2bf821453be3b14c590
          if (this.server != null) {
              this.server.disablePlugins();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 86c25c52e4c42074866975884ec15dc099a77591..dfb502be415eb0e8750b0307d908bc42f11a2988 100644
+index de85340fe0a0e057c527cc1fa91ae6bec558228a..e73c07257395198e123019811b20fec6adf8f0ef 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -292,6 +292,30 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface

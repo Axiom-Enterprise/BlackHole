@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable daylight cycle
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index e96f55191f97490bbaf5fb990c33237469fa07e0..d5efd5fdbf0acc89de3790f30b9739809f0a02d4 100644
+index b4fc561e9ad4bd4489cf1c2060c6fb6586f3c085..3f1271f8295151bfa7e18bffa0e70cee5f0bd71e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1804,7 +1804,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1847,7 +1847,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -18,7 +18,7 @@ index e96f55191f97490bbaf5fb990c33237469fa07e0..d5efd5fdbf0acc89de3790f30b973980
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 9538510ac96d97b8e3cdfcc9873bb3d274c351ad..8dd211d20a695164c2086c03c8b0237ba109fda4 100644
+index e47f9fb98d94b7165feba4261b0600648f7a0142..f03de2bf7a02d1eb687401002acb3a45a7b7dd18 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -224,6 +224,8 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe

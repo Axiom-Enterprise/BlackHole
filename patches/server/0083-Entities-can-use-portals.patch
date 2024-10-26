@@ -5,10 +5,10 @@ Subject: [PATCH] Entities can use portals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 6f93348f929c33268107607dec6cce7e102c18b2..4b516fcc23c692ec2c9847bee45484d747981410 100644
+index e4ce84d4374e27afc79591d4ee2e7a696e0b64cf..f326f3a0a5b218addbf9d41837f5653248a39a1d 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3431,7 +3431,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3473,7 +3473,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      public void setAsInsidePortal(Portal portal, BlockPos pos) {
          if (this.isOnPortalCooldown()) {
              this.setPortalCooldown();
@@ -17,7 +17,7 @@ index 6f93348f929c33268107607dec6cce7e102c18b2..4b516fcc23c692ec2c9847bee45484d7
              if (this.portalProcess != null && this.portalProcess.isSamePortal(portal)) {
                  if (!this.portalProcess.isInsidePortalThisTick()) {
                      this.portalProcess.updateEntryPosition(pos.immutable());
-@@ -4148,7 +4148,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4190,7 +4190,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      // CraftBukkit end
  
      public boolean canUsePortal(boolean allowVehicles) {

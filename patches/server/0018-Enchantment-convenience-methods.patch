@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Krakenied <Krakenied1@gmail.com>
+Date: Sat, 15 Jun 2024 14:31:48 +0200
+Subject: [PATCH] Enchantment convenience methods
+
+
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+index f99b87cf70df7eaac13d46f4e0234b1e6483d342..d8fc10f9cd0ab2c26e64613006569a86ce201550 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+@@ -578,4 +578,14 @@ public class EnchantmentHelper {
+     interface EnchantmentVisitor {
+         void accept(Holder<Enchantment> enchantment, int level);
+     }
++
++    // Purpur start - Enchantment convenience methods
++    public static Holder.Reference<Enchantment> getEnchantmentHolder(ResourceKey<Enchantment> enchantment) {
++        return net.minecraft.server.MinecraftServer.getServer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment);
++    }
++
++    public static int getItemEnchantmentLevel(ResourceKey<Enchantment> enchantment, ItemStack stack) {
++        return getItemEnchantmentLevel(getEnchantmentHolder(enchantment), stack);
++    }
++    // Purpur end - Enchantment convenience methods
+ }

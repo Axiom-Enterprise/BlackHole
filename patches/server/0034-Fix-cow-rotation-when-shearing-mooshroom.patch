@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Fri, 3 May 2019 23:53:16 -0500
+Subject: [PATCH] Fix cow rotation when shearing mooshroom
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
+index 358f8d6650ed9820e7378d29f993b71504e779f3..2382b82d3d4c09e50e62dd353b4a1149ec9169b4 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
++++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
+@@ -217,6 +217,13 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
+         world.playSound((Player) null, (Entity) this, SoundEvents.MOOSHROOM_SHEAR, shearedSoundCategory, 1.0F, 1.0F);
+         this.convertTo(EntityType.COW, ConversionParams.single(this, false, false), (entitycow) -> {
+             world.sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
++            // Purpur start
++            entitycow.copyPosition(this);
++            entitycow.yBodyRot = this.yBodyRot;
++            entitycow.setYHeadRot(this.getYHeadRot());
++            entitycow.yRotO = this.yRotO;
++            entitycow.xRotO = this.xRotO;
++            // Purpur end
+             // Paper start - custom shear drops; moved drop generation to separate method
+             drops.forEach(itemstack1 -> {
+                 for (final ItemStack drop : drops) {

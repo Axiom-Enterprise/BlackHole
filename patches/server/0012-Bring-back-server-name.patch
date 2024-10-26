@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Sun, 26 May 2019 15:19:14 -0500
+Subject: [PATCH] Bring back server name
+
+
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
+index 52e61f75f922a075ccc745198f4ba6ad8fa58ea2..b97d8f43f24baf36eca9064b2b48bf6c092f848c 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
+@@ -56,6 +56,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+     public final boolean onlineMode = this.get("online-mode", true);
+     public final boolean preventProxyConnections = this.get("prevent-proxy-connections", false);
+     public final String serverIp = this.get("server-ip", "");
++    public final String serverName = this.get("server-name", "Unknown Server"); // Purpur
+     public final boolean pvp = this.get("pvp", true);
+     public final boolean allowFlight = this.get("allow-flight", false);
+     public final String motd = this.get("motd", "A Minecraft Server");
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 910539a3c6f89d5f6cf120d36014ed33b05ac39a..b9aee2a00b35e8f53240d5854ba05785e9688b22 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -3210,4 +3210,11 @@ public final class CraftServer implements Server {
+         return this.potionBrewer;
+     }
+     // Paper end
++
++    // Purpur start
++    @Override
++    public String getServerName() {
++        return this.getProperties().serverName;
++    }
++    // Purpur end
+ }

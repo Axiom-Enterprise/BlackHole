@@ -1,0 +1,57 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Thu, 26 Dec 2019 22:08:37 -0600
+Subject: [PATCH] Add player death exp control options
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index d1b6e7cf8d110d9106ea99431cf9719ea3b102d5..f4823112f2daf2aa75e1f4520fb91077c9c94e09 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -1921,7 +1921,23 @@ public abstract class Player extends LivingEntity {
+ 
+     @Override
+     protected int getBaseExperienceReward(ServerLevel world) {
+-        return !world.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) && !this.isSpectator() ? Math.min(this.experienceLevel * 7, 100) : 0;
++        // Purpur start
++        if (!world.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) && !this.isSpectator()) {
++            int toDrop;
++            try {
++                toDrop = Math.round(((Number) scriptEngine.eval("let expLevel = " + experienceLevel + "; " +
++                    "let expTotal = " + totalExperience + "; " +
++                    "let exp = " + experienceProgress + "; " +
++                    level().purpurConfig.playerDeathExpDropEquation)).floatValue());
++            } catch (javax.script.ScriptException e) {
++                e.printStackTrace();
++                toDrop = experienceLevel * 7;
++            }
++            return Math.min(toDrop, level().purpurConfig.playerDeathExpDropMax);
++        } else {
++            return 0;
++        }
++        // Purpur end
+     }
+ 
+     @Override
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index e41649d2abd8e8ea4ddeb0af1f94d90a60174198..364321ea60e256edb10fea8efe4bfb3cdf33f3fb 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -170,6 +170,8 @@ public class PurpurWorldConfig {
+     public boolean idleTimeoutCountAsSleeping = false;
+     public boolean idleTimeoutUpdateTabList = false;
+     public boolean idleTimeoutTargetPlayer = true;
++    public String playerDeathExpDropEquation = "expLevel * 7";
++    public int playerDeathExpDropMax = 100;
+     private void playerSettings() {
+         if (PurpurConfig.version < 19) {
+             boolean oldVal = getBoolean("gameplay-mechanics.player.idle-timeout.mods-target", idleTimeoutTargetPlayer);
+@@ -181,6 +183,8 @@ public class PurpurWorldConfig {
+         idleTimeoutCountAsSleeping = getBoolean("gameplay-mechanics.player.idle-timeout.count-as-sleeping", idleTimeoutCountAsSleeping);
+         idleTimeoutUpdateTabList = getBoolean("gameplay-mechanics.player.idle-timeout.update-tab-list", idleTimeoutUpdateTabList);
+         idleTimeoutTargetPlayer = getBoolean("gameplay-mechanics.player.idle-timeout.mobs-target", idleTimeoutTargetPlayer);
++        playerDeathExpDropEquation = getString("gameplay-mechanics.player.exp-dropped-on-death.equation", playerDeathExpDropEquation);
++        playerDeathExpDropMax = getInt("gameplay-mechanics.player.exp-dropped-on-death.maximum", playerDeathExpDropMax);
+     }
+ 
+     public boolean silkTouchEnabled = false;

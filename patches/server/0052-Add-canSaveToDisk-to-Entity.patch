@@ -1,0 +1,86 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Tue, 18 Feb 2020 20:07:08 -0600
+Subject: [PATCH] Add canSaveToDisk to Entity
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index f573cbaa5bf7bc12d6e9405010bf50c13727b350..c2cc934f2599c6620b60b1b1485c743390157377 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -611,6 +611,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+         }
+     }
+     // Paper end - optimise entity tracker
++    // Purpur start
++    public boolean canSaveToDisk() {
++        return true;
++    }
++    // Purpur end
+ 
+     public Entity(EntityType<?> type, Level world) {
+         this.id = Entity.ENTITY_COUNTER.incrementAndGet();
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/WitherSkull.java b/src/main/java/net/minecraft/world/entity/projectile/WitherSkull.java
+index a1f25efb38eff32aaabe892ddbc9a60426923686..e0f25b057b7b908a10038d9e9695a500aa883c75 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/WitherSkull.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/WitherSkull.java
+@@ -121,6 +121,11 @@ public class WitherSkull extends AbstractHurtingProjectile {
+         // do not hit rider
+         return target != this.getRider() && super.canHitEntity(target);
+     }
++
++    @Override
++    public boolean canSaveToDisk() {
++        return false;
++    }
+     // Purpur end
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/EntityStorage.java b/src/main/java/net/minecraft/world/level/chunk/storage/EntityStorage.java
+index 16ca1c8672e5f0a27f8a30498c754a81cdec5191..e37dff5dcabeca698838e1a8c9633807213443cc 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/storage/EntityStorage.java
++++ b/src/main/java/net/minecraft/world/level/chunk/storage/EntityStorage.java
+@@ -95,6 +95,7 @@ public class EntityStorage implements EntityPersistentStorage<Entity> {
+             ListTag listTag = new ListTag();
+             dataList.getEntities().forEach(entity -> {
+                 CompoundTag compoundTagx = new CompoundTag();
++                if (!entity.canSaveToDisk()) return; // Purpur
+                 if (entity.save(compoundTagx)) {
+                     listTag.add(compoundTagx);
+                 }
+diff --git a/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java b/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java
+index 89c476c740b4efb4f44c1dcd384b908626d96780..f25abee6dbf99c8d08f8e09db02b41df86115faa 100644
+--- a/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java
++++ b/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java
+@@ -36,6 +36,13 @@ public class DolphinSpit extends LlamaSpit {
+                 dolphin.getZ() + (double) (dolphin.getBbWidth() + 1.0F) * 0.5D * (double) Mth.cos(dolphin.yBodyRot * 0.017453292F));
+     }
+ 
++    // Purpur start
++    @Override
++    public boolean canSaveToDisk() {
++        return false;
++    }
++    // Purpur end
++
+     public void tick() {
+         super_tick();
+ 
+diff --git a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
+index c0b7e0eeffdf31b88662232b07944bf3e6fa2148..75e31aee6e706f042398444f272888f9ad0fa3f4 100644
+--- a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
++++ b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
+@@ -38,6 +38,13 @@ public class PhantomFlames extends LlamaSpit {
+                 phantom.getZ() + (double) (phantom.getBbWidth() + 1.0F) * 0.5D * (double) Mth.cos(phantom.yBodyRot * 0.017453292F));
+     }
+ 
++    // Purpur start
++    @Override
++    public boolean canSaveToDisk() {
++        return false;
++    }
++    // Purpur end
++
+     public void tick() {
+         super_tick();
+ 

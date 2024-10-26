@@ -1,0 +1,111 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Sat, 11 Jul 2020 19:41:34 -0500
+Subject: [PATCH] Entity lifespan
+
+
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index 62fdb1e8b84facec3ce69d5001e7d626d74a37ce..8c1f21892a96ed1cf1ef8b76ff8a52f1a8caca6e 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -2783,6 +2783,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+             AABB axisalignedbb = entity.getBoundingBox();
+ 
+             if (this.player.canInteractWithEntity(axisalignedbb, io.papermc.paper.configuration.GlobalConfiguration.get().misc.clientInteractionLeniencyDistance.or(3.0D))) { // Paper - configurable lenience value for interact range
++                if (entity instanceof Mob mob) mob.ticksSinceLastInteraction = 0; // Purpur
+                 packet.dispatch(new ServerboundInteractPacket.Handler() {
+                     private void performInteraction(InteractionHand enumhand, ServerGamePacketListenerImpl.EntityInteraction playerconnection_a, PlayerInteractEntityEvent event) { // CraftBukkit
+                         ItemStack itemstack = ServerGamePacketListenerImpl.this.player.getItemInHand(enumhand);
+diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
+index cd456edd2caf087d1dbeb97d3373bd2bf9112fc2..17e6e4a858d3a2332c14d2860d2f5d1e87e1c629 100644
+--- a/src/main/java/net/minecraft/world/entity/Mob.java
++++ b/src/main/java/net/minecraft/world/entity/Mob.java
+@@ -148,6 +148,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+     private BlockPos restrictCenter;
+     private float restrictRadius;
+ 
++    public int ticksSinceLastInteraction; // Purpur
+     public boolean aware = true; // CraftBukkit
+ 
+     protected Mob(EntityType<? extends Mob> type, Level world) {
+@@ -334,6 +335,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+                 entityliving = null;
+             }
+         }
++        if (entityliving instanceof net.minecraft.server.level.ServerPlayer) this.ticksSinceLastInteraction = 0; // Purpur
+         this.target = entityliving;
+         return true;
+         // CraftBukkit end
+@@ -378,8 +380,28 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+         }
+ 
+         gameprofilerfiller.pop();
++        incrementTicksSinceLastInteraction(); // Purpur
+     }
+ 
++    // Purpur start
++    private void incrementTicksSinceLastInteraction() {
++        ++this.ticksSinceLastInteraction;
++        if (getRider() != null) {
++            this.ticksSinceLastInteraction = 0;
++            return;
++        }
++        if (this.level().purpurConfig.entityLifeSpan <= 0) {
++            return; // feature disabled
++        }
++        if (!this.removeWhenFarAway(0) || isPersistenceRequired() || requiresCustomPersistence() || hasCustomName()) {
++            return; // mob persistent
++        }
++        if (this.ticksSinceLastInteraction > this.level().purpurConfig.entityLifeSpan) {
++            this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
++        }
++    }
++    // Purpur end
++
+     @Override
+     protected void playHurtSound(DamageSource damageSource) {
+         this.resetAmbientSoundTime();
+@@ -547,6 +569,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+         }
+ 
+         nbt.putBoolean("Bukkit.Aware", this.aware); // CraftBukkit
++        nbt.putInt("Purpur.ticksSinceLastInteraction", this.ticksSinceLastInteraction); // Purpur
+     }
+ 
+     @Override
+@@ -624,6 +647,11 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+             this.aware = nbt.getBoolean("Bukkit.Aware");
+         }
+         // CraftBukkit end
++        // Purpur start
++        if (nbt.contains("Purpur.ticksSinceLastInteraction")) {
++            this.ticksSinceLastInteraction = nbt.getInt("Purpur.ticksSinceLastInteraction");
++        }
++        // Purpur end
+     }
+ 
+     @Override
+@@ -1735,6 +1763,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+             this.playAttackSound();
+         }
+ 
++        if (target instanceof net.minecraft.server.level.ServerPlayer) this.ticksSinceLastInteraction = 0; // Purpur
+         return flag;
+     }
+ 
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index a168eb5c1f08ad4def8421e298512c532ec06988..8832a5491303d4189155ec56f81e37f99efaa28e 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -118,6 +118,11 @@ public class PurpurWorldConfig {
+         elytraDamagePerTridentBoost = getInt("gameplay-mechanics.elytra.damage-per-boost.trident", elytraDamagePerTridentBoost);
+     }
+ 
++    public int entityLifeSpan = 0;
++    private void entitySettings() {
++        entityLifeSpan = getInt("gameplay-mechanics.entity-lifespan", entityLifeSpan);
++    }
++
+     public List<Item> itemImmuneToCactus = new ArrayList<>();
+     public List<Item> itemImmuneToExplosion = new ArrayList<>();
+     public List<Item> itemImmuneToFire = new ArrayList<>();

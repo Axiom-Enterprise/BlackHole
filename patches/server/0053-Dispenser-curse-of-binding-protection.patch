@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Sun, 25 Aug 2019 00:09:52 -0500
+Subject: [PATCH] Dispenser curse of binding protection
+
+
+diff --git a/src/main/java/net/minecraft/core/dispenser/EquipmentDispenseItemBehavior.java b/src/main/java/net/minecraft/core/dispenser/EquipmentDispenseItemBehavior.java
+index 036dd3b15dfee4cd079710eba1255d2bdb4d7220..3fb385329d20ab26ea48fa33f35295115914e4a5 100644
+--- a/src/main/java/net/minecraft/core/dispenser/EquipmentDispenseItemBehavior.java
++++ b/src/main/java/net/minecraft/core/dispenser/EquipmentDispenseItemBehavior.java
+@@ -41,7 +41,7 @@ public class EquipmentDispenseItemBehavior extends DefaultDispenseItemBehavior {
+             return false;
+         } else {
+             LivingEntity entityliving = (LivingEntity) list.getFirst();
+-            EquipmentSlot enumitemslot = entityliving.getEquipmentSlotForItem(stack);
++            EquipmentSlot enumitemslot = pointer.level().purpurConfig.dispenserApplyCursedArmor ? entityliving.getEquipmentSlotForItem(stack) : entityliving.getEquipmentSlotForDispenserItem(stack); if (enumitemslot == null) return false; // Purpur - Dispenser curse of binding protection
+             ItemStack itemstack1 = stack.split(1);
+ 
+             // CraftBukkit start
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 8ebd43c8088523396a4f46b8b0083f91e2b55e27..2e955dc3299062c2564eac0de43d5f1b78f5897c 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -4653,7 +4653,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+             if (equippable != null && equippable.dispensable()) {
+                 EquipmentSlot enumitemslot = equippable.slot();
+ 
+-                return this.canUseSlot(enumitemslot) && equippable.canBeEquippedBy(this.getType()) ? this.getItemBySlot(enumitemslot).isEmpty() && this.canDispenserEquipIntoSlot(enumitemslot) : false;
++                return this.canUseSlot(enumitemslot) && equippable.canBeEquippedBy(this.getType()) && this.getItemBySlot(enumitemslot).isEmpty() && this.canDispenserEquipIntoSlot(enumitemslot);
+             } else {
+                 return false;
+             }
+@@ -4678,6 +4678,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+         return equippable == null ? slot == EquipmentSlot.MAINHAND && this.canUseSlot(EquipmentSlot.MAINHAND) : slot == equippable.slot() && this.canUseSlot(equippable.slot()) && equippable.canBeEquippedBy(this.getType());
+     }
+ 
++    // Purpur start - Dispenser curse of binding protection
++    public @Nullable EquipmentSlot getEquipmentSlotForDispenserItem(ItemStack itemstack) {
++        return EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.BINDING_CURSE, itemstack) > 0 ? null : this.getEquipmentSlotForItem(itemstack);
++    }
++    // Purpur end - Dispenser curse of binding protection
++
+     private static SlotAccess createEquipmentSlotAccess(LivingEntity entity, EquipmentSlot slot) {
+         return slot != EquipmentSlot.HEAD && slot != EquipmentSlot.MAINHAND && slot != EquipmentSlot.OFFHAND ? SlotAccess.forEquipmentSlot(entity, slot, (itemstack) -> {
+             return itemstack.isEmpty() || entity.getEquipmentSlotForItem(itemstack) == slot;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 364321ea60e256edb10fea8efe4bfb3cdf33f3fb..4b3727f9c4e4f1de2745e4984ad660b6a0ac7797 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -219,6 +219,11 @@ public class PurpurWorldConfig {
+         });
+     }
+ 
++    public boolean dispenserApplyCursedArmor = true;
++    private void dispenserSettings() {
++        dispenserApplyCursedArmor = getBoolean("blocks.dispenser.apply-cursed-to-armor-slots", dispenserApplyCursedArmor);
++    }
++
+     public boolean farmlandGetsMoistFromBelow = false;
+     private void farmlandSettings() {
+         farmlandGetsMoistFromBelow = getBoolean("blocks.farmland.gets-moist-from-below", farmlandGetsMoistFromBelow);

@@ -1,0 +1,75 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Thu, 13 Aug 2020 04:00:26 -0500
+Subject: [PATCH] Stop squids floating on top of water
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index c2cc934f2599c6620b60b1b1485c743390157377..6f93348f929c33268107607dec6cce7e102c18b2 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -4721,6 +4721,12 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+         return Mth.lerp(delta, this.yRotO, this.yRot);
+     }
+ 
++    // Purpur start
++    public AABB getAxisForFluidCheck() {
++        return this.getBoundingBox().deflate(0.001D);
++    }
++    // Purpur end
++
+     // Paper start - optimise collisions
+     public boolean updateFluidHeightAndDoFluidPushing(final TagKey<Fluid> fluid, final double flowScale) {
+         if (this.touchingUnloadedChunk()) {
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Squid.java b/src/main/java/net/minecraft/world/entity/animal/Squid.java
+index db0d03fe2d2891efb3284d5c597d7c8279f2db94..a0aa4ac61de870a374152018ebdeab47dc5b5a85 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Squid.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Squid.java
+@@ -78,6 +78,12 @@ public class Squid extends AgeableWaterCreature {
+         this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.squidScale);
+     }
+ 
++    @Override
++    public net.minecraft.world.phys.AABB getAxisForFluidCheck() {
++        // Stops squids from floating just over the water
++        return super.getAxisForFluidCheck().offsetY(level().purpurConfig.squidOffsetWaterCheck);
++    }
++
+     @Override
+     protected void registerGoals() {
+         this.goalSelector.addGoal(0, new Squid.SquidRandomMovementGoal(this));
+diff --git a/src/main/java/net/minecraft/world/phys/AABB.java b/src/main/java/net/minecraft/world/phys/AABB.java
+index 6cf6d4ec7b9e43c7b2b4c0e2fb080964ff588130..e74866e5195a5eeae7666ad7be750edac5947094 100644
+--- a/src/main/java/net/minecraft/world/phys/AABB.java
++++ b/src/main/java/net/minecraft/world/phys/AABB.java
+@@ -551,4 +551,10 @@ public class AABB {
+     public static AABB ofSize(Vec3 center, double dx, double dy, double dz) {
+         return new AABB(center.x - dx / 2.0, center.y - dy / 2.0, center.z - dz / 2.0, center.x + dx / 2.0, center.y + dy / 2.0, center.z + dz / 2.0);
+     }
++
++    // Purpur - tuinity added method
++    public final AABB offsetY(double dy) {
++        return new AABB(this.minX, this.minY + dy, this.minZ, this.maxX, this.maxY + dy, this.maxZ);
++    }
++    // Purpur
+ }
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index c1302e6cd7db386c94d95e03b901c65b3aca1887..918923d1d95b68a99b52750974647df03070f910 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -1596,6 +1596,7 @@ public class PurpurWorldConfig {
+     public double squidMaxHealth = 10.0D;
+     public double squidScale = 1.0D;
+     public boolean squidImmuneToEAR = true;
++    public double squidOffsetWaterCheck = 0.0D;
+     private void squidSettings() {
+         squidRidable = getBoolean("mobs.squid.ridable", squidRidable);
+         squidControllable = getBoolean("mobs.squid.controllable", squidControllable);
+@@ -1607,6 +1608,7 @@ public class PurpurWorldConfig {
+         squidMaxHealth = getDouble("mobs.squid.attributes.max_health", squidMaxHealth);
+         squidScale = Mth.clamp(getDouble("mobs.squid.attributes.scale", squidScale), 0.0625D, 16.0D);
+         squidImmuneToEAR = getBoolean("mobs.squid.immune-to-EAR", squidImmuneToEAR);
++        squidOffsetWaterCheck = getDouble("mobs.squid.water-offset-check", squidOffsetWaterCheck);
+     }
+ 
+     public boolean spiderRidable = false;

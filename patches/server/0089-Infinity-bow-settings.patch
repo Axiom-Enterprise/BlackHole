@@ -1,0 +1,47 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Sun, 4 Oct 2020 19:08:53 -0500
+Subject: [PATCH] Infinity bow settings
+
+
+diff --git a/src/main/java/net/minecraft/world/item/BowItem.java b/src/main/java/net/minecraft/world/item/BowItem.java
+index bb593209c95c9cf1f9c5d52d52fab4a33ddbabcf..1d4d0799a86b9940b5e3b614c5a188ade5133f7e 100644
+--- a/src/main/java/net/minecraft/world/item/BowItem.java
++++ b/src/main/java/net/minecraft/world/item/BowItem.java
+@@ -28,6 +28,11 @@ public class BowItem extends ProjectileWeaponItem {
+             return false;
+         } else {
+             ItemStack itemStack = player.getProjectile(stack);
++            //  Purpur start
++            if (world.purpurConfig.infinityWorksWithoutArrows && itemStack.isEmpty() && net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.INFINITY, stack) > 0) {
++                itemStack = new ItemStack(Items.ARROW);
++            }
++            // Purpur end
+             if (itemStack.isEmpty()) {
+                 return false;
+             } else {
+@@ -89,7 +94,7 @@ public class BowItem extends ProjectileWeaponItem {
+     public InteractionResult use(Level world, Player user, InteractionHand hand) {
+         ItemStack itemStack = user.getItemInHand(hand);
+         boolean bl = !user.getProjectile(itemStack).isEmpty();
+-        if (!user.hasInfiniteMaterials() && !bl) {
++        if (!user.hasInfiniteMaterials() && !bl && !(world.purpurConfig.infinityWorksWithoutArrows && net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.INFINITY, itemStack) > 0)) { // Purpur
+             return InteractionResult.FAIL;
+         } else {
+             user.startUsingItem(hand);
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 166a7513ee9c309cc4dd16367fcb86b2ab3b243e..9031028533afbc896be2b1402b073c1bdd06dcfe 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -133,6 +133,11 @@ public class PurpurWorldConfig {
+         entityLifeSpan = getInt("gameplay-mechanics.entity-lifespan", entityLifeSpan);
+     }
+ 
++    public boolean infinityWorksWithoutArrows = false;
++    private void infinityArrowsSettings() {
++        infinityWorksWithoutArrows = getBoolean("gameplay-mechanics.infinity-bow.works-without-arrows", infinityWorksWithoutArrows);
++    }
++
+     public List<Item> itemImmuneToCactus = new ArrayList<>();
+     public List<Item> itemImmuneToExplosion = new ArrayList<>();
+     public List<Item> itemImmuneToFire = new ArrayList<>();

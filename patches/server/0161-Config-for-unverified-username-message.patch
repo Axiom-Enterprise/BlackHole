@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ben Kerllenevich <ben@omega24.dev>
+Date: Wed, 19 May 2021 15:33:43 -0400
+Subject: [PATCH] Config for unverified username message
+
+
+diff --git a/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
+index 033755682c61c889723c3669b5cff4de147f637e..16069b9cbf6c7679c28a2e9a54e77d23cd10e541 100644
+--- a/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
+@@ -322,7 +322,7 @@ public class ServerLoginPacketListenerImpl implements ServerLoginPacketListener,
+                         ServerLoginPacketListenerImpl.LOGGER.warn("Failed to verify username but will let them in anyway!");
+                         ServerLoginPacketListenerImpl.this.startClientVerification(ServerLoginPacketListenerImpl.this.createOfflineProfile(s1)); // Spigot
+                     } else {
+-                        ServerLoginPacketListenerImpl.this.disconnect(Component.translatable("multiplayer.disconnect.unverified_username"));
++                        ServerLoginPacketListenerImpl.this.disconnect(org.purpurmc.purpur.PurpurConfig.unverifiedUsername.equals("default") ? Component.translatable("multiplayer.disconnect.unverified_username") : io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(org.purpurmc.purpur.PurpurConfig.unverifiedUsername))); // Purpur
+                         ServerLoginPacketListenerImpl.LOGGER.error("Username '{}' tried to join with an invalid session", s1);
+                     }
+                 } catch (AuthenticationUnavailableException authenticationunavailableexception) {
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index 881f3621233834aca8c8d5381e41d2a3fc9237da..a106b462b3739ecb19db991faffc348f60ff03df 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -186,6 +186,7 @@ public class PurpurConfig {
+     public static String pingCommandOutput = "<green>%s's ping is %sms";
+     public static String tpsbarCommandOutput = "<green>Tpsbar toggled <onoff> for <target>";
+     public static String dontRunWithScissors = "<red><italic>Don't run with scissors!";
++    public static String unverifiedUsername = "default";
+     private static void messages() {
+         cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
+         afkBroadcastAway = getString("settings.messages.afk-broadcast-away", afkBroadcastAway);
+@@ -198,6 +199,7 @@ public class PurpurConfig {
+         pingCommandOutput = getString("settings.messages.ping-command-output", pingCommandOutput);
+         tpsbarCommandOutput = getString("settings.messages.tpsbar-command-output", tpsbarCommandOutput);
+         dontRunWithScissors = getString("settings.messages.dont-run-with-scissors", dontRunWithScissors);
++        unverifiedUsername = getString("settings.messages.unverified-username", unverifiedUsername);
+     }
+ 
+     public static String deathMsgRunWithScissors = "<player> slipped and fell on their shears";

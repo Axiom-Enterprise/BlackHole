@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Encode42 <me@encode42.dev>
+Date: Thu, 29 Apr 2021 20:28:18 -0400
+Subject: [PATCH] Config for health to impact Creeper explosion radius
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
+index ad3a3d8e7ab660be5afb8e00948b87387196ebb7..941eb2b4264f620500347b012c0d9f448133ed78 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
+@@ -373,9 +373,10 @@ public class Creeper extends Monster {
+ 
+         if (world instanceof ServerLevel worldserver) {
+             float f = this.isPowered() ? 2.0F : 1.0F;
++            float multiplier = this.level().purpurConfig.creeperHealthRadius ? this.getHealth() / this.getMaxHealth() : 1; // Purpur
+ 
+             // CraftBukkit start
+-            ExplosionPrimeEvent event = CraftEventFactory.callExplosionPrimeEvent(this, this.explosionRadius * f, false);
++            ExplosionPrimeEvent event = CraftEventFactory.callExplosionPrimeEvent(this, (this.explosionRadius * f) * multiplier, false); // Purpur
+             if (!event.isCancelled()) {
+             // CraftBukkit end
+             this.dead = true;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 9ba71358ef10fcaf5339b7341483b037537a0f01..9ab90bac6c13a063fa851be0e55a81fed8b71492 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -937,6 +937,7 @@ public class PurpurWorldConfig {
+     public boolean creeperBypassMobGriefing = false;
+     public boolean creeperTakeDamageFromWater = false;
+     public boolean creeperExplodeWhenKilled = false;
++    public boolean creeperHealthRadius = false;
+     private void creeperSettings() {
+         creeperRidable = getBoolean("mobs.creeper.ridable", creeperRidable);
+         creeperRidableInWater = getBoolean("mobs.creeper.ridable-in-water", creeperRidableInWater);
+@@ -953,6 +954,7 @@ public class PurpurWorldConfig {
+         creeperBypassMobGriefing = getBoolean("mobs.creeper.bypass-mob-griefing", creeperBypassMobGriefing);
+         creeperTakeDamageFromWater = getBoolean("mobs.creeper.takes-damage-from-water", creeperTakeDamageFromWater);
+         creeperExplodeWhenKilled = getBoolean("mobs.creeper.explode-when-killed", creeperExplodeWhenKilled);
++        creeperHealthRadius = getBoolean("mobs.creeper.health-impacts-explosion", creeperHealthRadius);
+     }
+ 
+     public boolean dolphinRidable = false;

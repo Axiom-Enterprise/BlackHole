@@ -1,0 +1,82 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Thu, 24 Jun 2021 21:19:30 -0500
+Subject: [PATCH] Burp delay, burp after eating food fills hunger bar
+ completely
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index e755a472385fcc699ae8fa1e56370c4176152ff6..8852740d584ad4bafe14787572c2e238ddf2f584 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -198,6 +198,7 @@ public abstract class Player extends LivingEntity {
+     public boolean affectsSpawning = true; // Paper - Affects Spawning API
+     public net.kyori.adventure.util.TriState flyingFallDamage = net.kyori.adventure.util.TriState.NOT_SET; // Paper - flying fall damage
+     public int sixRowEnderchestSlotCount = -1; // Purpur
++    public int burpDelay = 0; // Purpur
+ 
+     // CraftBukkit start
+     public boolean fauxSleeping;
+@@ -273,6 +274,12 @@ public abstract class Player extends LivingEntity {
+ 
+     @Override
+     public void tick() {
++        // Purpur start
++        if (this.burpDelay > 0 && --this.burpDelay == 0) {
++            this.level().playSound(null, getX(), getY(), getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 1.0F, this.level().random.nextFloat() * 0.1F + 0.9F);
++        }
++        // Purpur end
++
+         this.noPhysics = this.isSpectator();
+         if (this.isSpectator()) {
+             this.setOnGround(false);
+diff --git a/src/main/java/net/minecraft/world/food/FoodData.java b/src/main/java/net/minecraft/world/food/FoodData.java
+index 6a686be6a69ae890d519a54ca099d4ba14e5b9e1..a1c2dfb9e2a6efe05389b0716c4d1d0f95311eea 100644
+--- a/src/main/java/net/minecraft/world/food/FoodData.java
++++ b/src/main/java/net/minecraft/world/food/FoodData.java
+@@ -25,8 +25,10 @@ public class FoodData {
+     public FoodData() {}
+ 
+     private void add(int nutrition, float saturation) {
++        int oldValue = this.foodLevel; // Purpur
+         this.foodLevel = Mth.clamp(nutrition + this.foodLevel, 0, 20);
+         this.saturationLevel = Mth.clamp(saturation + this.saturationLevel, 0.0F, (float) this.foodLevel);
++        if (this.entityhuman.level().purpurConfig.playerBurpWhenFull && this.foodLevel == 20 && oldValue < 20) this.entityhuman.burpDelay = this.entityhuman.level().purpurConfig.playerBurpDelay; // Purpur
+     }
+ 
+     public void eat(int food, float saturationModifier) {
+diff --git a/src/main/java/net/minecraft/world/food/FoodProperties.java b/src/main/java/net/minecraft/world/food/FoodProperties.java
+index 882b72799ae532f4e181214d5756ec024af223e2..9a3f2a95debcf8b94f7deb375922ea09b30aabab 100644
+--- a/src/main/java/net/minecraft/world/food/FoodProperties.java
++++ b/src/main/java/net/minecraft/world/food/FoodProperties.java
+@@ -33,7 +33,7 @@ public record FoodProperties(int nutrition, float saturation, boolean canAlwaysE
+         world.playSound((Player) null, user.getX(), user.getY(), user.getZ(), (SoundEvent) consumable.sound().value(), SoundSource.NEUTRAL, 1.0F, randomsource.triangle(1.0F, 0.4F));
+         if (user instanceof Player entityhuman) {
+             entityhuman.getFoodData().eat(this, stack, (ServerPlayer) entityhuman); // CraftBukkit
+-            world.playSound((Player) null, entityhuman.getX(), entityhuman.getY(), entityhuman.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5F, Mth.randomBetween(randomsource, 0.9F, 1.0F));
++            //world.playSound((Player) null, entityhuman.getX(), entityhuman.getY(), entityhuman.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5F, Mth.randomBetween(randomsource, 0.9F, 1.0F)); // Purpur - moved to Player#tick()
+         }
+ 
+     }
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 0adfc605365b5671dadebdd7143ba92417e5bb22..b94017de09e67afbf5778867025d57e2cdf8efb8 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -379,6 +379,8 @@ public class PurpurWorldConfig {
+     public boolean playerSleepNearMonsters = false;
+     public boolean playersSkipNight = true;
+     public double playerCriticalDamageMultiplier = 1.5D;
++    public int playerBurpDelay = 10;
++    public boolean playerBurpWhenFull = false;
+     private void playerSettings() {
+         if (PurpurConfig.version < 19) {
+             boolean oldVal = getBoolean("gameplay-mechanics.player.idle-timeout.mods-target", idleTimeoutTargetPlayer);
+@@ -399,6 +401,8 @@ public class PurpurWorldConfig {
+         playerSleepNearMonsters = getBoolean("gameplay-mechanics.player.sleep-ignore-nearby-mobs", playerSleepNearMonsters);
+         playersSkipNight = getBoolean("gameplay-mechanics.player.can-skip-night", playersSkipNight);
+         playerCriticalDamageMultiplier = getDouble("gameplay-mechanics.player.critical-damage-multiplier", playerCriticalDamageMultiplier);
++        playerBurpDelay = getInt("gameplay-mechanics.player.burp-delay", playerBurpDelay);
++        playerBurpWhenFull = getBoolean("gameplay-mechanics.player.burp-when-full", playerBurpWhenFull);
+     }
+ 
+     public boolean silkTouchEnabled = false;

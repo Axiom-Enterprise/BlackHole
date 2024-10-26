@@ -1,0 +1,55 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Callum Seabrook <callum.seabrook@prevarinite.com>
+Date: Fri, 14 May 2021 21:22:57 +0100
+Subject: [PATCH] Configurable powered rail boost modifier
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/NewMinecartBehavior.java b/src/main/java/net/minecraft/world/entity/vehicle/NewMinecartBehavior.java
+index 00b0004940339dc105fb95f813bd35b16f7a9fb4..934218634854a90c0c8230e3da2d6da3d6916645 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/NewMinecartBehavior.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/NewMinecartBehavior.java
+@@ -426,7 +426,7 @@ public class NewMinecartBehavior extends MinecartBehavior {
+     private Vec3 calculateBoostTrackSpeed(Vec3 velocity, BlockPos railPos, BlockState railState) {
+         if (railState.is(Blocks.POWERED_RAIL) && (Boolean) railState.getValue(PoweredRailBlock.POWERED)) {
+             if (velocity.length() > 0.01D) {
+-                return velocity.normalize().scale(velocity.length() + 0.06D);
++                return velocity.normalize().scale(velocity.length() + this.level().purpurConfig.poweredRailBoostModifier); // Purpur
+             } else {
+                 Vec3 vec3d1 = this.minecart.getRedstoneDirection(railPos);
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/OldMinecartBehavior.java b/src/main/java/net/minecraft/world/entity/vehicle/OldMinecartBehavior.java
+index cf871c174091139c8ad1affb84f98fcd74b60dee..ca1a2e8b32bc8730e7bdb44820696b2c4d1063d1 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/OldMinecartBehavior.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/OldMinecartBehavior.java
+@@ -310,9 +310,9 @@ public class OldMinecartBehavior extends MinecartBehavior {
+             vec3d5 = this.getDeltaMovement();
+             d17 = vec3d5.horizontalDistance();
+             if (d17 > 0.01D) {
+-                double d19 = 0.06D;
++                double d19 = world.purpurConfig.poweredRailBoostModifier; // Purpur
+ 
+-                this.setDeltaMovement(vec3d5.add(vec3d5.x / d17 * 0.06D, 0.0D, vec3d5.z / d17 * 0.06D));
++                this.setDeltaMovement(vec3d5.add(vec3d5.x / d17 * world.purpurConfig.poweredRailBoostModifier, 0.0D, vec3d5.z / d17 * world.purpurConfig.poweredRailBoostModifier)); // Purpur
+             } else {
+                 Vec3 vec3d6 = this.getDeltaMovement();
+                 double d20 = vec3d6.x;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 6994e136f188ae11a77a691d05dc7355906544e5..0c52f8486f59eaca46309b31ac877f609e68b521 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -266,6 +266,7 @@ public class PurpurWorldConfig {
+     public boolean minecartControllableFallDamage = true;
+     public double minecartControllableBaseSpeed = 0.1D;
+     public Map<Block, Double> minecartControllableBlockSpeeds = new HashMap<>();
++    public double poweredRailBoostModifier = 0.06;
+     private void minecartSettings() {
+         if (PurpurConfig.version < 12) {
+             boolean oldBool = getBoolean("gameplay-mechanics.controllable-minecarts.place-anywhere", minecartPlaceAnywhere);
+@@ -318,6 +319,7 @@ public class PurpurWorldConfig {
+             set("gameplay-mechanics.minecart.controllable.block-speed.grass_block", 0.3D);
+             set("gameplay-mechanics.minecart.controllable.block-speed.stone", 0.5D);
+         }
++        poweredRailBoostModifier = getDouble("gameplay-mechanics.minecart.powered-rail.boost-modifier", poweredRailBoostModifier);
+     }
+ 
+     public boolean catSpawning;

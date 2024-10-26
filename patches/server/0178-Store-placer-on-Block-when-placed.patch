@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Sat, 3 Jul 2021 18:40:32 -0500
+Subject: [PATCH] Store placer on Block when placed
+
+
+diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
+index d644d02b039ca918391a32a04549f7a34386b3f9..42b259c3878bd34b8e7cb768887fd1456be8db35 100644
+--- a/src/main/java/net/minecraft/world/item/ItemStack.java
++++ b/src/main/java/net/minecraft/world/item/ItemStack.java
+@@ -503,6 +503,7 @@ public final class ItemStack implements DataComponentHolder {
+                     world.isBlockPlaceCancelled = true; // Paper - prevent calling cleanup logic when undoing a block place upon a cancelled BlockPlaceEvent
+                         for (BlockState blockstate : blocks) {
+                             blockstate.update(true, false);
++                        ((CraftBlock) blockstate.getBlock()).getNMS().getBlock().forgetPlacer(); // Purpur
+                         }
+                     world.isBlockPlaceCancelled = false; // Paper - prevent calling cleanup logic when undoing a block place upon a cancelled BlockPlaceEvent
+                         world.preventPoiUpdated = false;
+@@ -535,6 +536,7 @@ public final class ItemStack implements DataComponentHolder {
+                             if (!(block.getBlock() instanceof BaseEntityBlock)) { // Containers get placed automatically
+                                 block.onPlace(world, newblockposition, oldBlock, true, context);
+                             }
++                        block.getBlock().forgetPlacer(); // Purpur
+ 
+                             world.notifyAndUpdatePhysics(newblockposition, null, oldBlock, block, world.getBlockState(newblockposition), updateFlag, 512); // send null chunk as chunk.k() returns false by this point
+                         }
+diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
+index fa19720fbb911842db42a4eb0ccf8406cb27c137..135e59e549cbcb3806574f964947b6ff3ea517d1 100644
+--- a/src/main/java/net/minecraft/world/level/block/Block.java
++++ b/src/main/java/net/minecraft/world/level/block/Block.java
+@@ -440,7 +440,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+         } // Paper - fix drops not preventing stats/food exhaustion
+     }
+ 
+-    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {}
++    // Purpur start
++    @Nullable protected LivingEntity placer = null;
++
++    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
++        this.placer = placer;
++    }
++
++    public void forgetPlacer() {
++        this.placer = null;
++    }
++    // Purpur end
+ 
+     public boolean isPossibleToRespawnInThis(BlockState state) {
+         return !state.isSolid() && !state.liquid();

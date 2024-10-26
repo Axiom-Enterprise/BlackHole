@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Sat, 12 Dec 2020 09:10:59 -0600
+Subject: [PATCH] Phantom flames on swoop
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Phantom.java b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
+index 11e0ba7ec12ba3b93589f451ef4f251598eb29c9..32ac2ec33daacf038d2c10b748e89a7725d36a79 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Phantom.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
+@@ -238,6 +238,7 @@ public class Phantom extends FlyingMob implements Enemy {
+             this.level().addParticle(ParticleTypes.MYCELIUM, this.getX() - (double) f3, this.getY() + (double) f5, this.getZ() - (double) f4, 0.0D, 0.0D, 0.0D);
+         }
+ 
++        if (level().purpurConfig.phantomFlamesOnSwoop && attackPhase == AttackPhase.SWOOP) shoot(); // Purpur
+     }
+ 
+     @Override
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 0360a6d10440cd5a656f3ace25254d6021ca2964..947c0405fd4e695509597cfa54f5307fc9fc5add 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -1346,6 +1346,7 @@ public class PurpurWorldConfig {
+     public int phantomBurnInLight = 0;
+     public boolean phantomIgnorePlayersWithTorch = false;
+     public boolean phantomBurnInDaylight = true;
++    public boolean phantomFlamesOnSwoop = false;
+     private void phantomSettings() {
+         phantomRidable = getBoolean("mobs.phantom.ridable", phantomRidable);
+         phantomRidableInWater = getBoolean("mobs.phantom.ridable-in-water", phantomRidableInWater);
+@@ -1379,6 +1380,7 @@ public class PurpurWorldConfig {
+         phantomBurnInLight = getInt("mobs.phantom.burn-in-light", phantomBurnInLight);
+         phantomBurnInDaylight = getBoolean("mobs.phantom.burn-in-daylight", phantomBurnInDaylight);
+         phantomIgnorePlayersWithTorch = getBoolean("mobs.phantom.ignore-players-with-torch", phantomIgnorePlayersWithTorch);
++        phantomFlamesOnSwoop = getBoolean("mobs.phantom.flames-on-swoop", phantomFlamesOnSwoop);
+     }
+ 
+     public boolean pigRidable = false;

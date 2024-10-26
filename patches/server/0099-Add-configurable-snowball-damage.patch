@@ -1,0 +1,35 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Tue, 24 Nov 2020 05:32:02 -0600
+Subject: [PATCH] Add configurable snowball damage
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/Snowball.java b/src/main/java/net/minecraft/world/entity/projectile/Snowball.java
+index 70961e151666a0ecf5b791853f4581eaebbdcc8b..8c853b6fbbc966ee6ba9ad3770d4e2e2a50ef388 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/Snowball.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/Snowball.java
+@@ -58,7 +58,7 @@ public class Snowball extends ThrowableItemProjectile {
+     protected void onHitEntity(EntityHitResult entityHitResult) {
+         super.onHitEntity(entityHitResult);
+         Entity entity = entityHitResult.getEntity();
+-        int i = entity instanceof Blaze ? 3 : 0;
++        int i = entity.level().purpurConfig.snowballDamage >= 0 ? entity.level().purpurConfig.snowballDamage : entity instanceof Blaze ? 3 : 0; // Purpur
+ 
+         entity.hurt(this.damageSources().thrown(this, this.getOwner()), (float) i);
+     }
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index bc28a4851dd68874042c05bed3486eace3db5963..3bbc81e6a97728b032f0097b2a88a7ff69bd18ce 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -337,6 +337,11 @@ public class PurpurWorldConfig {
+         });
+     }
+ 
++    public int snowballDamage = -1;
++    private void snowballSettings() {
++        snowballDamage = getInt("gameplay-mechanics.projectile-damage.snowball", snowballDamage);
++    }
++
+     public boolean anvilAllowColors = false;
+     public boolean anvilColorsUseMiniMessage;
+     private void anvilSettings() {

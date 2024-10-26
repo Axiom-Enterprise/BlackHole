@@ -1,0 +1,66 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jason Penilla <11360596+jpenilla@users.noreply.github.com>
+Date: Sat, 20 Feb 2021 14:47:08 -0800
+Subject: [PATCH] Configs for if Wither/Ender Dragon can ride vehicles
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
+index 5f642aba559290011f2426858e2966352da1e6f4..e0e76b5abdb9650c3c50a3c8b49336977982fe67 100644
+--- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
++++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
+@@ -1155,6 +1155,7 @@ public class EnderDragon extends Mob implements Enemy {
+ 
+     @Override
+     protected boolean canRide(Entity entity) {
++        if (this.level().purpurConfig.enderDragonCanRideVehicles) return this.boardingCooldown <= 0; // Purpur
+         return false;
+     }
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java b/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
+index 1f9d7c85f2ee5f6653e11457e19c03e6fa0419d9..8ecb72f6cd12d1e12f5ae9b240ccd6d9e4f6c248 100644
+--- a/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
++++ b/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
+@@ -729,6 +729,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
+ 
+     @Override
+     protected boolean canRide(Entity entity) {
++        if (this.level().purpurConfig.witherCanRideVehicles) return this.boardingCooldown <= 0; // Purpur
+         return false;
+     }
+ 
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index f969c4c453b80f674e964ed0542d633c76380cab..49edc77bdfe789408e553b9e08aa09ee23806aa1 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -964,6 +964,7 @@ public class PurpurWorldConfig {
+     public boolean enderDragonAlwaysDropsFullExp = false;
+     public boolean enderDragonBypassMobGriefing = false;
+     public boolean enderDragonTakeDamageFromWater = false;
++    public boolean enderDragonCanRideVehicles = false;
+     private void enderDragonSettings() {
+         enderDragonRidable = getBoolean("mobs.ender_dragon.ridable", enderDragonRidable);
+         enderDragonRidableInWater = getBoolean("mobs.ender_dragon.ridable-in-water", enderDragonRidableInWater);
+@@ -982,6 +983,7 @@ public class PurpurWorldConfig {
+         enderDragonAlwaysDropsFullExp = getBoolean("mobs.ender_dragon.always-drop-full-exp", enderDragonAlwaysDropsFullExp);
+         enderDragonBypassMobGriefing = getBoolean("mobs.ender_dragon.bypass-mob-griefing", enderDragonBypassMobGriefing);
+         enderDragonTakeDamageFromWater = getBoolean("mobs.ender_dragon.takes-damage-from-water", enderDragonTakeDamageFromWater);
++        enderDragonCanRideVehicles = getBoolean("mobs.ender_dragon.can-ride-vehicles", enderDragonCanRideVehicles);
+     }
+ 
+     public boolean endermanRidable = false;
+@@ -2264,6 +2266,7 @@ public class PurpurWorldConfig {
+     public int witherHealthRegenDelay = 20;
+     public boolean witherBypassMobGriefing = false;
+     public boolean witherTakeDamageFromWater = false;
++    public boolean witherCanRideVehicles = false;
+     private void witherSettings() {
+         witherRidable = getBoolean("mobs.wither.ridable", witherRidable);
+         witherRidableInWater = getBoolean("mobs.wither.ridable-in-water", witherRidableInWater);
+@@ -2284,6 +2287,7 @@ public class PurpurWorldConfig {
+         witherHealthRegenDelay = getInt("mobs.wither.health-regen-delay", witherHealthRegenDelay);
+         witherBypassMobGriefing = getBoolean("mobs.wither.bypass-mob-griefing", witherBypassMobGriefing);
+         witherTakeDamageFromWater = getBoolean("mobs.wither.takes-damage-from-water", witherTakeDamageFromWater);
++        witherCanRideVehicles = getBoolean("mobs.wither.can-ride-vehicles", witherCanRideVehicles);
+     }
+ 
+     public boolean witherSkeletonRidable = false;

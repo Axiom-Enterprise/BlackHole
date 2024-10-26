@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Mon, 30 Nov 2020 19:36:35 -0600
+Subject: [PATCH] Add boat fall damage config
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 5f86f0b46e91ac41820931a9d64a7240d3ddd8d4..14640ed95dbbf99150ef1f41ff1046c2c034e552 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -1435,7 +1435,16 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+         if (this.isInvulnerableTo(world, source)) {
+             return false;
+         } else {
+-            if (source.is(DamageTypeTags.IS_FALL) && getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) return false; // Purpur
++            // Purpur start
++            if (source.is(DamageTypeTags.IS_FALL)) { // Purpur
++                if (getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) {
++                    return false;
++                }
++                if (getRootVehicle() instanceof net.minecraft.world.entity.vehicle.Boat && !level().purpurConfig.boatsDoFallDamage) {
++                    return false;
++                }
++            }
++            // Purpur end
+             boolean flag = this.server.isDedicatedServer() && this.isPvpAllowed() && source.is(DamageTypeTags.IS_FALL);
+ 
+             if (!flag && this.spawnInvulnerableTime > 0 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index a5f51c2dff32452ad5dda0623dda90da358fe322..d5a546191014dc1cc9ed8b314c67983b0401d37b 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -113,6 +113,7 @@ public class PurpurWorldConfig {
+ 
+     public boolean useBetterMending = false;
+     public boolean boatEjectPlayersOnLand = false;
++    public boolean boatsDoFallDamage = false;
+     public boolean disableDropsOnCrammingDeath = false;
+     public double tridentLoyaltyVoidReturnHeight = 0.0D;
+     public boolean entitiesCanUsePortals = true;
+@@ -122,6 +123,7 @@ public class PurpurWorldConfig {
+     private void miscGameplayMechanicsSettings() {
+         useBetterMending = getBoolean("gameplay-mechanics.use-better-mending", useBetterMending);
+         boatEjectPlayersOnLand = getBoolean("gameplay-mechanics.boat.eject-players-on-land", boatEjectPlayersOnLand);
++        boatsDoFallDamage = getBoolean("gameplay-mechanics.boat.do-fall-damage", boatsDoFallDamage);
+         disableDropsOnCrammingDeath = getBoolean("gameplay-mechanics.disable-drops-on-cramming-death", disableDropsOnCrammingDeath);
+         tridentLoyaltyVoidReturnHeight = getDouble("gameplay-mechanics.trident-loyalty-void-return-height", tridentLoyaltyVoidReturnHeight);
+         entitiesCanUsePortals = getBoolean("gameplay-mechanics.entities-can-use-portals", entitiesCanUsePortals);

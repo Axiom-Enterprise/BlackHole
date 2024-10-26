@@ -1,0 +1,72 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Encode42 <me@encode42.dev>
+Date: Tue, 16 Mar 2021 19:50:58 -0400
+Subject: [PATCH] Config to make Creepers explode on death
+
+Creepers exploded after being killed in the alpha days. This brings that back.
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
+index aed8273dd74930914a495d6963e55308d935008c..ad3a3d8e7ab660be5afb8e00948b87387196ebb7 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
+@@ -65,6 +65,7 @@ public class Creeper extends Monster {
+     private int prevSpacebarCharge = 0;
+     private int powerToggleDelay = 0;
+     // Purpur end
++    private boolean exploding = false; // Purpur - Config to make Creepers explode on death
+ 
+     public Creeper(EntityType<? extends Creeper> type, Level world) {
+         super(type, world);
+@@ -270,6 +271,16 @@ public class Creeper extends Monster {
+         return this.level().purpurConfig.creeperTakeDamageFromWater;
+     }
+ 
++    // Purpur start - Config to make Creepers explode on death
++    @Override
++    protected org.bukkit.event.entity.EntityDeathEvent dropAllDeathLoot(ServerLevel world, DamageSource damageSource) {
++        if (!this.exploding && this.level().purpurConfig.creeperExplodeWhenKilled && damageSource.getEntity() instanceof net.minecraft.server.level.ServerPlayer) {
++            this.explodeCreeper();
++        }
++        return super.dropAllDeathLoot(world, damageSource);
++    }
++    // Purpur end - Config to make Creepers explode on death
++
+     @Override
+     protected SoundEvent getHurtSound(DamageSource source) {
+         return SoundEvents.CREEPER_HURT;
+@@ -358,6 +369,7 @@ public class Creeper extends Monster {
+ 
+     public void explodeCreeper() {
+         Level world = this.level();
++        this.exploding = true; // Purpur - Config to make Creepers explode on death
+ 
+         if (world instanceof ServerLevel worldserver) {
+             float f = this.isPowered() ? 2.0F : 1.0F;
+@@ -379,6 +391,7 @@ public class Creeper extends Monster {
+             // CraftBukkit end
+         }
+ 
++        this.exploding = false; // Purpur - Config to make Creepers explode on death
+     }
+ 
+     private void spawnLingeringCloud() {
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 205fc1779a51440232c368e3e9d54f5ce9d0c62c..b1ce0257e3cad9d37f6ab998a7ff6e41060fc3ed 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -860,6 +860,7 @@ public class PurpurWorldConfig {
+     public boolean creeperAllowGriefing = true;
+     public boolean creeperBypassMobGriefing = false;
+     public boolean creeperTakeDamageFromWater = false;
++    public boolean creeperExplodeWhenKilled = false;
+     private void creeperSettings() {
+         creeperRidable = getBoolean("mobs.creeper.ridable", creeperRidable);
+         creeperRidableInWater = getBoolean("mobs.creeper.ridable-in-water", creeperRidableInWater);
+@@ -875,6 +876,7 @@ public class PurpurWorldConfig {
+         creeperAllowGriefing = getBoolean("mobs.creeper.allow-griefing", creeperAllowGriefing);
+         creeperBypassMobGriefing = getBoolean("mobs.creeper.bypass-mob-griefing", creeperBypassMobGriefing);
+         creeperTakeDamageFromWater = getBoolean("mobs.creeper.takes-damage-from-water", creeperTakeDamageFromWater);
++        creeperExplodeWhenKilled = getBoolean("mobs.creeper.explode-when-killed", creeperExplodeWhenKilled);
+     }
+ 
+     public boolean dolphinRidable = false;

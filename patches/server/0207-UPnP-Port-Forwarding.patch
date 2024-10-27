@@ -68,10 +68,10 @@ index de85340fe0a0e057c527cc1fa91ae6bec558228a..e73c07257395198e123019811b20fec6
          // CraftBukkit start
          // this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage)); // Spigot - moved up
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 9c5348fd18c2943ce39346dd19fa194d9c31d7ea..ce8181b0527406a54569779d453b227f6b693f0d 100644
+index a1e1aad7a1b845e2efd381da0221559443808cf7..d8930c57a867a63a4a8149136eb8a7a9ab96e11b 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -421,4 +421,9 @@ public class PurpurConfig {
+@@ -422,4 +422,9 @@ public class PurpurConfig {
      private static void tpsCatchup() {
          tpsCatchup = getBoolean("settings.tps-catchup", tpsCatchup);
      }

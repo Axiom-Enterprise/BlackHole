@@ -5,14 +5,14 @@ Subject: [PATCH] Charged creeper naturally spawn
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index d985f86d320770e73be32740f8f2e874ab08666f..44a3fbaedd0fdb480cde4e2f8a9106965bd5c59d 100644
+index 3ea4763a34447761e73d8643dce8c386fa7501c3..e95afb70fa13f7f2617cbd42b7f5d17b9bc1ec4f 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 @@ -257,6 +257,14 @@ public class Creeper extends Monster {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.creeperScale);
      }
  
-+    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.MobSpawnType spawnReason, @Nullable net.minecraft.world.entity.SpawnGroupData entityData) {
++    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.EntitySpawnReason spawnReason, @Nullable net.minecraft.world.entity.SpawnGroupData entityData) {
 +        double chance = world.getLevel().purpurConfig.creeperChargedChance;
 +        if (chance > 0D && random.nextDouble() <= chance) {
 +            setPowered(true);
@@ -24,7 +24,7 @@ index d985f86d320770e73be32740f8f2e874ab08666f..44a3fbaedd0fdb480cde4e2f8a910696
      protected SoundEvent getHurtSound(DamageSource source) {
          return SoundEvents.CREEPER_HURT;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 3b6089eaf8a9af932c7bcc9a37fc7c077eb79870..6722c1bd54c28844c853d477180692a85732e631 100644
+index 80eb2df74d226f7419354e73b6350f5444c8ae0b..d56ac793066bca186614e93204bf41fa6aa15719 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -395,6 +395,7 @@ public class PurpurWorldConfig {

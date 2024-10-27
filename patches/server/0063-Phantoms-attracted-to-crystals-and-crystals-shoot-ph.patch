@@ -72,7 +72,7 @@ index 7cb3d69a69e0e3ef4b7f9f9c8b1eb67edb5d116d..4c9709e680b585316978b6a410600a8a
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Phantom.java b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-index e44d6d02ceaf1f133705efcd58b94e36014389ec..5d62be4ae4561262820d011f5e7318411d749bbb 100644
+index e44d6d02ceaf1f133705efcd58b94e36014389ec..bd1c23d849269df504c94da9d0ca0a6846b22c41 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 @@ -49,6 +49,7 @@ public class Phantom extends FlyingMob implements Enemy {
@@ -89,15 +89,15 @@ index e44d6d02ceaf1f133705efcd58b94e36014389ec..5d62be4ae4561262820d011f5e731841
      }
 +
 +    @Override
-+    protected void dropFromLootTable(DamageSource damageSource, boolean causedByPlayer) {
++    protected void dropFromLootTable(ServerLevel world, DamageSource damageSource, boolean causedByPlayer) {
 +        boolean dropped = false;
 +        if (lastHurtByPlayer == null && damageSource.getEntity() instanceof net.minecraft.world.entity.boss.enderdragon.EndCrystal) {
 +            if (random.nextInt(5) < 1) {
-+                dropped = spawnAtLocation(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.PHANTOM_MEMBRANE)) != null;
++                dropped = spawnAtLocation(world, new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.PHANTOM_MEMBRANE)) != null;
 +            }
 +        }
 +        if (!dropped) {
-+            super.dropFromLootTable(damageSource, causedByPlayer);
++            super.dropFromLootTable(world, damageSource, causedByPlayer);
 +        }
 +    }
 +
@@ -256,7 +256,7 @@ index e44d6d02ceaf1f133705efcd58b94e36014389ec..5d62be4ae4561262820d011f5e731841
  
          private float speed = 0.1F;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 6c5729b86a0540aa1ced33640170b4145efa08ba..65c8b2e76677b92fee94e1149a9ce3803b3f1737 100644
+index 247f476b060221daaec64b975ebce74b458c5ec2..cfdb01c51909ac44a952fcd720af4b88157835b8 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1148,6 +1148,9 @@ public class PurpurWorldConfig {

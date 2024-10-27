@@ -18,10 +18,10 @@ index e9c17953a3767e03e528ed93b10fb42626fff118..f8476a8fb38897af0dd63bfb20276ac1
  
      public boolean setItemName(String newItemName) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index a106b462b3739ecb19db991faffc348f60ff03df..ebbaa21dbaff140818fad10accd05721451b37cb 100644
+index 4c973a362196e4dc5f1a5f0fffeb7967afcde86a..711e63f2101e5a52ca3a3963fa9b0a976b4946a7 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -271,6 +271,7 @@ public class PurpurConfig {
+@@ -272,6 +272,7 @@ public class PurpurConfig {
      public static boolean enderChestPermissionRows = false;
      public static boolean cryingObsidianValidForPortalFrame = false;
      public static int beeInsideBeeHive = 3;
@@ -29,7 +29,7 @@ index a106b462b3739ecb19db991faffc348f60ff03df..ebbaa21dbaff140818fad10accd05721
      private static void blockSettings() {
          if (version < 3) {
              boolean oldValue = getBoolean("settings.barrel.packed-barrels", true);
-@@ -303,6 +304,7 @@ public class PurpurConfig {
+@@ -304,6 +305,7 @@ public class PurpurConfig {
          enderChestPermissionRows = getBoolean("settings.blocks.ender_chest.use-permissions-for-rows", enderChestPermissionRows);
          cryingObsidianValidForPortalFrame = getBoolean("settings.blocks.crying_obsidian.valid-for-portal-frame", cryingObsidianValidForPortalFrame);
          beeInsideBeeHive = getInt("settings.blocks.beehive.max-bees-inside", beeInsideBeeHive);

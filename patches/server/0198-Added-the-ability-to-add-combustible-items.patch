@@ -23,38 +23,24 @@ index 1240df9368855f836412b06cf564926a18bfe90d..e559eabed82d2f402908e5b80d150507
                      }
                  } else if (this.isFuel(itemstack1)) {
                      if (!this.moveItemStackTo(itemstack1, 1, 2, false)) {
-diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 91a158ed90b7ce3eac7277fd962682a0226c08ed..658893b06a994c7b927ae40db2c1284d606c35c2 100644
---- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-+++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-@@ -131,6 +131,22 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
-         this.recipeType = recipeType; // Paper - cook speed multiplier API
-     }
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/FuelValues.java b/src/main/java/net/minecraft/world/level/block/entity/FuelValues.java
+index 61ef08ac941b1e8988d001241780d3a1582f7a2d..2eab5b43ab654966d26424597c1f3baa919e8434 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/FuelValues.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/FuelValues.java
+@@ -17,7 +17,7 @@ import net.minecraft.world.level.ItemLike;
+ import net.minecraft.world.level.block.Blocks;
  
-+    // Purpur start
-+    public static void addFuel(ItemStack itemStack, Integer burnTime) {
-+        Map<Item, Integer> map = Maps.newLinkedHashMap();
-+        map.putAll(getFuel());
-+        map.put(itemStack.getItem(), burnTime);
-+        AbstractFurnaceBlockEntity.fuelCache = com.google.common.collect.ImmutableMap.copyOf(map);
-+    }
-+
-+    public static void removeFuel(ItemStack itemStack) {
-+        Map<Item, Integer> map = Maps.newLinkedHashMap();
-+        map.putAll(getFuel());
-+        map.remove(itemStack.getItem());
-+        AbstractFurnaceBlockEntity.fuelCache = com.google.common.collect.ImmutableMap.copyOf(map);
-+    }
-+    // Purpur End
-+
-     // CraftBukkit start - add fields and methods
-     private int maxStack = MAX_STACK;
-     public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+ public class FuelValues {
+-    private final Object2IntSortedMap<Item> values;
++    public final Object2IntSortedMap<Item> values; // Purpur - private -> public
+ 
+     FuelValues(Object2IntSortedMap<Item> fuelValues) {
+         this.values = fuelValues;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ac0dd26ecaa3d6a4ef0ebd271ec5c328f5320399..4eb332ed95fd0ca196f3712037deb7637bfa4d8b 100644
+index ac0dd26ecaa3d6a4ef0ebd271ec5c328f5320399..6bb44716544e0c3dd3fce8d20e351cb5d4010e4c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1590,6 +1590,19 @@ public final class CraftServer implements Server {
+@@ -1590,6 +1590,22 @@ public final class CraftServer implements Server {
          return true;
      }
  
@@ -62,12 +48,15 @@ index ac0dd26ecaa3d6a4ef0ebd271ec5c328f5320399..4eb332ed95fd0ca196f3712037deb763
 +    @Override
 +    public void addFuel(org.bukkit.Material material, int burnTime) {
 +        Preconditions.checkArgument(burnTime > 0, "BurnTime must be greater than 0");
-+        net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity.addFuel(net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(material)), burnTime);
++
++        net.minecraft.world.item.ItemStack itemStack = net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(material));
++        MinecraftServer.getServer().fuelValues().values.put(itemStack.getItem(), burnTime);
 +    }
 +
 +    @Override
 +    public void removeFuel(org.bukkit.Material material) {
-+        net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity.removeFuel(net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(material)));
++        net.minecraft.world.item.ItemStack itemStack = net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(material));
++        MinecraftServer.getServer().fuelValues().values.keySet().removeIf(itemStack::is);
 +    }
 +    // Purpur End
 +

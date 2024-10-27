@@ -17,10 +17,10 @@ index abf33de1c20b031a684daedbc880a6f4eff869f4..a52d20dcc9b3dfaecc3325bce3140dbd
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index d0873724bf081e577fd42455f427a765e1db0f59..e65552be2b8348e2751ea088809c090f6b029e43 100644
+index 0cad1ea803e4882601fcd05cfa575d03ffd77b04..438a60ae155f05c667ae887a2ae44b05df7977e2 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -181,6 +181,7 @@ public class PurpurConfig {
+@@ -182,6 +182,7 @@ public class PurpurConfig {
      public static boolean afkBroadcastUseDisplayName = false;
      public static String afkTabListPrefix = "[AFK] ";
      public static String afkTabListSuffix = "";
@@ -28,7 +28,7 @@ index d0873724bf081e577fd42455f427a765e1db0f59..e65552be2b8348e2751ea088809c090f
      public static String pingCommandOutput = "<green>%s's ping is %sms";
      private static void messages() {
          cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
-@@ -189,6 +190,7 @@ public class PurpurConfig {
+@@ -190,6 +191,7 @@ public class PurpurConfig {
          afkBroadcastUseDisplayName = getBoolean("settings.messages.afk-broadcast-use-display-name", afkBroadcastUseDisplayName);
          afkTabListPrefix = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(getString("settings.messages.afk-tab-list-prefix", afkTabListPrefix)));
          afkTabListSuffix = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(getString("settings.messages.afk-tab-list-suffix", afkTabListSuffix)));

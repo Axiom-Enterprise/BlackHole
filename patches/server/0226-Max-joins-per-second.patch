@@ -6,7 +6,7 @@ Subject: [PATCH] Max joins per second
 When this option is set to true the `max-joins-per-tick` setting in paper.yml will be used per second instead of per tick
 
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index fff8d15d44613a075b9793c2a41520212166eb3b..4b0e41b5e26ecf632dff512aac6660fff5264072 100644
+index 4a8356a714ed50d4a32bcf046a2e16491bef014b..56e47c5709c765943407d2065b25bd512d1f9388 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
 @@ -617,11 +617,20 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
@@ -31,10 +31,10 @@ index fff8d15d44613a075b9793c2a41520212166eb3b..4b0e41b5e26ecf632dff512aac6660ff
          }
          // Paper end - Buffer joins to world
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 357b5080b6d3651c8f913081de283576a0a17cec..f8179f8b7a57a66705d51f30ab528307e3a84b32 100644
+index c677345c6d632aa92c3b6c395d3b5db11f933d8f..1763db5af790f590e047ddccd8ecc3220fb361ed 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -456,8 +456,10 @@ public class PurpurConfig {
+@@ -457,8 +457,10 @@ public class PurpurConfig {
      }
  
      public static boolean useUPnP = false;

@@ -5,7 +5,7 @@ Subject: [PATCH] Tulips change fox type
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Fox.java b/src/main/java/net/minecraft/world/entity/animal/Fox.java
-index bb98caa1e5ca711293e50ac82a5cad2fa5972db9..7fe665d9c623fd98a1fd4259a759297de46fe96e 100644
+index bb98caa1e5ca711293e50ac82a5cad2fa5972db9..355965d88d5ef008111cc72f39e4f8d35741fdfd 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Fox.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Fox.java
 @@ -384,6 +384,11 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
@@ -34,17 +34,17 @@ index bb98caa1e5ca711293e50ac82a5cad2fa5972db9..7fe665d9c623fd98a1fd4259a759297d
  
 +    // Purpur start
 +    @Override
-+    public net.minecraft.world.InteractionResult mobInteract(Player player, InteractionHand hand) {
++    public net.minecraft.world.InteractionResult mobInteract(Player player, net.minecraft.world.InteractionHand hand) {
 +        if (level().purpurConfig.foxTypeChangesWithTulips) {
 +            ItemStack itemstack = player.getItemInHand(hand);
-+            if (getVariant() == Type.RED && itemstack.getItem() == Items.WHITE_TULIP) {
-+                setVariant(Type.SNOW);
++            if (getVariant() == Variant.RED && itemstack.getItem() == Items.WHITE_TULIP) {
++                setVariant(Variant.SNOW);
 +                if (!player.getAbilities().instabuild) {
 +                    itemstack.shrink(1);
 +                }
 +                return net.minecraft.world.InteractionResult.SUCCESS;
-+            } else if (getVariant() == Type.SNOW && itemstack.getItem() == Items.ORANGE_TULIP) {
-+                setVariant(Type.RED);
++            } else if (getVariant() == Variant.SNOW && itemstack.getItem() == Items.ORANGE_TULIP) {
++                setVariant(Variant.RED);
 +                if (!player.getAbilities().instabuild) {
 +                    itemstack.shrink(1);
 +                }
@@ -59,7 +59,7 @@ index bb98caa1e5ca711293e50ac82a5cad2fa5972db9..7fe665d9c623fd98a1fd4259a759297d
      // Paper start - Cancellable death event
      protected org.bukkit.event.entity.EntityDeathEvent dropAllDeathLoot(ServerLevel world, DamageSource damageSource) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 141c96566773d4cce0423e186d346043c8f65fad..d6e3ab58756bd8e0c3d2a7aa651a22545db6749e 100644
+index ec1b35ed76b365c76366e147c2d8b68690c1c5ff..78316af29f238ec61c73e0a82b677ae91feaa623 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -573,6 +573,7 @@ public class PurpurWorldConfig {

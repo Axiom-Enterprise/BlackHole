@@ -18,10 +18,10 @@ index 033755682c61c889723c3669b5cff4de147f637e..16069b9cbf6c7679c28a2e9a54e77d23
                      }
                  } catch (AuthenticationUnavailableException authenticationunavailableexception) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 881f3621233834aca8c8d5381e41d2a3fc9237da..a106b462b3739ecb19db991faffc348f60ff03df 100644
+index 9654f422b3e23d10151eb447b990ba5d4cf70671..4c973a362196e4dc5f1a5f0fffeb7967afcde86a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -186,6 +186,7 @@ public class PurpurConfig {
+@@ -187,6 +187,7 @@ public class PurpurConfig {
      public static String pingCommandOutput = "<green>%s's ping is %sms";
      public static String tpsbarCommandOutput = "<green>Tpsbar toggled <onoff> for <target>";
      public static String dontRunWithScissors = "<red><italic>Don't run with scissors!";
@@ -29,7 +29,7 @@ index 881f3621233834aca8c8d5381e41d2a3fc9237da..a106b462b3739ecb19db991faffc348f
      private static void messages() {
          cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
          afkBroadcastAway = getString("settings.messages.afk-broadcast-away", afkBroadcastAway);
-@@ -198,6 +199,7 @@ public class PurpurConfig {
+@@ -199,6 +200,7 @@ public class PurpurConfig {
          pingCommandOutput = getString("settings.messages.ping-command-output", pingCommandOutput);
          tpsbarCommandOutput = getString("settings.messages.tpsbar-command-output", tpsbarCommandOutput);
          dontRunWithScissors = getString("settings.messages.dont-run-with-scissors", dontRunWithScissors);

@@ -135,10 +135,10 @@ index 3dec5a082606ee35a8c8d7f746480262d6a189c5..b2f6ccae9576c176263e51a232e17a08
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index ce8181b0527406a54569779d453b227f6b693f0d..0d899125bd89b23d6b5f1fa6bdb25d3b76a62783 100644
+index d8930c57a867a63a4a8149136eb8a7a9ab96e11b..4aac9004892030772eb4791209d3de71e9e480cc 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -314,6 +314,10 @@ public class PurpurConfig {
+@@ -315,6 +315,10 @@ public class PurpurConfig {
      public static Set<Enchantment> grindstoneIgnoredEnchants = new HashSet<>();
      public static boolean grindstoneRemoveAttributes = false;
      public static boolean grindstoneRemoveDisplay = false;
@@ -149,7 +149,7 @@ index ce8181b0527406a54569779d453b227f6b693f0d..0d899125bd89b23d6b5f1fa6bdb25d3b
      private static void blockSettings() {
          if (version < 3) {
              boolean oldValue = getBoolean("settings.barrel.packed-barrels", true);
-@@ -363,6 +367,30 @@ public class PurpurConfig {
+@@ -364,6 +368,30 @@ public class PurpurConfig {
          });
          grindstoneRemoveAttributes = getBoolean("settings.blocks.grindstone.remove-attributes", grindstoneRemoveAttributes);
          grindstoneRemoveDisplay = getBoolean("settings.blocks.grindstone.remove-name-and-lore", grindstoneRemoveDisplay);

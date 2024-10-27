@@ -57,7 +57,7 @@ index 4e863ae1f94291b391a142e04e0c41e83417ab70..d7eb680b977656556a618431b1511c10
                              entitythrowntrident.pickupItemStack = stack.copy(); // SPIGOT-4511 update since damage call moved
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/world/level/storage/loot/functions/EnchantedCountIncreaseFunction.java b/src/main/java/net/minecraft/world/level/storage/loot/functions/EnchantedCountIncreaseFunction.java
-index 5f27e1ce23f2ed68e4c8af1986fafce940dbf826..3eff81e1e83e8f4fa4b91ea5d472407e6081f01b 100644
+index 5f27e1ce23f2ed68e4c8af1986fafce940dbf826..d8cf49cbd82ed12d23fa10a81a88cc4bcf1c0f10 100644
 --- a/src/main/java/net/minecraft/world/level/storage/loot/functions/EnchantedCountIncreaseFunction.java
 +++ b/src/main/java/net/minecraft/world/level/storage/loot/functions/EnchantedCountIncreaseFunction.java
 @@ -66,6 +66,11 @@ public class EnchantedCountIncreaseFunction extends LootItemConditionalFunction
@@ -65,7 +65,7 @@ index 5f27e1ce23f2ed68e4c8af1986fafce940dbf826..3eff81e1e83e8f4fa4b91ea5d472407e
          if (entity instanceof LivingEntity livingEntity) {
              int i = EnchantmentHelper.getEnchantmentLevel(this.enchantment, livingEntity);
 +            // Purpur start - Add an option to fix MC-3304 projectile looting
-+            if (org.purpurmc.purpur.PurpurConfig.fixProjectileLootingTransfer && context.getParamOrNull(LootContextParams.DIRECT_ATTACKING_ENTITY) instanceof net.minecraft.world.entity.projectile.AbstractArrow arrow) {
++            if (org.purpurmc.purpur.PurpurConfig.fixProjectileLootingTransfer && context.getOptionalParameter(LootContextParams.DIRECT_ATTACKING_ENTITY) instanceof net.minecraft.world.entity.projectile.AbstractArrow arrow) {
 +                i = arrow.actualEnchantments.getLevel(this.enchantment);
 +            }
 +            // Purpur end - Add an option to fix MC-3304 projectile looting
@@ -73,10 +73,10 @@ index 5f27e1ce23f2ed68e4c8af1986fafce940dbf826..3eff81e1e83e8f4fa4b91ea5d472407e
                  return stack;
              }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index e13ec4125047db4edc9dc5de3a2adcdde51bce12..b881bfac6c8204bfe7ccd38583daf48013c5f639 100644
+index 4e47c24adb808feee415ee3e1c159955a7be5c71..b5724a0646f2194591d0c8539b87a850ad1bb5db 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -501,6 +501,11 @@ public class PurpurConfig {
+@@ -502,6 +502,11 @@ public class PurpurConfig {
          usernameValidCharactersPattern = java.util.regex.Pattern.compile(setPattern == null || setPattern.isBlank() ? defaultPattern : setPattern);
      }
  
@@ -87,4 +87,4 @@ index e13ec4125047db4edc9dc5de3a2adcdde51bce12..b881bfac6c8204bfe7ccd38583daf480
 +
      private static void blastResistanceSettings() {
          getMap("settings.blast-resistance-overrides", Collections.emptyMap()).forEach((blockId, value) -> {
-             Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(blockId));
+             Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockId));

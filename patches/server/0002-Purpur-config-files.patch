@@ -179,10 +179,10 @@ index a7524d3853d5b67b6385d2b74832b9267503dfe6..bc0353e4f41680d04f4d5e2dd85640d9
                          .withRequiredArg()
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..6176bc84e6896d2e60bb219e92e1d668bfbe8eac
+index 0000000000000000000000000000000000000000..ceb45f313869ac3a0f650a4ee43ecff782c1be5f
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -0,0 +1,177 @@
+@@ -0,0 +1,178 @@
 +package org.purpurmc.purpur;
 +
 +import com.google.common.base.Throwables;
@@ -204,6 +204,7 @@ index 0000000000000000000000000000000000000000..6176bc84e6896d2e60bb219e92e1d668
 +import net.minecraft.world.item.enchantment.Enchantment;
 +import net.minecraft.world.level.block.Block;
 +import net.minecraft.world.level.block.Blocks;
++import net.minecraft.world.level.block.state.BlockBehaviour;
 +import org.bukkit.Bukkit;
 +import org.bukkit.command.Command;
 +import org.bukkit.configuration.ConfigurationSection;
@@ -267,7 +268,7 @@ index 0000000000000000000000000000000000000000..6176bc84e6896d2e60bb219e92e1d668
 +
 +        readConfig(PurpurConfig.class, null);
 +
-+        Blocks.rebuildCache();
++        Block.BLOCK_STATE_REGISTRY.forEach(BlockBehaviour.BlockStateBase::initCache);
 +    }
 +
 +    protected static void log(String s) {

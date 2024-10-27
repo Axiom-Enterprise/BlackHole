@@ -100,7 +100,7 @@ index 4f190a40b8474aa06a92c8afcc06d0044120ff7b..80ee7a6f010cc838625674007a3ea908
              int i = 15 + worldserver.random.nextInt(15) + worldserver.random.nextInt(15);
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 42bff6f2d864a31dcb1c0087a4e0c9027ece001e..65c41d9c757819f3da4c0549f4e5fe002992b4d4 100644
+index 42bff6f2d864a31dcb1c0087a4e0c9027ece001e..9d6a90b11ef09900de9405cd3233e1ee5dd6e31e 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -109,6 +109,38 @@ public class PurpurWorldConfig {
@@ -134,7 +134,7 @@ index 42bff6f2d864a31dcb1c0087a4e0c9027ece001e..65c41d9c757819f3da4c0549f4e5fe00
 +                "minecraft:diamond_pickaxe",
 +                "minecraft:netherite_pickaxe"
 +        )).forEach(key -> {
-+            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(key.toString()));
++            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
 +            if (item != Items.AIR) silkTouchTools.add(item);
 +        });
 +    }

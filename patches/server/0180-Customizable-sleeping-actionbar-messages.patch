@@ -5,7 +5,7 @@ Subject: [PATCH] Customizable sleeping actionbar messages
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8680572c838dbad0ea13afe041e43f58b2deebc2..c70a1ca4ed978df1b54363e966a8344a2fe6f277 100644
+index 8d6a3309b6d20e51b056fbf030f27aa4f92640d7..be11f61e35bccd87ce627c16a520ef8986fdb28e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1118,11 +1118,27 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -38,7 +38,7 @@ index 8680572c838dbad0ea13afe041e43f58b2deebc2..c70a1ca4ed978df1b54363e966a8344a
                  }
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5d611f5d8ccd635b376bded93bd0278323a585ba..cf922e34824be0d5de3e15c969b7c32f1ed8264a 100644
+index a3074c439b3255d2cfc174dbc7c5b01ef418a602..77f81e323c6aa805ed30ef171d20f05d0597b3d5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1832,7 +1832,19 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -63,10 +63,10 @@ index 5d611f5d8ccd635b376bded93bd0278323a585ba..cf922e34824be0d5de3e15c969b7c32f
  
                      ((ServerLevel) this.level()).updateSleepingPlayerList();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index a605b6221f3331093b8eb133e9cb4ac5cd54aaae..0051145e950544ad9bb5aceb2043e98060aa11f2 100644
+index 862e8fbe3d115799874d2eb6475d97d5fa0db0df..8d41d9a8a2b5b7946c13b8c3ce961fea1a2bc728 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -188,6 +188,9 @@ public class PurpurConfig {
+@@ -189,6 +189,9 @@ public class PurpurConfig {
      public static String dontRunWithScissors = "<red><italic>Don't run with scissors!";
      public static String uptimeCommandOutput = "<green>Server uptime is <uptime>";
      public static String unverifiedUsername = "default";
@@ -76,7 +76,7 @@ index a605b6221f3331093b8eb133e9cb4ac5cd54aaae..0051145e950544ad9bb5aceb2043e980
      private static void messages() {
          cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
          afkBroadcastAway = getString("settings.messages.afk-broadcast-away", afkBroadcastAway);
-@@ -202,6 +205,9 @@ public class PurpurConfig {
+@@ -203,6 +206,9 @@ public class PurpurConfig {
          dontRunWithScissors = getString("settings.messages.dont-run-with-scissors", dontRunWithScissors);
          uptimeCommandOutput = getString("settings.messages.uptime-command-output", uptimeCommandOutput);
          unverifiedUsername = getString("settings.messages.unverified-username", unverifiedUsername);

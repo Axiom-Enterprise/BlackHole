@@ -124,10 +124,10 @@ index be87cb3cfa15a7d889118cdc4b87232e30749023..61e906fb47b242e86789dca1a210473c
          return this.inFire;
      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 2685a3e5e4d0a1559f2d28152bab73b8982362fd..6fcb2db92a38e862da288518ce34d16aa4b856e0 100644
+index 64c84cb6cc647ca37a0664b83eb24e7202aeb1e2..28800c519ab8a6648d632a577ffbecae175f3844 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -185,6 +185,7 @@ public class PurpurConfig {
+@@ -186,6 +186,7 @@ public class PurpurConfig {
      public static String demoCommandOutput = "<green>%s has been shown the demo screen";
      public static String pingCommandOutput = "<green>%s's ping is %sms";
      public static String tpsbarCommandOutput = "<green>Tpsbar toggled <onoff> for <target>";
@@ -135,7 +135,7 @@ index 2685a3e5e4d0a1559f2d28152bab73b8982362fd..6fcb2db92a38e862da288518ce34d16a
      private static void messages() {
          cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
          afkBroadcastAway = getString("settings.messages.afk-broadcast-away", afkBroadcastAway);
-@@ -196,6 +197,12 @@ public class PurpurConfig {
+@@ -197,6 +198,12 @@ public class PurpurConfig {
          demoCommandOutput = getString("settings.messages.demo-command-output", demoCommandOutput);
          pingCommandOutput = getString("settings.messages.ping-command-output", pingCommandOutput);
          tpsbarCommandOutput = getString("settings.messages.tpsbar-command-output", tpsbarCommandOutput);
@@ -149,7 +149,7 @@ index 2685a3e5e4d0a1559f2d28152bab73b8982362fd..6fcb2db92a38e862da288518ce34d16a
  
      public static String serverModName = io.papermc.paper.ServerBuildInfo.buildInfo().brandName();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 49edc77bdfe789408e553b9e08aa09ee23806aa1..77e6729051509bdf6d226206578a813b3e80cedc 100644
+index 7ba94e40a7ca1b6e81b1404736ee2ec6dc10dca9..dfea07d861779bc6f8c6041ac57bde1596a65e92 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -189,6 +189,10 @@ public class PurpurWorldConfig {
@@ -164,7 +164,7 @@ index 49edc77bdfe789408e553b9e08aa09ee23806aa1..77e6729051509bdf6d226206578a813b
          itemImmuneToCactus.clear();
          getList("gameplay-mechanics.item.immune.cactus", new ArrayList<>()).forEach(key -> {
 @@ -226,6 +230,10 @@ public class PurpurWorldConfig {
-             Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(key.toString()));
+             Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
              if (item != Items.AIR) itemImmuneToLightning.add(item);
          });
 +        dontRunWithScissors = getBoolean("gameplay-mechanics.item.shears.damage-if-sprinting", dontRunWithScissors);

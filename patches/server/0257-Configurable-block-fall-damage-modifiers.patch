@@ -54,10 +54,10 @@ index ef364aa171a48482a45bc18cfe730ec20c3f7be6..74971d90506aa253d5ee821b5390fb25
      }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 60f522926b5c8dada7720142573d03af34e5a330..0304e57559d6791cf4ddbec1a8dd2c2b6caa2d8e 100644
+index a282e1a0c832174a70c7b317f547c5d250fe37ad..1d4fb426bfba5f572785c5a904d01be8edf23f24 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -512,4 +512,50 @@ public class PurpurConfig {
+@@ -513,4 +513,50 @@ public class PurpurConfig {
              block.explosionResistance = blastResistance.floatValue();
          });
      }
@@ -81,7 +81,7 @@ index 60f522926b5c8dada7720142573d03af34e5a330..0304e57559d6791cf4ddbec1a8dd2c2b
 +                Map.entry("minecraft:purple_bed", Map.of("distance", 0.5F)),
 +                Map.entry("minecraft:magenta_bed", Map.of("distance", 0.5F))
 +        )).forEach((blockId, value) -> {
-+            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(blockId));
++            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockId));
 +            if (block == Blocks.AIR) {
 +                log(Level.SEVERE, "Invalid block for `settings.block-fall-multipliers`: " + blockId);
 +                return;

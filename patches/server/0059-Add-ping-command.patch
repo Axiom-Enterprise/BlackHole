@@ -17,10 +17,10 @@ index b7783480cc6a51a1f18789b7f3fc35faf5573f8d..abf33de1c20b031a684daedbc880a6f4
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index ed49a5131ca86b60a4d7f5c8ee61a7868dddc179..d0873724bf081e577fd42455f427a765e1db0f59 100644
+index c8e7e6333d20ca976ed74d839ccfaebdc02e5167..0cad1ea803e4882601fcd05cfa575d03ffd77b04 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -181,6 +181,7 @@ public class PurpurConfig {
+@@ -182,6 +182,7 @@ public class PurpurConfig {
      public static boolean afkBroadcastUseDisplayName = false;
      public static String afkTabListPrefix = "[AFK] ";
      public static String afkTabListSuffix = "";
@@ -28,7 +28,7 @@ index ed49a5131ca86b60a4d7f5c8ee61a7868dddc179..d0873724bf081e577fd42455f427a765
      private static void messages() {
          cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
          afkBroadcastAway = getString("settings.messages.afk-broadcast-away", afkBroadcastAway);
-@@ -188,6 +189,7 @@ public class PurpurConfig {
+@@ -189,6 +190,7 @@ public class PurpurConfig {
          afkBroadcastUseDisplayName = getBoolean("settings.messages.afk-broadcast-use-display-name", afkBroadcastUseDisplayName);
          afkTabListPrefix = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(getString("settings.messages.afk-tab-list-prefix", afkTabListPrefix)));
          afkTabListSuffix = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(getString("settings.messages.afk-tab-list-suffix", afkTabListSuffix)));

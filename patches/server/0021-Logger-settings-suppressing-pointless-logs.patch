@@ -53,10 +53,10 @@ index 51ae8eddadc87b143b93521a3cef374f1e3a24dc..a7b45602d9d86aec235eef06d252fb62
          if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isDebugging()) {
              new Exception().printStackTrace();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 6bbd0021032d1979fc0133f6f859dddcf22c5708..87821e766afe8fa18f9f61a877669068a5f8220a 100644
+index 3b4a8c9d5a60de94ad79a781414de8de44973e6f..1103935e49081c560b024b87f872e9b8c788bad2 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -239,4 +239,15 @@ public class PurpurConfig {
+@@ -240,4 +240,15 @@ public class PurpurConfig {
          org.bukkit.event.inventory.InventoryType.ENDER_CHEST.setDefaultSize(enderChestSixRows ? 54 : 27);
          enderChestPermissionRows = getBoolean("settings.blocks.ender_chest.use-permissions-for-rows", enderChestPermissionRows);
      }

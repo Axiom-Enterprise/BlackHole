@@ -5,7 +5,7 @@ Subject: [PATCH] Skeletons eat wither roses
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
-index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..b1158967400815b90687dddcc482846c70e03658 100644
+index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..3cbe4c1ed514936a00e0181cb1e647fbb58032bb 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 @@ -17,6 +17,16 @@ import net.minecraft.world.item.Items;
@@ -52,7 +52,7 @@ index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..b1158967400815b90687dddcc482846c
 +            return InteractionResult.CONSUME;
 +        }
 +
-+        WitherSkeleton skeleton = EntityType.WITHER_SKELETON.create(level());
++        WitherSkeleton skeleton = EntityType.WITHER_SKELETON.create(level(), net.minecraft.world.entity.EntitySpawnReason.CONVERSION);
 +        if (skeleton == null) {
 +            return InteractionResult.PASS;
 +        }
@@ -90,7 +90,7 @@ index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..b1158967400815b90687dddcc482846c
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index ac183cb85490adc2312f5ec674a515826e540ae4..a7f750506e03cae0e965dfd874e92d3157576fb0 100644
+index 823be371f4678bfe324db1a261c27361f22a7108..4dd70114e6d1b17cfddbeedf5f16751bfc36c8ef 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -2565,6 +2565,7 @@ public class PurpurWorldConfig {

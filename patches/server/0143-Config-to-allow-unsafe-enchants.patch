@@ -95,10 +95,10 @@ index dcb656be3d37f29bdbe7d25ace05c6dd1889e252..d644d02b039ca918391a32a04549f7a3
          return (ItemEnchantments) this.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 6fcb2db92a38e862da288518ce34d16aa4b856e0..b37daca2ca99d79210ec5e8e9d589e27702a57e5 100644
+index 28800c519ab8a6648d632a577ffbecae175f3844..ebeb7e756f8d8b499f0ad1a0948264cfe376a69a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -285,6 +285,36 @@ public class PurpurConfig {
+@@ -286,6 +286,36 @@ public class PurpurConfig {
          cryingObsidianValidForPortalFrame = getBoolean("settings.blocks.crying_obsidian.valid-for-portal-frame", cryingObsidianValidForPortalFrame);
      }
  

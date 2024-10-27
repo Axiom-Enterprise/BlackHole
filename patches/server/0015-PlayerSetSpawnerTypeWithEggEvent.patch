@@ -5,7 +5,7 @@ Subject: [PATCH] PlayerSetSpawnerTypeWithEggEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index e56050bef4a5aaa0fca17192dab4cf5e6a55fbae..9eebe70e8ce80620b68635c9048e8e5c1083e27e 100644
+index e56050bef4a5aaa0fca17192dab4cf5e6a55fbae..d0efef43b71298491b2e03b9ce5505729c3c4afc 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -404,6 +404,16 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -18,7 +18,7 @@ index e56050bef4a5aaa0fca17192dab4cf5e6a55fbae..9eebe70e8ce80620b68635c9048e8e5c
 +    }
 +
 +    public static EntityType<?> getFromKey(ResourceLocation location) {
-+        return BuiltInRegistries.ENTITY_TYPE.get(location);
++        return BuiltInRegistries.ENTITY_TYPE.getValue(location);
 +    }
 +    // Purpur end
 +

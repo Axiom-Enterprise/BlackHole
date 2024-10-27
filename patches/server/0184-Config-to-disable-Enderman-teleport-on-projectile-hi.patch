@@ -5,19 +5,19 @@ Subject: [PATCH] Config to disable Enderman teleport on projectile hit
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index 27a4b47ad46700b595dd829e6aab558d170c0a8f..1ef3a5c4a99213a87021232d4bc3f8cb3dd101bb 100644
+index 737c3367faee2286984c8e7d161b128d7b6632a5..b8fe9665bed428e8e97d1b8a6527cbefc9b9fbcb 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 @@ -424,6 +424,7 @@ public class EnderMan extends Monster implements NeutralMob {
              } else {
                  flag1 = flag && this.hurtWithCleanWater(world, source, (ThrownPotion) source.getDirectEntity(), amount);
  
-+                if (!flag1 && this.level().purpurConfig.endermanIgnoreProjectiles) return super.hurt(source, amount); // Purpur
++                if (!flag1 && world.purpurConfig.endermanIgnoreProjectiles) return super.hurtServer(world, source, amount); // Purpur
                  if (this.tryEscape(com.destroystokyo.paper.event.entity.EndermanEscapeEvent.Reason.INDIRECT)) { // Paper - EndermanEscapeEvent
                  for (int i = 0; i < 64; ++i) {
                      if (this.teleport()) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index ccc692652bc26a696abd5debfa825ed9759691a7..e2152fa2977d1761a399fd3b2d1362b2a805b962 100644
+index 07688502620716592971226105149f55a7489758..12da1422d9a5fe4a742856d2cac8e77aa3a59818 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1440,6 +1440,7 @@ public class PurpurWorldConfig {

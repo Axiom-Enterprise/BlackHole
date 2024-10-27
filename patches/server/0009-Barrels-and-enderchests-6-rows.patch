@@ -5,7 +5,7 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a4454289fb92cf7b97ee77db422c328f008521f1..7ec26117aa6d98140e994567fd0ded33d308e3d4 100644
+index 75e5e540f03d28b64fa5fef1f342a157598c3fa7..0dace6f1e1377c9eb5ae70524edf1e3aae2cfc91 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1110,6 +1110,27 @@ public abstract class PlayerList {
@@ -253,10 +253,10 @@ index af1ae3dacb628da23f7d2988c6e76d3fb2d64103..4ee2d501f882279b48edb4b8bf082458
          for (int i = 0; i < this.getSize(); i++) {
              if (i >= items.length) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index f34d12ea5681a944ae2c08fb2cb69b8f662fcdf6..db93b3aa3883707c0e16745a9afee532fed9379f 100644
+index 09e7a11a241b6e306d5043fe66f14fd4f2aae963..a83117ed0a0c98d7ae18e925338b58930946c96a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -179,4 +179,39 @@ public class PurpurConfig {
+@@ -180,4 +180,39 @@ public class PurpurConfig {
      private static void messages() {
          cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
      }

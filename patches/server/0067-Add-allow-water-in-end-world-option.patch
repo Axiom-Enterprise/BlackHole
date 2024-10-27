@@ -68,10 +68,10 @@ index a94762e65853ccad38cf90b0049ca256106c0c9f..38633e168a9b36e37feea00964d53e65
          } else {
              world.setBlockAndUpdate(pos, IceBlock.meltsInto());
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index a3a699881e6b96d0fb507ef69e4dbc181fe5fbbc..580eb4f8cc88cda9df78868b373ba22eb319f75f 100644
+index 6228d23bd84e59a9e1f01414cc9f00c33cc64cd0..9f98b87ccc60db9a531180de1ed649de118db56f 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -246,6 +246,11 @@ public class PurpurConfig {
+@@ -247,6 +247,11 @@ public class PurpurConfig {
          enderChestPermissionRows = getBoolean("settings.blocks.ender_chest.use-permissions-for-rows", enderChestPermissionRows);
      }
  

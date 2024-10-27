@@ -5,10 +5,10 @@ Subject: [PATCH] Add log suppression for LibraryLoader
 
 
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 0304e57559d6791cf4ddbec1a8dd2c2b6caa2d8e..e13ec4125047db4edc9dc5de3a2adcdde51bce12 100644
+index 1d4fb426bfba5f572785c5a904d01be8edf23f24..4e47c24adb808feee415ee3e1c159955a7be5c71 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -470,11 +470,14 @@ public class PurpurConfig {
+@@ -471,11 +471,14 @@ public class PurpurConfig {
      public static boolean loggerSuppressIgnoredAdvancementWarnings = false;
      public static boolean loggerSuppressUnrecognizedRecipeErrors = false;
      public static boolean loggerSuppressSetBlockFarChunk = false;

@@ -5,7 +5,7 @@ Subject: [PATCH] Anvil repair/damage options
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/AnvilBlock.java b/src/main/java/net/minecraft/world/level/block/AnvilBlock.java
-index 50c907c962f936d2035bb7550750cdbd220b29c2..7f07a38553325056ab4ae65895c8c5c12cb41a1f 100644
+index 50c907c962f936d2035bb7550750cdbd220b29c2..f9a2d2d4f798efa0d691996ec5ff7fe00260b36c 100644
 --- a/src/main/java/net/minecraft/world/level/block/AnvilBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/AnvilBlock.java
 @@ -59,6 +59,53 @@ public class AnvilBlock extends FallingBlock {
@@ -14,12 +14,12 @@ index 50c907c962f936d2035bb7550750cdbd220b29c2..7f07a38553325056ab4ae65895c8c5c1
  
 +    // Purpur start - repairable/damageable anvils
 +    @Override
-+    protected net.minecraft.world.ItemInteractionResult useItemOn(final net.minecraft.world.item.ItemStack stack, final BlockState state, final Level world, final BlockPos pos, final Player player, final net.minecraft.world.InteractionHand hand, final BlockHitResult hit) {
++    protected net.minecraft.world.InteractionResult useItemOn(final net.minecraft.world.item.ItemStack stack, final BlockState state, final Level world, final BlockPos pos, final Player player, final net.minecraft.world.InteractionHand hand, final BlockHitResult hit) {
 +        if (world.purpurConfig.anvilRepairIngotsAmount > 0 && stack.is(net.minecraft.world.item.Items.IRON_INGOT)) {
 +            if (stack.getCount() < world.purpurConfig.anvilRepairIngotsAmount) {
 +                // not enough iron ingots, play "error" sound and consume
 +                world.playSound(null, pos, net.minecraft.sounds.SoundEvents.ANVIL_HIT, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
-+                return net.minecraft.world.ItemInteractionResult.CONSUME;
++                return net.minecraft.world.InteractionResult.CONSUME;
 +            }
 +            if (state.is(Blocks.DAMAGED_ANVIL)) {
 +                world.setBlock(pos, Blocks.CHIPPED_ANVIL.defaultBlockState().setValue(FACING, state.getValue(FACING)), 3);
@@ -28,19 +28,19 @@ index 50c907c962f936d2035bb7550750cdbd220b29c2..7f07a38553325056ab4ae65895c8c5c1
 +            } else if (state.is(Blocks.ANVIL)) {
 +                // anvil is already fully repaired, play "error" sound and consume
 +                world.playSound(null, pos, net.minecraft.sounds.SoundEvents.ANVIL_HIT, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
-+                return net.minecraft.world.ItemInteractionResult.CONSUME;
++                return net.minecraft.world.InteractionResult.CONSUME;
 +            }
 +            if (!player.getAbilities().instabuild) {
 +                stack.shrink(world.purpurConfig.anvilRepairIngotsAmount);
 +            }
 +            world.playSound(null, pos, net.minecraft.sounds.SoundEvents.ANVIL_PLACE, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
-+            return net.minecraft.world.ItemInteractionResult.CONSUME;
++            return net.minecraft.world.InteractionResult.CONSUME;
 +        }
 +        if (world.purpurConfig.anvilDamageObsidianAmount > 0 && stack.is(net.minecraft.world.item.Items.OBSIDIAN)) {
 +            if (stack.getCount() < world.purpurConfig.anvilDamageObsidianAmount) {
 +                // not enough obsidian, play "error" sound and consume
 +                world.playSound(null, pos, net.minecraft.sounds.SoundEvents.ANVIL_HIT, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
-+                return net.minecraft.world.ItemInteractionResult.CONSUME;
++                return net.minecraft.world.InteractionResult.CONSUME;
 +            }
 +            if (state.is(Blocks.DAMAGED_ANVIL)) {
 +                world.destroyBlock(pos, false);
@@ -53,9 +53,9 @@ index 50c907c962f936d2035bb7550750cdbd220b29c2..7f07a38553325056ab4ae65895c8c5c1
 +                stack.shrink(world.purpurConfig.anvilDamageObsidianAmount);
 +            }
 +            world.playSound(null, pos, net.minecraft.sounds.SoundEvents.ANVIL_LAND, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
-+            return net.minecraft.world.ItemInteractionResult.CONSUME;
++            return net.minecraft.world.InteractionResult.CONSUME;
 +        }
-+        return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
++        return net.minecraft.world.InteractionResult.TRY_WITH_EMPTY_HAND;
 +    }
 +    // Purpur end
 +
@@ -63,7 +63,7 @@ index 50c907c962f936d2035bb7550750cdbd220b29c2..7f07a38553325056ab4ae65895c8c5c1
      protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
          if (!world.isClientSide) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index bd48ba4acf41ec77f542ca7e8dfe6280bb2fbed1..9f4f3d94e6790b29cfda030780d95caf48eee0e5 100644
+index 9fd228060bd31deee69c0b76aba11883140a7d0b..71d8d33d31584aa9bb0d3b0c868d1b2028ba1e18 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -786,9 +786,13 @@ public class PurpurWorldConfig {

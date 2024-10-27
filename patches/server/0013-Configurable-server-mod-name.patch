@@ -18,10 +18,10 @@ index dc9e3f798bc8a9a6968a588a09122a08dc9b9774..99b1c6f239a85eb82019a1bae9e91391
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 490793e1344a6ca475e2d9ada406fa96522c92d1..cea00dc7478ef73984747992b2a8efc28677e2cb 100644
+index a6728ce7ac27512676cfa06fdfbfb8652f8ff6a5..df2be3351bcaaf1ffb73261da6c840314f5c11a1 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -190,6 +190,11 @@ public class PurpurConfig {
+@@ -191,6 +191,11 @@ public class PurpurConfig {
          afkTabListSuffix = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(getString("settings.messages.afk-tab-list-suffix", afkTabListSuffix)));
      }
  

@@ -59,10 +59,10 @@ index c8d39e6e1c570c9219f6066da273dc0130920519..b455c7e9d18bac3654daa8510f85cc21
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index feeaae5b0a8881ce5faf46940ad22b299a33d5eb..881f3621233834aca8c8d5381e41d2a3fc9237da 100644
+index 66fba2c7e3b0b75d5d6c1aebc031f77010cb73d9..9654f422b3e23d10151eb447b990ba5d4cf70671 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -248,6 +248,7 @@ public class PurpurConfig {
+@@ -249,6 +249,7 @@ public class PurpurConfig {
      public static String commandTPSBarTextColorLow = "<gradient:#ff5555:#aa0000><text></gradient>";
      public static int commandTPSBarTickInterval = 20;
      public static boolean commandGamemodeRequiresPermission = false;
@@ -70,7 +70,7 @@ index feeaae5b0a8881ce5faf46940ad22b299a33d5eb..881f3621233834aca8c8d5381e41d2a3
      private static void commandSettings() {
          commandTPSBarTitle = getString("settings.command.tpsbar.title", commandTPSBarTitle);
          commandTPSBarProgressOverlay = BossBar.Overlay.valueOf(getString("settings.command.tpsbar.overlay", commandTPSBarProgressOverlay.name()));
-@@ -260,6 +261,7 @@ public class PurpurConfig {
+@@ -261,6 +262,7 @@ public class PurpurConfig {
          commandTPSBarTextColorLow = getString("settings.command.tpsbar.text-color.low", commandTPSBarTextColorLow);
          commandTPSBarTickInterval = getInt("settings.command.tpsbar.tick-interval", commandTPSBarTickInterval);
          commandGamemodeRequiresPermission = getBoolean("settings.command.gamemode.requires-specific-permission", commandGamemodeRequiresPermission);

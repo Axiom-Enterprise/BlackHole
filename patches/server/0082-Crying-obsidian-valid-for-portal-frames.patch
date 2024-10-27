@@ -18,10 +18,10 @@ index 90056822cd17f3d33d14b3f94b34750ee522a0a9..acdff7b4a00d563739fd301c3633a266
      private static final float SAFE_TRAVEL_MAX_ENTITY_XY = 4.0F;
      private static final double SAFE_TRAVEL_MAX_VERTICAL_DELTA = 1.0D;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 230606116a3f5a00cf0fa0b075c65aac7806c647..d4371bebdcb3b55c412334491959835e2d52220f 100644
+index 0cafa4bbc530a80277cbf323f8d62dee9b08a426..80335c5915da347cc779dfd2c44d87e8329ad336 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -214,6 +214,7 @@ public class PurpurConfig {
+@@ -215,6 +215,7 @@ public class PurpurConfig {
      public static int barrelRows = 3;
      public static boolean enderChestSixRows = false;
      public static boolean enderChestPermissionRows = false;
@@ -29,7 +29,7 @@ index 230606116a3f5a00cf0fa0b075c65aac7806c647..d4371bebdcb3b55c412334491959835e
      private static void blockSettings() {
          if (version < 3) {
              boolean oldValue = getBoolean("settings.barrel.packed-barrels", true);
-@@ -244,6 +245,7 @@ public class PurpurConfig {
+@@ -245,6 +246,7 @@ public class PurpurConfig {
          enderChestSixRows = getBoolean("settings.blocks.ender_chest.six-rows", enderChestSixRows);
          org.bukkit.event.inventory.InventoryType.ENDER_CHEST.setDefaultSize(enderChestSixRows ? 54 : 27);
          enderChestPermissionRows = getBoolean("settings.blocks.ender_chest.use-permissions-for-rows", enderChestPermissionRows);

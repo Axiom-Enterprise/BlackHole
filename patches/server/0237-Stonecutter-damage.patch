@@ -128,10 +128,10 @@ index c9f5047bfa48c12a9090cb8da4bb9045e38e8f89..483b2fa71df29e064e35694a6017286b
              } else if (source.is(DamageTypes.HOT_FLOOR)) {
                  cause = DamageCause.HOT_FLOOR;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 5b509058cda0e0b5f923f669b5dd3d9e67e3e148..5475a8c622c4090e994f87f6a28febdccecbf973 100644
+index 2090ecfebe8bc164239d198c1c50b134c7bc60c5..dba6a69891f50ba057187a8138ff227ad7501eaa 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -211,8 +211,10 @@ public class PurpurConfig {
+@@ -212,8 +212,10 @@ public class PurpurConfig {
      }
  
      public static String deathMsgRunWithScissors = "<player> slipped and fell on their shears";
@@ -143,7 +143,7 @@ index 5b509058cda0e0b5f923f669b5dd3d9e67e3e148..5475a8c622c4090e994f87f6a28febdc
  
      public static boolean advancementOnlyBroadcastToAffectedPlayer = false;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index cc6b3d249cd63a4cf9f1888f21f251199cdccde4..c1b269ebd90be16888f7fcace9efc0e0c08a4448 100644
+index 369e63acfae5cc5fe1981b4750c4272ccec8f595..7218fa676a3f15b04282ad85098d4131c8464b78 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1042,6 +1042,11 @@ public class PurpurWorldConfig {

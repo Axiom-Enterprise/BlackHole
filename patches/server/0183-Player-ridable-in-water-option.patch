@@ -5,10 +5,10 @@ Subject: [PATCH] Player ridable in water option
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 098256932c2e637726e77bbfcd329f1a329c9969..90998ee1671dc115428102e67a3b07c377133e6e 100644
+index 81f88c838f35860fdb7d7f62ed1b98f5734c766e..d7d5ce7ea223248ebda0a3e4b104baed47378ce1 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -2033,6 +2033,13 @@ public abstract class Player extends LivingEntity {
+@@ -2034,6 +2034,13 @@ public abstract class Player extends LivingEntity {
          return slot != EquipmentSlot.BODY;
      }
  
@@ -23,7 +23,7 @@ index 098256932c2e637726e77bbfcd329f1a329c9969..90998ee1671dc115428102e67a3b07c3
          if (!this.isPassenger() && this.onGround() && !this.isInWater() && !this.isInPowderSnow) {
              if (this.getShoulderEntityLeft().isEmpty()) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c2ba7e7e6d927635979531f6ef08643bcbac5bc0..ccc692652bc26a696abd5debfa825ed9759691a7 100644
+index 6bb5b805a3f35a07607b6766e3ca4a1abe9c3f06..07688502620716592971226105149f55a7489758 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -385,6 +385,7 @@ public class PurpurWorldConfig {

@@ -5,7 +5,7 @@ Subject: [PATCH] Breedable parrots
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index 9c7e29307b811d859a0d743b232463e18391b5f0..0afa483c6436c4f51955b04a4fe6920a27092284 100644
+index 9c7e29307b811d859a0d743b232463e18391b5f0..00759f484cab0d7c8d4e8914dd9f27061c8b7d45 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 @@ -224,6 +224,7 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
@@ -45,12 +45,12 @@ index 9c7e29307b811d859a0d743b232463e18391b5f0..0afa483c6436c4f51955b04a4fe6920a
      @Override
      public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
 -        return null;
-+        return world.purpurConfig.parrotBreedable ? EntityType.PARROT.create(world) : null; // Purpur
++        return world.purpurConfig.parrotBreedable ? EntityType.PARROT.create(world, EntitySpawnReason.BREEDING) : null; // Purpur
      }
  
      @Nullable
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b5f3137c6b96e0043e5249144dd5a2784c5c1d5a..6994e136f188ae11a77a691d05dc7355906544e5 100644
+index 3cd5f5c88aa4d1a3d3423d859a0f4f0e14ee8af6..012696e66a8fb6c1815cbd47f33278c84902102a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1603,6 +1603,7 @@ public class PurpurWorldConfig {

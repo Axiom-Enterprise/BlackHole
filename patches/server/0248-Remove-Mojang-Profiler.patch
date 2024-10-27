@@ -660,10 +660,10 @@ index 96f9d18eb22380cccd35b486713583d6dfa46646..1961b18a2b5e5985181f0ca930ab14ba
          }
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..b3e51add828d46fc182f6ffccc7e9e8df2b5ee36 100644
+index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d9884cbd8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -714,16 +714,16 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -714,18 +714,18 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
      }
  
      public void tick(BooleanSupplier shouldKeepTicking) {
@@ -681,8 +681,11 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..b3e51add828d46fc182f6ffccc7e9e8d
 -            gameprofilerfiller.popPush("weather");
 +            //gameprofilerfiller.popPush("weather"); // Purpur
              this.advanceWeatherCycle();
-             gameprofilerfiller.pop();
+-            gameprofilerfiller.pop();
++            //gameprofilerfiller.pop(); // Purpur
          }
+ 
+         int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
 @@ -756,30 +756,30 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              this.tickTime();
          }
@@ -875,7 +878,7 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..b3e51add828d46fc182f6ffccc7e9e8d
  
                  while (iterator.hasNext()) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 3f804ddb25aa03bdd964d390a1a1aab4d09abfde..5b4edb2386bb624d3633385106472070868acccc 100644
+index ce8b5dd01359344300d1a1a06e8207a768a846ce..2518ad5af51b944393e53508010a18df111c5c83 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1663,15 +1663,15 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -1180,7 +1183,7 @@ index bc5c8879befe849ce81becf5e3fba6757b01cb70..ce81d6bd87f688a24003f2fbf6d5010a
      }
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 5b1b34dbc2841ddf6789c47b6e055ef6647a2ba9..e5eadc68c1e1b0fe2b7d638d2630ab22c332b381 100644
+index cb123001b08c0772bacce87d022d236bc7eaa1d1..6474b375c05eebc1fa3468f2963770dfff8dec5c 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -946,9 +946,9 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -1245,6 +1248,15 @@ index 5b1b34dbc2841ddf6789c47b6e055ef6647a2ba9..e5eadc68c1e1b0fe2b7d638d2630ab22
              } else {
                  if (this.horizontalCollision) {
                      Vec3 vec3d2 = this.getDeltaMovement();
+@@ -1347,7 +1347,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+                 float f = this.getBlockSpeedFactor();
+ 
+                 this.setDeltaMovement(this.getDeltaMovement().multiply((double) f, 1.0D, (double) f));
+-                gameprofilerfiller.pop();
++                //gameprofilerfiller.pop(); // Purpur
+             }
+         }
+         // Paper start - detailed watchdog information
 @@ -3512,9 +3512,9 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
              this.processPortalCooldown();
              if (this.portalProcess != null) {
@@ -1282,6 +1294,15 @@ index 5b1b34dbc2841ddf6789c47b6e055ef6647a2ba9..e5eadc68c1e1b0fe2b7d638d2630ab22
              return null;
          } else {
              // Paper start - Fix item duplication and teleport issues
+@@ -4108,7 +4108,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+ 
+             world.resetEmptyTime();
+             teleportTarget.postTeleportTransition().onTransition(entity);
+-            gameprofilerfiller.pop();
++            //gameprofilerfiller.pop(); // Purpur
+             return entity;
+         }
+     }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60877c20e2 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
@@ -1403,7 +1424,7 @@ index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60
          // Purpur start
          if (this.xo != this.getX() || this.yo != this.getY() || this.zo != this.getZ() || this.yRotO != this.getYRot() || this.xRotO != this.getXRot()) {
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index da1aefc4cdf2bca8e91c6c7833c24f3f0923f552..1fd6990fdf16283aab956c36daaafeb64aa5358b 100644
+index 7978e307e7bb7f80993c49dcc5ada319a907c648..ff9d23aef4658922692b43a859bd83632fe23612 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -371,15 +371,15 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab

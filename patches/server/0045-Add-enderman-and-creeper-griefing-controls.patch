@@ -5,7 +5,7 @@ Subject: [PATCH] Add enderman and creeper griefing controls
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index 44a3fbaedd0fdb480cde4e2f8a9106965bd5c59d..397509198ab1e7ee275d86fac57ba52445276284 100644
+index e95afb70fa13f7f2617cbd42b7f5d17b9bc1ec4f..54225cfd13e7b62e80f24b4885c720d6e6ce8700 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 @@ -362,7 +362,7 @@ public class Creeper extends Monster {
@@ -13,12 +13,12 @@ index 44a3fbaedd0fdb480cde4e2f8a9106965bd5c59d..397509198ab1e7ee275d86fac57ba524
              // CraftBukkit end
              this.dead = true;
 -            worldserver.explode(this, this.getX(), this.getY(), this.getZ(), event.getRadius(), event.getFire(), Level.ExplosionInteraction.MOB); // CraftBukkit // Paper - fix DamageSource API (revert to vanilla, no, just no, don't change this)
-+            worldserver.explode(this, this.getX(), this.getY(), this.getZ(), event.getRadius(), event.getFire(), this.level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING) && level().purpurConfig.creeperAllowGriefing ? Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE); // CraftBukkit // Paper - fix DamageSource API (revert to vanilla, no, just no, don't change this) // Purpur
++            worldserver.explode(this, this.getX(), this.getY(), this.getZ(), event.getRadius(), event.getFire(), worldserver.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING) && level().purpurConfig.creeperAllowGriefing ? Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE); // CraftBukkit // Paper - fix DamageSource API (revert to vanilla, no, just no, don't change this) // Purpur
              this.spawnLingeringCloud();
              this.triggerOnDeathMobEffects(worldserver, Entity.RemovalReason.KILLED);
              this.discard(EntityRemoveEvent.Cause.EXPLODE); // CraftBukkit - add Bukkit remove cause
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index 5caee77e2516afa4edc463e5a8a6b6e610cc04c5..437368100f6205b4c42234713044be47fda7082d 100644
+index 4265dc40f7337e565d236eb3c04847a87494fc86..a356e7ac34aca1d14cb922565206304d14e90c8b 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 @@ -514,6 +514,7 @@ public class EnderMan extends Monster implements NeutralMob {
@@ -38,7 +38,7 @@ index 5caee77e2516afa4edc463e5a8a6b6e610cc04c5..437368100f6205b4c42234713044be47
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 68e417cbe0c633528b1a064d64a061c0576ef3f8..e9e999d06fec2918fc2ee0fed05f8fb88b9675c1 100644
+index 79e0d1b547668c006ff4d23722be99f69b4636fe..492c2a897368cc1477bc5b8fc776e5a6272e8a90 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -485,6 +485,7 @@ public class PurpurWorldConfig {

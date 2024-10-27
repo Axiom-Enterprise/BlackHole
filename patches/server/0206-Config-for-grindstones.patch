@@ -123,10 +123,10 @@ index 5687f492fc76f699e2a388790ca5380d9b8c8d0a..cc229f3e1e9527cbedf929e326731943
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 275078b6b4940fbc771fb1aad0990135d37b51f3..9c5348fd18c2943ce39346dd19fa194d9c31d7ea 100644
+index e8dc97694f59cfce67e2fe061868a9f080ef3004..a1e1aad7a1b845e2efd381da0221559443808cf7 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -311,6 +311,9 @@ public class PurpurConfig {
+@@ -312,6 +312,9 @@ public class PurpurConfig {
      public static int beeInsideBeeHive = 3;
      public static boolean anvilCumulativeCost = true;
      public static int lightningRodRange = 128;
@@ -136,7 +136,7 @@ index 275078b6b4940fbc771fb1aad0990135d37b51f3..9c5348fd18c2943ce39346dd19fa194d
      private static void blockSettings() {
          if (version < 3) {
              boolean oldValue = getBoolean("settings.barrel.packed-barrels", true);
-@@ -345,6 +348,21 @@ public class PurpurConfig {
+@@ -346,6 +349,21 @@ public class PurpurConfig {
          beeInsideBeeHive = getInt("settings.blocks.beehive.max-bees-inside", beeInsideBeeHive);
          anvilCumulativeCost = getBoolean("settings.blocks.anvil.cumulative-cost", anvilCumulativeCost);
          lightningRodRange = getInt("settings.blocks.lightning_rod.range", lightningRodRange);
@@ -148,8 +148,8 @@ index 275078b6b4940fbc771fb1aad0990135d37b51f3..9c5348fd18c2943ce39346dd19fa194d
 +            defaultCurses.clear();
 +        }
 +        getList("settings.blocks.grindstone.ignored-enchants", defaultCurses).forEach(key -> {
-+            Registry<Enchantment> registry = MinecraftServer.getServer().registryAccess().registryOrThrow(Registries.ENCHANTMENT);
-+            Enchantment enchantment = registry.get(ResourceLocation.parse(key.toString()));
++            Registry<Enchantment> registry = MinecraftServer.getServer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
++            Enchantment enchantment = registry.getValue(ResourceLocation.parse(key.toString()));
 +            if (enchantment == null) return;
 +            grindstoneIgnoredEnchants.add(enchantment);
 +        });

@@ -17,7 +17,7 @@ index 0a16aa193ef24aa8f1716f9e089b8027fa3c0a3c..1e85c9318ede93b8e9fe548a8945324b
                          // Paper end
                      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8d4e50aade704403cd713506268a1711080f72a3..5d611f5d8ccd635b376bded93bd0278323a585ba 100644
+index a706fd393962973af8f0a88edd98deea235b8404..a3074c439b3255d2cfc174dbc7c5b01ef418a602 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1335,6 +1335,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -29,10 +29,10 @@ index 8d4e50aade704403cd713506268a1711080f72a3..5d611f5d8ccd635b376bded93bd02783
                  if (scoreboardteam.getDeathMessageVisibility() == Team.Visibility.HIDE_FOR_OTHER_TEAMS) {
                      this.server.getPlayerList().broadcastSystemToTeam(this, ichatbasecomponent);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 6f06956825003ff55604c2e4aea66099ece2470c..feeaae5b0a8881ce5faf46940ad22b299a33d5eb 100644
+index 8f242ff15731e0bb0c9d95a6b52a39b6141b0fb9..66fba2c7e3b0b75d5d6c1aebc031f77010cb73d9 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -205,6 +205,18 @@ public class PurpurConfig {
+@@ -206,6 +206,18 @@ public class PurpurConfig {
          deathMsgRunWithScissors = getString("settings.messages.death-message.run-with-scissors", deathMsgRunWithScissors);
      }
  

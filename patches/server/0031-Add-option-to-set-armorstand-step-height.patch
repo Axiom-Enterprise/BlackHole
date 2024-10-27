@@ -5,7 +5,7 @@ Subject: [PATCH] Add option to set armorstand step height
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 01ee2cecacd9309d2eb5dd47b76b825db8d52d80..809ab6aaf50e573099dfb4ef839e3c2825cb7793 100644
+index 90434afec7a896473624901c6b00bf7c81572930..3fe570317c0790b48db42f40e55f9cdb131fcc48 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -343,6 +343,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -16,7 +16,7 @@ index 01ee2cecacd9309d2eb5dd47b76b825db8d52d80..809ab6aaf50e573099dfb4ef839e3c28
      public boolean noPhysics;
      private boolean wasOnFire;
      public final RandomSource random;
-@@ -5157,7 +5158,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5143,7 +5144,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
  
      public float maxUpStep() {
@@ -38,7 +38,7 @@ index 70b8023c3badc745f342d5b0ab54699e3923826a..edb0cd90e28016c44b0aaf5c9ed5d7bd
          if (!this.canTick) {
              if (this.noTickPoseDirty) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 6d3b41da6210699869839826e037a038a637c4c3..e5c4ca83392f398e24be193a0ed77daa85db9913 100644
+index 924a7269883e57f4ae4fc97b6f2ba24a922515c0..e3eb27c4be24ed01b3d86be7b8160f47893ca44c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -91,6 +91,11 @@ public class PurpurWorldConfig {

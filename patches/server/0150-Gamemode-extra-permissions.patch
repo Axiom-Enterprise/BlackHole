@@ -73,10 +73,10 @@ index 52649f82351ab4f675c3cc3cd6640956b0f76b91..eb51c88c7a0658190d3a8bfd5d18dca7
          DefaultPermissions.registerPermission(CommandPermissions.PREFIX + "defaultgamemode", "Allows the user to change the default gamemode of the server", PermissionDefault.OP, commands);
          DefaultPermissions.registerPermission(CommandPermissions.PREFIX + "seed", "Allows the user to view the seed of the world", PermissionDefault.OP, commands);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 24e3148c51c3d558a3945827842c414d9cdc2e40..6f06956825003ff55604c2e4aea66099ece2470c 100644
+index 13dd4689491ca760be7451e5d4e721a240094664..8f242ff15731e0bb0c9d95a6b52a39b6141b0fb9 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -235,6 +235,7 @@ public class PurpurConfig {
+@@ -236,6 +236,7 @@ public class PurpurConfig {
      public static String commandTPSBarTextColorMedium = "<gradient:#ffff55:#ffaa00><text></gradient>";
      public static String commandTPSBarTextColorLow = "<gradient:#ff5555:#aa0000><text></gradient>";
      public static int commandTPSBarTickInterval = 20;
@@ -84,7 +84,7 @@ index 24e3148c51c3d558a3945827842c414d9cdc2e40..6f06956825003ff55604c2e4aea66099
      private static void commandSettings() {
          commandTPSBarTitle = getString("settings.command.tpsbar.title", commandTPSBarTitle);
          commandTPSBarProgressOverlay = BossBar.Overlay.valueOf(getString("settings.command.tpsbar.overlay", commandTPSBarProgressOverlay.name()));
-@@ -246,6 +247,7 @@ public class PurpurConfig {
+@@ -247,6 +248,7 @@ public class PurpurConfig {
          commandTPSBarTextColorMedium = getString("settings.command.tpsbar.text-color.medium", commandTPSBarTextColorMedium);
          commandTPSBarTextColorLow = getString("settings.command.tpsbar.text-color.low", commandTPSBarTextColorLow);
          commandTPSBarTickInterval = getInt("settings.command.tpsbar.tick-interval", commandTPSBarTickInterval);

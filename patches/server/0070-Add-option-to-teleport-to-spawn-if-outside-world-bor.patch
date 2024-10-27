@@ -5,10 +5,10 @@ Subject: [PATCH] Add option to teleport to spawn if outside world border
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index badcca42c771bf39b128c2e123be3c0aeb6b8e76..5f86f0b46e91ac41820931a9d64a7240d3ddd8d4 100644
+index 9b7cbd9ece37d7a5f5532861c1b226ca75eb2345..76a4ccf07791a16abdc4396e8a91a93957e0b293 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -3392,4 +3392,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3406,4 +3406,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          return (CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end
@@ -28,7 +28,7 @@ index badcca42c771bf39b128c2e123be3c0aeb6b8e76..5f86f0b46e91ac41820931a9d64a7240
 +
 +        ServerLevel toLevel = ((CraftWorld) to.getWorld()).getHandle();
 +        if (this.level() == toLevel) {
-+            this.connection.internalTeleport(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch(), java.util.EnumSet.noneOf(net.minecraft.world.entity.RelativeMovement.class));
++            this.connection.teleport(to);
 +        } else {
 +            this.server.getPlayerList().respawn(this, true, RemovalReason.KILLED, org.bukkit.event.player.PlayerRespawnEvent.RespawnReason.DEATH, to);
 +        }
@@ -48,7 +48,7 @@ index a58c8ed64eab56c4a4a0688e0731a232fb5f7269..c0ac2801321ca1813804214cc0ceecc1
                          }
                      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 8832a5491303d4189155ec56f81e37f99efaa28e..20242b58cc3af8d58c51919d637ec258df308a60 100644
+index 1bf4fa7b9652347a48010a0713190aec9a5fc166..0111b9e3484df5958ed5dee55a9b510ef4a1f35e 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -235,6 +235,7 @@ public class PurpurWorldConfig {

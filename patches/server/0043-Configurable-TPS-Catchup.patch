@@ -20,10 +20,10 @@ index a0bcb0fccadbf946e4c4bc0bbb8a1460532c636b..fd37f9256c1b2d396e855e1167a1f2ca
                          this.waitUntilNextTick();
                          this.finishMeasuringTaskExecutionTime();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 87821e766afe8fa18f9f61a877669068a5f8220a..ed49a5131ca86b60a4d7f5c8ee61a7868dddc179 100644
+index 1103935e49081c560b024b87f872e9b8c788bad2..c8e7e6333d20ca976ed74d839ccfaebdc02e5167 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -250,4 +250,9 @@ public class PurpurConfig {
+@@ -251,4 +251,9 @@ public class PurpurConfig {
          loggerSuppressUnrecognizedRecipeErrors = getBoolean("settings.logger.suppress-unrecognized-recipe-errors", loggerSuppressUnrecognizedRecipeErrors);
          loggerSuppressSetBlockFarChunk = getBoolean("settings.logger.suppress-setblock-in-far-chunk-errors", loggerSuppressSetBlockFarChunk);
      }

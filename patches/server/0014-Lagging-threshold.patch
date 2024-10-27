@@ -40,10 +40,10 @@ index b9aee2a00b35e8f53240d5854ba05785e9688b22..febd5dc39cbe96054d21d13b14947bdf
      // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index cea00dc7478ef73984747992b2a8efc28677e2cb..b4d43c293084b808d167dd02f2d6cf865ac17983 100644
+index df2be3351bcaaf1ffb73261da6c840314f5c11a1..a6c90de7726a264ca44c3e795e9b6a4e1c313bc3 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -195,6 +195,11 @@ public class PurpurConfig {
+@@ -196,6 +196,11 @@ public class PurpurConfig {
          serverModName = getString("settings.server-mod-name", serverModName);
      }
  

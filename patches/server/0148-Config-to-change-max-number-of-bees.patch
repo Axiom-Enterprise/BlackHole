@@ -18,10 +18,10 @@ index 83ad45aed0894e90825d22e078632352c3a06816..b7ad467d7d7f50bcb90e50f00f905873
      public BeehiveBlockEntity(BlockPos pos, BlockState state) {
          super(BlockEntityType.BEEHIVE, pos, state);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index b37daca2ca99d79210ec5e8e9d589e27702a57e5..24e3148c51c3d558a3945827842c414d9cdc2e40 100644
+index ebeb7e756f8d8b499f0ad1a0948264cfe376a69a..13dd4689491ca760be7451e5d4e721a240094664 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -252,6 +252,7 @@ public class PurpurConfig {
+@@ -253,6 +253,7 @@ public class PurpurConfig {
      public static boolean enderChestSixRows = false;
      public static boolean enderChestPermissionRows = false;
      public static boolean cryingObsidianValidForPortalFrame = false;
@@ -29,7 +29,7 @@ index b37daca2ca99d79210ec5e8e9d589e27702a57e5..24e3148c51c3d558a3945827842c414d
      private static void blockSettings() {
          if (version < 3) {
              boolean oldValue = getBoolean("settings.barrel.packed-barrels", true);
-@@ -283,6 +284,7 @@ public class PurpurConfig {
+@@ -284,6 +285,7 @@ public class PurpurConfig {
          org.bukkit.event.inventory.InventoryType.ENDER_CHEST.setDefaultSize(enderChestSixRows ? 54 : 27);
          enderChestPermissionRows = getBoolean("settings.blocks.ender_chest.use-permissions-for-rows", enderChestPermissionRows);
          cryingObsidianValidForPortalFrame = getBoolean("settings.blocks.crying_obsidian.valid-for-portal-frame", cryingObsidianValidForPortalFrame);

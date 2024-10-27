@@ -5,10 +5,10 @@ Subject: [PATCH] Add config change multiplier critical damage value
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 00b3e300c0d43f7791c9d5f83a7901304f6464f5..e755a472385fcc699ae8fa1e56370c4176152ff6 100644
+index ae5f7c275003b6fb9f6c5a0277482b4fddf8e74c..4c42ad7e43ab1f19456a89f1b0e82b7a1f6e4108 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1305,7 +1305,7 @@ public abstract class Player extends LivingEntity {
+@@ -1306,7 +1306,7 @@ public abstract class Player extends LivingEntity {
                      flag2 = flag2 && !this.level().paperConfig().entities.behavior.disablePlayerCrits; // Paper - Toggleable player crits
                      if (flag2) {
                          damagesource = damagesource.critical(true); // Paper start - critical damage API
@@ -18,7 +18,7 @@ index 00b3e300c0d43f7791c9d5f83a7901304f6464f5..e755a472385fcc699ae8fa1e56370c41
  
                      float f3 = f + f1;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 0c52f8486f59eaca46309b31ac877f609e68b521..920964b0f6c91c9d49ea3c73351c1d5a0e3e2acd 100644
+index 6912a7bb0f849c0d283b36f71bb5fa8508b5d25d..0d618c7af0d53ba3bdad85799e7e7cffcdcda125 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -363,6 +363,7 @@ public class PurpurWorldConfig {

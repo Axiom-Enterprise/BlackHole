@@ -29,10 +29,10 @@ index e73c07257395198e123019811b20fec6adf8f0ef..b18ed9645dfda3a7a12500533394fcd1
          }
      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 7ad309e81ec61a6f2553e9ffeb9a986f4d569b37..357b5080b6d3651c8f913081de283576a0a17cec 100644
+index b3eba9f3d15ff94dd9044e135f5b304916e17c72..c677345c6d632aa92c3b6c395d3b5db11f933d8f 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -434,6 +434,11 @@ public class PurpurConfig {
+@@ -435,6 +435,11 @@ public class PurpurConfig {
          allowWaterPlacementInTheEnd = getBoolean("settings.allow-water-placement-in-the-end", allowWaterPlacementInTheEnd);
      }
  

@@ -5,7 +5,7 @@ Subject: [PATCH] Giants AI settings
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Giant.java b/src/main/java/net/minecraft/world/entity/monster/Giant.java
-index 48035556b0743f7641d77ec3a42c860f1e1ee6c3..39367523621c330eda59905d1f2c129288a1026c 100644
+index 48035556b0743f7641d77ec3a42c860f1e1ee6c3..642342592788226999efcb453542f55af71cf193 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Giant.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Giant.java
 @@ -30,8 +30,23 @@ public class Giant extends Monster {
@@ -39,7 +39,7 @@ index 48035556b0743f7641d77ec3a42c860f1e1ee6c3..39367523621c330eda59905d1f2c1292
      }
  
 +    @Override
-+    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.MobSpawnType spawnReason, @javax.annotation.Nullable net.minecraft.world.entity.SpawnGroupData entityData) {
++    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.EntitySpawnReason spawnReason, @org.jetbrains.annotations.Nullable net.minecraft.world.entity.SpawnGroupData entityData) {
 +        net.minecraft.world.entity.SpawnGroupData groupData = super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 +        if (groupData == null) {
 +            populateDefaultEquipmentSlots(this.random, difficulty);
@@ -71,7 +71,7 @@ index 48035556b0743f7641d77ec3a42c860f1e1ee6c3..39367523621c330eda59905d1f2c1292
      }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index cdef3af8a48d640a8180b5a5658b0ef46087095f..22248cd0752812739df8e7ab911ef04b3d2ed458 100644
+index d23aba01ce2b109fd011130e2847107b26266b7f..0fe6b4e57a57388df51893f22c8e8cb1be633623 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -622,6 +622,10 @@ public class PurpurWorldConfig {

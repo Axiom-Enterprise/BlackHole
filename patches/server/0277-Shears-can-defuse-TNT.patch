@@ -8,32 +8,34 @@ Shears can now defuse TNT. Each world can have a configured chance for the TNT t
 By default the option is disabled to avoid breaking any possible vanilla mechanics.
 
 diff --git a/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java b/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
-index de87483600e55d88176fe25db621bbd3e464729f..5d3002ae9f8e73851c65c2131343b2762dc9eae8 100644
+index de87483600e55d88176fe25db621bbd3e464729f..287ba483614e79e78022e703ef891f59f41ac455 100644
 --- a/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
 +++ b/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
-@@ -249,4 +249,29 @@ public class PrimedTnt extends Entity implements TraceableEntity {
+@@ -249,4 +249,31 @@ public class PrimedTnt extends Entity implements TraceableEntity {
          return !level().paperConfig().fixes.preventTntFromMovingInWater && super.isPushedByFluid();
      }
      // Paper end - Option to prevent TNT from moving in water
 +    // Purpur start - Shears can defuse TNT
 +    @Override
 +    public net.minecraft.world.InteractionResult interact(net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand) {
-+        if (!level().isClientSide && level().purpurConfig.shearsCanDefuseTnt) {
++        Level world = this.level();
++
++        if (world instanceof ServerLevel serverWorld && level().purpurConfig.shearsCanDefuseTnt) {
 +            final net.minecraft.world.item.ItemStack inHand = player.getItemInHand(hand);
 +
 +            if (!inHand.is(net.minecraft.world.item.Items.SHEARS) || !player.getBukkitEntity().hasPermission("purpur.tnt.defuse") ||
-+                    level().random.nextFloat() > level().purpurConfig.shearsCanDefuseTntChance) return net.minecraft.world.InteractionResult.PASS;
++                    serverWorld.random.nextFloat() > serverWorld.purpurConfig.shearsCanDefuseTntChance) return net.minecraft.world.InteractionResult.PASS;
 +
-+            net.minecraft.world.entity.item.ItemEntity tntItem = new net.minecraft.world.entity.item.ItemEntity(level(), getX(), getY(), getZ(),
++            net.minecraft.world.entity.item.ItemEntity tntItem = new net.minecraft.world.entity.item.ItemEntity(serverWorld, getX(), getY(), getZ(),
 +                    new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.TNT));
 +            tntItem.setPickUpDelay(10);
 +
 +            inHand.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
-+            level().addFreshEntity(tntItem, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CUSTOM);
++            serverWorld.addFreshEntity(tntItem, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CUSTOM);
 +
 +            this.playSound(net.minecraft.sounds.SoundEvents.SHEEP_SHEAR);
 +
-+            this.kill();
++            this.kill(serverWorld);
 +            return net.minecraft.world.InteractionResult.SUCCESS;
 +        }
 +
@@ -42,7 +44,7 @@ index de87483600e55d88176fe25db621bbd3e464729f..5d3002ae9f8e73851c65c2131343b276
 +    // Purpur end - Shears can defuse TNT
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 44f6d8b1b4653bf4398f914045deadb9c34a3d35..1e561d12f4b04a536cc891e6a6d123c90e77266c 100644
+index 777139fb7098a9df8877cfe2e74329685a6389e0..463c8873ba1fcc8f081a1909c1fc8967589f4d4f 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -3395,4 +3395,11 @@ public class PurpurWorldConfig {

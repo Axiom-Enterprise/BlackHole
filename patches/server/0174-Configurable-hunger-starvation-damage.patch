@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable hunger starvation damage
 
 
 diff --git a/src/main/java/net/minecraft/world/food/FoodData.java b/src/main/java/net/minecraft/world/food/FoodData.java
-index a1c2dfb9e2a6efe05389b0716c4d1d0f95311eea..8a43bb4d73ac3c6df892c977cecb2c10a82ef8cd 100644
+index 4f8ee2e5db3352306f3c035052866d95630f4aaf..b8b0b89b7f0a21ecff4ab6286f8a114e2d6b6b39 100644
 --- a/src/main/java/net/minecraft/world/food/FoodData.java
 +++ b/src/main/java/net/minecraft/world/food/FoodData.java
-@@ -98,7 +98,7 @@ public class FoodData {
+@@ -97,7 +97,7 @@ public class FoodData {
              ++this.tickTimer;
              if (this.tickTimer >= this.starvationRate) { // CraftBukkit - add regen rate manipulation
                  if (player.getHealth() > 10.0F || enumdifficulty == Difficulty.HARD || player.getHealth() > 1.0F && enumdifficulty == Difficulty.NORMAL) {
@@ -18,7 +18,7 @@ index a1c2dfb9e2a6efe05389b0716c4d1d0f95311eea..8a43bb4d73ac3c6df892c977cecb2c10
  
                  this.tickTimer = 0;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c5bcf86c2fcbcb5048ee73f9aba848867eb3c3c1..93e9cbefce01fc905fad95947673bca2cf8d29f2 100644
+index dceae3b39f761a6e34dbcfb316cfa1704ada7729..a67cc3a25596e01e12b83ee6269f00a5e2e33324 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -2684,4 +2684,9 @@ public class PurpurWorldConfig {

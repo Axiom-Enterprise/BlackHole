@@ -22,10 +22,10 @@ index 385da0585f409ee453f10d45f5837cdc09adc21b..c65016cba376a41c267fb4b6499ec0a2
          }
      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 86e3983ff899bebbdc14493ac6b37b2371134e13..aa23302af702f422b8686c5dbdb29cba5e44e3d5 100644
+index ed54fc4104ac5e38490bc5390f8351eb5a9c039d..95cd1156766895546ef5574b33a60806bff08fa2 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -343,6 +343,8 @@ public class PurpurConfig {
+@@ -344,6 +344,8 @@ public class PurpurConfig {
      public static int kelpMaxGrowthAge = 25;
      public static int twistingVinesMaxGrowthAge = 25;
      public static int weepingVinesMaxGrowthAge = 25;
@@ -34,7 +34,7 @@ index 86e3983ff899bebbdc14493ac6b37b2371134e13..aa23302af702f422b8686c5dbdb29cba
      private static void blockSettings() {
          if (version < 3) {
              boolean oldValue = getBoolean("settings.barrel.packed-barrels", true);
-@@ -416,6 +418,8 @@ public class PurpurConfig {
+@@ -417,6 +419,8 @@ public class PurpurConfig {
              log(Level.WARNING, "blocks.weeping_vines.max-growth-age is set to above maximum allowed value of 25");
              log(Level.WARNING, "Using value of 25 to prevent issues");
          }

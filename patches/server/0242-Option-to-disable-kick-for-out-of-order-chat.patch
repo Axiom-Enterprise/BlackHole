@@ -18,10 +18,10 @@ index 300929a406905f5ff1ede664d5b99fb0938d4d2e..a4e9ac0e07f08e0b6aa682e8c1587d9c
                          throw new SignedMessageChain.DecodeException(SignedMessageChain.DecodeException.OUT_OF_ORDER_CHAT, org.bukkit.event.player.PlayerKickEvent.Cause.OUT_OF_ORDER_CHAT); // Paper - kick event causes
                      } else {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 5475a8c622c4090e994f87f6a28febdccecbf973..afb165af34f365210fdfa6542cf7a81435096738 100644
+index dba6a69891f50ba057187a8138ff227ad7501eaa..32e44e47cc6b5e6ed6e13f41dd8b4ba29459d7f0 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -461,9 +461,11 @@ public class PurpurConfig {
+@@ -462,9 +462,11 @@ public class PurpurConfig {
  
      public static boolean useUPnP = false;
      public static boolean maxJoinsPerSecond = false;

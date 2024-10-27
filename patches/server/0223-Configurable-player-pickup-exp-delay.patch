@@ -22,10 +22,10 @@ index 6db9a3ea4c0dc1f0629bc8bf6466aeab00c498f6..32a0db7e8f974712bd8a05f16f3bd48a
                  int i = this.repairPlayerItems(entityplayer, this.value);
  
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 90998ee1671dc115428102e67a3b07c377133e6e..05d30d2ba3ea7daebe40ddfaa9ce38d99f943038 100644
+index d7d5ce7ea223248ebda0a3e4b104baed47378ce1..c1d068fa99ec0fd5685bbb627a775e4d1587feab 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -661,7 +661,7 @@ public abstract class Player extends LivingEntity {
+@@ -662,7 +662,7 @@ public abstract class Player extends LivingEntity {
              while (iterator.hasNext()) {
                  Entity entity = (Entity) iterator.next();
  
@@ -35,7 +35,7 @@ index 90998ee1671dc115428102e67a3b07c377133e6e..05d30d2ba3ea7daebe40ddfaa9ce38d9
                  } else if (!entity.isRemoved()) {
                      this.touch(entity);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b3382f2383f546ef53b4dd4c2187f39d8f027c01..74b5d04cf6880f30f8f36ea0414e0ae5542c34b7 100644
+index 4c54ef064e3284830a14a8ff56be56e2170b7b3d..d7f8bf20eba76b8eea60e6483308e8b76430dd56 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -419,6 +419,7 @@ public class PurpurWorldConfig {

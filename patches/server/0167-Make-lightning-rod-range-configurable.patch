@@ -5,7 +5,7 @@ Subject: [PATCH] Make lightning rod range configurable
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 29b8a57477032c85bc498e90af4bfb739926d03c..8680572c838dbad0ea13afe041e43f58b2deebc2 100644
+index 51494dc0cca0819ee8df61144e70450facbba727..8d6a3309b6d20e51b056fbf030f27aa4f92640d7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1069,7 +1069,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -18,10 +18,10 @@ index 29b8a57477032c85bc498e90af4bfb739926d03c..8680572c838dbad0ea13afe041e43f58
          return optional.map((blockposition1) -> {
              return blockposition1.above(1);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index ebbaa21dbaff140818fad10accd05721451b37cb..e654169f6a290aa52a4e0f647dc7ec6698489729 100644
+index 711e63f2101e5a52ca3a3963fa9b0a976b4946a7..fe548c474113d6fa5b605557026e86a542bb03c9 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -272,6 +272,7 @@ public class PurpurConfig {
+@@ -273,6 +273,7 @@ public class PurpurConfig {
      public static boolean cryingObsidianValidForPortalFrame = false;
      public static int beeInsideBeeHive = 3;
      public static boolean anvilCumulativeCost = true;
@@ -29,7 +29,7 @@ index ebbaa21dbaff140818fad10accd05721451b37cb..e654169f6a290aa52a4e0f647dc7ec66
      private static void blockSettings() {
          if (version < 3) {
              boolean oldValue = getBoolean("settings.barrel.packed-barrels", true);
-@@ -305,6 +306,7 @@ public class PurpurConfig {
+@@ -306,6 +307,7 @@ public class PurpurConfig {
          cryingObsidianValidForPortalFrame = getBoolean("settings.blocks.crying_obsidian.valid-for-portal-frame", cryingObsidianValidForPortalFrame);
          beeInsideBeeHive = getInt("settings.blocks.beehive.max-bees-inside", beeInsideBeeHive);
          anvilCumulativeCost = getBoolean("settings.blocks.anvil.cumulative-cost", anvilCumulativeCost);

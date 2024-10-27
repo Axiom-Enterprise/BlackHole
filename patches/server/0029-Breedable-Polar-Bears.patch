@@ -59,7 +59,7 @@ index f2e205b05213f137ce84b9c5185118f437eec6ff..511d0559743655ed7b43a948fccc2621
          this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
          this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index d6e3ab58756bd8e0c3d2a7aa651a22545db6749e..fe9b0ff2a73dc0f49b46738f07a7c58b622399d6 100644
+index 78316af29f238ec61c73e0a82b677ae91feaa623..ab11497337ff25ddd6c87dd7a842adea039aa75e 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1060,6 +1060,8 @@ public class PurpurWorldConfig {
@@ -76,7 +76,7 @@ index d6e3ab58756bd8e0c3d2a7aa651a22545db6749e..fe9b0ff2a73dc0f49b46738f07a7c58b
          polarBearMaxHealth = getDouble("mobs.polar_bear.attributes.max_health", polarBearMaxHealth);
          polarBearScale = Mth.clamp(getDouble("mobs.polar_bear.attributes.scale", polarBearScale), 0.0625D, 16.0D);
 +        polarBearBreedableItemString = getString("mobs.polar_bear.breedable-item", polarBearBreedableItemString);
-+        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(polarBearBreedableItemString));
++        Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(polarBearBreedableItemString));
 +        if (item != Items.AIR) polarBearBreedableItem = item;
      }
  

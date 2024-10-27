@@ -56,10 +56,10 @@ index b6dd6bde947ac7502f25d3160399596130e8064f..7d276c191b391bca24948ddb36b8b7d0
              if (this.keepAlivePending && !this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // Paper - check keepalive limit, don't fire if already disconnected
                  this.disconnect(ServerCommonPacketListenerImpl.TIMEOUT_DISCONNECTION_MESSAGE, PlayerKickEvent.Cause.TIMEOUT); // Paper - kick event cause
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index b4d43c293084b808d167dd02f2d6cf865ac17983..6bbd0021032d1979fc0133f6f859dddcf22c5708 100644
+index a6c90de7726a264ca44c3e795e9b6a4e1c313bc3..3b4a8c9d5a60de94ad79a781414de8de44973e6f 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -200,6 +200,11 @@ public class PurpurConfig {
+@@ -201,6 +201,11 @@ public class PurpurConfig {
          laggingThreshold = getDouble("settings.lagging-threshold", laggingThreshold);
      }
  

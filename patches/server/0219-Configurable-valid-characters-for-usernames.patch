@@ -17,10 +17,10 @@ index 6c33002dc8bbb3759c3156302ab7d1f26ce5e8ee..c89fc375aff548a2b03eaf4da3b6a075
              return false;
          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 0d899125bd89b23d6b5f1fa6bdb25d3b76a62783..7ad309e81ec61a6f2553e9ffeb9a986f4d569b37 100644
+index 4aac9004892030772eb4791209d3de71e9e480cc..b3eba9f3d15ff94dd9044e135f5b304916e17c72 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -454,4 +454,11 @@ public class PurpurConfig {
+@@ -455,4 +455,11 @@ public class PurpurConfig {
      private static void networkSettings() {
          useUPnP = getBoolean("settings.network.upnp-port-forwarding", useUPnP);
      }

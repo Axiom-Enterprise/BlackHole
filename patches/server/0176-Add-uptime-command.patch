@@ -17,7 +17,7 @@ index 5d94b71bd54f99040b76cca74964a32d55339767..0090243f7e1a966534e489cebb88d71d
          }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6bc6d24022c4f5ea3b7da7074725737fae341fcf..76f31bf31f77c8347b9436779c3701f8a87045e6 100644
+index 874535bf55b76ca2df482a191d66924f8f228c97..e1cabc6af43e4342e8215a774483d5cd0db0aba8 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -315,6 +315,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -29,10 +29,10 @@ index 6bc6d24022c4f5ea3b7da7074725737fae341fcf..76f31bf31f77c8347b9436779c3701f8
      public int autosavePeriod;
      // Paper - don't store the vanilla dispatcher
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index e654169f6a290aa52a4e0f647dc7ec6698489729..a605b6221f3331093b8eb133e9cb4ac5cd54aaae 100644
+index fe548c474113d6fa5b605557026e86a542bb03c9..862e8fbe3d115799874d2eb6475d97d5fa0db0df 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -186,6 +186,7 @@ public class PurpurConfig {
+@@ -187,6 +187,7 @@ public class PurpurConfig {
      public static String pingCommandOutput = "<green>%s's ping is %sms";
      public static String tpsbarCommandOutput = "<green>Tpsbar toggled <onoff> for <target>";
      public static String dontRunWithScissors = "<red><italic>Don't run with scissors!";
@@ -40,7 +40,7 @@ index e654169f6a290aa52a4e0f647dc7ec6698489729..a605b6221f3331093b8eb133e9cb4ac5
      public static String unverifiedUsername = "default";
      private static void messages() {
          cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
-@@ -199,6 +200,7 @@ public class PurpurConfig {
+@@ -200,6 +201,7 @@ public class PurpurConfig {
          pingCommandOutput = getString("settings.messages.ping-command-output", pingCommandOutput);
          tpsbarCommandOutput = getString("settings.messages.tpsbar-command-output", tpsbarCommandOutput);
          dontRunWithScissors = getString("settings.messages.dont-run-with-scissors", dontRunWithScissors);
@@ -48,7 +48,7 @@ index e654169f6a290aa52a4e0f647dc7ec6698489729..a605b6221f3331093b8eb133e9cb4ac5
          unverifiedUsername = getString("settings.messages.unverified-username", unverifiedUsername);
      }
  
-@@ -251,6 +253,15 @@ public class PurpurConfig {
+@@ -252,6 +254,15 @@ public class PurpurConfig {
      public static int commandTPSBarTickInterval = 20;
      public static boolean commandGamemodeRequiresPermission = false;
      public static boolean hideHiddenPlayersFromEntitySelector = false;
@@ -64,7 +64,7 @@ index e654169f6a290aa52a4e0f647dc7ec6698489729..a605b6221f3331093b8eb133e9cb4ac5
      private static void commandSettings() {
          commandTPSBarTitle = getString("settings.command.tpsbar.title", commandTPSBarTitle);
          commandTPSBarProgressOverlay = BossBar.Overlay.valueOf(getString("settings.command.tpsbar.overlay", commandTPSBarProgressOverlay.name()));
-@@ -264,6 +275,15 @@ public class PurpurConfig {
+@@ -265,6 +276,15 @@ public class PurpurConfig {
          commandTPSBarTickInterval = getInt("settings.command.tpsbar.tick-interval", commandTPSBarTickInterval);
          commandGamemodeRequiresPermission = getBoolean("settings.command.gamemode.requires-specific-permission", commandGamemodeRequiresPermission);
          hideHiddenPlayersFromEntitySelector = getBoolean("settings.command.hide-hidden-players-from-entity-selector", hideHiddenPlayersFromEntitySelector);

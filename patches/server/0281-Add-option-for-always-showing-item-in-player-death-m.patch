@@ -31,10 +31,10 @@ index d95d122601dd47a27e8d82a13b071919c360fe68..4a96d914f8aa6f0c5f13fc85369a311f
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 569d178584ddafd38c476e56ed1809da0ddc3b1f..6d7b5a84ac541c92747d4154298c5e62c9987199 100644
+index 334bcf9f24c6b658664424fd960dad6fb9e28c7d..e2b2eb66907f3a35792a59d68509abda1dd34ccb 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -576,4 +576,9 @@ public class PurpurConfig {
+@@ -577,4 +577,9 @@ public class PurpurConfig {
              block.fallDistanceMultiplier = fallDistanceMultiplier.floatValue();
          });
      }

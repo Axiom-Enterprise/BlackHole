@@ -20,10 +20,10 @@ index 0d9de4c61c7b26a6ff37c12fde629161fd0c3d5a..2f7897744f4aea718170698881773e90
                          entityitem = entityplayer.drop(itemstack, false, false, false); // CraftBukkit - SPIGOT-2942: Add boolean to call event
                          if (entityitem != null) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index d4371bebdcb3b55c412334491959835e2d52220f..e86e3ceb8c93b89a37aeb3829fea65430b387941 100644
+index 80335c5915da347cc779dfd2c44d87e8329ad336..b1be848bbc617968fbf1d1babbbf1a6e2bee6ec4 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -211,6 +211,11 @@ public class PurpurConfig {
+@@ -212,6 +212,11 @@ public class PurpurConfig {
          useAlternateKeepAlive = getBoolean("settings.use-alternate-keepalive", useAlternateKeepAlive);
      }
  

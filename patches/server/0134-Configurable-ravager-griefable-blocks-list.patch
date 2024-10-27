@@ -31,7 +31,7 @@ index d1efd728f0660b77361fa4f9c2bf5f2e654be0d2..ab58c4dbe9deb8807478a8e66e01f81a
              }
          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b1ce0257e3cad9d37f6ab998a7ff6e41060fc3ed..f99d1df0358804862f2d98cd39d1aaf1369081c5 100644
+index 5ebf1265a7815e2c774e2b60cd36e075a5bb5427..1986e7a98fdfda443fa7b375786c836bc0f09fbf 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1766,6 +1766,7 @@ public class PurpurWorldConfig {
@@ -58,7 +58,7 @@ index b1ce0257e3cad9d37f6ab998a7ff6e41060fc3ed..f99d1df0358804862f2d98cd39d1aaf1
 +            add("minecraft:potatoes");
 +            add("minecraft:wheat");
 +        }}).forEach(key -> {
-+            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(key.toString()));
++            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(key.toString()));
 +            if (!block.defaultBlockState().isAir()) {
 +                ravagerGriefableBlocks.add(block);
 +            }

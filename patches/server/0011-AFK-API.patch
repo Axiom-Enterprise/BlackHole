@@ -5,10 +5,10 @@ Subject: [PATCH] AFK API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7e796655dec9eb48d0c29c9ed06d30ebf67c25a5..00a768a9bef0f60ee43e6e1becc6ba9424ba6dda 100644
+index d7b828937e58eea5f095863129a0844f25a25336..f0a2c618fb2040282406af90ff0d2ac5a63b0c35 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2623,8 +2623,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -2637,8 +2637,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -177,7 +177,7 @@ index 6bf691fcc6486bde73bae30eff09142802c29eda..59c4d3753c7084e92402608b7fb3c4ad
      private EntitySelector() {}
      // Paper start - Affects Spawning API
 diff --git a/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java b/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
-index 52982c1e6a4da36392569c791853279f5f9ac31a..9817bc392146b93707291fe69eaab20a8a43235c 100644
+index 52982c1e6a4da36392569c791853279f5f9ac31a..b3d4c61b1769b6fcc98b7af854f774d24bf39d98 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
 @@ -64,6 +64,10 @@ public class TargetingConditions {
@@ -185,7 +185,7 @@ index 52982c1e6a4da36392569c791853279f5f9ac31a..9817bc392146b93707291fe69eaab20a
          } else if (this.selector != null && !this.selector.test(target, world)) {
              return false;
 +        // Purpur start
-+        } else if (!targetEntity.level().purpurConfig.idleTimeoutTargetPlayer && targetEntity instanceof net.minecraft.server.level.ServerPlayer player && player.isAfk()) {
++        } else if (!world.purpurConfig.idleTimeoutTargetPlayer && target instanceof net.minecraft.server.level.ServerPlayer player && player.isAfk()) {
 +            return false;
 +        // Purpur end
          } else {
@@ -265,10 +265,10 @@ index e4b41edc7c08c00f4411812a20944507a5b674c7..dc698d64ff3b5ab3b65b91159ce26d7c
      // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index db93b3aa3883707c0e16745a9afee532fed9379f..490793e1344a6ca475e2d9ada406fa96522c92d1 100644
+index a83117ed0a0c98d7ae18e925338b58930946c96a..a6728ce7ac27512676cfa06fdfbfb8652f8ff6a5 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -176,8 +176,18 @@ public class PurpurConfig {
+@@ -177,8 +177,18 @@ public class PurpurConfig {
      }
  
      public static String cannotRideMob = "<red>You cannot mount that mob";

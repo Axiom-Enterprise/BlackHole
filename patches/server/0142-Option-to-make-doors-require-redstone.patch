@@ -82,7 +82,7 @@ index 077b99caf0ec0ee098786d23194d88e1dc4481ce..daf865c20cc193a12db0d98e3c0472ee
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 4c751f6b66536ad976c9b8fc936bda38ea12f6e5..c11e68ba894df3e21d499920585df8128bf7429f 100644
+index e3381a8ae94168a14f0da7daa896817f8fc1cc7d..eed57224720e26e588a6604f8d96a3d1090b2a0c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -462,6 +462,16 @@ public class PurpurWorldConfig {
@@ -92,7 +92,7 @@ index 4c751f6b66536ad976c9b8fc936bda38ea12f6e5..c11e68ba894df3e21d499920585df812
 +    public List<Block> doorRequiresRedstone = new ArrayList<>();
 +    private void doorSettings() {
 +        getList("blocks.door.requires-redstone", new ArrayList<String>()).forEach(key -> {
-+            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(key.toString()));
++            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(key.toString()));
 +            if (!block.defaultBlockState().isAir()) {
 +                doorRequiresRedstone.add(block);
 +            }

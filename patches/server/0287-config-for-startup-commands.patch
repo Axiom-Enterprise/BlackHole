@@ -27,10 +27,10 @@ index 13f29051f55b5628d91b4dca06051e41097badcd..f6b6231c32afb4e1838deec5b2f86130
                  long i;
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index c1f14b11dbd472bc84993156d41a777167ec9ad7..86e3983ff899bebbdc14493ac6b37b2371134e13 100644
+index 8ceec24eeb4b441bcc37e75d4b6a778cc6184f31..ed54fc4104ac5e38490bc5390f8351eb5a9c039d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -586,4 +586,16 @@ public class PurpurConfig {
+@@ -587,4 +587,16 @@ public class PurpurConfig {
      private static void registerMinecraftDebugCommands() {
          registerMinecraftDebugCommands = getBoolean("settings.register-minecraft-debug-commands", registerMinecraftDebugCommands);
      }

@@ -18,7 +18,7 @@ index 5bbc7ceaafc163f12344e5d5d355ad2ff30ddca2..af54b621f04de40b1539494f30bb95f0
      public ServerEntity(ServerLevel worldserver, Entity entity, int i, boolean flag, Consumer<Packet<?>> consumer, Set<ServerPlayerConnection> trackedPlayers) {
          this.trackedPlayers = trackedPlayers;
 diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-index 5d8885bca55503bf7e1a2a4e1bb9b3bd86d55391..9e69c225a331bfce3455fc0c013a19e3c607e0c4 100644
+index 5d8885bca55503bf7e1a2a4e1bb9b3bd86d55391..89d89a1b07231f3f009a8fa66374af3fcc3e2549 100644
 --- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 @@ -64,6 +64,12 @@ public class ItemEntity extends Entity implements TraceableEntity {
@@ -42,9 +42,9 @@ index 5d8885bca55503bf7e1a2a4e1bb9b3bd86d55391..9e69c225a331bfce3455fc0c013a19e3
 +        // Purpur start
 +        if (
 +            (immuneToCactus && source.is(net.minecraft.world.damagesource.DamageTypes.CACTUS)) ||
-+            (immuneToFire && (source.is(DamageTypeTags.IS_FIRE) || source.is(net.minecraft.world.damagesource.DamageTypes.ON_FIRE) || source.is(net.minecraft.world.damagesource.DamageTypes.IN_FIRE))) ||
++            (immuneToFire && (source.is(net.minecraft.tags.DamageTypeTags.IS_FIRE) || source.is(net.minecraft.world.damagesource.DamageTypes.ON_FIRE) || source.is(net.minecraft.world.damagesource.DamageTypes.IN_FIRE))) ||
 +            (immuneToLightning && source.is(net.minecraft.world.damagesource.DamageTypes.LIGHTNING_BOLT)) ||
-+            (immuneToExplosion && source.is(DamageTypeTags.IS_EXPLOSION))
++            (immuneToExplosion && source.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION))
 +        ) {
 +            return false;
 +        } else if (this.isInvulnerableToBase(source)) {
@@ -117,7 +117,7 @@ index 30d62ee4d5cd2ddacb8783b5bbbf475d592b3e02..01e4395f1669d21c30465aa1366bd2f1
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 33aa446dc0cb834e027c45e8392cf007f62f629d..75e969ed3887fe2c57ca080e4f4b56dc53e295cb 100644
+index 95a7e0870e45004523278ae78c25b9db80882630..2a566e9eec02cf19d409dadff3ffaabc7715e05a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -118,6 +118,49 @@ public class PurpurWorldConfig {
@@ -135,7 +135,7 @@ index 33aa446dc0cb834e027c45e8392cf007f62f629d..75e969ed3887fe2c57ca080e4f4b56dc
 +                BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToCactus.add(item));
 +                return;
 +            }
-+            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(key.toString()));
++            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
 +            if (item != Items.AIR) itemImmuneToCactus.add(item);
 +        });
 +        itemImmuneToExplosion.clear();
@@ -144,7 +144,7 @@ index 33aa446dc0cb834e027c45e8392cf007f62f629d..75e969ed3887fe2c57ca080e4f4b56dc
 +                BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToExplosion.add(item));
 +                return;
 +            }
-+            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(key.toString()));
++            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
 +            if (item != Items.AIR) itemImmuneToExplosion.add(item);
 +        });
 +        itemImmuneToFire.clear();
@@ -153,7 +153,7 @@ index 33aa446dc0cb834e027c45e8392cf007f62f629d..75e969ed3887fe2c57ca080e4f4b56dc
 +                BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToFire.add(item));
 +                return;
 +            }
-+            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(key.toString()));
++            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
 +            if (item != Items.AIR) itemImmuneToFire.add(item);
 +        });
 +        itemImmuneToLightning.clear();
@@ -162,7 +162,7 @@ index 33aa446dc0cb834e027c45e8392cf007f62f629d..75e969ed3887fe2c57ca080e4f4b56dc
 +                BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToLightning.add(item));
 +                return;
 +            }
-+            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(key.toString()));
++            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
 +            if (item != Items.AIR) itemImmuneToLightning.add(item);
 +        });
 +    }

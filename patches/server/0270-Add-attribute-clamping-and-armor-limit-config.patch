@@ -39,10 +39,10 @@ index f0703302e7dbbda88de8c648d20d87c55ed9b1e0..a913ebabaa5f443afa987b972355a8f8
      }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index b881bfac6c8204bfe7ccd38583daf48013c5f639..569d178584ddafd38c476e56ed1809da0ddc3b1f 100644
+index b5724a0646f2194591d0c8539b87a850ad1bb5db..334bcf9f24c6b658664424fd960dad6fb9e28c7d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -506,6 +506,16 @@ public class PurpurConfig {
+@@ -507,6 +507,16 @@ public class PurpurConfig {
          fixProjectileLootingTransfer = getBoolean("settings.fix-projectile-looting-transfer", fixProjectileLootingTransfer);
      }
  
@@ -58,4 +58,4 @@ index b881bfac6c8204bfe7ccd38583daf48013c5f639..569d178584ddafd38c476e56ed1809da
 +
      private static void blastResistanceSettings() {
          getMap("settings.blast-resistance-overrides", Collections.emptyMap()).forEach((blockId, value) -> {
-             Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(blockId));
+             Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockId));

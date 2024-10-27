@@ -59,10 +59,10 @@ index cfc6a657cae92c68868a76c1b7b1febe2a16e9f4..a12c08da793139e39dc11c213c94796b
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index f8179f8b7a57a66705d51f30ab528307e3a84b32..5b509058cda0e0b5f923f669b5dd3d9e67e3e148 100644
+index 1763db5af790f590e047ddccd8ecc3220fb361ed..2090ecfebe8bc164239d198c1c50b134c7bc60c5 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -398,6 +398,7 @@ public class PurpurConfig {
+@@ -399,6 +399,7 @@ public class PurpurConfig {
      public static boolean allowHigherEnchantsLevels = false;
      public static boolean allowUnsafeEnchantCommand = false;
      public static boolean replaceIncompatibleEnchants = false;
@@ -70,7 +70,7 @@ index f8179f8b7a57a66705d51f30ab528307e3a84b32..5b509058cda0e0b5f923f669b5dd3d9e
      private static void enchantmentSettings() {
          if (version < 30) {
              boolean oldValue = getBoolean("settings.enchantment.allow-unsafe-enchants", false);
-@@ -421,6 +422,7 @@ public class PurpurConfig {
+@@ -422,6 +423,7 @@ public class PurpurConfig {
          allowHigherEnchantsLevels = getBoolean("settings.enchantment.anvil.allow-higher-enchants-levels", allowHigherEnchantsLevels);
          allowUnsafeEnchantCommand = getBoolean("settings.enchantment.allow-unsafe-enchant-command", allowUnsafeEnchantCommand);
          replaceIncompatibleEnchants = getBoolean("settings.enchantment.anvil.replace-incompatible-enchants", replaceIncompatibleEnchants);

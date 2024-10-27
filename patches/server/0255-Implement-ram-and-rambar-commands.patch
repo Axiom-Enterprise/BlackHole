@@ -18,7 +18,7 @@ index 0ba926b6ff0bd54159765cc7f37d1753ded89dee..cbbddb924f46203bd600b838fc22902c
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5b4edb2386bb624d3633385106472070868acccc..b7ba01f174aa8a4c43684866f62fbeadbdf24a2f 100644
+index 2518ad5af51b944393e53508010a18df111c5c83..f0414dd16a97461f65c2965c035da811a0d65c01 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -326,6 +326,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -45,7 +45,7 @@ index 5b4edb2386bb624d3633385106472070868acccc..b7ba01f174aa8a4c43684866f62fbead
          nbt.putBoolean("Purpur.TPSBar", this.tpsBar); // Purpur
          nbt.putBoolean("Purpur.CompassBar", this.compassBar); // Purpur
      }
-@@ -3459,5 +3462,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3473,5 +3476,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public void compassBar(boolean compassBar) {
          this.compassBar = compassBar;
      }
@@ -60,10 +60,10 @@ index 5b4edb2386bb624d3633385106472070868acccc..b7ba01f174aa8a4c43684866f62fbead
      // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index afb165af34f365210fdfa6542cf7a81435096738..7ce9115c4a90e22befdd6b82c2e6588f2be3a07c 100644
+index 32e44e47cc6b5e6ed6e13f41dd8b4ba29459d7f0..7164788c20483a78a92ccdcf480bd95651d84825 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -184,6 +184,8 @@ public class PurpurConfig {
+@@ -185,6 +185,8 @@ public class PurpurConfig {
      public static String creditsCommandOutput = "<green>%s has been shown the end credits";
      public static String demoCommandOutput = "<green>%s has been shown the demo screen";
      public static String pingCommandOutput = "<green>%s's ping is %sms";
@@ -72,7 +72,7 @@ index afb165af34f365210fdfa6542cf7a81435096738..7ce9115c4a90e22befdd6b82c2e6588f
      public static String tpsbarCommandOutput = "<green>Tpsbar toggled <onoff> for <target>";
      public static String dontRunWithScissors = "<red><italic>Don't run with scissors!";
      public static String uptimeCommandOutput = "<green>Server uptime is <uptime>";
-@@ -201,6 +203,8 @@ public class PurpurConfig {
+@@ -202,6 +204,8 @@ public class PurpurConfig {
          creditsCommandOutput = getString("settings.messages.credits-command-output", creditsCommandOutput);
          demoCommandOutput = getString("settings.messages.demo-command-output", demoCommandOutput);
          pingCommandOutput = getString("settings.messages.ping-command-output", pingCommandOutput);
@@ -81,7 +81,7 @@ index afb165af34f365210fdfa6542cf7a81435096738..7ce9115c4a90e22befdd6b82c2e6588f
          tpsbarCommandOutput = getString("settings.messages.tpsbar-command-output", tpsbarCommandOutput);
          dontRunWithScissors = getString("settings.messages.dont-run-with-scissors", dontRunWithScissors);
          uptimeCommandOutput = getString("settings.messages.uptime-command-output", uptimeCommandOutput);
-@@ -249,6 +253,15 @@ public class PurpurConfig {
+@@ -250,6 +254,15 @@ public class PurpurConfig {
          disableGiveCommandDrops = getBoolean("settings.disable-give-dropping", disableGiveCommandDrops);
      }
  
@@ -97,7 +97,7 @@ index afb165af34f365210fdfa6542cf7a81435096738..7ce9115c4a90e22befdd6b82c2e6588f
      public static String commandTPSBarTitle = "<gray>TPS<yellow>:</yellow> <tps> MSPT<yellow>:</yellow> <mspt> Ping<yellow>:</yellow> <ping>ms";
      public static BossBar.Overlay commandTPSBarProgressOverlay = BossBar.Overlay.NOTCHED_20;
      public static TPSBarTask.FillMode commandTPSBarProgressFillMode = TPSBarTask.FillMode.MSPT;
-@@ -276,6 +289,16 @@ public class PurpurConfig {
+@@ -277,6 +290,16 @@ public class PurpurConfig {
      public static String uptimeSecond = "%02d second";
      public static String uptimeSeconds = "%02d seconds";
      private static void commandSettings() {

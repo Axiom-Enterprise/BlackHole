@@ -5,7 +5,7 @@ Subject: [PATCH] Minecart settings and WASD controls
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 00a768a9bef0f60ee43e6e1becc6ba9424ba6dda..badcca42c771bf39b128c2e123be3c0aeb6b8e76 100644
+index f0a2c618fb2040282406af90ff0d2ac5a63b0c35..9b7cbd9ece37d7a5f5532861c1b226ca75eb2345 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1435,6 +1435,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -150,7 +150,7 @@ index 99fd67a78539133adf78d65e2c520ff3dd260301..6b987ee220d94b482d2aeb4ff6bf2718
      protected final String descriptionId;
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c5b3a04d81834d6bdf7c4acd06ce4929d7a25769..2591b4f0d0e4e4d9e77efb821c9ae775182713b6 100644
+index b70a0bdb06a0fa930b525cac44b5bd62e318367b..a97dadd4c0b04833282f9fc484ef760da712974d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -96,6 +96,68 @@ public class PurpurWorldConfig {
@@ -208,7 +208,7 @@ index c5b3a04d81834d6bdf7c4acd06ce4929d7a25769..2591b4f0d0e4e4d9e77efb821c9ae775
 +        ConfigurationSection section = getConfigurationSection("gameplay-mechanics.minecart.controllable.block-speed");
 +        if (section != null) {
 +            for (String key : section.getKeys(false)) {
-+                Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(key));
++                Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(key));
 +                if (block != Blocks.AIR) {
 +                    minecartControllableBlockSpeeds.put(block, section.getDouble(key, minecartControllableBaseSpeed));
 +                }

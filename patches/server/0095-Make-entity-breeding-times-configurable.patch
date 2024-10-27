@@ -95,7 +95,7 @@ index 798a59046c3ac9a3838f7bcaf7bb21e738b76e44..16cc3fdf412bfb46e766b56d25a92bdf
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cow.java b/src/main/java/net/minecraft/world/entity/animal/Cow.java
-index 7f7d68d09b070c24ba1567967c5d228c73fd14b9..f14707692217a753db3062a3bda7c08b71eb95e9 100644
+index e6fa66a8c88d4f20a7383e8fd5b3df44718478fa..826927ec3d3ace50fb353333a666e35502a96171 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cow.java
 @@ -67,6 +67,11 @@ public class Cow extends Animal {
@@ -111,7 +111,7 @@ index 7f7d68d09b070c24ba1567967c5d228c73fd14b9..f14707692217a753db3062a3bda7c08b
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Fox.java b/src/main/java/net/minecraft/world/entity/animal/Fox.java
-index 7fe665d9c623fd98a1fd4259a759297de46fe96e..56b2e83285f02581d03746246f370f18fc0f3c3f 100644
+index 355965d88d5ef008111cc72f39e4f8d35741fdfd..0024345d1906e6fb6bbdb189f6d4dbc631b90f9f 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Fox.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Fox.java
 @@ -188,6 +188,11 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
@@ -410,7 +410,7 @@ index b0392780b35866bf1903f49cb16c4ab79335882d..b9a406cd4e317c663a12d897b8cf1f4f
      protected void randomizeAttributes(RandomSource random) {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((double)generateMaxHealth(random::nextInt));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java b/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
-index 7ff446ea2163d3b3b9f7fd826939dda21e07c99f..1a992d4c867ebe65b56be724fb54b9bc389cd8ec 100644
+index 4a412a8a582e092a920029791a48c085527cbbd0..7ad4285f820360cf5ccff1ea564afac81eb24e35 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
 @@ -139,6 +139,11 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
@@ -538,7 +538,7 @@ index 08c4a32b1195820eb574cdf4a499107565a551d6..0220fb517d99e8c9629d191eb554799a
      public boolean canBeLeashed() {
          return true;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c02b8212cb56912e0eb244f47aa094c7879be89b..c78b2c5098dc67a3aadf9f6d4ea5289b7d5124ea 100644
+index 2640c1f0079f7f340e57d8f9e75f04185da064e7..638a93788422a2deb277e9d2aedfa8f50df33bce 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -461,23 +461,27 @@ public class PurpurWorldConfig {
@@ -847,7 +847,7 @@ index c02b8212cb56912e0eb244f47aa094c7879be89b..c78b2c5098dc67a3aadf9f6d4ea5289b
          polarBearRidableInWater = getBoolean("mobs.polar_bear.ridable-in-water", polarBearRidableInWater);
 @@ -1416,6 +1455,7 @@ public class PurpurWorldConfig {
          polarBearBreedableItemString = getString("mobs.polar_bear.breedable-item", polarBearBreedableItemString);
-         Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(polarBearBreedableItemString));
+         Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(polarBearBreedableItemString));
          if (item != Items.AIR) polarBearBreedableItem = item;
 +        polarBearBreedingTicks = getInt("mobs.polar_bear.breeding-delay-ticks", polarBearBreedingTicks);
      }

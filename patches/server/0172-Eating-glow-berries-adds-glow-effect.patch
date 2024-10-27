@@ -18,7 +18,7 @@ index bf7d12594375d5b252db540a6d669a6e6aca7de8..580bd63fdbf9555f867362d3c1f39f41
      public static final Item CAMPFIRE = registerBlock(Blocks.CAMPFIRE, settings -> settings.component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
      public static final Item SOUL_CAMPFIRE = registerBlock(
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 798160f40deb31511d7d120e66a3464c68203ff3..f9df0bc403a19f4ddedf95907928d9f3003804ab 100644
+index 4d37fdd48a36e2608e192ca115f3a15c7fc9064b..b43e6fe2556595ab05e69c17eae3cca628462ed8 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -211,6 +211,7 @@ public class PurpurWorldConfig {
@@ -39,7 +39,7 @@ index 798160f40deb31511d7d120e66a3464c68203ff3..f9df0bc403a19f4ddedf95907928d9f3
      public double minecartMaxSpeed = 0.4D;
 diff --git a/src/main/java/org/purpurmc/purpur/item/GlowBerryItem.java b/src/main/java/org/purpurmc/purpur/item/GlowBerryItem.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..7f526883495b3222746de3d0442e9e4fb5107036
+index 0000000000000000000000000000000000000000..b257f35caa13b660854cf17f41fd8fba1d56c458
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/item/GlowBerryItem.java
 @@ -0,0 +1,26 @@
@@ -49,13 +49,13 @@ index 0000000000000000000000000000000000000000..7f526883495b3222746de3d0442e9e4f
 +import net.minecraft.world.effect.MobEffectInstance;
 +import net.minecraft.world.effect.MobEffects;
 +import net.minecraft.world.entity.LivingEntity;
-+import net.minecraft.world.item.ItemNameBlockItem;
++import net.minecraft.world.item.BlockItem;
 +import net.minecraft.world.item.ItemStack;
 +import net.minecraft.world.level.Level;
 +import net.minecraft.world.level.block.Block;
 +import org.bukkit.event.entity.EntityPotionEffectEvent;
 +
-+public class GlowBerryItem extends ItemNameBlockItem {
++public class GlowBerryItem extends BlockItem {
 +    public GlowBerryItem(Block block, Properties settings) {
 +        super(block, settings);
 +    }

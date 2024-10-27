@@ -17,7 +17,7 @@ index 0090243f7e1a966534e489cebb88d71d9cbab7bb..d8ee4422a13c7f09b84e9bbe8b57f0c1
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index cf922e34824be0d5de3e15c969b7c32f1ed8264a..101f2db7d6e7eec85b21c576768224d6c3bba7e7 100644
+index 77f81e323c6aa805ed30ef171d20f05d0597b3d5..9a84a81891dc48fa7c005c13cab0eb6effaa624e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -325,6 +325,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -44,7 +44,7 @@ index cf922e34824be0d5de3e15c969b7c32f1ed8264a..101f2db7d6e7eec85b21c576768224d6
      }
  
      private void saveParentVehicle(CompoundTag nbt) {
-@@ -3447,5 +3450,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3461,5 +3464,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public void tpsBar(boolean tpsBar) {
          this.tpsBar = tpsBar;
      }
@@ -59,10 +59,10 @@ index cf922e34824be0d5de3e15c969b7c32f1ed8264a..101f2db7d6e7eec85b21c576768224d6
      // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 0051145e950544ad9bb5aceb2043e98060aa11f2..275078b6b4940fbc771fb1aad0990135d37b51f3 100644
+index 8d41d9a8a2b5b7946c13b8c3ce961fea1a2bc728..e8dc97694f59cfce67e2fe061868a9f080ef3004 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -257,6 +257,11 @@ public class PurpurConfig {
+@@ -258,6 +258,11 @@ public class PurpurConfig {
      public static String commandTPSBarTextColorMedium = "<gradient:#ffff55:#ffaa00><text></gradient>";
      public static String commandTPSBarTextColorLow = "<gradient:#ff5555:#aa0000><text></gradient>";
      public static int commandTPSBarTickInterval = 20;
@@ -74,7 +74,7 @@ index 0051145e950544ad9bb5aceb2043e98060aa11f2..275078b6b4940fbc771fb1aad0990135
      public static boolean commandGamemodeRequiresPermission = false;
      public static boolean hideHiddenPlayersFromEntitySelector = false;
      public static String uptimeFormat = "<days><hours><minutes><seconds>";
-@@ -279,6 +284,13 @@ public class PurpurConfig {
+@@ -280,6 +285,13 @@ public class PurpurConfig {
          commandTPSBarTextColorMedium = getString("settings.command.tpsbar.text-color.medium", commandTPSBarTextColorMedium);
          commandTPSBarTextColorLow = getString("settings.command.tpsbar.text-color.low", commandTPSBarTextColorLow);
          commandTPSBarTickInterval = getInt("settings.command.tpsbar.tick-interval", commandTPSBarTickInterval);
@@ -89,7 +89,7 @@ index 0051145e950544ad9bb5aceb2043e98060aa11f2..275078b6b4940fbc771fb1aad0990135
          hideHiddenPlayersFromEntitySelector = getBoolean("settings.command.hide-hidden-players-from-entity-selector", hideHiddenPlayersFromEntitySelector);
          uptimeFormat = getString("settings.command.uptime.format", uptimeFormat);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index e2152fa2977d1761a399fd3b2d1362b2a805b962..75d5e129e9fb74181aed9d5bd57f19aea67dcfd2 100644
+index 12da1422d9a5fe4a742856d2cac8e77aa3a59818..a563b33677d3067030d733aa5d66fc3f39eab782 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -213,6 +213,7 @@ public class PurpurWorldConfig {

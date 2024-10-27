@@ -83,7 +83,7 @@ index e9775b4506909bee65a74964f0d5391a0513de1d..684f7f202305c09b1037c5d38a52a5ea
      }
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41097badcd 100644
+index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c57181957dd0746c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -431,12 +431,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -104,7 +104,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
          this.random = RandomSource.create();
          this.port = -1;
          this.levels = Maps.newLinkedHashMap();
-@@ -1048,9 +1048,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1050,9 +1050,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          org.spigotmc.WatchdogThread.doStop(); // Paper
          // Paper end
          // CraftBukkit end
@@ -116,7 +116,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
  
          MinecraftServer.LOGGER.info("Stopping server");
          Commands.COMMAND_SENDING_POOL.shutdownNow(); // Paper - Perf: Async command map building; Shutdown and don't bother finishing
-@@ -1334,22 +1334,22 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1338,22 +1338,22 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
                  boolean flag = i == 0L;
  
@@ -144,7 +144,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
                          this.tickFrame.start();
                          this.tickServer(flag ? () -> {
                              return false;
-@@ -1362,7 +1362,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1366,7 +1366,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                          }
                          // Paper end - rewrite chunk system
                          this.tickFrame.end();
@@ -153,7 +153,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
                          this.mayHaveDelayedTasks = true;
                          this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + i, this.nextTickTimeNanos);
                          if (!org.purpurmc.purpur.PurpurConfig.tpsCatchup /*|| !gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup*/) { // Purpur // Purpur - TODO: Pufferfish
-@@ -1376,23 +1376,23 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1380,23 +1380,23 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                              this.tickRateManager.endTickWork();
                          }
  
@@ -182,7 +182,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
                  } finally {
                      this.endMetricsRecordingTick();
                  }
-@@ -1614,7 +1614,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1618,7 +1618,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      public void doRunTask(TickTask ticktask) { // CraftBukkit - decompile error
@@ -191,7 +191,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
          super.doRunTask(ticktask);
      }
  
-@@ -1707,7 +1707,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1712,7 +1712,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              this.autoSave();
          }
  
@@ -200,16 +200,16 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
  
          // Paper start - move executeAll() into full server tick timing
          //try (co.aikar.timings.Timing ignored = MinecraftTimings.processTasksTimer.startTiming()) { // Purpur
-@@ -1719,7 +1719,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-         long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
+@@ -1725,7 +1725,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          new com.destroystokyo.paper.event.server.ServerTickEndEvent(this.tickCount, ((double)(endTime - lastTick) / 1000000D), remaining).callEvent();
          // Paper end - Server Tick Events
+         this.server.spark.tickEnd(((double)(endTime - lastTick) / 1000000D)); // Paper - spark
 -        gameprofilerfiller.push("tallying");
 +        //gameprofilerfiller.push("tallying"); // Purpur
          long k = Util.getNanos() - i;
          int l = this.tickCount % 100;
  
-@@ -1733,7 +1733,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1739,7 +1739,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.tickTimes60s.add(this.tickCount, k);
          // Paper end - Add tick times API and /mspt command
          this.logTickMethodTime(i);
@@ -218,7 +218,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
          //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
      }
  
-@@ -1836,11 +1836,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1842,11 +1842,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          });
          // Paper end - Folia scheduler API
          io.papermc.paper.adventure.providers.ClickCallbackProviderImpl.CALLBACK_MANAGER.handleQueue(this.tickCount); // Paper
@@ -232,7 +232,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
          //Iterator iterator = this.getAllLevels().iterator(); // Paper - Throw exception on world create while being ticked; moved down
  
          // CraftBukkit start
-@@ -1882,20 +1882,20 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1888,20 +1888,20 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = worldserver.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
              worldserver.hasRidableMoveEvent = org.purpurmc.purpur.event.entity.RidableMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Purpur
  
@@ -258,7 +258,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
  
              try {
                  //worldserver.timings.doTick.startTiming(); // Spigot // Purpur
-@@ -1908,16 +1908,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1914,16 +1914,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  throw new ReportedException(crashreport);
              }
  
@@ -279,7 +279,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
          //MinecraftTimings.playerListTimer.startTiming(); // Spigot // Paper // Purpur
          this.playerList.tick();
          //MinecraftTimings.playerListTimer.stopTiming(); // Spigot // Paper // Purpur
-@@ -1925,7 +1925,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1931,7 +1931,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              GameTestTicker.SINGLETON.tick();
          }
  
@@ -288,7 +288,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
  
          //MinecraftTimings.tickablesTimer.startTiming(); // Spigot // Paper // Purpur
          for (int i = 0; i < this.tickables.size(); ++i) {
-@@ -1933,7 +1933,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1939,7 +1939,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          //MinecraftTimings.tickablesTimer.stopTiming(); // Spigot // Paper // Purpur
  
@@ -297,7 +297,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
          iterator = this.playerList.getPlayers().iterator();
  
          while (iterator.hasNext()) {
-@@ -1943,7 +1943,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1949,7 +1949,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              entityplayer.connection.resumeFlushing();
          }
  
@@ -306,7 +306,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
      }
  
      public void tickConnection() {
-@@ -1955,9 +1955,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1961,9 +1961,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      public void forceTimeSynchronization() {
@@ -318,7 +318,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
          Iterator iterator = this.getAllLevels().iterator();
  
          while (iterator.hasNext()) {
-@@ -1966,7 +1966,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1972,7 +1972,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              this.synchronizeTime(worldserver);
          }
  
@@ -327,7 +327,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
      }
  
      public boolean isLevelEnabled(Level world) {
-@@ -2919,7 +2919,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2925,7 +2925,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      // CraftBukkit end
  
      private ProfilerFiller createProfiler() {
@@ -336,7 +336,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
              this.metricsRecorder = ActiveMetricsRecorder.createStarted(new ServerMetricsSamplersProvider(Util.timeSource, this.isDedicatedServer()), Util.timeSource, Util.ioPool(), new MetricsPersister("server"), this.onMetricsRecordingStopped, (path) -> {
                  this.executeBlocking(() -> {
                      this.saveDebugReport(path.resolve("server"));
-@@ -2929,37 +2929,38 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2935,37 +2935,38 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              this.willStartRecordingMetrics = false;
          }
  
@@ -384,7 +384,7 @@ index c5afb410b893b5f60817ae2775758bfc0e510d67..13f29051f55b5628d91b4dca06051e41
      }
  
      public Path getWorldPath(LevelResource worldSavePath) {
-@@ -3012,15 +3013,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -3018,15 +3019,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      public boolean isTimeProfilerRunning() {

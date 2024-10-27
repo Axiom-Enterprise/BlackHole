@@ -5,10 +5,10 @@ Subject: [PATCH] Iron golem poppy calms anger
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index 3e5b701a6fb2b8a89a61221f3e68b65547a0717f..2718c0e5061838b01881bb231c53f4da348adce3 100644
+index b776641219febcbf6b6b76fd27ea40a907cab745..51cea31c55c7e1a00cfb966349147fc874e1736b 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-@@ -445,6 +445,7 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
+@@ -449,6 +449,7 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
      GoalKey<Drowned> DROWNED_ATTACK_VILLAGER = GoalKey.of(Drowned.class, NamespacedKey.minecraft("drowned_attack_villager"));
      GoalKey<Zombie> ZOMBIE_ATTACK_VILLAGER = GoalKey.of(Zombie.class, NamespacedKey.minecraft("zombie_attack_villager"));
      GoalKey<Wolf> AVOID_RABID_WOLF = GoalKey.of(Wolf.class, NamespacedKey.minecraft("avoid_rabid_wolf"));

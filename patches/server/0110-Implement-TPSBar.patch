@@ -17,10 +17,10 @@ index 24c2568db30f970aed1a4897cfbc7d07297047d3..5d94b71bd54f99040b76cca74964a32d
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 3f1271f8295151bfa7e18bffa0e70cee5f0bd71e..874535bf55b76ca2df482a191d66924f8f228c97 100644
+index b201fb88391a12a5bd569457cf25734d320bf2cb..4f639042a3036b3cba23052f4be66db0e1dd62b5 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1154,6 +1154,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1157,6 +1157,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.safeShutdown(waitForShutdown, false);
      }
      public void safeShutdown(boolean waitForShutdown, boolean isRestarting) {
@@ -29,10 +29,10 @@ index 3f1271f8295151bfa7e18bffa0e70cee5f0bd71e..874535bf55b76ca2df482a191d66924f
          this.hasLoggedStop = true; // Paper - Debugging
          if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper - Debugging
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index c8a575b1823c53d6caf121b77607c703a061834d..de85340fe0a0e057c527cc1fa91ae6bec558228a 100644
+index 0ccda6c505c82dd816a31eb4dfb1c7517b172a6a..9d38c3a3940b59c37efd90e4657991fe62eaeee0 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -365,6 +365,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -367,6 +367,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
                  DedicatedServer.LOGGER.info("JMX monitoring enabled");
              }
  

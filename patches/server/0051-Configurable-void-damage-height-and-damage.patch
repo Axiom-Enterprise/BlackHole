@@ -41,10 +41,10 @@ index a81a332ffb80e67d7f886295099b5cd2ae8994c5..1d18cad6c32815854ff8dace256b5902
  
          public class FrostedIce extends ConfigurationPart {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index fd37f9256c1b2d396e855e1167a1f2ca473d58d2..f80a22d79a0ecfd9fb86911252232af6af2dd8c4 100644
+index 8b92b8543eba058a86ca21024b7a95a607f753c3..b3fd8afe889b3eff5b2065de031f0852763250cd 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1265,7 +1265,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1269,7 +1269,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  LOGGER.info("*************************************************************************************");
              }
              // Paper end - Add onboarding message for initial server start
@@ -62,7 +62,7 @@ index fd37f9256c1b2d396e855e1167a1f2ca473d58d2..f80a22d79a0ecfd9fb86911252232af6
                  long i;
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 3267240e8be56a6dc152805c23269f47ab0f54df..c8a575b1823c53d6caf121b77607c703a061834d 100644
+index 7bd2c48cecfc07b95798f09d8f8b3e1e826651ea..0ccda6c505c82dd816a31eb4dfb1c7517b172a6a 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -221,6 +221,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -81,9 +81,9 @@ index 3267240e8be56a6dc152805c23269f47ab0f54df..c8a575b1823c53d6caf121b77607c703
          // Paper start - initialize global and world-defaults configuration
          this.paperConfigurations.initializeGlobalConfiguration(this.registryAccess());
          this.paperConfigurations.initializeWorldDefaultsConfiguration(this.registryAccess());
-@@ -235,15 +244,6 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         thread.start(); // Paper - Enhance console tab completions for brigadier commands; start console thread after MinecraftServer.console & PaperConfig are initialized
+@@ -237,15 +246,6 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
+         this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark
          com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
 -        // Purpur start
 -        try {

@@ -6,10 +6,10 @@ Subject: [PATCH] Add option to disable zombie aggressiveness towards villagers
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index 7c814236923319f41de9abd5cbc12f95ce95b525..3c5b1b91f066110b3535210e9bbb1b139c1783a0 100644
+index e78ac52499f82b553f64aa1c41e5b75397e72793..6299eeed974666135e63d58e064ea2e40f2c84d9 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-@@ -442,6 +442,8 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
+@@ -446,6 +446,8 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
      GoalKey<Llama> LLAMA_HAS_RIDER = GoalKey.of(Llama.class, NamespacedKey.minecraft("llama_has_rider"));
      GoalKey<Phantom> FIND_CRYSTAL = GoalKey.of(Phantom.class, NamespacedKey.minecraft("find_crystal"));
      GoalKey<Phantom> ORBIT_CRYSTAL = GoalKey.of(Phantom.class, NamespacedKey.minecraft("orbit_crystal"));

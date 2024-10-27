@@ -5,10 +5,10 @@ Subject: [PATCH] Rabid Wolf API
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index 3c5b1b91f066110b3535210e9bbb1b139c1783a0..3e5b701a6fb2b8a89a61221f3e68b65547a0717f 100644
+index 6299eeed974666135e63d58e064ea2e40f2c84d9..b776641219febcbf6b6b76fd27ea40a907cab745 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-@@ -444,6 +444,7 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
+@@ -448,6 +448,7 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
      GoalKey<Phantom> ORBIT_CRYSTAL = GoalKey.of(Phantom.class, NamespacedKey.minecraft("orbit_crystal"));
      GoalKey<Drowned> DROWNED_ATTACK_VILLAGER = GoalKey.of(Drowned.class, NamespacedKey.minecraft("drowned_attack_villager"));
      GoalKey<Zombie> ZOMBIE_ATTACK_VILLAGER = GoalKey.of(Zombie.class, NamespacedKey.minecraft("zombie_attack_villager"));

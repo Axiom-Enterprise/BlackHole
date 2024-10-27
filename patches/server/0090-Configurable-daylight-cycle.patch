@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable daylight cycle
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b4fc561e9ad4bd4489cf1c2060c6fb6586f3c085..3f1271f8295151bfa7e18bffa0e70cee5f0bd71e 100644
+index 498849b2efec782fed822dc3e6685f5e903fa828..b201fb88391a12a5bd569457cf25734d320bf2cb 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1847,7 +1847,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1853,7 +1853,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -75,7 +75,7 @@ index e47f9fb98d94b7165feba4261b0600648f7a0142..f03de2bf7a02d1eb687401002acb3a45
      public void tickCustomSpawners(boolean spawnMonsters, boolean spawnAnimals) {
          Iterator iterator = this.customSpawners.iterator();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 9031028533afbc896be2b1402b073c1bdd06dcfe..50cc76689e64b27172e1806e564c8fae43378234 100644
+index 7b8e2d1914a133da4050c04968487c5795e67f57..826c3cfe21e1ea2c59f461913f14806a3b5aade3 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -117,6 +117,13 @@ public class PurpurWorldConfig {

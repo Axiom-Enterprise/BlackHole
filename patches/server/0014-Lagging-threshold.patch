@@ -5,7 +5,7 @@ Subject: [PATCH] Lagging threshold
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 99b1c6f239a85eb82019a1bae9e91391fcb55519..a0bcb0fccadbf946e4c4bc0bbb8a1460532c636b 100644
+index 606971e6f7a3356ad99263ebf46efdf4c562616a..f702adb26c19a91b3874c773d540973296b97a97 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -329,6 +329,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -16,7 +16,7 @@ index 99b1c6f239a85eb82019a1bae9e91391fcb55519..a0bcb0fccadbf946e4c4bc0bbb8a1460
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1299,6 +1300,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1303,6 +1304,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[0] = tps1.getAverage();
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();
@@ -25,10 +25,10 @@ index 99b1c6f239a85eb82019a1bae9e91391fcb55519..a0bcb0fccadbf946e4c4bc0bbb8a1460
                  }
                  // Paper end - further improve server tick loop
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b9aee2a00b35e8f53240d5854ba05785e9688b22..febd5dc39cbe96054d21d13b14947bdf65384054 100644
+index bf757970ccfa46a1a88673016fa87a97029b42ac..3089564b9bab5eb9f1a06dd2c45737cd62795fe4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -3216,5 +3216,10 @@ public final class CraftServer implements Server {
+@@ -3220,5 +3220,10 @@ public final class CraftServer implements Server {
      public String getServerName() {
          return this.getProperties().serverName;
      }

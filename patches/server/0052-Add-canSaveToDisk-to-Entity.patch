@@ -5,7 +5,7 @@ Subject: [PATCH] Add canSaveToDisk to Entity
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index f573cbaa5bf7bc12d6e9405010bf50c13727b350..c2cc934f2599c6620b60b1b1485c743390157377 100644
+index b4732c20d5ab28cefcf14c650c9f32ea858381ed..a52ea836951da04b8ff15581c7e9323cfed53a92 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -611,6 +611,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -37,12 +37,12 @@ index a1f25efb38eff32aaabe892ddbc9a60426923686..e0f25b057b7b908a10038d9e9695a500
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/EntityStorage.java b/src/main/java/net/minecraft/world/level/chunk/storage/EntityStorage.java
-index 16ca1c8672e5f0a27f8a30498c754a81cdec5191..e37dff5dcabeca698838e1a8c9633807213443cc 100644
+index 356d010506fd21f3c752e4aa86c46c1106fdde3b..86e16dd6b905af31795fda8002f2e1f857ddcb9f 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/storage/EntityStorage.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/storage/EntityStorage.java
-@@ -95,6 +95,7 @@ public class EntityStorage implements EntityPersistentStorage<Entity> {
-             ListTag listTag = new ListTag();
-             dataList.getEntities().forEach(entity -> {
+@@ -106,6 +106,7 @@ public class EntityStorage implements EntityPersistentStorage<Entity> {
+                 }
+                 // Paper end - Entity load/save limit per chunk
                  CompoundTag compoundTagx = new CompoundTag();
 +                if (!entity.canSaveToDisk()) return; // Purpur
                  if (entity.save(compoundTagx)) {
@@ -67,7 +67,7 @@ index 89c476c740b4efb4f44c1dcd384b908626d96780..f25abee6dbf99c8d08f8e09db02b41df
          super_tick();
  
 diff --git a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
-index c0b7e0eeffdf31b88662232b07944bf3e6fa2148..75e31aee6e706f042398444f272888f9ad0fa3f4 100644
+index d7f5686fe897f3c2424b146c8e7d2862223d1eaf..58957b0bd3cd2c37fd4a6766a02e2506d9f51010 100644
 --- a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 +++ b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 @@ -38,6 +38,13 @@ public class PhantomFlames extends LlamaSpit {

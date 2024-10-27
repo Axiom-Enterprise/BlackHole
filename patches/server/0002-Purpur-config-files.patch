@@ -72,12 +72,12 @@ index 13bd145b1e8006a53c22f5dc0c78f29b540c7663..ae2d9c91afe13d07fd0de6d455b90a2a
          boolean flag1 = this.source.acceptsSuccess() && !this.silent;
          boolean flag2 = broadcastToOps && this.source.shouldInformAdmins() && !this.silent;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 7a79541db29cc47c844d617fc8a4360f61c73372..3267240e8be56a6dc152805c23269f47ab0f54df 100644
+index f8ee4b6c481d3fe15f48bf4a93696dd23e4f01a4..7bd2c48cecfc07b95798f09d8f8b3e1e826651ea 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         thread.start(); // Paper - Enhance console tab completions for brigadier commands; start console thread after MinecraftServer.console & PaperConfig are initialized
+@@ -237,6 +237,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
+         this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark
          com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
 +        // Purpur start
 +        try {
@@ -112,10 +112,10 @@ index 044985030607bc20a61666dee7dd2659ae4553b5..580ddacce37e50e392999d45fdfa9f42
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index a34e40e273a79a234c3d79b6ad360ce3a4d35ba3..910539a3c6f89d5f6cf120d36014ed33b05ac39a 100644
+index 742d4cd3b42c1f4807c8ecb27ffa6df905d7f0ac..db8f42d4b9f434641df67c6f6cc272a8820a8094 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1073,6 +1073,7 @@ public final class CraftServer implements Server {
+@@ -1075,6 +1075,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
@@ -123,7 +123,7 @@ index a34e40e273a79a234c3d79b6ad360ce3a4d35ba3..910539a3c6f89d5f6cf120d36014ed33
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -1088,6 +1089,7 @@ public final class CraftServer implements Server {
+@@ -1090,6 +1091,7 @@ public final class CraftServer implements Server {
                  }
              }
              world.spigotConfig.init(); // Spigot
@@ -131,15 +131,15 @@ index a34e40e273a79a234c3d79b6ad360ce3a4d35ba3..910539a3c6f89d5f6cf120d36014ed33
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -1104,6 +1106,7 @@ public final class CraftServer implements Server {
-         this.reloadData();
+@@ -1107,6 +1109,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          io.papermc.paper.command.PaperCommands.registerCommands(this.console); // Paper
+         this.spark.registerCommandBeforePlugins(this); // Paper - spark
 +        org.purpurmc.purpur.PurpurConfig.registerCommands(); // Purpur
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2968,6 +2971,18 @@ public final class CraftServer implements Server {
+@@ -2972,6 +2975,18 @@ public final class CraftServer implements Server {
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  

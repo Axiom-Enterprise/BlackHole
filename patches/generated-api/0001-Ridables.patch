@@ -5,10 +5,10 @@ Subject: [PATCH] Ridables
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index 02411466bdcf4ff731f01ccebb2c99942e0db878..e81f3efa9986a3199ceb8e58c93dcf48d358fd35 100644
+index e0aa5b925cbd6c2733ad70cb0722c7ab7c4d0419..db9a027260a93e1ccf5209623e44220164a5910c 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-@@ -436,6 +436,12 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
+@@ -440,6 +440,12 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
  
      GoalKey<Zombie> ZOMBIE_ATTACK_TURTLE_EGG = create("zombie_attack_turtle_egg", Zombie.class);
  

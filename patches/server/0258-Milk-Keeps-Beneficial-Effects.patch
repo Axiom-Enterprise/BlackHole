@@ -5,10 +5,10 @@ Subject: [PATCH] Milk Keeps Beneficial Effects
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 38a7bde1bc2836352a62dfe1dd3b9a60877c20e2..ade67ca5e0b203f9554b792302da576c6d419ea5 100644
+index cd2fd85178acdfffc07b72bc0419a73e1d1bef64..18648eed57dca05d89692064dcf4aa3172cd5914 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1151,6 +1151,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1149,6 +1149,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
  
              while (iterator.hasNext()) {
                  MobEffectInstance effect = iterator.next();
@@ -30,7 +30,7 @@ index ac4b31ab1297b34b5105c7bdc30ddea6d2d5e9a3..959e10586cddaae2590d2d84f5fd809d
          this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 0.5D, 0.5D));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c5028b16ee9ae1ad042bb99f5398163e28c48d12..ebc20d82351dc6b9834a3dcb3ed61d22e821a45c 100644
+index c9f1f1340f69250c82f3dfcac593274dad34645e..5d32b12a6743a40d30fd38692ad6f677b0076397 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -144,6 +144,7 @@ public class PurpurWorldConfig {

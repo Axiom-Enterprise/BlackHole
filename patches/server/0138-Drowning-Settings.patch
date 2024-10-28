@@ -5,7 +5,7 @@ Subject: [PATCH] Drowning Settings
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index a942f6b9404f72c1c0af1bfc2325ddbfd5e6f255..58d9ad22790664d425d26b53f70fbc19e3963f65 100644
+index f90e6a515a0d614f0b784c4ee37819bc14bf3af3..ed34d94af712c945a35145bcb2d9603e5e6db1da 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -3697,7 +3697,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -18,10 +18,10 @@ index a942f6b9404f72c1c0af1bfc2325ddbfd5e6f255..58d9ad22790664d425d26b53f70fbc19
  
      public int getAirSupply() {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 698340b3934a500ebd2cc50bc8818914d53af92d..64e30f4b32484da95a5eb6d5556fdc8f66727410 100644
+index 42755171ccaf9cb23494d3bd53154d934fe68a77..86b964c6f3c2b259765feb9823701d9b04cd39d8 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -493,7 +493,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -491,7 +491,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
  
                  if (flag1) {
                      this.setAirSupply(this.decreaseAirSupply(this.getAirSupply()));
@@ -30,7 +30,7 @@ index 698340b3934a500ebd2cc50bc8818914d53af92d..64e30f4b32484da95a5eb6d5556fdc8f
                          this.setAirSupply(0);
                          Vec3 vec3d = this.getDeltaMovement();
  
-@@ -505,7 +505,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -503,7 +503,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
                              this.level().addParticle(ParticleTypes.BUBBLE, this.getX() + d0, this.getY() + d2, this.getZ() + d3, vec3d.x, vec3d.y, vec3d.z);
                          }
  
@@ -40,7 +40,7 @@ index 698340b3934a500ebd2cc50bc8818914d53af92d..64e30f4b32484da95a5eb6d5556fdc8f
                  }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index dbaff51304eb9830ae2740e2274d7a5036880482..c0084a992ae74365e4da842795adee98ebd99a09 100644
+index f0e913ebf9903c54b8223e9082617a0f9a1ef5df..7115291fec1874558ab6cf3c520edeb6aef75b42 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -163,6 +163,15 @@ public class PurpurWorldConfig {

@@ -5,10 +5,10 @@ Subject: [PATCH] Add option to teleport to spawn if outside world border
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 9b7cbd9ece37d7a5f5532861c1b226ca75eb2345..76a4ccf07791a16abdc4396e8a91a93957e0b293 100644
+index cc586ae7c58ff5a662c572af47e22468fe301152..a0f3371520702a3a1643abd45bf6754336385397 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -3406,4 +3406,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3412,4 +3412,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          return (CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end
@@ -36,10 +36,10 @@ index 9b7cbd9ece37d7a5f5532861c1b226ca75eb2345..76a4ccf07791a16abdc4396e8a91a939
 +    // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index a58c8ed64eab56c4a4a0688e0731a232fb5f7269..c0ac2801321ca1813804214cc0ceecc1b557865e 100644
+index e49b530e8bdcff5aacc693f6e859c9c98fd50a19..418456bb08e00c6a9af492bda4f0600921fc5b77 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -481,6 +481,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -479,6 +479,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
                      if (d1 < 0.0D) {
                          d0 = this.level().getWorldBorder().getDamagePerBlock();
                          if (d0 > 0.0D) {

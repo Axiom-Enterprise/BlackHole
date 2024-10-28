@@ -5,10 +5,10 @@ Subject: [PATCH] Lagging threshold
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 606971e6f7a3356ad99263ebf46efdf4c562616a..f702adb26c19a91b3874c773d540973296b97a97 100644
+index ea9947022e036a3e32eca7325bb71380c58533f9..941463daa771010031765818fcec4fe541b96659 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -329,6 +329,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -328,6 +328,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      // Spigot end
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations; // Paper - add paper configuration files
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
@@ -16,7 +16,7 @@ index 606971e6f7a3356ad99263ebf46efdf4c562616a..f702adb26c19a91b3874c773d5409732
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1303,6 +1304,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1302,6 +1303,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[0] = tps1.getAverage();
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();
@@ -25,10 +25,10 @@ index 606971e6f7a3356ad99263ebf46efdf4c562616a..f702adb26c19a91b3874c773d5409732
                  }
                  // Paper end - further improve server tick loop
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index bf757970ccfa46a1a88673016fa87a97029b42ac..3089564b9bab5eb9f1a06dd2c45737cd62795fe4 100644
+index 2f81978ec902f87da751debf5f6991ae26c9d1b6..db68e166c7d320d843112dba5a689654be88c278 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -3220,5 +3220,10 @@ public final class CraftServer implements Server {
+@@ -3257,5 +3257,10 @@ public final class CraftServer implements Server {
      public String getServerName() {
          return this.getProperties().serverName;
      }

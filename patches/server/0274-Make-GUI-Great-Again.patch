@@ -96,10 +96,10 @@ index 0000000000000000000000000000000000000000..15a226e3854d731f7724025ea3459c8a
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 71420de8a37b004dfa3940abb537321cc82e1993..b96c331ec8c196b2a08dc2b04db475426805ba6a 100644
+index 3ddc5f213954f181e0e3b8d44808ea12765e8e55..e9ad8e2ac267c46df80e884308df8bb12d0deeff 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -113,6 +113,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -111,6 +111,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
                      return;
                  }
                  // Paper start - Use TerminalConsoleAppender

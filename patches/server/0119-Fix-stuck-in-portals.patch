@@ -5,10 +5,10 @@ Subject: [PATCH] Fix stuck in portals
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index d1a4eca112ad8698aa9025cec1b38bca01805e3f..c64b2386f35c55e3484df2d193f712a1728dc745 100644
+index a3d163500999dae1552da9cccea06d58f735c9cf..ddce8eb3ac5962c0e93c879ede1bbb34f7b72166 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1680,6 +1680,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1686,6 +1686,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
                  worldserver1.removePlayerImmediately(this, Entity.RemovalReason.CHANGED_DIMENSION);
                  this.unsetRemoved();
                  // CraftBukkit end
@@ -17,7 +17,7 @@ index d1a4eca112ad8698aa9025cec1b38bca01805e3f..c64b2386f35c55e3484df2d193f712a1
                  this.connection.internalTeleport(PositionMoveRotation.of(teleportTarget), teleportTarget.relatives()); // CraftBukkit - use internal teleport without event
                  this.connection.resetPosition();
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 89d4d749336b2947b0ac12d7df140c0240f67636..a942f6b9404f72c1c0af1bfc2325ddbfd5e6f255 100644
+index ba080a23e88d6eafc2af97acef415c736eb1cc28..f90e6a515a0d614f0b784c4ee37819bc14bf3af3 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -3470,14 +3470,17 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -39,7 +39,7 @@ index 89d4d749336b2947b0ac12d7df140c0240f67636..a942f6b9404f72c1c0af1bfc2325ddbf
              } else {
                  this.portalProcess = new PortalProcessor(portal, pos.immutable());
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 63b38c9c0862a5bd00468024015e62d0485b2619..b700c52f74cbae8f99bc721b9b594845a1c1ee6d 100644
+index b1c53b3f490ee39184ce868bdb38eaa69e35e7f2..f9fde0c0cdc14cf5427df3c8ecfa8d407233cdc3 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -325,6 +325,7 @@ public class PurpurWorldConfig {

@@ -5,10 +5,10 @@ Subject: [PATCH] Minecart settings and WASD controls
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index f0a2c618fb2040282406af90ff0d2ac5a63b0c35..9b7cbd9ece37d7a5f5532861c1b226ca75eb2345 100644
+index 3403d74ec3ef30ec110031f3972a8482eea0bf41..cc586ae7c58ff5a662c572af47e22468fe301152 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1435,6 +1435,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1441,6 +1441,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          if (this.isInvulnerableTo(world, source)) {
              return false;
          } else {

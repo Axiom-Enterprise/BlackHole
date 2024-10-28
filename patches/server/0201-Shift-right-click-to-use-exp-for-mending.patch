@@ -5,7 +5,7 @@ Subject: [PATCH] Shift right click to use exp for mending
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
-index 8ad07b6939831f57469bb6ad7c78b2c7e3b17fea..0f3dbe848ad923733e356c344a00667c6da0ab83 100644
+index 7315e604a2f9cb068eb5bbca744e44eeabac09c9..88eb3774f688bcff383efa7f113bd0b1b97d8a11 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
 @@ -524,6 +524,7 @@ public class ServerPlayerGameMode {
@@ -36,10 +36,10 @@ index 8ad07b6939831f57469bb6ad7c78b2c7e3b17fea..0f3dbe848ad923733e356c344a00667c
 +    // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index c3fd22396eaf85ac4d7a0aeba67b5c26a748be4c..8da850ab34e576caf89681171124f617f57d00a7 100644
+index e3a67829d6d3e2594387e7e02ad619dc373f305a..ec0849f3b26a8571323d1aa2be5357d00e45a63a 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2020,6 +2020,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2092,6 +2092,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
              boolean cancelled;
              if (movingobjectposition == null || movingobjectposition.getType() != HitResult.Type.BLOCK) {
@@ -48,7 +48,7 @@ index c3fd22396eaf85ac4d7a0aeba67b5c26a748be4c..8da850ab34e576caf89681171124f617
                  cancelled = event.useItemInHand() == Event.Result.DENY;
              } else {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 0a4626ea59c854d072972e78f06df3808797503f..025982aac35116320ff41203645e606504640940 100644
+index feabdb3fec0a8bb16cfe09e5f857d7b86211b234..7f9b948191a2160b8e1b11ff04468f47bf1a498e 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -402,6 +402,7 @@ public class PurpurWorldConfig {

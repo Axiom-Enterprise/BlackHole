@@ -5,10 +5,10 @@ Subject: [PATCH] Debug Marker API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 676cddfc8ae317ed750701af06964a22a0c03e10..b3667b1699f6ec23697a65cd8c0cb18b07e6675f 100644
+index b08482b4e9f5d62882512eada787e876c4c21746..3a71f8fe73a2309f57cb06dedf204d3e37b46b03 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2907,5 +2907,89 @@ public final class Bukkit {
+@@ -2959,5 +2959,89 @@ public final class Bukkit {
      public static void removeFuel(@NotNull Material material) {
          server.removeFuel(material);
      }
@@ -99,10 +99,10 @@ index 676cddfc8ae317ed750701af06964a22a0c03e10..b3667b1699f6ec23697a65cd8c0cb18b
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index dd90bdfdf82073f87a9dfda92f743b6682d4a1b8..bda870841507e3ce728064e446cf92caa2d803a1 100644
+index 5c0dbd534aaab560a4f327f48e1359de0bf7d3c9..eb29794f6ca2efc9cde4dd1685822f9a3a73f3b9 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2545,5 +2545,75 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2596,5 +2596,75 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       * @param material The material that will no longer be a fuel
       */
      public void removeFuel(@NotNull Material material);

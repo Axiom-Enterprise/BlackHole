@@ -42,10 +42,10 @@ index 5677dc97ed83652f261100cf391883cfac7d16fe..4637d062b6a4c4d6de2ef54ec3cfdeb4
              EntityBreedEvent entityBreedEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityBreedEvent(entityageable, this, other, breeder, this.breedItem, experience);
              if (entityBreedEvent.isCancelled()) {
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 82025f6dd73366a259418c2039638a6dcc6d4fc1..85ae5c9c873dab19f897fe50b70c62e3c094bd42 100644
+index 6847be7f95dc37e6259d6903798e6db20702cea8..c2aff2f03451b97f1ec6bd4ee987bb729177320a 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -183,6 +183,49 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -182,6 +182,49 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
      public final Map<ServerExplosion.CacheKey, Float> explosionDensityCache = new HashMap<>(); // Paper - Optimize explosions
      public java.util.ArrayDeque<net.minecraft.world.level.block.RedstoneTorchBlock.Toggle> redstoneUpdateInfos; // Paper - Faster redstone torch rapid clock removal; Move from Map in BlockRedstoneTorch to here
  
@@ -95,7 +95,7 @@ index 82025f6dd73366a259418c2039638a6dcc6d4fc1..85ae5c9c873dab19f897fe50b70c62e3
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -845,6 +888,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -844,6 +887,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = paperWorldConfigCreator.apply(this.spigotConfig); // Paper - create paper world config
          this.purpurConfig = new org.purpurmc.purpur.PurpurWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), env); // Purpur
@@ -104,7 +104,7 @@ index 82025f6dd73366a259418c2039638a6dcc6d4fc1..85ae5c9c873dab19f897fe50b70c62e3
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 0e05ebe9ee52033d86373bd2ad1c6f12503b3128..c02b8212cb56912e0eb244f47aa094c7879be89b 100644
+index c2d7b2787704614d2e3a3a8512a994e5434c093f..2640c1f0079f7f340e57d8f9e75f04185da064e7 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -113,6 +113,7 @@ public class PurpurWorldConfig {

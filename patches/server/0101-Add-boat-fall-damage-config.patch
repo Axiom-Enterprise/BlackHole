@@ -5,10 +5,10 @@ Subject: [PATCH] Add boat fall damage config
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5f86f0b46e91ac41820931a9d64a7240d3ddd8d4..14640ed95dbbf99150ef1f41ff1046c2c034e552 100644
+index a0f3371520702a3a1643abd45bf6754336385397..0823fd91cbee711847c4a3d06f46c7d3b694833c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1435,7 +1435,16 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1441,7 +1441,16 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          if (this.isInvulnerableTo(world, source)) {
              return false;
          } else {
@@ -27,7 +27,7 @@ index 5f86f0b46e91ac41820931a9d64a7240d3ddd8d4..14640ed95dbbf99150ef1f41ff1046c2
  
              if (!flag && this.spawnInvulnerableTime > 0 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a5f51c2dff32452ad5dda0623dda90da358fe322..d5a546191014dc1cc9ed8b314c67983b0401d37b 100644
+index 0ac20878dfa363c3a28b784e3cba8cba8874a105..13107decd92901bae038ca5bfa69a83adabd3e3d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -113,6 +113,7 @@ public class PurpurWorldConfig {

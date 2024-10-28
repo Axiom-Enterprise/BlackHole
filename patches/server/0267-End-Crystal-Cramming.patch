@@ -17,7 +17,7 @@ index 305c3350116f656c3d0e6134e4d8023eac50f3ad..b1db1e92de3a88a0f0e0fdb42b0bf973
  
      // Purpur start
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c6d307c69afd9fc58c4bde7f8b755d96d9bcf9d6..91d4c39e72296147bc095c1fee943c63082cf848 100644
+index d4bb4e5d6caa7848aeec284ed19b53bf34bfd5cf..2dc5bf6ae677d6b78953f04fcfa2a937b9adde88 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -913,6 +913,7 @@ public class PurpurWorldConfig {

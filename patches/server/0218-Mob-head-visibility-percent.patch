@@ -5,10 +5,10 @@ Subject: [PATCH] Mob head visibility percent
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index fcb024cc70c750887e6d6ce19692385ab5ac9d01..090f259115573f0ed2fb7ed79d191b3f09ac27cd 100644
+index 125b55068d017b96aa8410bf1936e71b593ce43f..c09ef8271f45e62629bcdca1b3885334fdb79211 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1071,9 +1071,20 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1069,9 +1069,20 @@ public abstract class LivingEntity extends Entity implements Attackable {
              ItemStack itemstack = this.getItemBySlot(EquipmentSlot.HEAD);
              EntityType<?> entitytypes = entity.getType();
  
@@ -32,7 +32,7 @@ index fcb024cc70c750887e6d6ce19692385ab5ac9d01..090f259115573f0ed2fb7ed79d191b3f
              // Purpur start
              if (entity instanceof LivingEntity entityliving) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 16fecadf20523f2a2bf72082bd558e59805e02ca..8e9c7d1d913e3ed5015f4016c96e56942ce07f5e 100644
+index eaa909e9d1923fac9cb7ab6de228df48519c7fcf..a4f0aba3f0ecf59fa915ef3b6c537e3eb8ab18fc 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1377,6 +1377,7 @@ public class PurpurWorldConfig {

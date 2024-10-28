@@ -5,10 +5,10 @@ Subject: [PATCH] Make lightning rod range configurable
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 51494dc0cca0819ee8df61144e70450facbba727..8d6a3309b6d20e51b056fbf030f27aa4f92640d7 100644
+index bd2001cbc8aac2f00f643f1b98a42c4a0d0ec720..3f43f52a977b4e7908021dd820fb1f818a4614a9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1069,7 +1069,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -1065,7 +1065,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              return holder.is(PoiTypes.LIGHTNING_ROD);
          }, (blockposition1) -> {
              return blockposition1.getY() == this.getHeight(Heightmap.Types.WORLD_SURFACE, blockposition1.getX(), blockposition1.getZ()) - 1;

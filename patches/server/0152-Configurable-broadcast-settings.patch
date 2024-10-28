@@ -17,10 +17,10 @@ index 0a16aa193ef24aa8f1716f9e089b8027fa3c0a3c..1e85c9318ede93b8e9fe548a8945324b
                          // Paper end
                      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index a706fd393962973af8f0a88edd98deea235b8404..a3074c439b3255d2cfc174dbc7c5b01ef418a602 100644
+index 813192b363dc59e2afa2289414726edf40123370..2300d1e1b283efb897afba4cccd1d697400677a1 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1335,6 +1335,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1341,6 +1341,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
              }));
              PlayerTeam scoreboardteam = this.getTeam();
  

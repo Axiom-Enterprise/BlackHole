@@ -5,10 +5,10 @@ Subject: [PATCH] Config for skipping night
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8dd211d20a695164c2086c03c8b0237ba109fda4..29b8a57477032c85bc498e90af4bfb739926d03c 100644
+index 7715ecbe45e82079f5e2b2ad2bdf15a58f9a529c..bd2001cbc8aac2f00f643f1b98a42c4a0d0ec720 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -731,7 +731,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -741,7 +741,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
          long j;
  
@@ -18,7 +18,7 @@ index 8dd211d20a695164c2086c03c8b0237ba109fda4..29b8a57477032c85bc498e90af4bfb73
              j = this.levelData.getDayTime() + 24000L;
              TimeSkipEvent event = new TimeSkipEvent(this.getWorld(), TimeSkipEvent.SkipReason.NIGHT_SKIP, (j - j % 24000L) - this.getDayTime());
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 3740c1390debbc660ecf31dee0dc7e58096bf1ba..c0341b91afa7eda863caec0395db2129dba59450 100644
+index fcadb8cd76d29c121c464ec8e712227034e770f6..25ab893d5c0e1fbe4260e980ba1f440f13b27bd3 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -347,6 +347,7 @@ public class PurpurWorldConfig {

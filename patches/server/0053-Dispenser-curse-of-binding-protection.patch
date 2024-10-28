@@ -5,7 +5,7 @@ Subject: [PATCH] Dispenser curse of binding protection
 
 
 diff --git a/src/main/java/net/minecraft/core/dispenser/EquipmentDispenseItemBehavior.java b/src/main/java/net/minecraft/core/dispenser/EquipmentDispenseItemBehavior.java
-index 036dd3b15dfee4cd079710eba1255d2bdb4d7220..3fb385329d20ab26ea48fa33f35295115914e4a5 100644
+index a43ea83dbbd5946096cdde31af766674bda6c3be..8077334c24c3bf17404f24a8c5f22134ea01274d 100644
 --- a/src/main/java/net/minecraft/core/dispenser/EquipmentDispenseItemBehavior.java
 +++ b/src/main/java/net/minecraft/core/dispenser/EquipmentDispenseItemBehavior.java
 @@ -41,7 +41,7 @@ public class EquipmentDispenseItemBehavior extends DefaultDispenseItemBehavior {
@@ -18,10 +18,10 @@ index 036dd3b15dfee4cd079710eba1255d2bdb4d7220..3fb385329d20ab26ea48fa33f3529511
  
              // CraftBukkit start
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 8ebd43c8088523396a4f46b8b0083f91e2b55e27..2e955dc3299062c2564eac0de43d5f1b78f5897c 100644
+index 4fc0aa48e4e0e291ba3f8291a2dfa671fbe553e5..bc21cac3af01dd2cca1d4431a1b651e8c71accae 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -4653,7 +4653,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -4669,7 +4669,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
              if (equippable != null && equippable.dispensable()) {
                  EquipmentSlot enumitemslot = equippable.slot();
  
@@ -30,7 +30,7 @@ index 8ebd43c8088523396a4f46b8b0083f91e2b55e27..2e955dc3299062c2564eac0de43d5f1b
              } else {
                  return false;
              }
-@@ -4678,6 +4678,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -4694,6 +4694,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
          return equippable == null ? slot == EquipmentSlot.MAINHAND && this.canUseSlot(EquipmentSlot.MAINHAND) : slot == equippable.slot() && this.canUseSlot(equippable.slot()) && equippable.canBeEquippedBy(this.getType());
      }
  
@@ -44,7 +44,7 @@ index 8ebd43c8088523396a4f46b8b0083f91e2b55e27..2e955dc3299062c2564eac0de43d5f1b
          return slot != EquipmentSlot.HEAD && slot != EquipmentSlot.MAINHAND && slot != EquipmentSlot.OFFHAND ? SlotAccess.forEquipmentSlot(entity, slot, (itemstack) -> {
              return itemstack.isEmpty() || entity.getEquipmentSlotForItem(itemstack) == slot;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 364321ea60e256edb10fea8efe4bfb3cdf33f3fb..4b3727f9c4e4f1de2745e4984ad660b6a0ac7797 100644
+index cd90555354713be9a26c0a0abed43535a61281e8..680a89bff31861c25d76bf7ab59d87232228b34c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -219,6 +219,11 @@ public class PurpurWorldConfig {

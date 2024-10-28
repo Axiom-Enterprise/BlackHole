@@ -17,10 +17,10 @@ index 5d94b71bd54f99040b76cca74964a32d55339767..0090243f7e1a966534e489cebb88d71d
          }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 874535bf55b76ca2df482a191d66924f8f228c97..e1cabc6af43e4342e8215a774483d5cd0db0aba8 100644
+index 3c28590feaec355d94b1a8c7228c3b62e9d815ad..ec8af36c230e36a59fe8a02a868fb36a8212cd8b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -315,6 +315,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -314,6 +314,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public OptionSet options;
      public org.bukkit.command.ConsoleCommandSender console;
      public static int currentTick; // Paper - improve tick loop

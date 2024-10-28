@@ -6,10 +6,10 @@ Subject: [PATCH] Dont run with scissors!
 inspired by https://modrinth.com/mod/dont-run-with-scissors
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index d61c4cc0a4f957ef4bf2f7124644c63380e28473..c3fd22396eaf85ac4d7a0aeba67b5c26a748be4c 100644
+index a29a06a11fd44219742ee621fcd090e9cc710012..e3a67829d6d3e2594387e7e02ad619dc373f305a 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1621,6 +1621,13 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1666,6 +1666,13 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                                      this.player.tryResetCurrentImpulseContext();
                                  }
  
@@ -23,7 +23,7 @@ index d61c4cc0a4f957ef4bf2f7124644c63380e28473..c3fd22396eaf85ac4d7a0aeba67b5c26
                                  this.player.checkMovementStatistics(this.player.getX() - d3, this.player.getY() - d4, this.player.getZ() - d5);
                                  this.lastGoodX = this.player.getX();
                                  this.lastGoodY = this.player.getY();
-@@ -1660,6 +1667,14 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1705,6 +1712,14 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
          }
      }
  
@@ -35,9 +35,9 @@ index d61c4cc0a4f957ef4bf2f7124644c63380e28473..c3fd22396eaf85ac4d7a0aeba67b5c26
 +    }
 +    // Purpur end
 +
-     private boolean isPlayerCollidingWithAnythingNew(LevelReader world, AABB box, double newX, double newY, double newZ) {
-         AABB axisalignedbb1 = this.player.getBoundingBox().move(newX - this.player.getX(), newY - this.player.getY(), newZ - this.player.getZ());
-         Iterable<VoxelShape> iterable = world.getCollisions(this.player, axisalignedbb1.deflate(9.999999747378752E-6D));
+     // Paper start - optimise out extra getCubes
+     private boolean hasNewCollision(final ServerLevel world, final Entity entity, final AABB oldBox, final AABB newBox) {
+         final List<AABB> collisionsBB = new java.util.ArrayList<>();
 diff --git a/src/main/java/net/minecraft/world/damagesource/CombatTracker.java b/src/main/java/net/minecraft/world/damagesource/CombatTracker.java
 index 99a7e9eb75231c15bd8bb24fbb4e296bc9fdedff..a375d40ec6365ba8704ba3ece22dd5b2de9857b5 100644
 --- a/src/main/java/net/minecraft/world/damagesource/CombatTracker.java

@@ -17,10 +17,10 @@ index 24c2568db30f970aed1a4897cfbc7d07297047d3..5d94b71bd54f99040b76cca74964a32d
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b201fb88391a12a5bd569457cf25734d320bf2cb..4f639042a3036b3cba23052f4be66db0e1dd62b5 100644
+index 3c901f5597e4bb2a77168eb5ad1d14e13142983f..3c28590feaec355d94b1a8c7228c3b62e9d815ad 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1157,6 +1157,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1156,6 +1156,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.safeShutdown(waitForShutdown, false);
      }
      public void safeShutdown(boolean waitForShutdown, boolean isRestarting) {
@@ -29,10 +29,10 @@ index b201fb88391a12a5bd569457cf25734d320bf2cb..4f639042a3036b3cba23052f4be66db0
          this.hasLoggedStop = true; // Paper - Debugging
          if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper - Debugging
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 0ccda6c505c82dd816a31eb4dfb1c7517b172a6a..9d38c3a3940b59c37efd90e4657991fe62eaeee0 100644
+index de6f842349dee273eb84b2f12ea6a41d43f17fb1..94d292b97ca2404fa1ae8ceec7c4854091e2842d 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -367,6 +367,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -365,6 +365,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
                  DedicatedServer.LOGGER.info("JMX monitoring enabled");
              }
  
@@ -41,10 +41,10 @@ index 0ccda6c505c82dd816a31eb4dfb1c7517b172a6a..9d38c3a3940b59c37efd90e4657991fe
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 60641d8810514aca09b2854e9254b18c07df9ce6..f375f32a323d6f4a540da566fe25b47cc6658791 100644
+index 0823fd91cbee711847c4a3d06f46c7d3b694833c..a3d163500999dae1552da9cccea06d58f735c9cf 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -324,6 +324,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -330,6 +330,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public @Nullable String clientBrandName = null; // Paper - Brand support
      public org.bukkit.event.player.PlayerQuitEvent.QuitReason quitReason = null; // Paper - Add API for quit reason; there are a lot of changes to do if we change all methods leading to the event
      public boolean purpurClient = false; // Purpur
@@ -52,7 +52,7 @@ index 60641d8810514aca09b2854e9254b18c07df9ce6..f375f32a323d6f4a540da566fe25b47c
  
      // Paper start - rewrite chunk system
      private ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -686,6 +687,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -692,6 +693,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
              });
          }
  
@@ -60,7 +60,7 @@ index 60641d8810514aca09b2854e9254b18c07df9ce6..f375f32a323d6f4a540da566fe25b47c
      }
  
      @Override
-@@ -738,6 +740,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -744,6 +746,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          }
  
          this.saveEnderPearls(nbt);
@@ -68,7 +68,7 @@ index 60641d8810514aca09b2854e9254b18c07df9ce6..f375f32a323d6f4a540da566fe25b47c
      }
  
      private void saveParentVehicle(CompoundTag nbt) {
-@@ -3436,5 +3439,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3442,5 +3445,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
              this.server.getPlayerList().respawn(this, true, RemovalReason.KILLED, org.bukkit.event.player.PlayerRespawnEvent.RespawnReason.DEATH, to);
          }
      }
@@ -83,10 +83,10 @@ index 60641d8810514aca09b2854e9254b18c07df9ce6..f375f32a323d6f4a540da566fe25b47c
      // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index ca11a05c0ba7f963c7d848a11557fd81baf6b34f..78a061dc5d7141ce4e4efca5a478e559b1d935c0 100644
+index ca793a3275cbfe46cf95813020a991993d356aca..c41cd92990db562ddd204c8eb8a03e803ed747ff 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -420,6 +420,7 @@ public abstract class PlayerList {
+@@ -419,6 +419,7 @@ public abstract class PlayerList {
              scoreboard.addPlayerToTeam(player.getScoreboardName(), collideRuleTeam);
          }
          // Paper end - Configurable player collision

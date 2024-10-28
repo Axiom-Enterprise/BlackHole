@@ -254,10 +254,10 @@ index 4e56018b64d11f76c8da43fd8f85c6de72204e36..9607675e6c5bff2183c4420d11fc63ee
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-index 5fc88196b2c873427c817e9802ad3b12009f265f..4178f48c1614af8e6796cf07fd018b9c6e67dcd0 100644
+index 6fef86e47e37eab6721cfd67d494afb25a2ded68..c914e1e13c4f64f24efa5f825e58efb69632bfa6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
 +++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-@@ -492,7 +492,7 @@ public class CraftScheduler implements BukkitScheduler {
+@@ -491,7 +491,7 @@ public class CraftScheduler implements BukkitScheduler {
                  this.parsePending();
              } else {
                  // this.debugTail = this.debugTail.setNext(new CraftAsyncDebugger(this.currentTick + CraftScheduler.RECENT_TICKS, task.getOwner(), task.getTaskClass())); // Paper
@@ -267,11 +267,11 @@ index 5fc88196b2c873427c817e9802ad3b12009f265f..4178f48c1614af8e6796cf07fd018b9c
                  // (async tasks must live with race-conditions if they attempt to cancel between these few lines of code)
              }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index bc53c263682ada9eebcaccc13e741844d310a7a6..8a96f77d16eb0c977fd6212bece419ef4860e95e 100644
+index 05a62b2cf9ca8e0141274bd7f44ef8fb703466d1..fcb5bc76955edd773488dd3e476ea5e6fd09ca9b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -489,7 +489,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
- 
+@@ -494,7 +494,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+     // Paper start
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
 -        return new com.destroystokyo.paper.PaperVersionFetcher();

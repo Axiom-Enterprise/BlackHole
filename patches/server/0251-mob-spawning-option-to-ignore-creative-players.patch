@@ -5,10 +5,10 @@ Subject: [PATCH] mob spawning option to ignore creative players
 
 
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index 4bdfba6dbe88dbc7ce901b235a524ba28027f203..3741c0bb2e7c67cd2b0600f1e8ada38eda8698f8 100644
+index fa47d14e17d9e7d1b62de7990c875245c3a445a3..7f936a7ba994ccb51c17168c798b42dde0877a5d 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-@@ -230,7 +230,7 @@ public final class NaturalSpawner {
+@@ -280,7 +280,7 @@ public final class NaturalSpawner {
                              blockposition_mutableblockposition.set(l, i, i1);
                              double d0 = (double) l + 0.5D;
                              double d1 = (double) i1 + 0.5D;
@@ -18,7 +18,7 @@ index 4bdfba6dbe88dbc7ce901b235a524ba28027f203..3741c0bb2e7c67cd2b0600f1e8ada38e
                              if (entityhuman != null) {
                                  double d2 = entityhuman.distanceToSqr(d0, (double) i, d1);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a647855f277d79d4ebbf370cff0d15991acbb308..6afa859dd0d18d57ba438e34a73b512a137d7cb0 100644
+index e15e7b977a91cb8a972f057b321a3382362d884c..a793533817368077d70d120f8f443b4a87b70e64 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -376,6 +376,7 @@ public class PurpurWorldConfig {

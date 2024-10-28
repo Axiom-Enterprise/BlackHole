@@ -5,10 +5,10 @@ Subject: [PATCH] Config to ignore nearby mobs when sleeping
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index c64b2386f35c55e3484df2d193f712a1728dc745..8d4e50aade704403cd713506268a1711080f72a3 100644
+index ddce8eb3ac5962c0e93c879ede1bbb34f7b72166..813192b363dc59e2afa2289414726edf40123370 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1791,7 +1791,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1797,7 +1797,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
                              return entitymonster.isPreventingPlayerRest(this.serverLevel(), this);
                          });
  
@@ -18,7 +18,7 @@ index c64b2386f35c55e3484df2d193f712a1728dc745..8d4e50aade704403cd713506268a1711
                          }
                      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 428fd6150856e3f247c37779891c5ccc92dddcc1..f032d27542b26797126a9b060fa52237349dbca5 100644
+index a53b1209743fc1944764436255bb1c8a195303d1..c3343c0ffcee58b8dffeef4f6ff14be2701df443 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -345,6 +345,7 @@ public class PurpurWorldConfig {

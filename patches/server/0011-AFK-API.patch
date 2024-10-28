@@ -5,10 +5,10 @@ Subject: [PATCH] AFK API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index d7b828937e58eea5f095863129a0844f25a25336..f0a2c618fb2040282406af90ff0d2ac5a63b0c35 100644
+index b345e0eb7145b5a3800dc9c73508e53d83ea0171..3403d74ec3ef30ec110031f3972a8482eea0bf41 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2637,8 +2637,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -2643,8 +2643,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -78,7 +78,7 @@ index d7b828937e58eea5f095863129a0844f25a25336..f0a2c618fb2040282406af90ff0d2ac5
          return this.stats;
      }
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 352ade7acc9052e4d74ef840e085a86f24c66c00..0ffad0fee921ac302f31894766594921751fbff9 100644
+index e670a3d04fca7bea2bc732d10e7865b76e396586..c65c924f739b1c2ed328c936ec1854e0bc1d5b84 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -342,6 +342,20 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -115,7 +115,7 @@ index 352ade7acc9052e4d74ef840e085a86f24c66c00..0ffad0fee921ac302f31894766594921
              this.player.resetLastActionTime(); // CraftBukkit - SPIGOT-854
              this.disconnect((Component) Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING); // Paper - kick event cause
          }
-@@ -654,6 +674,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -663,6 +683,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                      this.lastYaw = to.getYaw();
                      this.lastPitch = to.getPitch();
  
@@ -124,7 +124,7 @@ index 352ade7acc9052e4d74ef840e085a86f24c66c00..0ffad0fee921ac302f31894766594921
                      Location oldTo = to.clone();
                      PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
                      this.cserver.getPluginManager().callEvent(event);
-@@ -1465,7 +1487,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1500,7 +1522,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                                      movedWrongly = true;
                                      if (event.getLogWarning())
                                  // Paper end
@@ -133,7 +133,7 @@ index 352ade7acc9052e4d74ef840e085a86f24c66c00..0ffad0fee921ac302f31894766594921
                                  } // Paper
                              }
  
-@@ -1523,6 +1545,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1568,6 +1590,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                                      this.lastYaw = to.getYaw();
                                      this.lastPitch = to.getPitch();
  
@@ -317,10 +317,10 @@ index 65cbd35892ab48fccda9bccf2b4dd66be5c84a0d..42bff6f2d864a31dcb1c0087a4e0c902
      public boolean untamedTamablesAreRidable = true;
      public boolean useNightVisionWhenRiding = false;
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index e4252c5a6aec351a4a0a8be372d3b63f7fb771e7..bcb591ba54522ed70ca051429363f3a5517460af 100644
+index 6ffe86aa887ebf96f21114a468e16376c2449911..64cf620bde9807d77658c9f17015445070a3e634 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -201,6 +201,8 @@ public class ActivationRange
+@@ -198,6 +198,8 @@ public class ActivationRange
                  continue;
              }
  

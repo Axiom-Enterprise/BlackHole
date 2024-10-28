@@ -25,10 +25,10 @@ index d644d02b039ca918391a32a04549f7a34386b3f9..42b259c3878bd34b8e7cb768887fd145
                              world.notifyAndUpdatePhysics(newblockposition, null, oldBlock, block, world.getBlockState(newblockposition), updateFlag, 512); // send null chunk as chunk.k() returns false by this point
                          }
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index fa19720fbb911842db42a4eb0ccf8406cb27c137..135e59e549cbcb3806574f964947b6ff3ea517d1 100644
+index b6d6c2cb9b227a17fb4ce42bc75f92206fbea043..c35513d05bd70e296a0e5ffe92c36016a13173b4 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -440,7 +440,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -433,7 +433,17 @@ public class Block extends BlockBehaviour implements ItemLike {
          } // Paper - fix drops not preventing stats/food exhaustion
      }
  

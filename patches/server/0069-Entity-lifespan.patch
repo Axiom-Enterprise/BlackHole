@@ -5,10 +5,10 @@ Subject: [PATCH] Entity lifespan
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 62fdb1e8b84facec3ce69d5001e7d626d74a37ce..8c1f21892a96ed1cf1ef8b76ff8a52f1a8caca6e 100644
+index fc3eda4b692482d95aade888e624ba0343a541f8..d6ba87cd80abe6126a21df0aafc208a8a2260322 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2783,6 +2783,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2855,6 +2855,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
              AABB axisalignedbb = entity.getBoundingBox();
  
              if (this.player.canInteractWithEntity(axisalignedbb, io.papermc.paper.configuration.GlobalConfiguration.get().misc.clientInteractionLeniencyDistance.or(3.0D))) { // Paper - configurable lenience value for interact range
@@ -17,7 +17,7 @@ index 62fdb1e8b84facec3ce69d5001e7d626d74a37ce..8c1f21892a96ed1cf1ef8b76ff8a52f1
                      private void performInteraction(InteractionHand enumhand, ServerGamePacketListenerImpl.EntityInteraction playerconnection_a, PlayerInteractEntityEvent event) { // CraftBukkit
                          ItemStack itemstack = ServerGamePacketListenerImpl.this.player.getItemInHand(enumhand);
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index cd456edd2caf087d1dbeb97d3373bd2bf9112fc2..17e6e4a858d3a2332c14d2860d2f5d1e87e1c629 100644
+index bc2380a71aa65c40f326c1f6bdf15ee25346ffee..8ce316292850353231e529f75630d3fde290a161 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -148,6 +148,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -94,7 +94,7 @@ index cd456edd2caf087d1dbeb97d3373bd2bf9112fc2..17e6e4a858d3a2332c14d2860d2f5d1e
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a168eb5c1f08ad4def8421e298512c532ec06988..8832a5491303d4189155ec56f81e37f99efaa28e 100644
+index cc890a4ac7cb6fc24f5903538d0f002e1df09d37..1bf4fa7b9652347a48010a0713190aec9a5fc166 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -118,6 +118,11 @@ public class PurpurWorldConfig {

@@ -18,7 +18,7 @@ index daae7fd6e0148cfba8e359d990748a0c83a3376e..0e06b1bcd906e92c083dc74d56d6d0a2
          return random.nextFloat() < f1 ? this.getNext(state) : Optional.empty();
      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 62beabc316c3faba3b1c4d471fb33e33cd4b1a3d..84efc4ae58a3a33ac15282c462df72982248dac3 100644
+index 9511547970d14bc779ba5afc3675439137c14ae6..ac77bcccd70be1a83e4125ba848eb8e6d676406a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -145,6 +145,7 @@ public class PurpurWorldConfig {

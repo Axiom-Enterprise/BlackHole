@@ -5,7 +5,7 @@ Subject: [PATCH] Squid EAR immunity
 
 
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 20242b58cc3af8d58c51919d637ec258df308a60..5f686584f2f9205c3594daa52c4b3daf32f8e57b 100644
+index 0111b9e3484df5958ed5dee55a9b510ef4a1f35e..c0cb7399a1a8753bd5a5c390cb6f334d5aaf3907 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1571,6 +1571,7 @@ public class PurpurWorldConfig {
@@ -25,10 +25,10 @@ index 20242b58cc3af8d58c51919d637ec258df308a60..5f686584f2f9205c3594daa52c4b3daf
  
      public boolean spiderRidable = false;
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index bcb591ba54522ed70ca051429363f3a5517460af..ca05c37dad39808683429276d85d970b7cc63f82 100644
+index 64cf620bde9807d77658c9f17015445070a3e634..813b8aeb7bf39e03346fd9ca63c4c6498e162965 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -381,6 +381,7 @@ public class ActivationRange
+@@ -377,6 +377,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {

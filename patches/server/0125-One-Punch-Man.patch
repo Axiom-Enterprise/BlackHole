@@ -6,10 +6,10 @@ Subject: [PATCH] One Punch Man!
 inspired by https://modrinth.com/mod/creative-one-punch
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 7c60a938850e5db62022217168a075e2b88fa22d..698340b3934a500ebd2cc50bc8818914d53af92d 100644
+index beb573d8fdc5f9e07146a7bd4d7c51d596a791a1..42755171ccaf9cb23494d3bd53154d934fe68a77 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1457,6 +1457,24 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1455,6 +1455,24 @@ public abstract class LivingEntity extends Entity implements Attackable {
                  this.stopSleeping();
              }
  
@@ -35,7 +35,7 @@ index 7c60a938850e5db62022217168a075e2b88fa22d..698340b3934a500ebd2cc50bc8818914
              if (amount < 0.0F) {
                  amount = 0.0F;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 77e6729051509bdf6d226206578a813b3e80cedc..bdf8bdf14cc54ddb44c6e6f7bc1572bb7920dd45 100644
+index dfea07d861779bc6f8c6041ac57bde1596a65e92..69f59d4d1cf30358f26f11e9c4cb9b8e2e6ce486 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -336,6 +336,7 @@ public class PurpurWorldConfig {

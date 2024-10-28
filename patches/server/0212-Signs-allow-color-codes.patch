@@ -5,10 +5,10 @@ Subject: [PATCH] Signs allow color codes
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 101f2db7d6e7eec85b21c576768224d6c3bba7e7..3f804ddb25aa03bdd964d390a1a1aab4d09abfde 100644
+index 5bbf3bb49d47b5b4acce00af4b9cdcffaa3be383..51229d600ea8a58e5c75bd97a1926f5cdf3704d4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1969,6 +1969,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1975,6 +1975,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
  
      @Override
      public void openTextEdit(SignBlockEntity sign, boolean front) {
@@ -84,7 +84,7 @@ index 8ac19e1e052e73ff3fd09089bb8e3fd687390ee4..6da1eec98c08e4909ecbd48fe90b3fd6
      public ClientboundBlockEntityDataPacket getUpdatePacket() {
          return ClientboundBlockEntityDataPacket.create(this);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 420b086c27f4c0d977f2fdaead4e45fc989bc9f8..9cfee77da2b368c2be4a91902df8e9085d07974b 100644
+index 340f1cde7eafdc3b6e2e2a4e84b54e93ff15eb1d..b571a7224f91fe2fd3eeaca48939b7a9b373a4d9 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -998,6 +998,11 @@ public class PurpurWorldConfig {

@@ -5,10 +5,10 @@ Subject: [PATCH] Config for mob last hurt by player time
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 090f259115573f0ed2fb7ed79d191b3f09ac27cd..60b0cf7cd5e4bcbe882590b79a70dafb23e6772f 100644
+index c09ef8271f45e62629bcdca1b3885334fdb79211..e2a5d66e4b945f69d9f2b538b95aa0b187749d8b 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1603,13 +1603,13 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1601,13 +1601,13 @@ public abstract class LivingEntity extends Entity implements Attackable {
                  if (entity1 instanceof net.minecraft.world.entity.player.Player) {
                      net.minecraft.world.entity.player.Player entityhuman = (net.minecraft.world.entity.player.Player) entity1;
  
@@ -38,7 +38,7 @@ index bf84c9664ca6d6c3d862e592c39bcc59374b63fe..051ffc663317fe5a4fafe0750c89fafd
      // Paper end
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 1426f0f6246c4e57a66e25365609c36991a72059..bd48ba4acf41ec77f542ca7e8dfe6280bb2fbed1 100644
+index 1a4a756943a1ba888b85b8896db0942dce19ab8d..9fd228060bd31deee69c0b76aba11883140a7d0b 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -143,6 +143,7 @@ public class PurpurWorldConfig {

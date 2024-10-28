@@ -83,7 +83,7 @@ index e9775b4506909bee65a74964f0d5391a0513de1d..684f7f202305c09b1037c5d38a52a5ea
      }
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c57181957dd0746c 100644
+index 9d2ece075144b036304025354e65d2cdcf5301fe..940a2aa8bd85d037792bc0ecb0d1f1a9e5456f0d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -431,12 +431,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -116,7 +116,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
  
          MinecraftServer.LOGGER.info("Stopping server");
          Commands.COMMAND_SENDING_POOL.shutdownNow(); // Paper - Perf: Async command map building; Shutdown and don't bother finishing
-@@ -1338,22 +1338,22 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1337,22 +1337,22 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
                  boolean flag = i == 0L;
  
@@ -144,7 +144,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
                          this.tickFrame.start();
                          this.tickServer(flag ? () -> {
                              return false;
-@@ -1366,7 +1366,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1365,7 +1365,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                          }
                          // Paper end - rewrite chunk system
                          this.tickFrame.end();
@@ -153,7 +153,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
                          this.mayHaveDelayedTasks = true;
                          this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + i, this.nextTickTimeNanos);
                          if (!org.purpurmc.purpur.PurpurConfig.tpsCatchup /*|| !gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup*/) { // Purpur // Purpur - TODO: Pufferfish
-@@ -1380,23 +1380,23 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1379,23 +1379,23 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                              this.tickRateManager.endTickWork();
                          }
  
@@ -182,7 +182,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
                  } finally {
                      this.endMetricsRecordingTick();
                  }
-@@ -1618,7 +1618,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1605,7 +1605,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      public void doRunTask(TickTask ticktask) { // CraftBukkit - decompile error
@@ -191,16 +191,16 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
          super.doRunTask(ticktask);
      }
  
-@@ -1712,7 +1712,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-             this.autoSave();
-         }
+@@ -1713,7 +1713,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         profiler.pop();
+         // Paper end - Incremental chunk and player saving
  
 -        ProfilerFiller gameprofilerfiller = Profiler.get();
 +        //ProfilerFiller gameprofilerfiller = Profiler.get(); // Purpur
  
-         // Paper start - move executeAll() into full server tick timing
-         //try (co.aikar.timings.Timing ignored = MinecraftTimings.processTasksTimer.startTiming()) { // Purpur
-@@ -1725,7 +1725,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         this.runAllTasks(); // Paper - move runAllTasks() into full server tick (previously for timings)
+         this.server.spark.executeMainThreadTasks(); // Paper - spark
+@@ -1723,7 +1723,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          new com.destroystokyo.paper.event.server.ServerTickEndEvent(this.tickCount, ((double)(endTime - lastTick) / 1000000D), remaining).callEvent();
          // Paper end - Server Tick Events
          this.server.spark.tickEnd(((double)(endTime - lastTick) / 1000000D)); // Paper - spark
@@ -209,31 +209,29 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
          long k = Util.getNanos() - i;
          int l = this.tickCount % 100;
  
-@@ -1739,7 +1739,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1737,7 +1737,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.tickTimes60s.add(this.tickCount, k);
          // Paper end - Add tick times API and /mspt command
          this.logTickMethodTime(i);
 -        gameprofilerfiller.pop();
 +        //gameprofilerfiller.pop(); // Purpur
-         //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
      }
  
-@@ -1842,11 +1842,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     private void autoSave() {
+@@ -1837,9 +1837,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          });
          // Paper end - Folia scheduler API
          io.papermc.paper.adventure.providers.ClickCallbackProviderImpl.CALLBACK_MANAGER.handleQueue(this.tickCount); // Paper
 -        gameprofilerfiller.push("commandFunctions");
 +        //gameprofilerfiller.push("commandFunctions"); // Purpur
-         //MinecraftTimings.commandFunctionsTimer.startTiming(); // Spigot // Paper // Purpur
          this.getFunctions().tick();
-         //MinecraftTimings.commandFunctionsTimer.stopTiming(); // Spigot // Paper // Purpur
 -        gameprofilerfiller.popPush("levels");
 +        //gameprofilerfiller.popPush("levels"); // Purpur
          //Iterator iterator = this.getAllLevels().iterator(); // Paper - Throw exception on world create while being ticked; moved down
  
          // CraftBukkit start
-@@ -1888,20 +1888,20 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-             net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = worldserver.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
+@@ -1878,20 +1878,20 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             worldserver.updateLagCompensationTick(); // Paper - lag compensation
              worldserver.hasRidableMoveEvent = org.purpurmc.purpur.event.entity.RidableMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Purpur
  
 -            gameprofilerfiller.push(() -> {
@@ -257,8 +255,8 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
 +            //gameprofilerfiller.push("tick"); // Purpur
  
              try {
-                 //worldserver.timings.doTick.startTiming(); // Spigot // Purpur
-@@ -1914,16 +1914,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+                 worldserver.tick(shouldKeepTicking);
+@@ -1902,26 +1902,26 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  throw new ReportedException(crashreport);
              }
  
@@ -271,33 +269,27 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
  
 -        gameprofilerfiller.popPush("connection");
 +        //gameprofilerfiller.popPush("connection"); // Purpur
-         // MinecraftTimings.connectionTimer.startTiming(); // Spigot // Paper // Purpur
          this.tickConnection();
-         // MinecraftTimings.connectionTimer.stopTiming(); // Spigot // Paper // Purpur
 -        gameprofilerfiller.popPush("players");
 +        //gameprofilerfiller.popPush("players"); // Purpur
-         //MinecraftTimings.playerListTimer.startTiming(); // Spigot // Paper // Purpur
          this.playerList.tick();
-         //MinecraftTimings.playerListTimer.stopTiming(); // Spigot // Paper // Purpur
-@@ -1931,7 +1931,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         if (SharedConstants.IS_RUNNING_IN_IDE && this.tickRateManager.runsNormally()) {
              GameTestTicker.SINGLETON.tick();
          }
  
 -        gameprofilerfiller.popPush("server gui refresh");
 +        //gameprofilerfiller.popPush("server gui refresh"); // Purpur
  
-         //MinecraftTimings.tickablesTimer.startTiming(); // Spigot // Paper // Purpur
          for (int i = 0; i < this.tickables.size(); ++i) {
-@@ -1939,7 +1939,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             ((Runnable) this.tickables.get(i)).run();
          }
-         //MinecraftTimings.tickablesTimer.stopTiming(); // Spigot // Paper // Purpur
  
 -        gameprofilerfiller.popPush("send chunks");
 +        //gameprofilerfiller.popPush("send chunks"); // Purpur
          iterator = this.playerList.getPlayers().iterator();
  
          while (iterator.hasNext()) {
-@@ -1949,7 +1949,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1931,7 +1931,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              entityplayer.connection.resumeFlushing();
          }
  
@@ -306,7 +298,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
      }
  
      public void tickConnection() {
-@@ -1961,9 +1961,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1943,9 +1943,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      public void forceTimeSynchronization() {
@@ -318,7 +310,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
          Iterator iterator = this.getAllLevels().iterator();
  
          while (iterator.hasNext()) {
-@@ -1972,7 +1972,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1954,7 +1954,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              this.synchronizeTime(worldserver);
          }
  
@@ -327,7 +319,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
      }
  
      public boolean isLevelEnabled(Level world) {
-@@ -2925,7 +2925,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2907,7 +2907,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      // CraftBukkit end
  
      private ProfilerFiller createProfiler() {
@@ -336,7 +328,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
              this.metricsRecorder = ActiveMetricsRecorder.createStarted(new ServerMetricsSamplersProvider(Util.timeSource, this.isDedicatedServer()), Util.timeSource, Util.ioPool(), new MetricsPersister("server"), this.onMetricsRecordingStopped, (path) -> {
                  this.executeBlocking(() -> {
                      this.saveDebugReport(path.resolve("server"));
-@@ -2935,37 +2935,38 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2917,37 +2917,38 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              this.willStartRecordingMetrics = false;
          }
  
@@ -384,7 +376,7 @@ index af8c8d3d2c92bede02fca6bebd05c4f5c1a98583..733020a0339129cf4bbe64e0c5718195
      }
  
      public Path getWorldPath(LevelResource worldSavePath) {
-@@ -3018,15 +3019,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -3000,15 +3001,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      public boolean isTimeProfilerRunning() {
@@ -489,10 +481,10 @@ index 8c587f829c5e8c6b6df3150024c4ae704988c47b..8ac4d5dbe7f8febf4226f26a6b035282
          String string = String.format(
              Locale.ROOT, "%s-%s-%s", Util.getFilenameFormattedDateTime(), server.getWorldData().getLevelName(), SharedConstants.getCurrentVersion().getId()
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 987d8567034e06bfb916d3e0a4a87f6c9169bccf..fdc7cb58a5f106646448e4898dc03d473be8042d 100644
+index f4b578c7f839f58da265f2cbcb53e5654ca3edc8..214c38ff42075003fc0063ef46ad0d14557d2082 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -373,16 +373,16 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -406,16 +406,16 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
      }
  
      protected void tick(BooleanSupplier shouldKeepTicking) {
@@ -514,10 +506,10 @@ index 987d8567034e06bfb916d3e0a4a87f6c9169bccf..fdc7cb58a5f106646448e4898dc03d47
  
      public boolean hasWork() {
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 96f9d18eb22380cccd35b486713583d6dfa46646..1961b18a2b5e5985181f0ca930ab14ba1d168c44 100644
+index 3c711e1df57ac5b0f8795ebb12299d275792b1d4..bb168636cbf23b5b0c7232529e390f434546dc37 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -444,30 +444,30 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+@@ -442,38 +442,38 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
      // CraftBukkit start - modelled on below
      public void purgeUnload() {
          if (true) return; // Paper - rewrite chunk system
@@ -544,31 +536,28 @@ index 96f9d18eb22380cccd35b486713583d6dfa46646..1961b18a2b5e5985181f0ca930ab14ba
  
 -        gameprofilerfiller.push("purge");
 +        //gameprofilerfiller.push("purge"); // Purpur
-         //this.level.timings.doChunkMap.startTiming(); // Spigot // Purpur
          if (this.level.tickRateManager().runsNormally() || !tickChunks || this.level.spigotConfig.unloadFrozenChunks) { // Spigot
              this.distanceManager.purgeStaleTickets();
          }
+ 
          this.runDistanceManagerUpdates();
-         //this.level.timings.doChunkMap.stopTiming(); // Spigot // Purpur
 -        gameprofilerfiller.popPush("chunks");
 +        //gameprofilerfiller.popPush("chunks"); // Purpur
          if (tickChunks) {
-             //this.level.timings.chunks.startTiming(); // Paper - timings // Purpur
              ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)this.level).moonrise$getPlayerChunkLoader().tick(); // Paper - rewrite chunk system
-@@ -477,10 +477,10 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+             this.tickChunks();
+             this.chunkMap.tick();
          }
  
-         //this.level.timings.doChunkUnload.startTiming(); // Spigot // Purpur
 -        gameprofilerfiller.popPush("unload");
 +        //gameprofilerfiller.popPush("unload"); // Purpur
          this.chunkMap.tick(shouldKeepTicking);
-         //this.level.timings.doChunkUnload.stopTiming(); // Spigot // Purpur
 -        gameprofilerfiller.pop();
 +        //gameprofilerfiller.pop(); // Purpur
          this.clearCache();
      }
  
-@@ -490,34 +490,34 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+@@ -483,34 +483,34 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
  
          this.lastInhabitedUpdate = i;
          if (!this.level.isDebug()) {
@@ -588,7 +577,7 @@ index 96f9d18eb22380cccd35b486713583d6dfa46646..1961b18a2b5e5985181f0ca930ab14ba
 +                    //gameprofilerfiller.popPush("shuffleChunks"); // Purpur
                      // Paper start - chunk tick iteration optimisation
                      this.shuffleRandom.setSeed(this.level.random.nextLong());
-                     Util.shuffle(list, this.shuffleRandom);
+                     if (!this.level.paperConfig().entities.spawning.perPlayerMobSpawns) Util.shuffle(list, this.shuffleRandom); // Paper - Optional per player mob spawns; do not need this when per-player is enabled
                      // Paper end - chunk tick iteration optimisation
 -                    this.tickChunks(gameprofilerfiller, j, list);
 -                    gameprofilerfiller.pop();
@@ -613,7 +602,7 @@ index 96f9d18eb22380cccd35b486713583d6dfa46646..1961b18a2b5e5985181f0ca930ab14ba
          Iterator iterator = this.chunkHoldersToBroadcast.iterator();
  
          while (iterator.hasNext()) {
-@@ -532,7 +532,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+@@ -523,7 +523,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
          }
  
          this.chunkHoldersToBroadcast.clear();
@@ -622,18 +611,17 @@ index 96f9d18eb22380cccd35b486713583d6dfa46646..1961b18a2b5e5985181f0ca930ab14ba
      }
  
      private void collectTickingChunks(List<LevelChunk> chunks) {
-@@ -558,15 +558,15 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
-         // Paper end - chunk tick iteration optimisation
+@@ -550,7 +550,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
      }
  
--    private void tickChunks(ProfilerFiller profiler, long timeDelta, List<LevelChunk> chunks) {
+     private void tickChunks(ProfilerFiller profiler, long timeDelta, List<LevelChunk> chunks) {
 -        profiler.popPush("naturalSpawnCount");
-+    private void tickChunks(ProfilerFiller profiler, long timeDelta, List<LevelChunk> chunks) { // Purpur
 +        //profiler.popPush("naturalSpawnCount"); // Purpur
-         //this.level.timings.countNaturalMobs.startTiming(); // Paper - timings // Purpur
          int j = this.distanceManager.getNaturalSpawnChunkCount();
-         NaturalSpawner.SpawnState spawnercreature_d = NaturalSpawner.createState(j, this.level.getAllEntities(), this::getFullChunk, new LocalMobCapCalculator(this.chunkMap));
-         // this.level.timings.countNaturalMobs.stopTiming(); // Paper - timings // Purpur
+         // Paper start - Optional per player mob spawns
+         final int naturalSpawnChunkCount = j;
+@@ -577,7 +577,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+         // Paper end - Optional per player mob spawns
  
          this.lastSpawnState = spawnercreature_d;
 -        profiler.popPush("spawnAndTick");
@@ -641,16 +629,16 @@ index 96f9d18eb22380cccd35b486713583d6dfa46646..1961b18a2b5e5985181f0ca930ab14ba
          boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING) && !this.level.players().isEmpty(); // CraftBukkit
          int k = this.level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING);
          List list1;
-@@ -606,7 +606,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
- 
-         //this.level.timings.chunkTicks.stopTiming(); // Paper // Purpur
+@@ -615,7 +615,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+             }
+         }
  
 -        profiler.popPush("customSpawners");
 +        //profiler.popPush("customSpawners"); // Purpur
          if (flag) {
-             //try (co.aikar.timings.Timing ignored = this.level.timings.miscMobSpawning.startTiming()) { // Paper - timings // Purpur
              this.level.tickCustomSpawners(this.spawnEnemies, this.spawnFriendlies);
-@@ -806,7 +806,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+         }
+@@ -813,7 +813,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
  
          @Override
          protected void doRunTask(Runnable task) {
@@ -660,10 +648,10 @@ index 96f9d18eb22380cccd35b486713583d6dfa46646..1961b18a2b5e5985181f0ca930ab14ba
          }
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d9884cbd8 100644
+index a8650040b69fe92f18606e5029ecd881961b39e7..4c11f0a23ee897691d8a8022baa134ef6f5e3d89 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -714,18 +714,18 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -724,18 +724,18 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
      }
  
      public void tick(BooleanSupplier shouldKeepTicking) {
@@ -686,13 +674,12 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
          }
  
          int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
-@@ -756,30 +756,30 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -766,30 +766,30 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              this.tickTime();
          }
  
 -        gameprofilerfiller.push("tickPending");
 +        //gameprofilerfiller.push("tickPending"); // Purpur
-         //this.timings.scheduledBlocks.startTiming(); // Paper // Purpur
          if (!this.isDebug() && flag) {
              j = this.getGameTime();
 -            gameprofilerfiller.push("blockTicks");
@@ -704,27 +691,20 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
 -            gameprofilerfiller.pop();
 +            //gameprofilerfiller.pop(); // Purpur
          }
-         //this.timings.scheduledBlocks.stopTiming(); // Paper // Purpur
  
 -        gameprofilerfiller.popPush("raid");
 +        //gameprofilerfiller.popPush("raid"); // Purpur
          if (flag) {
-             // this.timings.raids.startTiming(); // Paper - timings // Purpur
              this.raids.tick();
-             // this.timings.raids.stopTiming(); // Paper - timings // Purpur
          }
  
 -        gameprofilerfiller.popPush("chunkSource");
 +        //gameprofilerfiller.popPush("chunkSource"); // Purpur
-         //this.timings.chunkProviderTick.startTiming(); // Paper - timings // Purpur
          this.getChunkSource().tick(shouldKeepTicking, true);
-         //this.timings.chunkProviderTick.stopTiming(); // Paper - timings // Purpur
 -        gameprofilerfiller.popPush("blockEvents");
 +        //gameprofilerfiller.popPush("blockEvents"); // Purpur
          if (flag) {
-             // this.timings.doSounds.startTiming(); // Spigot // Purpur
              this.runBlockEvents();
-@@ -787,7 +787,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          }
  
          this.handlingTick = false;
@@ -733,13 +713,12 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
          boolean flag1 = !paperConfig().unsupportedSettings.disableWorldTickingWhenEmpty || !this.players.isEmpty() || !this.getForcedChunks().isEmpty(); // CraftBukkit - this prevents entity cleanup, other issues on servers with no players // Paper - restore this
  
          if (flag1) {
-@@ -795,12 +795,12 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -797,20 +797,20 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          }
  
          if (flag1 || this.emptyTime++ < 300) {
 -            gameprofilerfiller.push("entities");
 +            //gameprofilerfiller.push("entities"); // Purpur
-             //this.timings.tickEntities.startTiming(); // Spigot // Purpur
              if (this.dragonFight != null && flag) {
 -                gameprofilerfiller.push("dragonFight");
 +                //gameprofilerfiller.push("dragonFight"); // Purpur
@@ -749,7 +728,6 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
              }
  
              org.spigotmc.ActivationRange.activateEntities(this); // Spigot
-@@ -808,9 +808,9 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              this.entityTickList.forEach((entity) -> {
                  if (!entity.isRemoved()) {
                      if (!tickratemanager.isEntityFrozen(entity)) {
@@ -761,7 +739,7 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
                          if (true) { // Paper - rewrite chunk system
                              Entity entity1 = entity.getVehicle();
  
-@@ -822,22 +822,22 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -822,20 +822,20 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
                                  entity.stopRiding();
                              }
  
@@ -774,8 +752,6 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
                      }
                  }
              });
-             //this.timings.entityTick.stopTiming(); // Spigot // Purpur
-             //this.timings.tickEntities.stopTiming(); // Spigot // Purpur
 -            gameprofilerfiller.pop();
 +            //gameprofilerfiller.pop(); // Purpur
              this.tickBlockEntities();
@@ -789,7 +765,7 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
      }
  
      @Override
-@@ -964,9 +964,9 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -962,9 +962,9 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          boolean flag = this.isRaining();
          int j = chunkcoordintpair.getMinBlockX();
          int k = chunkcoordintpair.getMinBlockZ();
@@ -801,7 +777,7 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
          if (!this.paperConfig().environment.disableThunder && flag && this.isThundering() && this.spigotConfig.thunderChance > 0 && simpleRandom.nextInt(this.spigotConfig.thunderChance) == 0) { // Spigot // Paper - Option to disable thunder // Paper - optimise random ticking
              BlockPos blockposition = this.findLightningTargetAround(this.getBlockRandomPos(j, 0, k, 15));
  
-@@ -1003,7 +1003,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -1001,7 +1001,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              }
          }
  
@@ -810,26 +786,24 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
  
          if (!this.paperConfig().environment.disableIceAndSnow) { // Paper - Option to disable ice and snow
          for (int l = 0; l < randomTickSpeed; ++l) {
-@@ -1013,14 +1013,14 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -1011,12 +1011,12 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          }
          } // Paper - Option to disable ice and snow
  
 -        gameprofilerfiller.popPush("tickBlocks");
 +        //gameprofilerfiller.popPush("tickBlocks"); // Purpur
-         //timings.chunkTicksBlocks.startTiming(); // Paper // Purpur
          if (randomTickSpeed > 0) {
              this.optimiseRandomTick(chunk, randomTickSpeed); // Paper - optimise random ticking
          }
  
-         //timings.chunkTicksBlocks.stopTiming(); // Paper // Purpur
 -        gameprofilerfiller.pop();
 +        //gameprofilerfiller.pop(); // Purpur
      }
  
      @VisibleForTesting
-@@ -1367,18 +1367,18 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
-         //try { // Purpur
-         // Paper end - timings
+@@ -1355,18 +1355,18 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+         // Spigot end
+         final boolean isActive = org.spigotmc.ActivationRange.checkIfActive(entity); // Paper - EAR 2
          entity.setOldPosAndRot();
 -        ProfilerFiller gameprofilerfiller = Profiler.get();
 +        //ProfilerFiller gameprofilerfiller = Profiler.get(); // Purpur
@@ -848,10 +822,10 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
          } else { entity.inactiveTick(); } // Paper - EAR 2
 -        gameprofilerfiller.pop();
 +        //gameprofilerfiller.pop(); // Purpur
-         //} finally { timer.stopTiming(); } // Paper - timings // EAR 2 // Purpur
          Iterator iterator = entity.getPassengers().iterator();
  
-@@ -1402,12 +1402,12 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+         while (iterator.hasNext()) {
+@@ -1389,12 +1389,12 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              if (passenger instanceof Player || this.entityTickList.contains(passenger)) {
                  passenger.setOldPosAndRot();
                  ++passenger.tickCount;
@@ -868,7 +842,7 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
                  // Paper start - EAR 2
                  if (isActive) {
                  passenger.rideTick();
-@@ -1419,7 +1419,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -1406,7 +1406,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
                  vehicle.positionRider(passenger);
                  }
                  // Paper end - EAR 2
@@ -878,10 +852,10 @@ index 47ae7af2a0ff8ab4181cf447c58410ccb0f37371..3083f3e0a17efc3a1dc7f50493ec646d
  
                  while (iterator.hasNext()) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index ce8b5dd01359344300d1a1a06e8207a768a846ce..2518ad5af51b944393e53508010a18df111c5c83 100644
+index 51229d600ea8a58e5c75bd97a1926f5cdf3704d4..0286b1bd461a5050cb78b9485bac84909ae91150 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1663,15 +1663,15 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1669,15 +1669,15 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
                  this.unsetRemoved();
                  */
                  // CraftBukkit end
@@ -901,7 +875,7 @@ index ce8b5dd01359344300d1a1a06e8207a768a846ce..2518ad5af51b944393e53508010a18df
                  // CraftBukkit start
                  this.isChangingDimension = true; // CraftBukkit - Set teleport invulnerability only if player changing worlds
                  LevelData worlddata = worldserver.getLevelData();
-@@ -1689,7 +1689,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1695,7 +1695,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
                  this.connection.internalTeleport(PositionMoveRotation.of(teleportTarget), teleportTarget.relatives()); // CraftBukkit - use internal teleport without event
                  this.connection.resetPosition();
                  worldserver.addDuringTeleport(this);
@@ -1304,10 +1278,10 @@ index cb123001b08c0772bacce87d022d236bc7eaa1d1..6474b375c05eebc1fa3468f2963770df
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60877c20e2 100644
+index e2a5d66e4b945f69d9f2b538b95aa0b187749d8b..cd2fd85178acdfffc07b72bc0419a73e1d1bef64 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -459,9 +459,9 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -457,9 +457,9 @@ public abstract class LivingEntity extends Entity implements Attackable {
          }
  
          super.baseTick();
@@ -1319,7 +1293,7 @@ index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60
          if (this.fireImmune() || this.level().isClientSide) {
              this.clearFire();
          }
-@@ -569,7 +569,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -567,7 +567,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.yHeadRotO = this.yHeadRot;
          this.yRotO = this.getYRot();
          this.xRotO = this.getXRot();
@@ -1328,7 +1302,7 @@ index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60
      }
  
      @Override
-@@ -3384,12 +3384,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3382,12 +3382,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
          }
  
          this.run += (f3 - this.run) * 0.3F;
@@ -1345,7 +1319,7 @@ index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60
  
          // Paper start - stop large pitch and yaw changes from crashing the server
          this.yRotO += Math.round((this.getYRot() - this.yRotO) / 360.0F) * 360.0F;
-@@ -3401,7 +3401,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3399,7 +3399,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.yHeadRotO += Math.round((this.yHeadRot - this.yHeadRotO) / 360.0F) * 360.0F;
          // Paper end
  
@@ -1354,7 +1328,7 @@ index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60
          this.animStep += f2;
          if (this.isFallFlying()) {
              ++this.fallFlyTicks;
-@@ -3631,21 +3631,21 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3629,21 +3629,21 @@ public abstract class LivingEntity extends Entity implements Attackable {
          }
  
          this.setDeltaMovement(d0, d1, d2);
@@ -1382,7 +1356,7 @@ index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60
          if (this.jumping && this.isAffectedByFluids()) {
              double d3;
  
-@@ -3672,8 +3672,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3670,8 +3670,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
              this.noJumpDelay = 0;
          }
  
@@ -1393,7 +1367,7 @@ index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60
          this.xxa *= 0.98F;
          this.zza *= 0.98F;
          if (this.isFallFlying()) {
-@@ -3706,8 +3706,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3704,8 +3704,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
          }
  
          this.calculateEntityAnimation(this instanceof FlyingAnimal);
@@ -1404,7 +1378,7 @@ index 60b0cf7cd5e4bcbe882590b79a70dafb23e6772f..38a7bde1bc2836352a62dfe1dd3b9a60
          if (!this.level().isClientSide && !this.isDeadOrDying() && !this.freezeLocked) { // Paper - Freeze Tick Lock API
              int i = this.getTicksFrozen();
  
-@@ -3728,15 +3728,15 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3726,15 +3726,15 @@ public abstract class LivingEntity extends Entity implements Attackable {
              }
          }
  
@@ -1960,10 +1934,10 @@ index c885b214f4d7d91627e98d8779aab8515f205636..b4ffad429ace965f16ebf47119c880b7
              this.assignProfessionWhenSpawned = false;
          }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index e14e9ae4f16dff8486c98f391c27ead816c2a080..224ad8e6553f019d5717d3bf70d11b034147fbdc 100644
+index c2aff2f03451b97f1ec6bd4ee987bb729177320a..7493262c2879af196e5585b15faad69ae42764e3 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -271,7 +271,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -270,7 +270,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
  
      @Override
      public final <T extends Entity> List<T> getEntitiesOfClass(final Class<T> entityClass, final AABB boundingBox, final Predicate<? super T> predicate) {
@@ -1972,7 +1946,7 @@ index e14e9ae4f16dff8486c98f391c27ead816c2a080..224ad8e6553f019d5717d3bf70d11b03
          final List<T> ret = new java.util.ArrayList<>();
  
          ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemLevel)this).moonrise$getEntityLookup().getEntities(entityClass, null, boundingBox, ret, predicate);
-@@ -281,7 +281,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -280,7 +280,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
  
      @Override
      public final List<Entity> moonrise$getHardCollidingEntities(final Entity entity, final AABB box, final Predicate<? super Entity> predicate) {
@@ -1981,7 +1955,7 @@ index e14e9ae4f16dff8486c98f391c27ead816c2a080..224ad8e6553f019d5717d3bf70d11b03
          final List<Entity> ret = new java.util.ArrayList<>();
  
          ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemLevel)this).moonrise$getEntityLookup().getHardCollidingEntities(entity, box, ret, predicate);
-@@ -1488,9 +1488,9 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -1486,9 +1486,9 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
      }
  
      protected void tickBlockEntities() {
@@ -1990,19 +1964,19 @@ index e14e9ae4f16dff8486c98f391c27ead816c2a080..224ad8e6553f019d5717d3bf70d11b03
  
 -        gameprofilerfiller.push("blockEntities");
 +        //gameprofilerfiller.push("blockEntities"); // Purpur
-         //this.timings.tileEntityPending.startTiming(); // Spigot // Purpur
          this.tickingBlockEntities = true;
          if (!this.pendingBlockEntityTickers.isEmpty()) {
-@@ -1533,7 +1533,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
-         //this.timings.tileEntityTick.stopTiming(); // Spigot // Purpur
+             this.blockEntityTickers.addAll(this.pendingBlockEntityTickers);
+@@ -1526,7 +1526,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+         this.blockEntityTickers.removeAll(toRemove); // Paper - Fix MC-117075
+ 
          this.tickingBlockEntities = false;
-         co.aikar.timings.TimingHistory.tileEntityTicks += this.blockEntityTickers.size(); // Paper
 -        gameprofilerfiller.pop();
 +        //gameprofilerfiller.pop(); // Purpur
          this.spigotConfig.currentPrimedTnt = 0; // Spigot
      }
  
-@@ -1703,7 +1703,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -1696,7 +1696,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
  
      @Override
      public List<Entity> getEntities(@Nullable Entity except, AABB box, Predicate<? super Entity> predicate) {
@@ -2011,7 +1985,7 @@ index e14e9ae4f16dff8486c98f391c27ead816c2a080..224ad8e6553f019d5717d3bf70d11b03
          List<Entity> list = Lists.newArrayList();
  
          // Paper start - rewrite chunk system
-@@ -1733,7 +1733,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -1726,7 +1726,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
      public <T extends Entity> void getEntities(final EntityTypeTest<Entity, T> entityTypeTest,
                                                 final AABB boundingBox, final Predicate<? super T> predicate,
                                                 final List<? super T> into, final int maxCount) {
@@ -2021,20 +1995,20 @@ index e14e9ae4f16dff8486c98f391c27ead816c2a080..224ad8e6553f019d5717d3bf70d11b03
          if (entityTypeTest instanceof net.minecraft.world.entity.EntityType<T> byType) {
              if (maxCount != Integer.MAX_VALUE) {
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index f6fb4892c95f9716628ed8a90d1560b7c0a2e032..4bdfba6dbe88dbc7ce901b235a524ba28027f203 100644
+index 5297798c2be1ba85569c2b92ed221956bf75477a..fa47d14e17d9e7d1b62de7990c875245c3a445a3 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-@@ -171,7 +171,7 @@ public final class NaturalSpawner {
+@@ -211,7 +211,7 @@ public final class NaturalSpawner {
+             }
          }
  
-         //world.timings.mobSpawn.stopTiming(); // Spigot // Purpur
 -        gameprofilerfiller.pop();
 +        //gameprofilerfiller.pop(); // Purpur
      }
  
      // Paper start - Add mobcaps commands
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index c1ce5a43b5759f204c432cbfbcdcb14b5ef43dc0..b525ab58998f4ead44f8a2b37ac2391c7de81df4 100644
+index 4640baec5bed6c2d53cc0f8ca1d273cc115abe9b..15c83c6f5f56d6a27911d3bbd326cef1c21b1e58 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -407,11 +407,11 @@ public class LevelChunk extends ChunkAccess implements ca.spottedleaf.moonrise.p
@@ -2052,7 +2026,7 @@ index c1ce5a43b5759f204c432cbfbcdcb14b5ef43dc0..b525ab58998f4ead44f8a2b37ac2391c
                  }
  
                  boolean flag3 = iblockdata1.hasBlockEntity();
-@@ -1060,9 +1060,9 @@ public class LevelChunk extends ChunkAccess implements ca.spottedleaf.moonrise.p
+@@ -1058,9 +1058,9 @@ public class LevelChunk extends ChunkAccess implements ca.spottedleaf.moonrise.p
  
                  if (LevelChunk.this.isTicking(blockposition)) {
                      try {
@@ -2061,10 +2035,10 @@ index c1ce5a43b5759f204c432cbfbcdcb14b5ef43dc0..b525ab58998f4ead44f8a2b37ac2391c
  
 -                        gameprofilerfiller.push(this::getType);
 +                        //gameprofilerfiller.push(this::getType);
-                         //this.blockEntity.tickTimer.startTiming(); // Spigot // Purpur
                          BlockState iblockdata = LevelChunk.this.getBlockState(blockposition);
  
-@@ -1079,7 +1079,7 @@ public class LevelChunk extends ChunkAccess implements ca.spottedleaf.moonrise.p
+                         if (this.blockEntity.getType().isValid(iblockdata)) {
+@@ -1076,7 +1076,7 @@ public class LevelChunk extends ChunkAccess implements ca.spottedleaf.moonrise.p
                              // Paper end - Remove the Block Entity if it's invalid
                          }
  

@@ -18,7 +18,7 @@ index 3b19395f2ddee654a77df5738a1942a08c20c179..c130d316e87f1f896d33ab43831063a8
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index e8c649d1db3dd82bb544aa6e96b6a19e96559b09..395a093c1daf8236faaa92405472a500afc3ce68 100644
+index d324eefa500c528776df698e7f9dcdeab76da167..1748aea6613e0c8081f70092c9431e7e04907383 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
 @@ -88,6 +88,10 @@ public class Block extends BlockBehaviour implements ItemLike {
@@ -29,10 +29,10 @@ index e8c649d1db3dd82bb544aa6e96b6a19e96559b09..395a093c1daf8236faaa92405472a500
 +    public float fallDamageMultiplier = 1.0F;
 +    public float fallDistanceMultiplier = 1.0F;
 +    // Purpur end
-     // Paper start
+     // Paper start - Protect Bedrock and End Portal/Frames from being destroyed
      public final boolean isDestroyable() {
          return io.papermc.paper.configuration.GlobalConfiguration.get().unsupportedSettings.allowPermanentBlockBreakExploits ||
-@@ -480,7 +484,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -473,7 +477,7 @@ public class Block extends BlockBehaviour implements ItemLike {
      }
  
      public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {

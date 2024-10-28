@@ -5,10 +5,10 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 2e955dc3299062c2564eac0de43d5f1b78f5897c..a58c8ed64eab56c4a4a0688e0731a232fb5f7269 100644
+index bc21cac3af01dd2cca1d4431a1b651e8c71accae..e49b530e8bdcff5aacc693f6e859c9c98fd50a19 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -3740,7 +3740,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3738,7 +3738,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
                      }).toList();
                      EquipmentSlot enumitemslot = (EquipmentSlot) Util.getRandom(list, this.random);
  
@@ -27,7 +27,7 @@ index 2e955dc3299062c2564eac0de43d5f1b78f5897c..a58c8ed64eab56c4a4a0688e0731a232
                  }
  
                  this.gameEvent(GameEvent.ELYTRA_GLIDE);
-@@ -3749,7 +3759,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3747,7 +3757,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
  
      }
  
@@ -111,7 +111,7 @@ index 8b9a93ef71164cce8a616735b71d96d37e83b1a8..24b97c8e2758e4a991dbbbf5276580e1
                          entityhuman.startAutoSpinAttack(20, 8.0F, stack);
                          if (entityhuman.onGround()) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 49efe798ae09c000c708001ca896620c468933d5..33aa446dc0cb834e027c45e8392cf007f62f629d 100644
+index 9de89f7d5609748eaf188f4666120a4502a32b57..95a7e0870e45004523278ae78c25b9db80882630 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -107,6 +107,17 @@ public class PurpurWorldConfig {

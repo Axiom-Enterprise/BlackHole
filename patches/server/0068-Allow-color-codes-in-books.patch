@@ -5,10 +5,10 @@ Subject: [PATCH] Allow color codes in books
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 0ffad0fee921ac302f31894766594921751fbff9..62fdb1e8b84facec3ce69d5001e7d626d74a37ce 100644
+index c65c924f739b1c2ed328c936ec1854e0bc1d5b84..fc3eda4b692482d95aade888e624ba0343a541f8 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1214,10 +1214,14 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1248,10 +1248,14 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
              Objects.requireNonNull(list);
              optional.ifPresent(list::add);
              list.addAll(packet.pages());
@@ -25,7 +25,7 @@ index 0ffad0fee921ac302f31894766594921751fbff9..62fdb1e8b84facec3ce69d5001e7d626
              };
  
              this.filterTextPacket((List) list).thenAcceptAsync(consumer, this.server);
-@@ -1225,13 +1229,18 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1259,13 +1263,18 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
      }
  
      private void updateBookContents(List<FilteredText> pages, int slotId) {
@@ -45,7 +45,7 @@ index 0ffad0fee921ac302f31894766594921751fbff9..62fdb1e8b84facec3ce69d5001e7d626
  
              itemstack.set(DataComponents.WRITABLE_BOOK_CONTENT, new WritableBookContent(list1));
              this.player.getInventory().setItem(slotId, CraftEventFactory.handleEditBookEvent(this.player, slotId, handItem, itemstack)); // CraftBukkit // Paper - Don't ignore result (see other callsite for handleEditBookEvent)
-@@ -1239,6 +1248,11 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1273,6 +1282,11 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
      }
  
      private void signBook(FilteredText title, List<FilteredText> pages, int slotId) {
@@ -57,7 +57,7 @@ index 0ffad0fee921ac302f31894766594921751fbff9..62fdb1e8b84facec3ce69d5001e7d626
          ItemStack itemstack = this.player.getInventory().getItem(slotId);
  
          if (itemstack.has(DataComponents.WRITABLE_BOOK_CONTENT)) {
-@@ -1246,10 +1260,10 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1280,10 +1294,10 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
              itemstack1.remove(DataComponents.WRITABLE_BOOK_CONTENT);
              List<Filterable<Component>> list1 = (List<Filterable<Component>>) (List) pages.stream().map((filteredtext1) -> { // CraftBukkit - decompile error
@@ -70,7 +70,7 @@ index 0ffad0fee921ac302f31894766594921751fbff9..62fdb1e8b84facec3ce69d5001e7d626
              CraftEventFactory.handleEditBookEvent(this.player, slotId, itemstack, itemstack1); // CraftBukkit
              this.player.getInventory().setItem(slotId, itemstack); // CraftBukkit - event factory updates the hand book
          }
-@@ -1259,6 +1273,16 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1293,6 +1307,16 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
          return this.player.isTextFilteringEnabled() ? Filterable.passThrough(message.filteredOrEmpty()) : Filterable.from(message);
      }
  

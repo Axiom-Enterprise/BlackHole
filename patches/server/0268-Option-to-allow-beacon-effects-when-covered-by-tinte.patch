@@ -36,7 +36,7 @@ index fbc6b0099af34b0247f6144a9cef020f9ccddeef..2d190b3a6378b8cbadfa65510df1ccfb
                  BeaconBlockEntity.playSound(world, pos, SoundEvents.BEACON_AMBIENT);
              }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 91d4c39e72296147bc095c1fee943c63082cf848..fc772f2be46eada82f6a3db52fef930c82a76e6c 100644
+index 2dc5bf6ae677d6b78953f04fcfa2a937b9adde88..2a44f924fbfaf175b1fd172d311bb4ea13f73e26 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -812,11 +812,13 @@ public class PurpurWorldConfig {

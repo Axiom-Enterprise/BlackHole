@@ -5,10 +5,10 @@ Subject: [PATCH] Log skipped entity's position
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 663dde75a9fc4fd7323ae9abe73cdb83aa74f2b3..f297e771e677ddefa3bf0d6f50d04f2e50197c30 100644
+index 5796f9bdde43d5b681ee2aaa7bc47076114af321..c1a870fd22b193388513aad0ac4f3ce0ad7c8195 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -691,6 +691,12 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+@@ -682,6 +682,12 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
              entity.load(nbt);
          }, () -> {
              EntityType.LOGGER.warn("Skipping Entity with id {}", nbt.getString("id"));

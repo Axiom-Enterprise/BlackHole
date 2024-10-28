@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable daylight cycle
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 498849b2efec782fed822dc3e6685f5e903fa828..b201fb88391a12a5bd569457cf25734d320bf2cb 100644
+index 49ed4f9d930b50bb11a9ecbfff0b99ea2ccd29c7..3c901f5597e4bb2a77168eb5ad1d14e13142983f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1853,7 +1853,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1843,7 +1843,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -18,10 +18,10 @@ index 498849b2efec782fed822dc3e6685f5e903fa828..b201fb88391a12a5bd569457cf25734d
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index e47f9fb98d94b7165feba4261b0600648f7a0142..f03de2bf7a02d1eb687401002acb3a45a7b7dd18 100644
+index 54f7545f35ba615ac942c82a2602b9466646f012..7715ecbe45e82079f5e2b2ad2bdf15a58f9a529c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -224,6 +224,8 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -223,6 +223,8 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
      private final StructureManager structureManager;
      private final StructureCheck structureCheck;
      private final boolean tickTime;
@@ -30,7 +30,7 @@ index e47f9fb98d94b7165feba4261b0600648f7a0142..f03de2bf7a02d1eb687401002acb3a45
      private final RandomSequences randomSequences;
  
      // CraftBukkit start
-@@ -677,6 +679,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -687,6 +689,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          this.chunkDataController = new ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.ChunkDataController((ServerLevel)(Object)this, this.chunkTaskScheduler);
          // Paper end - rewrite chunk system
          this.getCraftServer().addWorld(this.getWorld()); // CraftBukkit
@@ -38,7 +38,7 @@ index e47f9fb98d94b7165feba4261b0600648f7a0142..f03de2bf7a02d1eb687401002acb3a45
      }
  
      // Paper start
-@@ -854,6 +857,13 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -852,6 +855,13 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              this.serverLevelData.getScheduledEvents().tick(this.server, i);
              Profiler.get().pop();
              if (this.serverLevelData.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
@@ -52,7 +52,7 @@ index e47f9fb98d94b7165feba4261b0600648f7a0142..f03de2bf7a02d1eb687401002acb3a45
                  this.setDayTime(this.levelData.getDayTime() + 1L);
              }
  
-@@ -862,7 +872,21 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -860,7 +870,21 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
  
      public void setDayTime(long timeOfDay) {
          this.serverLevelData.setDayTime(timeOfDay);

@@ -5,7 +5,7 @@ Subject: [PATCH] Add option to teleport to spawn on nether ceiling damage
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 285ef87b7088f905bb77c408465ccbca6644454f..49da1a25e39d6e58786f6f20177610d5aa7626f6 100644
+index c32803af95324003e803847e7a64735663811e2f..6b32cd1391f39b6fe61c3c8c00249d1d4278cbd0 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -1032,6 +1032,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -17,7 +17,7 @@ index 285ef87b7088f905bb77c408465ccbca6644454f..49da1a25e39d6e58786f6f20177610d5
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index f8a0049919f7542d8eccf5f2b1b5d2ee1a696943..c6d307c69afd9fc58c4bde7f8b755d96d9bcf9d6 100644
+index 12e536b6c4f8c3b000802d2cc76aeca9e4cf7b21..d4bb4e5d6caa7848aeec284ed19b53bf34bfd5cf 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -416,6 +416,7 @@ public class PurpurWorldConfig {

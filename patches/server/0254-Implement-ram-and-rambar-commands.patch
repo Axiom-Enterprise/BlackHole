@@ -18,10 +18,10 @@ index 0ba926b6ff0bd54159765cc7f37d1753ded89dee..cbbddb924f46203bd600b838fc22902c
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 2518ad5af51b944393e53508010a18df111c5c83..f0414dd16a97461f65c2965c035da811a0d65c01 100644
+index 0286b1bd461a5050cb78b9485bac84909ae91150..627b69f08f609dc0a4d87327a187009651046cf4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -326,6 +326,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -332,6 +332,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public boolean purpurClient = false; // Purpur
      private boolean tpsBar = false; // Purpur
      private boolean compassBar = false; // Purpur
@@ -29,7 +29,7 @@ index 2518ad5af51b944393e53508010a18df111c5c83..f0414dd16a97461f65c2965c035da811
  
      // Paper start - rewrite chunk system
      private ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -690,6 +691,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -696,6 +697,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
  
          if (nbt.contains("Purpur.TPSBar")) { this.tpsBar = nbt.getBoolean("Purpur.TPSBar"); } // Purpur
          if (nbt.contains("Purpur.CompassBar")) { this.compassBar = nbt.getBoolean("Purpur.CompassBar"); } // Purpur
@@ -37,7 +37,7 @@ index 2518ad5af51b944393e53508010a18df111c5c83..f0414dd16a97461f65c2965c035da811
      }
  
      @Override
-@@ -742,6 +744,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -748,6 +750,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          }
  
          this.saveEnderPearls(nbt);
@@ -45,7 +45,7 @@ index 2518ad5af51b944393e53508010a18df111c5c83..f0414dd16a97461f65c2965c035da811
          nbt.putBoolean("Purpur.TPSBar", this.tpsBar); // Purpur
          nbt.putBoolean("Purpur.CompassBar", this.compassBar); // Purpur
      }
-@@ -3473,5 +3476,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3479,5 +3482,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public void compassBar(boolean compassBar) {
          this.compassBar = compassBar;
      }

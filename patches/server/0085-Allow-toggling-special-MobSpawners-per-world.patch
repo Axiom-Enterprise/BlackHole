@@ -6,10 +6,10 @@ Subject: [PATCH] Allow toggling special MobSpawners per world
 In vanilla, these are all hardcoded on for world type 0 (overworld) and hardcoded off for every other world type. Default config behaviour matches this.
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index c4d8ef23a5e384ce554cc3e63e7be3e027d60e44..9538510ac96d97b8e3cdfcc9873bb3d274c351ad 100644
+index 943ef063efa000da0810b079b47ec18ed2aa5a63..54f7545f35ba615ac942c82a2602b9466646f012 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -588,7 +588,24 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -598,7 +598,24 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          // CraftBukkit end
          this.tickTime = flag1;
          this.server = minecraftserver;
@@ -59,7 +59,7 @@ index a728dcbf956f108f01c966c7531449a506a14a87..4c1378132201c1e5d1bc01f8c0cbba91
              if (spawnplacementtype.isSpawnPositionOk(world, blockposition2, EntityType.WANDERING_TRADER)) {
                  blockposition1 = blockposition2;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 119904f2c4e9f8c4b3596a26220833d457bb60df..668ea98aee2f74ff6ac961b61360fb2e48513ebf 100644
+index f82f5405f3ff0bc91806da3b1ffdeb30206b6297..9ddd1796c83a68e1837cbdfe8db0baf9e3b1fdfa 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -70,6 +70,12 @@ public class PurpurWorldConfig {

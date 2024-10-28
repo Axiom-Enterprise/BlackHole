@@ -5,10 +5,10 @@ Subject: [PATCH] UPnP Port Forwarding
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a097b6e5ec9c340f0bb822e5d65c4951ba4caa88..ded4e4d120b4f0f803f48f590a6d9e39e8c210cf 100644
+index ec8af36c230e36a59fe8a02a868fb36a8212cd8b..95e1dbd7a423d57c2cfc8546aa6f5741f00e31bb 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -331,6 +331,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -330,6 +330,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations; // Paper - add paper configuration files
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
      public boolean lagging = false; // Purpur
@@ -16,9 +16,9 @@ index a097b6e5ec9c340f0bb822e5d65c4951ba4caa88..ded4e4d120b4f0f803f48f590a6d9e39
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1057,6 +1058,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1056,6 +1057,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         MinecraftServer.LOGGER.info("Stopping server");
          Commands.COMMAND_SENDING_POOL.shutdownNow(); // Paper - Perf: Async command map building; Shutdown and don't bother finishing
-         MinecraftTimings.stopServer(); // Paper
          this.server.spark.disable(); // Paper - spark
 +        // Purpur start
 +        if (upnp) {
@@ -33,10 +33,10 @@ index a097b6e5ec9c340f0bb822e5d65c4951ba4caa88..ded4e4d120b4f0f803f48f590a6d9e39
          if (this.server != null) {
              this.server.disablePlugins();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 9d38c3a3940b59c37efd90e4657991fe62eaeee0..4c1cbceedd1e6ca4045a54754b5c66f4830d7b13 100644
+index 94d292b97ca2404fa1ae8ceec7c4854091e2842d..b9b49e6faa529e543bdaad34b3e169dfb7c0a680 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -294,6 +294,30 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -292,6 +292,30 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              if (true) throw new IllegalStateException("Failed to bind to port", ioexception); // Paper - Propagate failed to bind to port error
              return false;
          }

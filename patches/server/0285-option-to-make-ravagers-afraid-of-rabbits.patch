@@ -18,7 +18,7 @@ index 06aa58b0e036ce4e9615365d03060eb9d9a518b7..487f21c6e6ffc0dc9c0733241a8ded8c
          this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.4D));
          this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 4b01853b4aaae722738e5d1e0256f87d468b0df7..b6b308735adc57e1cefeda63d90460716ee4a65f 100644
+index 303feea75a2f4b2c11526cfa4013433be623f16f..742a46ef95a5e46e9c338cedcecaf008a7108c58 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -2470,6 +2470,7 @@ public class PurpurWorldConfig {

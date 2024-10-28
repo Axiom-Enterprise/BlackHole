@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index f3769da2422d98dec32ba252bde5d9467f1bd84f..d2f2301cff71b8ce64b803dadcb09610e8a2a289 100644
+index ed34d94af712c945a35145bcb2d9603e5e6db1da..01e3da9e5e6a27b3ee54f0b28b67637d8f9271d7 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -617,6 +617,22 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -33,10 +33,10 @@ index f3769da2422d98dec32ba252bde5d9467f1bd84f..d2f2301cff71b8ce64b803dadcb09610
          this.id = Entity.ENTITY_COUNTER.incrementAndGet();
          this.passengers = ImmutableList.of();
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index e937eb4e89bf08e3fee8ea2ca0643b0206964de1..5bc3556d437670801f5afda368c5d0e334869f33 100644
+index 0665b87872b8f5284d5947d68ca04a0850768a90..3177c786e927b8979da74c3144bee9d523155bc1 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -299,6 +299,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -297,6 +297,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
      public org.bukkit.craftbukkit.entity.CraftLivingEntity getBukkitLivingEntity() { return (org.bukkit.craftbukkit.entity.CraftLivingEntity) super.getBukkitEntity(); } // Paper
      public boolean silentDeath = false; // Paper - mark entity as dying silently for cancellable death event
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
@@ -44,7 +44,7 @@ index e937eb4e89bf08e3fee8ea2ca0643b0206964de1..5bc3556d437670801f5afda368c5d0e3
  
      @Override
      public float getBukkitYaw() {
-@@ -841,6 +842,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -839,6 +840,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
          dataresult.resultOrPartial(logger::error).ifPresent((nbtbase) -> {
              nbt.put("Brain", nbtbase);
          });
@@ -52,7 +52,7 @@ index e937eb4e89bf08e3fee8ea2ca0643b0206964de1..5bc3556d437670801f5afda368c5d0e3
      }
  
      @Override
-@@ -929,6 +931,11 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -927,6 +929,11 @@ public abstract class LivingEntity extends Entity implements Attackable {
              this.brain = this.makeBrain(new Dynamic(NbtOps.INSTANCE, nbt.get("Brain")));
          }
  
@@ -64,7 +64,7 @@ index e937eb4e89bf08e3fee8ea2ca0643b0206964de1..5bc3556d437670801f5afda368c5d0e3
      }
  
      // CraftBukkit start
-@@ -3756,6 +3763,34 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3754,6 +3761,34 @@ public abstract class LivingEntity extends Entity implements Attackable {
              }
          }
  
@@ -100,7 +100,7 @@ index e937eb4e89bf08e3fee8ea2ca0643b0206964de1..5bc3556d437670801f5afda368c5d0e3
  
      public boolean isSensitiveToWater() {
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index bc2beee267f535e23bd804d415019bab5ee2fd88..da1aefc4cdf2bca8e91c6c7833c24f3f0923f552 100644
+index 2ececba4f225589c5a38eaa24daf2481ad44a648..7978e307e7bb7f80993c49dcc5ada319a907c648 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -1770,17 +1770,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -215,7 +215,7 @@ index 78e95f15de02cc0b2f2c6d71bf6c10828986c6f4..324fca775bacd06dcd521ce4b33d4f7d
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Phantom.java b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-index 2dc44d3b2609fef26925f2a4a21e0a8bdd14d24a..8f3408b60fce19680e3848b448a7eaddf96e91da 100644
+index 6e665d75f2c3a6cec6307a2befb07e73e48da5eb..cc84fbab113f5633df274deb48de2484b05bb3ff 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 @@ -60,6 +60,7 @@ public class Phantom extends FlyingMob implements Enemy {

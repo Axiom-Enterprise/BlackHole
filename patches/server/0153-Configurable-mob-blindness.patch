@@ -6,10 +6,10 @@ Subject: [PATCH] Configurable mob blindness
 Ported from https://github.com/raltsmc/mobblindness
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 64e30f4b32484da95a5eb6d5556fdc8f66727410..e937eb4e89bf08e3fee8ea2ca0643b0206964de1 100644
+index 86b964c6f3c2b259765feb9823701d9b04cd39d8..0665b87872b8f5284d5947d68ca04a0850768a90 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1067,6 +1067,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1065,6 +1065,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
              if (entitytypes == EntityType.SKELETON && itemstack.is(Items.SKELETON_SKULL) || entitytypes == EntityType.ZOMBIE && itemstack.is(Items.ZOMBIE_HEAD) || entitytypes == EntityType.PIGLIN && itemstack.is(Items.PIGLIN_HEAD) || entitytypes == EntityType.PIGLIN_BRUTE && itemstack.is(Items.PIGLIN_HEAD) || entitytypes == EntityType.CREEPER && itemstack.is(Items.CREEPER_HEAD)) {
                  d0 *= 0.5D;
              }
@@ -28,7 +28,7 @@ index 64e30f4b32484da95a5eb6d5556fdc8f66727410..e937eb4e89bf08e3fee8ea2ca0643b02
  
          return d0;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b7ea3706aa0a339c4197cbf6f62f1b9b7499002f..9ba71358ef10fcaf5339b7341483b037537a0f01 100644
+index f017a147789532dc4d8d2d6e4b4f4293d5c507b8..8be5ff1862e6681161d865a54addb1bdd9bd0425 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -137,6 +137,7 @@ public class PurpurWorldConfig {

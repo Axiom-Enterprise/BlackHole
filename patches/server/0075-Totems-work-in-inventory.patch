@@ -5,10 +5,10 @@ Subject: [PATCH] Totems work in inventory
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index c0ac2801321ca1813804214cc0ceecc1b557865e..06ccf6daaf5e7affe505c75cdbf85c1c29c3ebf9 100644
+index 418456bb08e00c6a9af492bda4f0600921fc5b77..cccd99d642ea14eb175946656d4dead436268d01 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1709,6 +1709,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1707,6 +1707,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
                  }
              }
  
@@ -28,7 +28,7 @@ index c0ac2801321ca1813804214cc0ceecc1b557865e..06ccf6daaf5e7affe505c75cdbf85c1c
              EntityResurrectEvent event = new EntityResurrectEvent((org.bukkit.entity.LivingEntity) this.getBukkitEntity(), handSlot);
              event.setCancelled(itemstack == null);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 0c8ec8f1f6a79a0764ff05d34b40cf18c5590862..bd3c6364051419544cc1c5db110920ad51c1dbc7 100644
+index dc158fefad2a9d0b9be693ba892ddd1fa5189e8e..c03ded82f52f53e8d0e7b138e2fa34f86f46f180 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -236,6 +236,7 @@ public class PurpurWorldConfig {

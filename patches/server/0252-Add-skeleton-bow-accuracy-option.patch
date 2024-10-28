@@ -18,7 +18,7 @@ index 2cadbc0d56908ca978e1735eff07f5e634548606..39d02cf0e31832e30c4f034b0b5385e3
              // CraftBukkit end
          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 6afa859dd0d18d57ba438e34a73b512a137d7cb0..c5028b16ee9ae1ad042bb99f5398163e28c48d12 100644
+index a793533817368077d70d120f8f443b4a87b70e64..c9f1f1340f69250c82f3dfcac593274dad34645e 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -2585,6 +2585,8 @@ public class PurpurWorldConfig {

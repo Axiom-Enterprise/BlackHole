@@ -43,10 +43,10 @@ index b0bc66dc7248aae691dcab68b925b52a1695e63f..b6dd6bde947ac7502f25d31603995961
              try {
                  String channels = payload.toString(com.google.common.base.Charsets.UTF_8);
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 550e175c7fec97818644933a4e4f7805e54d7d5f..e4b41edc7c08c00f4411812a20944507a5b674c7 100644
+index 9e4c416ddeccff87ea9ed5b45a2ef04eae2280bf..2c30bf2b0bdb29e549db10c324daceaa3fde38fd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3598,4 +3598,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3592,4 +3592,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundEntityEventPacket(((CraftEntity) target).getHandle(), effect.getData()));
      }
      // Paper end - entity effect API

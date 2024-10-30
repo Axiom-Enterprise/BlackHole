@@ -5,10 +5,10 @@ Subject: [PATCH] Stop squids floating on top of water
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index a52ea836951da04b8ff15581c7e9323cfed53a92..99ea97ba45c488e49c51b18ffe5022437c24134b 100644
+index 16efd32b5320fb0c7fcbeb1487075fe815e22b0a..ba4b903b034131cfc244a74fad9f6070b764ac32 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -4749,6 +4749,12 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4751,6 +4751,12 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return Mth.lerp(delta, this.yRotO, this.yRot);
      }
  

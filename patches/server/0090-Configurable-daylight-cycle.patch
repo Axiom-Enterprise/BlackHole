@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable daylight cycle
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 49ed4f9d930b50bb11a9ecbfff0b99ea2ccd29c7..3c901f5597e4bb2a77168eb5ad1d14e13142983f 100644
+index 7c5ab96dfa458afadbf8748dbdcbde7be8701a45..642439fe010b1b85b549e7971f98424bac6b334a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1843,7 +1843,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1853,7 +1853,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {

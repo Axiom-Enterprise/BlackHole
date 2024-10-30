@@ -5,7 +5,7 @@ Subject: [PATCH] Entities can use portals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index e4ce84d4374e27afc79591d4ee2e7a696e0b64cf..f326f3a0a5b218addbf9d41837f5653248a39a1d 100644
+index ba4b903b034131cfc244a74fad9f6070b764ac32..6ed1567d1133cad36a4825aad9757baf23dd11aa 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -3473,7 +3473,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -17,7 +17,7 @@ index e4ce84d4374e27afc79591d4ee2e7a696e0b64cf..f326f3a0a5b218addbf9d41837f56532
              if (this.portalProcess != null && this.portalProcess.isSamePortal(portal)) {
                  if (!this.portalProcess.isInsidePortalThisTick()) {
                      this.portalProcess.updateEntryPosition(pos.immutable());
-@@ -4190,7 +4190,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4192,7 +4192,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      // CraftBukkit end
  
      public boolean canUsePortal(boolean allowVehicles) {
@@ -27,7 +27,7 @@ index e4ce84d4374e27afc79591d4ee2e7a696e0b64cf..f326f3a0a5b218addbf9d41837f56532
  
      public boolean canTeleport(Level from, Level to) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 918923d1d95b68a99b52750974647df03070f910..85c896145bd1489a9bcdfe580f959db308c59b65 100644
+index 9f2192a5a22827a6d453fc326fffe161ff42aac1..ec22d8f33387615b46a578be746f79b624674055 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -100,11 +100,13 @@ public class PurpurWorldConfig {

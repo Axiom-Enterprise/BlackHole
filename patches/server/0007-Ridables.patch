@@ -22,10 +22,10 @@ index f58a94efafbc01d402cd03a108bb90f60930a316..21ea63da99c5b3e2e1ab9cc1049c903b
          super(x, y, z);
      }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index af7c6f56444c0e495fd39da872f8030199afc634..02220b87234d32518daffca6c76db7d5a8c13464 100644
+index 7933d6900dac67a24fb5f9378097dbde34be30b1..ef01653f889be21747205d9059ad86b7e51326d5 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1844,6 +1844,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1854,6 +1854,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              worldserver.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = worldserver.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
              worldserver.updateLagCompensationTick(); // Paper - lag compensation
@@ -79,7 +79,7 @@ index c4b016a2fb5c79fb3f191e243712bee7cbe5cd2c..e670a3d04fca7bea2bc732d10e7865b7
                              if ((entity instanceof Bucketable && entity instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                  entity.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 6817015f0cf39df03029e36cd845d590618031dc..aa73875d8cb701d233ffa79c9bda4b7b474ba667 100644
+index bc81faf083e2a5455a7da0ba7cc18eae5e014a7a..fada28327176e8f3aab4b3f7f33b00fa83a7127c 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -383,7 +383,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -120,7 +120,7 @@ index 6817015f0cf39df03029e36cd845d590618031dc..aa73875d8cb701d233ffa79c9bda4b7b
              if (this.passengers.size() == 1 && this.passengers.get(0) == entity) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5329,4 +5344,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5331,4 +5346,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((net.minecraft.server.level.ServerChunkCache) level.getChunkSource()).isPositionTicking(this);
      }
      // Paper end - Expose entity id counter

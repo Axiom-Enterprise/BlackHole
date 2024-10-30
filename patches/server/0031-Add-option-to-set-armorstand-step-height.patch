@@ -5,7 +5,7 @@ Subject: [PATCH] Add option to set armorstand step height
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 90434afec7a896473624901c6b00bf7c81572930..3fe570317c0790b48db42f40e55f9cdb131fcc48 100644
+index 07808cd73e800917228b3baebabdb9361f211958..a76c75e73c0bb060ad170b9d0981493dfdd28ddd 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -343,6 +343,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -16,7 +16,7 @@ index 90434afec7a896473624901c6b00bf7c81572930..3fe570317c0790b48db42f40e55f9cdb
      public boolean noPhysics;
      private boolean wasOnFire;
      public final RandomSource random;
-@@ -5143,7 +5144,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5145,7 +5146,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
  
      public float maxUpStep() {

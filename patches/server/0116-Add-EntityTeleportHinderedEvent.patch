@@ -83,10 +83,10 @@ index cf1797c6ba877c510bba5c8016e57003373d8220..f68c1d6c7003202c4d107663b9c60c2f
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index dc698d64ff3b5ab3b65b91159ce26d7cf51e68a1..32f0aa352a4809573784451bccd70ae8c02590f4 100644
+index 9d7def9b9a5c54efc661bffbc4926707101f65cb..7f10bfe1d28bbc5b32b7554129552088711ebce5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1458,6 +1458,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1452,6 +1452,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          // Paper start - Teleport passenger API
          // Don't allow teleporting between worlds while keeping passengers
          if (ignorePassengers && entity.isVehicle() && location.getWorld() != this.getWorld()) {
@@ -95,7 +95,7 @@ index dc698d64ff3b5ab3b65b91159ce26d7cf51e68a1..32f0aa352a4809573784451bccd70ae8
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index eed88f28a22665b2998297af2d74535610cf9d58..929bb86a823f3283d9abae278186b9f24a8543a8 100644
+index 3bba2c5e91d1b4679759c9fc32ee03e28bfbfe49..a820e3a66da8147f2526e98597b523a165cd4f93 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -124,6 +124,9 @@ public class PurpurWorldConfig {

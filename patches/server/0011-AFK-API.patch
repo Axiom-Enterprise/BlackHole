@@ -223,7 +223,7 @@ index 5d7a6e4b73f032db356e7ec369b150013e940ee6..6b2cda6d578a0983b2401ea206292754
                  if (range < 0.0 || d < range * range) {
                      return true;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index e4b41edc7c08c00f4411812a20944507a5b674c7..dc698d64ff3b5ab3b65b91159ce26d7cf51e68a1 100644
+index 2c30bf2b0bdb29e549db10c324daceaa3fde38fd..9d7def9b9a5c54efc661bffbc4926707101f65cb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -583,10 +583,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -243,7 +243,7 @@ index e4b41edc7c08c00f4411812a20944507a5b674c7..dc698d64ff3b5ab3b65b91159ce26d7c
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -3604,5 +3609,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3598,5 +3603,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public boolean usesPurpurClient() {
          return getHandle().purpurClient;
      }

@@ -510,7 +510,7 @@ index bfc36c239dab4df5130cbde190d513655b9f12a1..b6fd5b83cff5ea21221d029b8729932e
  
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index c55f721a611dc215bcbf3f74f752b3bebfbe9ea4..0ea07da1b4bd420cd6765577b4719a2368b5740c 100644
+index 76fe57670dbb97103041c89d68653918b9023ef5..33b7f0f14c826e9baa8b562a852cd4d46882622c 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1238,7 +1238,7 @@ public abstract class PlayerList {
@@ -613,7 +613,7 @@ index 7bc1d9ed3a3e3679caff8da0a38a3de93fc9ebac..ccc6204141298deea56d996fab24254d
          co.aikar.timings.TimingHistory.tileEntityTicks += this.blockEntityTickers.size(); // Paper
          gameprofilerfiller.pop();
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index e524b27d185da3e88668f8ef107517272860bd66..735f39fed209e086a52185565f8bd6873c0b8d6e 100644
+index 743a33ae2814c513b84b1a60e50a3c24527568f8..638ea34a7e93426ea67d4268dbedc08ad8f681ec 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 @@ -128,7 +128,7 @@ public final class NaturalSpawner {
@@ -625,7 +625,7 @@ index e524b27d185da3e88668f8ef107517272860bd66..735f39fed209e086a52185565f8bd687
          MobCategory[] aenumcreaturetype = NaturalSpawner.SPAWNING_CATEGORIES;
          int i = aenumcreaturetype.length;
  
-@@ -181,7 +181,7 @@ public final class NaturalSpawner {
+@@ -180,7 +180,7 @@ public final class NaturalSpawner {
              }
          }
  
@@ -752,7 +752,7 @@ index b3e1adeb932da9b3bed16acd94e2f16da48a7c72..d3ec817e95628f1fc8be4a29c9a0f13c
          // Paper end - add timings for scoreboard search
      }
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index ba180127a50b1a1ed155ee4053440074e38adef4..ed1cdea66dd117ecafd14a52727f094430f39b60 100644
+index 1eafc16b3a04d69cf20a70a478a428bf61356827..d7ea83c912424d42905fbafe5ad5573b7cd23ecc 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -171,7 +171,7 @@ public class ActivationRange

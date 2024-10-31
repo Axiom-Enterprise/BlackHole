@@ -5,10 +5,10 @@ Subject: [PATCH] mob spawning option to ignore creative players
 
 
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index 4dc060bc677984d91a30a88155c576d5e187aa1b..061706ee732f9809d6b73305c14871257af8305e 100644
+index 86eeae25fe93ddbe3a7026c06d2d3ea5bc55feb4..1ccd314b7ce42e7660ab220cf020e9e1c5ca90d3 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-@@ -253,7 +253,7 @@ public final class NaturalSpawner {
+@@ -252,7 +252,7 @@ public final class NaturalSpawner {
                              blockposition_mutableblockposition.set(l, i, i1);
                              double d0 = (double) l + 0.5D;
                              double d1 = (double) i1 + 0.5D;

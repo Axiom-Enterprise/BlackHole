@@ -1915,7 +1915,7 @@ index ccc6204141298deea56d996fab24254d25857da5..5057d9d433ba002a22d22adfaf7323b2
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index 735f39fed209e086a52185565f8bd6873c0b8d6e..4dc060bc677984d91a30a88155c576d5e187aa1b 100644
+index 638ea34a7e93426ea67d4268dbedc08ad8f681ec..86eeae25fe93ddbe3a7026c06d2d3ea5bc55feb4 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 @@ -127,7 +127,7 @@ public final class NaturalSpawner {
@@ -1927,7 +1927,7 @@ index 735f39fed209e086a52185565f8bd6873c0b8d6e..4dc060bc677984d91a30a88155c576d5
          //world.timings.mobSpawn.startTiming(); // Spigot // Purpur
          MobCategory[] aenumcreaturetype = NaturalSpawner.SPAWNING_CATEGORIES;
          int i = aenumcreaturetype.length;
-@@ -182,7 +182,7 @@ public final class NaturalSpawner {
+@@ -181,7 +181,7 @@ public final class NaturalSpawner {
          }
  
          //world.timings.mobSpawn.stopTiming(); // Spigot // Purpur

@@ -5,7 +5,7 @@ Subject: [PATCH] Lagging threshold
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index ea9947022e036a3e32eca7325bb71380c58533f9..941463daa771010031765818fcec4fe541b96659 100644
+index 3b49ba20c2d5f3a202996b8a5ca5cbba46975985..28985699d407a69906de670ee67f922df4a6d714 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -328,6 +328,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -16,7 +16,7 @@ index ea9947022e036a3e32eca7325bb71380c58533f9..941463daa771010031765818fcec4fe5
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1302,6 +1303,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1301,6 +1302,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[0] = tps1.getAverage();
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();
@@ -25,7 +25,7 @@ index ea9947022e036a3e32eca7325bb71380c58533f9..941463daa771010031765818fcec4fe5
                  }
                  // Paper end - further improve server tick loop
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 2f81978ec902f87da751debf5f6991ae26c9d1b6..db68e166c7d320d843112dba5a689654be88c278 100644
+index 18c1eaeee2627a9713ac721a3cc6398769ab15af..6d23e739cd02cdf965ef7f48e670e3715a1fbcd0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -3257,5 +3257,10 @@ public final class CraftServer implements Server {

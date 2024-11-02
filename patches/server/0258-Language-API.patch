@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MelnCat <melncatuwu@gmail.com>
+Date: Sat, 1 Oct 2022 17:08:43 -0700
+Subject: [PATCH] Language API
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 7b2ae23cc5dc8d334ec22d85865050f61eae14cb..eef85316dc310afef805f29c6665107a24a6a3d1 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -414,6 +414,20 @@ public final class CraftServer implements Server {
+         this.paperPluginManager = new io.papermc.paper.plugin.manager.PaperPluginManagerImpl(this, this.commandMap, pluginManager);
+         this.pluginManager.paperPluginManager = this.paperPluginManager;
+          // Paper end
++        // Purpur start
++        org.purpurmc.purpur.language.Language.setLanguage(new org.purpurmc.purpur.language.Language() {
++            private net.minecraft.locale.Language language = net.minecraft.locale.Language.getInstance();
++            @Override
++            public boolean has(@org.jetbrains.annotations.NotNull String key) {
++                return language.has(key);
++            }
++
++            @Override
++            public @org.jetbrains.annotations.NotNull String getOrDefault(@org.jetbrains.annotations.NotNull String key) {
++                return language.getOrDefault(key);
++            }
++        });
++        // Purpur end
+ 
+         CraftRegistry.setMinecraftRegistry(console.registryAccess());
+ 

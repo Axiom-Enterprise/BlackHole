@@ -1,0 +1,47 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Mon, 17 Aug 2020 19:32:05 -0500
+Subject: [PATCH] Entities can use portals
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index 3d25c9ec52dfcd85ab7220c5b2f760f31b564724..ebffeb41944df4e097fad259f48b2d18941e55b3 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -3473,7 +3473,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+     public void setAsInsidePortal(Portal portal, BlockPos pos) {
+         if (this.isOnPortalCooldown()) {
+             this.setPortalCooldown();
+-        } else {
++        } else if (this.level.purpurConfig.entitiesCanUsePortals || this instanceof ServerPlayer) { // Purpur - Entities can use portals
+             if (this.portalProcess != null && this.portalProcess.isSamePortal(portal)) {
+                 if (!this.portalProcess.isInsidePortalThisTick()) {
+                     this.portalProcess.updateEntryPosition(pos.immutable());
+@@ -4192,7 +4192,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+     // CraftBukkit end
+ 
+     public boolean canUsePortal(boolean allowVehicles) {
+-        return (allowVehicles || !this.isPassenger()) && this.isAlive();
++        return (allowVehicles || !this.isPassenger()) && this.isAlive() && (this.level.purpurConfig.entitiesCanUsePortals || this instanceof ServerPlayer); // Purpur - Entities can use portals
+     }
+ 
+     public boolean canTeleport(Level from, Level to) {
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 3fb03b012873999e2ff82b480908655303e47aaf..b901f058f82033fe1750bfc4fb472c80268f1920 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -101,12 +101,14 @@ public class PurpurWorldConfig {
+     public boolean disableDropsOnCrammingDeath = false;
+     public boolean milkCuresBadOmen = true;
+     public double tridentLoyaltyVoidReturnHeight = 0.0D;
++    public boolean entitiesCanUsePortals = true;
+     private void miscGameplayMechanicsSettings() {
+         useBetterMending = getBoolean("gameplay-mechanics.use-better-mending", useBetterMending);
+         boatEjectPlayersOnLand = getBoolean("gameplay-mechanics.boat.eject-players-on-land", boatEjectPlayersOnLand);
+         disableDropsOnCrammingDeath = getBoolean("gameplay-mechanics.disable-drops-on-cramming-death", disableDropsOnCrammingDeath);
+         milkCuresBadOmen = getBoolean("gameplay-mechanics.milk-cures-bad-omen", milkCuresBadOmen);
+         tridentLoyaltyVoidReturnHeight = getDouble("gameplay-mechanics.trident-loyalty-void-return-height", tridentLoyaltyVoidReturnHeight);
++        entitiesCanUsePortals = getBoolean("gameplay-mechanics.entities-can-use-portals", entitiesCanUsePortals);
+     }
+ 
+     public int elytraDamagePerSecond = 1;

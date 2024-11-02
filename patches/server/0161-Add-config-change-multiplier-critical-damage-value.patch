@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: DoctaEnkoda <bierquejason@gmail.com>
+Date: Mon, 17 May 2021 02:40:13 +0200
+Subject: [PATCH] Add config change multiplier critical damage value
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index ae5f7c275003b6fb9f6c5a0277482b4fddf8e74c..4c42ad7e43ab1f19456a89f1b0e82b7a1f6e4108 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -1306,7 +1306,7 @@ public abstract class Player extends LivingEntity {
+                     flag2 = flag2 && !this.level().paperConfig().entities.behavior.disablePlayerCrits; // Paper - Toggleable player crits
+                     if (flag2) {
+                         damagesource = damagesource.critical(true); // Paper start - critical damage API
+-                        f *= 1.5F;
++                        f *= this.level().purpurConfig.playerCriticalDamageMultiplier; // Purpur
+                     }
+ 
+                     float f3 = f + f1;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index d109f26e7b0c248f51f16fa940c2d770bf79fd20..533dd49ba9474b22ba95504084da118d4562804d 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -365,6 +365,7 @@ public class PurpurWorldConfig {
+     public boolean creativeOnePunch = false;
+     public boolean playerSleepNearMonsters = false;
+     public boolean playersSkipNight = true;
++    public double playerCriticalDamageMultiplier = 1.5D;
+     private void playerSettings() {
+         if (PurpurConfig.version < 19) {
+             boolean oldVal = getBoolean("gameplay-mechanics.player.idle-timeout.mods-target", idleTimeoutTargetPlayer);
+@@ -384,6 +385,7 @@ public class PurpurWorldConfig {
+         creativeOnePunch = getBoolean("gameplay-mechanics.player.one-punch-in-creative", creativeOnePunch);
+         playerSleepNearMonsters = getBoolean("gameplay-mechanics.player.sleep-ignore-nearby-mobs", playerSleepNearMonsters);
+         playersSkipNight = getBoolean("gameplay-mechanics.player.can-skip-night", playersSkipNight);
++        playerCriticalDamageMultiplier = getDouble("gameplay-mechanics.player.critical-damage-multiplier", playerCriticalDamageMultiplier);
+     }
+ 
+     public boolean silkTouchEnabled = false;

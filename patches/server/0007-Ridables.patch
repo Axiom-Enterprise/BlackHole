@@ -22,10 +22,10 @@ index f58a94efafbc01d402cd03a108bb90f60930a316..21ea63da99c5b3e2e1ab9cc1049c903b
          super(x, y, z);
      }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7933d6900dac67a24fb5f9378097dbde34be30b1..ef01653f889be21747205d9059ad86b7e51326d5 100644
+index 64b56abf8900d0424100da460fc68ac964394793..e37e11c7912cc2824b67928811a8e542fa0a9337 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1854,6 +1854,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1853,6 +1853,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              worldserver.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = worldserver.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
              worldserver.updateLagCompensationTick(); // Paper - lag compensation
@@ -34,7 +34,7 @@ index 7933d6900dac67a24fb5f9378097dbde34be30b1..ef01653f889be21747205d9059ad86b7
              gameprofilerfiller.push(() -> {
                  String s = String.valueOf(worldserver);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index e65cfb1132f5f0c9e1fa5ae4a46a8abed0c56be1..43c976c5b61f26662d6e57b5cd39c3e153985db3 100644
+index 5964d601c05176f48167cc92057a59e52a4da92b..6a704739b1e4e12b6e3dcee4144fede634c559c8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -230,6 +230,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -46,10 +46,10 @@ index e65cfb1132f5f0c9e1fa5ae4a46a8abed0c56be1..43c976c5b61f26662d6e57b5cd39c3e1
      public LevelChunk getChunkIfLoaded(int x, int z) {
          return this.chunkSource.getChunkAtIfLoadedImmediately(x, z); // Paper - Use getChunkIfLoadedImmediately
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 2de732451096f13d5df160500267cb2db0101c63..b345e0eb7145b5a3800dc9c73508e53d83ea0171 100644
+index 4cd799505ad4f9e02eef5f015a6c092af0efba14..c69080f68ac1a7e7113da692ae7baba467393d48 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1032,6 +1032,15 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1033,6 +1033,15 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          this.trackEnteredOrExitedLavaOnVehicle();
          this.updatePlayerAttributes();
          this.advancements.flushDirty(this);
@@ -66,10 +66,10 @@ index 2de732451096f13d5df160500267cb2db0101c63..b345e0eb7145b5a3800dc9c73508e53d
  
      private void updatePlayerAttributes() {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index c4b016a2fb5c79fb3f191e243712bee7cbe5cd2c..e670a3d04fca7bea2bc732d10e7865b76e396586 100644
+index b5d5dbc50a7b8c40739a15f164ffd08fdc534f9c..5d322e613a0116057373a3c9d7125620c63b43d7 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2820,6 +2820,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2821,6 +2821,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
                              ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
  
@@ -79,7 +79,7 @@ index c4b016a2fb5c79fb3f191e243712bee7cbe5cd2c..e670a3d04fca7bea2bc732d10e7865b7
                              if ((entity instanceof Bucketable && entity instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                  entity.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index bc81faf083e2a5455a7da0ba7cc18eae5e014a7a..fada28327176e8f3aab4b3f7f33b00fa83a7127c 100644
+index 341c324d15996a74b113f8879d7da737a1be86a1..1d23428d23c1281eea456fe6175e050826246848 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -383,7 +383,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -190,7 +190,7 @@ index b851c3ee1426bc0a259bf6c4a662af0c9883dd71..7c11b5e73d4f3c0be7c467f7522c2d97
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 0831d69d6ac1aa112dfe8243b01adcf5e8eba6a0..56613c25850f89d125cb213d37fd5fed9deee7f7 100644
+index 9c61225a728a2ca91a1c71dead75fc7cd93668b6..e8c1ffe30e0f211ae563e28afa2101e51a122777 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -248,9 +248,9 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -5112,7 +5112,7 @@ index 179886dcbda29c5cdb7dbd43e44951ae38d9df96..cf1797c6ba877c510bba5c8016e57003
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 1e98f68e51618606f1178c12be77c1a945362630..4046f911b1f0da909dbb4d8ff856fb869f61a0f8 100644
+index deba03eb37012c638e08e20cd1c98e9db190c790..26d7e7ace4491c444c31dc11359427259c04f93c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -602,6 +602,15 @@ public class CraftEventFactory {

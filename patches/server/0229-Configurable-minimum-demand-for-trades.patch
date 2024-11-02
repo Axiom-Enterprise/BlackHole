@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Totorewa <76272501+totorewa@users.noreply.github.com>
+Date: Fri, 7 Jan 2022 21:34:57 +1300
+Subject: [PATCH] Configurable minimum demand for trades
+
+Addresses MC-163962 where villager demand decreases indefinitely. Paper
+adds a patch to fix this by preventing demand from going below zero.
+This patch adds a config option to allow the minimum demand to instead
+be configurable.
+
+diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+index 8e519706b025579aad1b74be3b8c6c49146a64a2..b1a0a11f8443a797146dbaf46b9830133f3a51e0 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
++++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+@@ -539,7 +539,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+         while (iterator.hasNext()) {
+             MerchantOffer merchantrecipe = (MerchantOffer) iterator.next();
+ 
+-            merchantrecipe.updateDemand();
++            merchantrecipe.updateDemand(this.level().purpurConfig.villagerMinimumDemand); // Purpur
+         }
+ 
+     }
+diff --git a/src/main/java/net/minecraft/world/item/trading/MerchantOffer.java b/src/main/java/net/minecraft/world/item/trading/MerchantOffer.java
+index 0efc8d997b34302c3e0a5d7ec73a11a940dbeefe..af157881d440b34cfe79fbc9b03cc9ef28515eb8 100644
+--- a/src/main/java/net/minecraft/world/item/trading/MerchantOffer.java
++++ b/src/main/java/net/minecraft/world/item/trading/MerchantOffer.java
+@@ -131,7 +131,12 @@ public class MerchantOffer {
+     }
+ 
+     public void updateDemand() {
+-        this.demand = Math.max(0, this.demand + this.uses - (this.maxUses - this.uses)); // Paper - Fix MC-163962
++        // Purpur start
++        this.updateDemand(0);
++    }
++    public void updateDemand(int minimumDemand) {
++        this.demand = Math.max(minimumDemand, this.demand + this.uses - (this.maxUses - this.uses)); // Paper - Fix MC-163962
++        // Purpur end
+     }
+ 
+     public ItemStack assemble() {
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 9882be8d2a0c235b61dabfd31d7680a934f3ce81..3be84a156379bbb529ffcbe78a6750fc9f356132 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -2891,6 +2891,7 @@ public class PurpurWorldConfig {
+     public boolean villagerTakeDamageFromWater = false;
+     public boolean villagerAllowTrading = true;
+     public boolean villagerAlwaysDropExp = false;
++    public int villagerMinimumDemand = 0;
+     private void villagerSettings() {
+         villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
+         villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
+@@ -2912,6 +2913,7 @@ public class PurpurWorldConfig {
+         villagerTakeDamageFromWater = getBoolean("mobs.villager.takes-damage-from-water", villagerTakeDamageFromWater);
+         villagerAllowTrading = getBoolean("mobs.villager.allow-trading", villagerAllowTrading);
+         villagerAlwaysDropExp = getBoolean("mobs.villager.always-drop-exp", villagerAlwaysDropExp);
++        villagerMinimumDemand = getInt("mobs.villager.minimum-demand", villagerMinimumDemand);
+     }
+ 
+     public boolean vindicatorRidable = false;

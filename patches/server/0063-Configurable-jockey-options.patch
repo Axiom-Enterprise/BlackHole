@@ -1,0 +1,271 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Thu, 26 Mar 2020 21:39:32 -0500
+Subject: [PATCH] Configurable jockey options
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Drowned.java b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
+index 0b572267d929ef362b6e65c55846ef12412951ba..7dc7f8734ffb3c5e50c763cb4e750d20c6e22281 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Drowned.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
+@@ -100,6 +100,21 @@ public class Drowned extends Zombie implements RangedAttackMob {
+         this.getAttribute(Attributes.SPAWN_REINFORCEMENTS_CHANCE).setBaseValue(this.random.nextDouble() * this.level().purpurConfig.drownedSpawnReinforcements);
+     }
+ 
++    @Override
++    public boolean jockeyOnlyBaby() {
++        return level().purpurConfig.drownedJockeyOnlyBaby;
++    }
++
++    @Override
++    public double jockeyChance() {
++        return level().purpurConfig.drownedJockeyChance;
++    }
++
++    @Override
++    public boolean jockeyTryExistingChickens() {
++        return level().purpurConfig.drownedJockeyTryExistingChickens;
++    }
++
+     @Override
+     protected void addBehaviourGoals() {
+         this.goalSelector.addGoal(1, new Drowned.DrownedGoToWaterGoal(this, 1.0));
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Husk.java b/src/main/java/net/minecraft/world/entity/monster/Husk.java
+index d9dbcd15522301344770963a6e3592afe393861a..ed4b1e2df6d7c7dfa45d96b9c08f2aa429ad32c5 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Husk.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Husk.java
+@@ -50,6 +50,21 @@ public class Husk extends Zombie {
+         this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SPAWN_REINFORCEMENTS_CHANCE).setBaseValue(this.random.nextDouble() * this.level().purpurConfig.huskSpawnReinforcements);
+     }
+ 
++    @Override
++    public boolean jockeyOnlyBaby() {
++        return level().purpurConfig.huskJockeyOnlyBaby;
++    }
++
++    @Override
++    public double jockeyChance() {
++        return level().purpurConfig.huskJockeyChance;
++    }
++
++    @Override
++    public boolean jockeyTryExistingChickens() {
++        return level().purpurConfig.huskJockeyTryExistingChickens;
++    }
++
+     public static boolean checkHuskSpawnRules(EntityType<Husk> type, ServerLevelAccessor world, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
+         return checkMonsterSpawnRules(type, world, spawnReason, pos, random) && (EntitySpawnReason.isSpawner(spawnReason) || world.canSeeSky(pos));
+     }
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
+index 978f610d31312f36093c0111ce623d1157fa943d..cb5cf34781de4e87074a70a447fd463280147bdc 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
+@@ -133,6 +133,18 @@ public class Zombie extends Monster {
+         this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.zombieScale);
+     }
+ 
++    public boolean jockeyOnlyBaby() {
++        return level().purpurConfig.zombieJockeyOnlyBaby;
++    }
++
++    public double jockeyChance() {
++        return level().purpurConfig.zombieJockeyChance;
++    }
++
++    public boolean jockeyTryExistingChickens() {
++        return level().purpurConfig.zombieJockeyTryExistingChickens;
++    }
++
+     @Override
+     protected void registerGoals() {
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
+@@ -553,19 +565,20 @@ public class Zombie extends Monster {
+         }
+ 
+         if (object instanceof Zombie.ZombieGroupData entityzombie_groupdatazombie) {
+-            if (entityzombie_groupdatazombie.isBaby) {
+-                this.setBaby(true);
++            // Purpur start
++            if (!jockeyOnlyBaby() || entityzombie_groupdatazombie.isBaby) {
++                this.setBaby(entityzombie_groupdatazombie.isBaby);
+                 if (entityzombie_groupdatazombie.canSpawnJockey) {
+-                    if ((double) randomsource.nextFloat() < 0.05D) {
+-                        List<Chicken> list = world.getEntitiesOfClass(Chicken.class, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D), EntitySelector.ENTITY_NOT_BEING_RIDDEN);
++                    if ((double) randomsource.nextFloat() < jockeyChance()) {
++                        List<Chicken> list = jockeyTryExistingChickens() ? world.getEntitiesOfClass(Chicken.class, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D), EntitySelector.ENTITY_NOT_BEING_RIDDEN) : java.util.Collections.emptyList();
++                        // Purpur end
+ 
+                         if (!list.isEmpty()) {
+                             Chicken entitychicken = (Chicken) list.get(0);
+ 
+                             entitychicken.setChickenJockey(true);
+                             this.startRiding(entitychicken);
+-                        }
+-                    } else if ((double) randomsource.nextFloat() < 0.05D) {
++                        } else { // Purpur
+                         Chicken entitychicken1 = (Chicken) EntityType.CHICKEN.create(this.level(), EntitySpawnReason.JOCKEY);
+ 
+                         if (entitychicken1 != null) {
+@@ -575,6 +588,7 @@ public class Zombie extends Monster {
+                             this.startRiding(entitychicken1);
+                             world.addFreshEntity(entitychicken1, CreatureSpawnEvent.SpawnReason.MOUNT); // CraftBukkit
+                         }
++                        } // Purpur
+                     }
+                 }
+             }
+diff --git a/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java b/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
+index a2447844a6a6e08d41bb5152d01da91c852665cf..eb6daba7d44542739f1c537cbeef8f87c6db61bf 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
++++ b/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
+@@ -112,6 +112,21 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+         this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SPAWN_REINFORCEMENTS_CHANCE).setBaseValue(this.random.nextDouble() * this.level().purpurConfig.zombieVillagerSpawnReinforcements);
+     }
+ 
++    @Override
++    public boolean jockeyOnlyBaby() {
++        return level().purpurConfig.zombieVillagerJockeyOnlyBaby;
++    }
++
++    @Override
++    public double jockeyChance() {
++        return level().purpurConfig.zombieVillagerJockeyChance;
++    }
++
++    @Override
++    public boolean jockeyTryExistingChickens() {
++        return level().purpurConfig.zombieVillagerJockeyTryExistingChickens;
++    }
++
+     @Override
+     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+         super.defineSynchedData(builder);
+diff --git a/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java b/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
+index ba1ce7e0ed888bd47312e9d7da5426f5c1015d07..650f9e1ca3a5ddec5123133c9604f33140e948a8 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
++++ b/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
+@@ -86,6 +86,21 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
+         this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.zombifiedPiglinScale);
+     }
+ 
++    @Override
++    public boolean jockeyOnlyBaby() {
++        return level().purpurConfig.zombifiedPiglinJockeyOnlyBaby;
++    }
++
++    @Override
++    public double jockeyChance() {
++        return level().purpurConfig.zombifiedPiglinJockeyChance;
++    }
++
++    @Override
++    public boolean jockeyTryExistingChickens() {
++        return level().purpurConfig.zombifiedPiglinJockeyTryExistingChickens;
++    }
++
+     @Override
+     public void setPersistentAngerTarget(@Nullable UUID angryAt) {
+         this.persistentAngerTarget = angryAt;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 0766f4cb00caac477e7ee0d537dc1f5304cd7d1a..7c1f903c41839251a69d38ba58fb4a7038f8901a 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -636,6 +636,9 @@ public class PurpurWorldConfig {
+     public double drownedMaxHealth = 20.0D;
+     public double drownedScale = 1.0D;
+     public double drownedSpawnReinforcements = 0.1D;
++    public boolean drownedJockeyOnlyBaby = true;
++    public double drownedJockeyChance = 0.05D;
++    public boolean drownedJockeyTryExistingChickens = true;
+     private void drownedSettings() {
+         drownedRidable = getBoolean("mobs.drowned.ridable", drownedRidable);
+         drownedRidableInWater = getBoolean("mobs.drowned.ridable-in-water", drownedRidableInWater);
+@@ -648,6 +651,9 @@ public class PurpurWorldConfig {
+         drownedMaxHealth = getDouble("mobs.drowned.attributes.max_health", drownedMaxHealth);
+         drownedScale = Mth.clamp(getDouble("mobs.drowned.attributes.scale", drownedScale), 0.0625D, 16.0D);
+         drownedSpawnReinforcements = getDouble("mobs.drowned.attributes.spawn_reinforcements", drownedSpawnReinforcements);
++        drownedJockeyOnlyBaby = getBoolean("mobs.drowned.jockey.only-babies", drownedJockeyOnlyBaby);
++        drownedJockeyChance = getDouble("mobs.drowned.jockey.chance", drownedJockeyChance);
++        drownedJockeyTryExistingChickens = getBoolean("mobs.drowned.jockey.try-existing-chickens", drownedJockeyTryExistingChickens);
+     }
+ 
+     public boolean elderGuardianRidable = false;
+@@ -919,6 +925,9 @@ public class PurpurWorldConfig {
+     public double huskMaxHealth = 20.0D;
+     public double huskScale = 1.0D;
+     public double huskSpawnReinforcements = 0.1D;
++    public boolean huskJockeyOnlyBaby = true;
++    public double huskJockeyChance = 0.05D;
++    public boolean huskJockeyTryExistingChickens = true;
+     private void huskSettings() {
+         huskRidable = getBoolean("mobs.husk.ridable", huskRidable);
+         huskRidableInWater = getBoolean("mobs.husk.ridable-in-water", huskRidableInWater);
+@@ -931,6 +940,9 @@ public class PurpurWorldConfig {
+         huskMaxHealth = getDouble("mobs.husk.attributes.max_health", huskMaxHealth);
+         huskScale = Mth.clamp(getDouble("mobs.husk.attributes.scale", huskScale), 0.0625D, 16.0D);
+         huskSpawnReinforcements = getDouble("mobs.husk.attributes.spawn_reinforcements", huskSpawnReinforcements);
++        huskJockeyOnlyBaby = getBoolean("mobs.husk.jockey.only-babies", huskJockeyOnlyBaby);
++        huskJockeyChance = getDouble("mobs.husk.jockey.chance", huskJockeyChance);
++        huskJockeyTryExistingChickens = getBoolean("mobs.husk.jockey.try-existing-chickens", huskJockeyTryExistingChickens);
+     }
+ 
+     public boolean illusionerRidable = false;
+@@ -1824,6 +1836,9 @@ public class PurpurWorldConfig {
+     public double zombieMaxHealth = 20.0D;
+     public double zombieScale = 1.0D;
+     public double zombieSpawnReinforcements = 0.1D;
++    public boolean zombieJockeyOnlyBaby = true;
++    public double zombieJockeyChance = 0.05D;
++    public boolean zombieJockeyTryExistingChickens = true;
+     private void zombieSettings() {
+         zombieRidable = getBoolean("mobs.zombie.ridable", zombieRidable);
+         zombieRidableInWater = getBoolean("mobs.zombie.ridable-in-water", zombieRidableInWater);
+@@ -1836,6 +1851,9 @@ public class PurpurWorldConfig {
+         zombieMaxHealth = getDouble("mobs.zombie.attributes.max_health", zombieMaxHealth);
+         zombieScale = Mth.clamp(getDouble("mobs.zombie.attributes.scale", zombieScale), 0.0625D, 16.0D);
+         zombieSpawnReinforcements = getDouble("mobs.zombie.attributes.spawn_reinforcements", zombieSpawnReinforcements);
++        zombieJockeyOnlyBaby = getBoolean("mobs.zombie.jockey.only-babies", zombieJockeyOnlyBaby);
++        zombieJockeyChance = getDouble("mobs.zombie.jockey.chance", zombieJockeyChance);
++        zombieJockeyTryExistingChickens = getBoolean("mobs.zombie.jockey.try-existing-chickens", zombieJockeyTryExistingChickens);
+     }
+ 
+     public boolean zombieHorseRidable = false;
+@@ -1873,6 +1891,9 @@ public class PurpurWorldConfig {
+     public double zombieVillagerMaxHealth = 20.0D;
+     public double zombieVillagerScale = 1.0D;
+     public double zombieVillagerSpawnReinforcements = 0.1D;
++    public boolean zombieVillagerJockeyOnlyBaby = true;
++    public double zombieVillagerJockeyChance = 0.05D;
++    public boolean zombieVillagerJockeyTryExistingChickens = true;
+     private void zombieVillagerSettings() {
+         zombieVillagerRidable = getBoolean("mobs.zombie_villager.ridable", zombieVillagerRidable);
+         zombieVillagerRidableInWater = getBoolean("mobs.zombie_villager.ridable-in-water", zombieVillagerRidableInWater);
+@@ -1885,6 +1906,9 @@ public class PurpurWorldConfig {
+         zombieVillagerMaxHealth = getDouble("mobs.zombie_villager.attributes.max_health", zombieVillagerMaxHealth);
+         zombieVillagerScale = Mth.clamp(getDouble("mobs.zombie_villager.attributes.scale", zombieVillagerScale), 0.0625D, 16.0D);
+         zombieVillagerSpawnReinforcements = getDouble("mobs.zombie_villager.attributes.spawn_reinforcements", zombieVillagerSpawnReinforcements);
++        zombieVillagerJockeyOnlyBaby = getBoolean("mobs.zombie_villager.jockey.only-babies", zombieVillagerJockeyOnlyBaby);
++        zombieVillagerJockeyChance = getDouble("mobs.zombie_villager.jockey.chance", zombieVillagerJockeyChance);
++        zombieVillagerJockeyTryExistingChickens = getBoolean("mobs.zombie_villager.jockey.try-existing-chickens", zombieVillagerJockeyTryExistingChickens);
+     }
+ 
+     public boolean zombifiedPiglinRidable = false;
+@@ -1893,6 +1917,9 @@ public class PurpurWorldConfig {
+     public double zombifiedPiglinMaxHealth = 20.0D;
+     public double zombifiedPiglinScale = 1.0D;
+     public double zombifiedPiglinSpawnReinforcements = 0.0D;
++    public boolean zombifiedPiglinJockeyOnlyBaby = true;
++    public double zombifiedPiglinJockeyChance = 0.05D;
++    public boolean zombifiedPiglinJockeyTryExistingChickens = true;
+     private void zombifiedPiglinSettings() {
+         zombifiedPiglinRidable = getBoolean("mobs.zombified_piglin.ridable", zombifiedPiglinRidable);
+         zombifiedPiglinRidableInWater = getBoolean("mobs.zombified_piglin.ridable-in-water", zombifiedPiglinRidableInWater);
+@@ -1905,5 +1932,8 @@ public class PurpurWorldConfig {
+         zombifiedPiglinMaxHealth = getDouble("mobs.zombified_piglin.attributes.max_health", zombifiedPiglinMaxHealth);
+         zombifiedPiglinScale = Mth.clamp(getDouble("mobs.zombified_piglin.attributes.scale", zombifiedPiglinScale), 0.0625D, 16.0D);
+         zombifiedPiglinSpawnReinforcements = getDouble("mobs.zombified_piglin.attributes.spawn_reinforcements", zombifiedPiglinSpawnReinforcements);
++        zombifiedPiglinJockeyOnlyBaby = getBoolean("mobs.zombified_piglin.jockey.only-babies", zombifiedPiglinJockeyOnlyBaby);
++        zombifiedPiglinJockeyChance = getDouble("mobs.zombified_piglin.jockey.chance", zombifiedPiglinJockeyChance);
++        zombifiedPiglinJockeyTryExistingChickens = getBoolean("mobs.zombified_piglin.jockey.try-existing-chickens", zombifiedPiglinJockeyTryExistingChickens);
+     }
+ }

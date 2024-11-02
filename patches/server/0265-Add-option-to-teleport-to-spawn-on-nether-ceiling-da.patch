@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: BillyGalbreath <blake.galbreath@gmail.com>
+Date: Sun, 13 Nov 2022 05:05:34 -0600
+Subject: [PATCH] Add option to teleport to spawn on nether ceiling damage
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index dec1189caed215269f0a148954dad23e2260d81d..1230b058d2ea791bebb0e05eabe4e789a93448af 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -1032,6 +1032,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+             && this.level.paperConfig().environment.netherCeilingVoidDamageHeight.test(v -> this.getY() >= v)
+             && (!(this instanceof Player player) || !player.getAbilities().invulnerable))) {
+             // Paper end - Configurable nether ceiling damage
++            if (this.level().purpurConfig.teleportOnNetherCeilingDamage && this.level.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER && this instanceof ServerPlayer player) player.teleport(io.papermc.paper.util.MCUtil.toLocation(this.level, this.level.getSharedSpawnPos())); else // Purpur
+             this.onBelowWorld();
+         }
+ 
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 1b948280b0d92ec607d4c9dee0d2f1749e9fe8b5..f083d0efb0f0aee24779fc866204cbb936d3f55f 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -418,6 +418,7 @@ public class PurpurWorldConfig {
+     public String playerDeathExpDropEquation = "expLevel * 7";
+     public int playerDeathExpDropMax = 100;
+     public boolean teleportIfOutsideBorder = false;
++    public boolean teleportOnNetherCeilingDamage = false;
+     public boolean totemOfUndyingWorksInInventory = false;
+     public boolean playerFixStuckPortal = false;
+     public boolean creativeOnePunch = false;
+@@ -445,6 +446,7 @@ public class PurpurWorldConfig {
+         playerDeathExpDropEquation = getString("gameplay-mechanics.player.exp-dropped-on-death.equation", playerDeathExpDropEquation);
+         playerDeathExpDropMax = getInt("gameplay-mechanics.player.exp-dropped-on-death.maximum", playerDeathExpDropMax);
+         teleportIfOutsideBorder = getBoolean("gameplay-mechanics.player.teleport-if-outside-border", teleportIfOutsideBorder);
++        teleportOnNetherCeilingDamage = getBoolean("gameplay-mechanics.player.teleport-on-nether-ceiling-damage", teleportOnNetherCeilingDamage);
+         totemOfUndyingWorksInInventory = getBoolean("gameplay-mechanics.player.totem-of-undying-works-in-inventory", totemOfUndyingWorksInInventory);
+         playerFixStuckPortal = getBoolean("gameplay-mechanics.player.fix-stuck-in-portal", playerFixStuckPortal);
+         creativeOnePunch = getBoolean("gameplay-mechanics.player.one-punch-in-creative", creativeOnePunch);

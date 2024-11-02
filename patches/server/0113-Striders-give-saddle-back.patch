@@ -1,0 +1,50 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ben Kerllenevich <ben@omega24.dev>
+Date: Sun, 13 Dec 2020 20:40:57 -0500
+Subject: [PATCH] Striders give saddle back
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Strider.java b/src/main/java/net/minecraft/world/entity/monster/Strider.java
+index 0cc49b0a600a5e6fb4fc21e698e3a5fef5996df1..bb2283fa9a21d7fc609f0a914cdb8b1370d90235 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Strider.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Strider.java
+@@ -483,6 +483,19 @@ public class Strider extends Animal implements ItemSteerable, Saddleable {
+     public InteractionResult mobInteract(Player player, InteractionHand hand) {
+         boolean flag = this.isFood(player.getItemInHand(hand));
+ 
++        // Purpur start
++        if (level().purpurConfig.striderGiveSaddleBack && player.isSecondaryUseActive() && !flag && isSaddled() && !isVehicle()) {
++            this.steering.setSaddle(false);
++            if (!player.getAbilities().instabuild) {
++                ItemStack saddle = new ItemStack(Items.SADDLE);
++                if (!player.getInventory().add(saddle)) {
++                    player.drop(saddle, false);
++                }
++            }
++            return InteractionResult.SUCCESS;
++        }
++        // Purpur end
++
+         if (!flag && this.isSaddled() && !this.isVehicle() && !player.isSecondaryUseActive()) {
+             if (!this.level().isClientSide) {
+                 player.startRiding(this);
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index bae2bb894cc068cbf738849b9e46ce8d8b78f919..cd61cf137bfe39633414c59beaf7e4fb303fa2f1 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -1801,6 +1801,7 @@ public class PurpurWorldConfig {
+     public double striderMaxHealth = 20.0D;
+     public double striderScale = 1.0D;
+     public int striderBreedingTicks = 6000;
++    public boolean striderGiveSaddleBack = false;
+     private void striderSettings() {
+         striderRidable = getBoolean("mobs.strider.ridable", striderRidable);
+         striderRidableInWater = getBoolean("mobs.strider.ridable-in-water", striderRidableInWater);
+@@ -1813,6 +1814,7 @@ public class PurpurWorldConfig {
+         striderMaxHealth = getDouble("mobs.strider.attributes.max_health", striderMaxHealth);
+         striderScale = Mth.clamp(getDouble("mobs.strider.attributes.scale", striderScale), 0.0625D, 16.0D);
+         striderBreedingTicks = getInt("mobs.strider.breeding-delay-ticks", striderBreedingTicks);
++        striderGiveSaddleBack = getBoolean("mobs.strider.give-saddle-back", striderGiveSaddleBack);
+     }
+ 
+     public boolean tadpoleRidable = false;

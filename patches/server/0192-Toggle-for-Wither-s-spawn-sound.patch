@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: 12emin34 <macanovic.emin@gmail.com>
+Date: Sat, 7 Aug 2021 21:27:56 +0200
+Subject: [PATCH] Toggle for Wither's spawn sound
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java b/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
+index 4e59cbd95d2ee1b69a38fc23015a6262d1a2c53b..1857e0899b32a078bd0e9e4b784ea60b97aa70ef 100644
+--- a/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
++++ b/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
+@@ -424,7 +424,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
+                 }
+                 // CraftBukkit end
+ 
+-                if (!this.isSilent()) {
++                if (!this.isSilent() && level().purpurConfig.witherPlaySpawnSound) {
+                     // CraftBukkit start - Use relative location for far away sounds
+                     // worldserver.globalLevelEvent(1023, new BlockPosition(this), 0);
+                     int viewDistance = world.getCraftServer().getViewDistance() * 16;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 019ca3f4a506b5b964f78b4efb79111ea1b5fd76..28a444c0ed6b8dffedf00a4bc95d6351d4a08212 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -2779,6 +2779,7 @@ public class PurpurWorldConfig {
+     public boolean witherTakeDamageFromWater = false;
+     public boolean witherCanRideVehicles = false;
+     public float witherExplosionRadius = 1.0F;
++    public boolean witherPlaySpawnSound = true;
+     private void witherSettings() {
+         witherRidable = getBoolean("mobs.wither.ridable", witherRidable);
+         witherRidableInWater = getBoolean("mobs.wither.ridable-in-water", witherRidableInWater);
+@@ -2801,6 +2802,7 @@ public class PurpurWorldConfig {
+         witherTakeDamageFromWater = getBoolean("mobs.wither.takes-damage-from-water", witherTakeDamageFromWater);
+         witherCanRideVehicles = getBoolean("mobs.wither.can-ride-vehicles", witherCanRideVehicles);
+         witherExplosionRadius = (float) getDouble("mobs.wither.explosion-radius", witherExplosionRadius);
++        witherPlaySpawnSound = getBoolean("mobs.wither.play-spawn-sound", witherPlaySpawnSound);
+     }
+ 
+     public boolean witherSkeletonRidable = false;

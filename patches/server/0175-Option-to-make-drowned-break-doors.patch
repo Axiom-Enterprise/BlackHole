@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: 12emin34 <macanovic.emin@gmail.com>
+Date: Fri, 25 Jun 2021 13:56:15 +0200
+Subject: [PATCH] Option to make drowned break doors
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Drowned.java b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
+index 1f41e4a88fb41347b8b1ac6b3d1c454ad35ebfc4..ec00c6b2a8b6a5e0ef030d65f86d4a7d72dbeb21 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Drowned.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
+@@ -127,6 +127,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
+         this.goalSelector.addGoal(2, new Drowned.DrownedAttackGoal(this, 1.0, false));
+         this.goalSelector.addGoal(5, new Drowned.DrownedGoToBeachGoal(this, 1.0));
+         this.goalSelector.addGoal(6, new Drowned.DrownedSwimUpGoal(this, 1.0, this.level().getSeaLevel()));
++        if (level().purpurConfig.drownedBreakDoors) this.goalSelector.addGoal(6, new net.minecraft.world.entity.ai.goal.MoveThroughVillageGoal(this, 1.0D, true, 4, this::canBreakDoors));
+         this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0));
+         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Drowned.class).setAlertOthers(ZombifiedPiglin.class));
+         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (target, world) -> this.okTarget(target)));
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 35f0bd3947ef9152ee0392d87a1d2abb64ca6d43..0a490f119ab9ca4fd2c1237b8bc0ee8edcbe1c4f 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -1068,6 +1068,7 @@ public class PurpurWorldConfig {
+     public double drownedJockeyChance = 0.05D;
+     public boolean drownedJockeyTryExistingChickens = true;
+     public boolean drownedTakeDamageFromWater = false;
++    public boolean drownedBreakDoors = false;
+     private void drownedSettings() {
+         drownedRidable = getBoolean("mobs.drowned.ridable", drownedRidable);
+         drownedRidableInWater = getBoolean("mobs.drowned.ridable-in-water", drownedRidableInWater);
+@@ -1084,6 +1085,7 @@ public class PurpurWorldConfig {
+         drownedJockeyChance = getDouble("mobs.drowned.jockey.chance", drownedJockeyChance);
+         drownedJockeyTryExistingChickens = getBoolean("mobs.drowned.jockey.try-existing-chickens", drownedJockeyTryExistingChickens);
+         drownedTakeDamageFromWater = getBoolean("mobs.drowned.takes-damage-from-water", drownedTakeDamageFromWater);
++        drownedBreakDoors = getBoolean("mobs.drowned.can-break-doors", drownedBreakDoors);
+     }
+ 
+     public boolean elderGuardianRidable = false;

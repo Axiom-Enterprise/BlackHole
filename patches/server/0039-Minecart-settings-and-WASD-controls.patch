@@ -5,10 +5,10 @@ Subject: [PATCH] Minecart settings and WASD controls
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 3403d74ec3ef30ec110031f3972a8482eea0bf41..cc586ae7c58ff5a662c572af47e22468fe301152 100644
+index a9228aa69e31b0e69f0b07170de0ac99b64fe0fe..b5054c762382bb81fa83069a97467af08946f6e5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1441,6 +1441,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1442,6 +1442,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          if (this.isInvulnerableTo(world, source)) {
              return false;
          } else {
@@ -17,7 +17,7 @@ index 3403d74ec3ef30ec110031f3972a8482eea0bf41..cc586ae7c58ff5a662c572af47e22468
  
              if (!flag && this.spawnInvulnerableTime > 0 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-index d8fcd6d1edec1f31a861fab4b86cbeb15ddc799d..c328f4155c0c4cc4f590d9d7a992497d8d129421 100644
+index d277f56fef882313d6d21f636fafae2f26630ad7..a1593297b6764ba0229cc1c8f5a55aef107ff9df 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 @@ -92,6 +92,7 @@ public abstract class AbstractMinecart extends VehicleEntity {
@@ -26,9 +26,9 @@ index d8fcd6d1edec1f31a861fab4b86cbeb15ddc799d..c328f4155c0c4cc4f590d9d7a992497d
      public double maxSpeed = 0.4D;
 +    public double storedMaxSpeed; // Purpur
      // CraftBukkit end
+     public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
  
-     protected AbstractMinecart(EntityType<?> type, Level world) {
-@@ -102,6 +103,7 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -103,6 +104,7 @@ public abstract class AbstractMinecart extends VehicleEntity {
          } else {
              this.behavior = new OldMinecartBehavior(this);
          }
@@ -36,7 +36,7 @@ index d8fcd6d1edec1f31a861fab4b86cbeb15ddc799d..c328f4155c0c4cc4f590d9d7a992497d
  
      }
  
-@@ -288,6 +290,12 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -289,6 +291,12 @@ public abstract class AbstractMinecart extends VehicleEntity {
  
      @Override
      public void tick() {
@@ -49,7 +49,7 @@ index d8fcd6d1edec1f31a861fab4b86cbeb15ddc799d..c328f4155c0c4cc4f590d9d7a992497d
          // CraftBukkit start
          double prevX = this.getX();
          double prevY = this.getY();
-@@ -425,16 +433,62 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -426,16 +434,62 @@ public abstract class AbstractMinecart extends VehicleEntity {
          this.behavior.moveAlongTrack(world);
      }
  

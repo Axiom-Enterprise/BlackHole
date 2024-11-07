@@ -17,13 +17,13 @@ index a9228aa69e31b0e69f0b07170de0ac99b64fe0fe..b5054c762382bb81fa83069a97467af0
  
              if (!flag && this.spawnInvulnerableTime > 0 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-index d277f56fef882313d6d21f636fafae2f26630ad7..a1593297b6764ba0229cc1c8f5a55aef107ff9df 100644
+index ce91809d66007def728a127a0a9d33f6235cc94d..bd4e4f03c4b70247c7fc887854e0aa01a8af81c6 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 @@ -92,6 +92,7 @@ public abstract class AbstractMinecart extends VehicleEntity {
      private double flyingY = 0.95;
      private double flyingZ = 0.95;
-     public double maxSpeed = 0.4D;
+     public Double maxSpeed;
 +    public double storedMaxSpeed; // Purpur
      // CraftBukkit end
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API

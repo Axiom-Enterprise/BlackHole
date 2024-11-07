@@ -7,10 +7,10 @@ Paper patches RNG maniplulation by using a shared (and locked) random source.
 This comes with a performance gain, but technical players may prefer the ability to manipulate RNG.
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 7b1a5d7a84690865d7263f5c6cd1393d5cc9495e..d55668d897912991f3995d911bf5d22a4254aff9 100644
+index a78b6d453e59947a70e1c27e1d62efe68d912f88..71955ce4bb2e4870a6e38ff989a11254fc37b096 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -640,7 +640,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -641,7 +641,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          this.bb = Entity.INITIAL_AABB;
          this.stuckSpeedMultiplier = Vec3.ZERO;
          this.nextStep = 1.0F;

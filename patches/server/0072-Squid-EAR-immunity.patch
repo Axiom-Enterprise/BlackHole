@@ -25,14 +25,14 @@ index 89151a9538e22941ad55aab1807d6871a852364c..30c0c6d582069c6a01b033bb9707f4fa
  
      public boolean spiderRidable = false;
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index b7df4f62eb5f128ef6202b30ed2ffdea10e8a241..66e7b1966602f6d9f5978d66df7cb81b8c89e75b 100644
+index 2812fa381a2d91a4638583a43556a7eef2b3d298..e047c0a4a8638588b4ac0d47c4c96899fac4abb7 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -377,6 +377,7 @@ public class ActivationRange
+@@ -378,6 +378,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {
 +        if (entity.level().purpurConfig.squidImmuneToEAR && entity instanceof net.minecraft.world.entity.animal.Squid) return true; // Purpur
-         // Never safe to skip fireworks or entities not yet added to chunk
-         if ( entity instanceof FireworkRocketEntity ) {
+         // Never safe to skip fireworks or item gravity
+         if (entity instanceof FireworkRocketEntity || (entity instanceof ItemEntity && (entity.tickCount + entity.getId()) % 4 == 0)) { // Paper - Needed for item gravity, see ItemEntity tick
              return true;

@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable entity base attributes
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index aa73875d8cb701d233ffa79c9bda4b7b474ba667..90434afec7a896473624901c6b00bf7c81572930 100644
+index 5263f97db83626096b1c4fef415a2fbf41bc9ce7..0360d3a4e7f291e3528a0debe4909e774e8c8b91 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -176,7 +176,7 @@ import org.bukkit.plugin.PluginManager;
+@@ -177,7 +177,7 @@ import org.bukkit.plugin.PluginManager;
  // CraftBukkit end
  
  public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess, ScoreHolder, ca.spottedleaf.moonrise.patches.chunk_system.entity.ChunkSystemEntity, ca.spottedleaf.moonrise.patches.entity_tracker.EntityTrackerEntity {  // Paper - rewrite chunk system // Paper - optimise entity tracker
@@ -34,7 +34,7 @@ index 7c11b5e73d4f3c0be7c467f7522c2d974ab330f3..27aee968718af1ae78e2076ddc890114
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 56613c25850f89d125cb213d37fd5fed9deee7f7..0b1d31bcbe398ecd2e1ddd881c2f602a1a4f73d9 100644
+index b8303404f8a81e2b446a9a40861787ca786aad47..5eb5976a0fbe1959f9015734cc0b31503604649d 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -326,6 +326,7 @@ public abstract class LivingEntity extends Entity implements Attackable {

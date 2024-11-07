@@ -5,10 +5,10 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index b19d76ddb99f67c3bff08cc22b195ab08b4e5902..66ae89ade2bb19b0a8498573f8c0c68ff0628594 100644
+index e14533a047acaf4c1178f0b23427b23179334b88..585cda7afc6532196ddbd53b9d4ff3215afb67da 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -3738,7 +3738,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3739,7 +3739,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
                      }).toList();
                      EquipmentSlot enumitemslot = (EquipmentSlot) Util.getRandom(list, this.random);
  
@@ -27,7 +27,7 @@ index b19d76ddb99f67c3bff08cc22b195ab08b4e5902..66ae89ade2bb19b0a8498573f8c0c68f
                  }
  
                  this.gameEvent(GameEvent.ELYTRA_GLIDE);
-@@ -3747,7 +3757,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3748,7 +3758,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
  
      }
  

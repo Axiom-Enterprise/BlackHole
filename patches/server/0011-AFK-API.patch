@@ -317,10 +317,10 @@ index 65cbd35892ab48fccda9bccf2b4dd66be5c84a0d..42bff6f2d864a31dcb1c0087a4e0c902
      public boolean untamedTamablesAreRidable = true;
      public boolean useNightVisionWhenRiding = false;
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 133bcf639a45bd7fa1a2d02410ea3e8568265007..b7df4f62eb5f128ef6202b30ed2ffdea10e8a241 100644
+index bd7c37123c70d2afdef252f39548725d4ef318ed..2812fa381a2d91a4638583a43556a7eef2b3d298 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -198,6 +198,8 @@ public class ActivationRange
+@@ -199,6 +199,8 @@ public class ActivationRange
                  continue;
              }
  

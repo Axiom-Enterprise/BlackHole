@@ -79,10 +79,10 @@ index b5d5dbc50a7b8c40739a15f164ffd08fdc534f9c..5d322e613a0116057373a3c9d7125620
                              if ((entity instanceof Bucketable && entity instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                  entity.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 341c324d15996a74b113f8879d7da737a1be86a1..1d23428d23c1281eea456fe6175e050826246848 100644
+index a0876d3f88620bb24ef69101fc67b0dcd5dca0d2..5263f97db83626096b1c4fef415a2fbf41bc9ce7 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -383,7 +383,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -384,7 +384,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      private final Set<String> tags;
      private final double[] pistonDeltas;
      private long pistonDeltasGameTime;
@@ -91,7 +91,7 @@ index 341c324d15996a74b113f8879d7da737a1be86a1..1d23428d23c1281eea456fe6175e0508
      private float eyeHeight;
      public boolean isInPowderSnow;
      public boolean wasInPowderSnow;
-@@ -3329,6 +3329,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3330,6 +3330,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -105,7 +105,7 @@ index 341c324d15996a74b113f8879d7da737a1be86a1..1d23428d23c1281eea456fe6175e0508
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -3368,6 +3375,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3369,6 +3376,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -120,7 +120,7 @@ index 341c324d15996a74b113f8879d7da737a1be86a1..1d23428d23c1281eea456fe6175e0508
              if (this.passengers.size() == 1 && this.passengers.get(0) == entity) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5331,4 +5346,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5361,4 +5376,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((net.minecraft.server.level.ServerChunkCache) level.getChunkSource()).isPositionTicking(this);
      }
      // Paper end - Expose entity id counter
@@ -190,7 +190,7 @@ index b851c3ee1426bc0a259bf6c4a662af0c9883dd71..7c11b5e73d4f3c0be7c467f7522c2d97
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 9c61225a728a2ca91a1c71dead75fc7cd93668b6..e8c1ffe30e0f211ae563e28afa2101e51a122777 100644
+index e86314de8d908a0c3e9f17d3e163c11180cf3f59..b8303404f8a81e2b446a9a40861787ca786aad47 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -248,9 +248,9 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -223,7 +223,7 @@ index 9c61225a728a2ca91a1c71dead75fc7cd93668b6..e8c1ffe30e0f211ae563e28afa2101e5
  
      @Override
      protected void checkFallDamage(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition) {
-@@ -3669,8 +3670,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3670,8 +3671,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.pushEntities();
          gameprofilerfiller.pop();
          // Paper start - Add EntityMoveEvent
@@ -236,7 +236,7 @@ index 9c61225a728a2ca91a1c71dead75fc7cd93668b6..e8c1ffe30e0f211ae563e28afa2101e5
                  Location from = new Location(this.level().getWorld(), this.xo, this.yo, this.zo, this.yRotO, this.xRotO);
                  Location to = new Location(this.level().getWorld(), this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                  io.papermc.paper.event.entity.EntityMoveEvent event = new io.papermc.paper.event.entity.EntityMoveEvent(this.getBukkitLivingEntity(), from, to.clone());
-@@ -3680,6 +3683,21 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3681,6 +3684,21 @@ public abstract class LivingEntity extends Entity implements Attackable {
                      this.absMoveTo(event.getTo().getX(), event.getTo().getY(), event.getTo().getZ(), event.getTo().getYaw(), event.getTo().getPitch());
                  }
              }

@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 96f49fd358ee0cc1c45573638343a1492b32eb83..7b1a5d7a84690865d7263f5c6cd1393d5cc9495e 100644
+index 20df4a12d8e5fd5c167f03403d1331d2a0974c00..a78b6d453e59947a70e1c27e1d62efe68d912f88 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -617,6 +617,22 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -618,6 +618,22 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
      // Purpur end
  
@@ -33,7 +33,7 @@ index 96f49fd358ee0cc1c45573638343a1492b32eb83..7b1a5d7a84690865d7263f5c6cd1393d
          this.id = Entity.ENTITY_COUNTER.incrementAndGet();
          this.passengers = ImmutableList.of();
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index ab28b28118810a4d55300d5b5590016e318a9720..4c5f573594c53edee96b498fa0852a3dee59cef8 100644
+index 305f6bea2ac00b7587091ee10bfd2deca1034412..543eef5062fb77c880905b9b550e5be75893d2db 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -297,6 +297,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -64,7 +64,7 @@ index ab28b28118810a4d55300d5b5590016e318a9720..4c5f573594c53edee96b498fa0852a3d
      }
  
      // CraftBukkit start
-@@ -3754,6 +3761,34 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3755,6 +3762,34 @@ public abstract class LivingEntity extends Entity implements Attackable {
              }
          }
  

@@ -17,10 +17,10 @@ index 976dfffac3895015d0eb00bab0ea93f9e5cc27a2..430ea84cbca69b6d119c2739bed9de37
                  this.connection.internalTeleport(PositionMoveRotation.of(teleportTarget), teleportTarget.relatives()); // CraftBukkit - use internal teleport without event
                  this.connection.resetPosition();
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 106dadefc463ba1f59e89e9c5d1386b0eda40d48..93468974af35aa2f4f72d80b72aabe2dc8519f9e 100644
+index 8a8676424d2b87542e583040fc0b5b1c8ccd91ca..4971daaad718e1f37fb72c2d1a00dcb7cdf70af0 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3470,14 +3470,17 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3471,14 +3471,17 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return Vec3.directionFromRotation(this.getRotationVector());
      }
  

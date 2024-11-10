@@ -6,10 +6,10 @@ Subject: [PATCH] Add option to disable zombie aggressiveness towards villagers
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index e78ac52499f82b553f64aa1c41e5b75397e72793..6299eeed974666135e63d58e064ea2e40f2c84d9 100644
+index d3b12268a01b0181b340175757c8b7f657540e94..79de9f1ab1e709d1402d3a8017cc729b7fffc961 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-@@ -446,6 +446,8 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
+@@ -447,6 +447,8 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
      GoalKey<Llama> LLAMA_HAS_RIDER = GoalKey.of(Llama.class, NamespacedKey.minecraft("llama_has_rider"));
      GoalKey<Phantom> FIND_CRYSTAL = GoalKey.of(Phantom.class, NamespacedKey.minecraft("find_crystal"));
      GoalKey<Phantom> ORBIT_CRYSTAL = GoalKey.of(Phantom.class, NamespacedKey.minecraft("orbit_crystal"));
@@ -17,4 +17,4 @@ index e78ac52499f82b553f64aa1c41e5b75397e72793..6299eeed974666135e63d58e064ea2e4
 +    GoalKey<Zombie> ZOMBIE_ATTACK_VILLAGER = GoalKey.of(Zombie.class, NamespacedKey.minecraft("zombie_attack_villager"));
      // Purpur end
  
-     private static <T extends Mob> @NonNull GoalKey<T> create(final @NonNull String key,
+     private static <T extends Mob> GoalKey<T> create(final String key, final Class<T> type) {

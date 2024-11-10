@@ -25,10 +25,10 @@ index 3b49ba20c2d5f3a202996b8a5ca5cbba46975985..28985699d407a69906de670ee67f922d
                  }
                  // Paper end - further improve server tick loop
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 18c1eaeee2627a9713ac721a3cc6398769ab15af..6d23e739cd02cdf965ef7f48e670e3715a1fbcd0 100644
+index fd68126c149a9ba8e9da39a4d3154ff7f8829222..67c8ce82a2e525fafd45a6bef660cc9bbd2fe3b1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -3257,5 +3257,10 @@ public final class CraftServer implements Server {
+@@ -3267,5 +3267,10 @@ public final class CraftServer implements Server {
      public String getServerName() {
          return this.getProperties().serverName;
      }

@@ -5,10 +5,10 @@ Subject: [PATCH] Bring back server name
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index e20e4239a5a1f952e1c70e899549989d5e42f73c..f34df50f0e3ab8b986354476037c22fa953141c2 100644
+index 391a1e3e07657a404520c1462507a2c731f32b27..51a071668ff708cae93900ea09765f62a4fd8a07 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2921,4 +2921,15 @@ public final class Bukkit {
+@@ -2945,4 +2945,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -25,10 +25,10 @@ index e20e4239a5a1f952e1c70e899549989d5e42f73c..f34df50f0e3ab8b986354476037c22fa
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 5dc0529a49d67e6f3ebb89edb3b5798b2bc5fb49..f1aa030319ed85607d74a80519f2eadde508ae46 100644
+index 625421183a3953d0d72d477e231f6831c87b7843..ba7d4682671b643c8af2a1bfaa79186da1fa065e 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2566,4 +2566,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2584,4 +2584,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      boolean isOwnedByCurrentRegion(@NotNull Entity entity);
      // Paper end - Folia region threading API

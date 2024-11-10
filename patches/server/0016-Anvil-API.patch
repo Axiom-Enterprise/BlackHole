@@ -17,7 +17,7 @@ index 4680f77a275d8d2b226018db89a571ac25998dd8..bfc90524bd739ed1d91fe9912e38093b
      // CraftBukkit start
      public boolean checkReachable = true;
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index dc2bc53f6fa84fa09bd86450060ad9878307001c..0dfcce766872d9b1a9b898f56e6f4d9179a46bc4 100644
+index 286ae002e1711ad9e800b7f2091988d66cd572a7..f8c0a4fd95f341cbf8f6a06dfae408d505b0f018 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -25,6 +25,12 @@ import org.slf4j.Logger;
@@ -107,9 +107,9 @@ index dc2bc53f6fa84fa09bd86450060ad9878307001c..0dfcce766872d9b1a9b898f56e6f4d91
              if (this.cost.get() >= this.maximumRepairCost && !this.player.getAbilities().instabuild) { // CraftBukkit
                  itemstack1 = ItemStack.EMPTY;
              }
-@@ -308,6 +335,13 @@ public class AnvilMenu extends ItemCombinerMenu {
+@@ -307,6 +334,13 @@ public class AnvilMenu extends ItemCombinerMenu {
+ 
              org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(this.getBukkitView(), itemstack1); // CraftBukkit
-             this.sendAllDataToRemote(); // CraftBukkit - SPIGOT-6686: Always send completed inventory to stay in sync with client
              this.broadcastChanges();
 +
 +            // Purpur start - Anvil API

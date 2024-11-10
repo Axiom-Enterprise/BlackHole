@@ -27,7 +27,7 @@ index cf0a5943f457c532958f40b4989fa18f967abae6..2ab8ff8ca51eb841932ccca4a348acc0
                              i++;
                          } else if (targets.size() == 1) {
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index f1834eec821a14ef6a7f42f827b7e0b8284ae5a2..e9c17953a3767e03e528ed93b10fb42626fff118 100644
+index a7c3338ed6edcd26fce869ec66fdcaa4c32c0e4f..346681cf9c3c9ff5274f63236b0cc7c4eec76492 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -234,7 +234,10 @@ public class AnvilMenu extends ItemCombinerMenu {
@@ -68,7 +68,7 @@ index f1834eec821a14ef6a7f42f827b7e0b8284ae5a2..e9c17953a3767e03e528ed93b10fb426
                                  i2 = enchantment.getMaxLevel();
                              }
  
-@@ -385,7 +394,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+@@ -384,7 +393,7 @@ public class AnvilMenu extends ItemCombinerMenu {
              this.broadcastChanges();
  
              // Purpur start - Anvil API

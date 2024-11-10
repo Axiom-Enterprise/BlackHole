@@ -5,7 +5,7 @@ Subject: [PATCH] Bring back server name
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
-index 52e61f75f922a075ccc745198f4ba6ad8fa58ea2..b97d8f43f24baf36eca9064b2b48bf6c092f848c 100644
+index c3ec370b83b895be0f03662e3884fa4a2442a2a6..05e16103af3fd276f0196ddf1a2e5b729b025c34 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 @@ -56,6 +56,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
@@ -17,10 +17,10 @@ index 52e61f75f922a075ccc745198f4ba6ad8fa58ea2..b97d8f43f24baf36eca9064b2b48bf6c
      public final boolean allowFlight = this.get("allow-flight", false);
      public final String motd = this.get("motd", "A Minecraft Server");
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 95946df639196063e0f9ac6788a8a5c7050e13d8..2f81978ec902f87da751debf5f6991ae26c9d1b6 100644
+index 4f1567c80987ee502c56be8da06d8dfcd1dc189e..fd68126c149a9ba8e9da39a4d3154ff7f8829222 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -3251,4 +3251,11 @@ public final class CraftServer implements Server {
+@@ -3261,4 +3261,11 @@ public final class CraftServer implements Server {
          return this.potionBrewer;
      }
      // Paper end

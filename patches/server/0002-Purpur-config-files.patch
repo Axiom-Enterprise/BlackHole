@@ -112,7 +112,7 @@ index 022de445bbbb869c38be4972c98dcf1c665539ec..eff31601c2fd692a129b6990d9f3d296
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 9f9eefc7346838a9effcda861cecd098092efb0f..95946df639196063e0f9ac6788a8a5c7050e13d8 100644
+index dfddcfb1fe1679adaecf75375757dca720e76ce1..4f1567c80987ee502c56be8da06d8dfcd1dc189e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1074,6 +1074,7 @@ public final class CraftServer implements Server {
@@ -139,7 +139,7 @@ index 9f9eefc7346838a9effcda861cecd098092efb0f..95946df639196063e0f9ac6788a8a5c7
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -3009,6 +3012,18 @@ public final class CraftServer implements Server {
+@@ -3019,6 +3022,18 @@ public final class CraftServer implements Server {
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  

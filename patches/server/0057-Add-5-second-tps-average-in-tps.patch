@@ -82,10 +82,10 @@ index 096c89bd01cec2abd151bf6fffc4847d1bcd548f..cd0a8a6a1be75cab8bbb8ee3ac17bb73
          this.values[this.vp++ & 0xFF] = (int)(l * 100L / Runtime.getRuntime().maxMemory());
          this.repaint();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 6d23e739cd02cdf965ef7f48e670e3715a1fbcd0..c08ed484a5fd32ce06855eab786e2b222ccfa2a3 100644
+index 67c8ce82a2e525fafd45a6bef660cc9bbd2fe3b1..f129103f378e6582bd976e3377190bd01a26038e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -3053,6 +3053,7 @@ public final class CraftServer implements Server {
+@@ -3063,6 +3063,7 @@ public final class CraftServer implements Server {
      @Override
      public double[] getTPS() {
          return new double[] {

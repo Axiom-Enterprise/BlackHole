@@ -5,10 +5,10 @@ Subject: [PATCH] Build System Changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index c1a6edfcfb363454b4ae5e5f9a63e75903a3d8bb..628ec6699d34c1877c02001de95096bc7b44120e 100644
+index aae422978887a0f2cf531b2dc862705148569676..b0fd6c1804844f09428051952e3ac4e58f8c859c 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -155,6 +155,8 @@ tasks.jar {
+@@ -168,6 +168,8 @@ tasks.jar {
  }
  
  tasks.withType<Javadoc> {

@@ -5,14 +5,14 @@ Subject: [PATCH] Rabid Wolf API
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index 6299eeed974666135e63d58e064ea2e40f2c84d9..b776641219febcbf6b6b76fd27ea40a907cab745 100644
+index 79de9f1ab1e709d1402d3a8017cc729b7fffc961..e8b22b5ea11671d847a2e243ce570afd4ecb8aca 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-@@ -448,6 +448,7 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
+@@ -449,6 +449,7 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
      GoalKey<Phantom> ORBIT_CRYSTAL = GoalKey.of(Phantom.class, NamespacedKey.minecraft("orbit_crystal"));
      GoalKey<Drowned> DROWNED_ATTACK_VILLAGER = GoalKey.of(Drowned.class, NamespacedKey.minecraft("drowned_attack_villager"));
      GoalKey<Zombie> ZOMBIE_ATTACK_VILLAGER = GoalKey.of(Zombie.class, NamespacedKey.minecraft("zombie_attack_villager"));
 +    GoalKey<Wolf> AVOID_RABID_WOLF = GoalKey.of(Wolf.class, NamespacedKey.minecraft("avoid_rabid_wolf"));
      // Purpur end
  
-     private static <T extends Mob> @NonNull GoalKey<T> create(final @NonNull String key,
+     private static <T extends Mob> GoalKey<T> create(final String key, final Class<T> type) {

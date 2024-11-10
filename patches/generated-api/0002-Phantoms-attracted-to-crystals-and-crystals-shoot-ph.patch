@@ -5,10 +5,10 @@ Subject: [PATCH] Phantoms attracted to crystals and crystals shoot phantoms
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index db9a027260a93e1ccf5209623e44220164a5910c..e78ac52499f82b553f64aa1c41e5b75397e72793 100644
+index cd76656694067b333152ac46bc6a40ad8d28d2ac..d3b12268a01b0181b340175757c8b7f657540e94 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-@@ -444,6 +444,8 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
+@@ -445,6 +445,8 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {
      GoalKey<Mob> MOB_HAS_RIDER = GoalKey.of(Mob.class, NamespacedKey.minecraft("has_rider"));
      GoalKey<AbstractHorse> HORSE_HAS_RIDER = GoalKey.of(AbstractHorse.class, NamespacedKey.minecraft("horse_has_rider"));
      GoalKey<Llama> LLAMA_HAS_RIDER = GoalKey.of(Llama.class, NamespacedKey.minecraft("llama_has_rider"));
@@ -16,4 +16,4 @@ index db9a027260a93e1ccf5209623e44220164a5910c..e78ac52499f82b553f64aa1c41e5b753
 +    GoalKey<Phantom> ORBIT_CRYSTAL = GoalKey.of(Phantom.class, NamespacedKey.minecraft("orbit_crystal"));
      // Purpur end
  
-     private static <T extends Mob> @NonNull GoalKey<T> create(final @NonNull String key,
+     private static <T extends Mob> GoalKey<T> create(final String key, final Class<T> type) {

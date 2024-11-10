@@ -5,7 +5,7 @@ Subject: [PATCH] Debug Marker API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index a8ae9eab152e5d3dfe413708646265587e297910..7b2ae23cc5dc8d334ec22d85865050f61eae14cb 100644
+index cc645ae4f1d17784b6e966f78b8b6eb0117ea9a2..5af6fb52eaf99cf92aec8435c73a3003bbcf513d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1631,6 +1631,42 @@ public final class CraftServer implements Server {
@@ -99,10 +99,10 @@ index 3be5c25f8ce15e2f035c92e5fe90693e0236967d..ea1b4f0073f775fdd18eb080886d60c7
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index db62bab7ef0fbd53e1840eb8b87699ed9d08fb01..d939a339c2b4258a972d0412eb1ecf93ab8e06a6 100644
+index 5676d81f54130f747adfd0d26f28d5ae288e656e..51f3abd96972befedd246fe47df5e54a8460ee5f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3639,5 +3639,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3627,5 +3627,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void resetIdleTimer() {
          getHandle().resetLastActionTime();
      }

@@ -389,7 +389,7 @@ index 0000000000000000000000000000000000000000..ae2464920c9412ac90b819a540ee58be
 +	
 +}
 diff --git a/src/main/java/org/bukkit/map/MapPalette.java b/src/main/java/org/bukkit/map/MapPalette.java
-index c80faa079eca1564847070f0338fc98024639829..e632d51d3487eb4807243b6705999ad124466bf5 100644
+index 55a46db9d73885ea967ac929013906b687e476bb..b99796629100c7d5fff1b7f84026001e0013b477 100644
 --- a/src/main/java/org/bukkit/map/MapPalette.java
 +++ b/src/main/java/org/bukkit/map/MapPalette.java
 @@ -1,6 +1,7 @@
@@ -400,7 +400,7 @@ index c80faa079eca1564847070f0338fc98024639829..e632d51d3487eb4807243b6705999ad1
  import java.awt.Color;
  import java.awt.Graphics2D;
  import java.awt.Image;
-@@ -40,7 +41,7 @@ public final class MapPalette {
+@@ -45,7 +46,7 @@ public final class MapPalette {
      }
  
      @NotNull
@@ -409,7 +409,7 @@ index c80faa079eca1564847070f0338fc98024639829..e632d51d3487eb4807243b6705999ad1
          c(0, 0, 0, 0), c(0, 0, 0, 0), c(0, 0, 0, 0), c(0, 0, 0, 0),
          c(89, 125, 39), c(109, 153, 48), c(127, 178, 56), c(67, 94, 29),
          c(174, 164, 115), c(213, 201, 140), c(247, 233, 163), c(130, 123, 86),
-@@ -211,9 +212,15 @@ public final class MapPalette {
+@@ -216,9 +217,15 @@ public final class MapPalette {
          temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
  
          byte[] result = new byte[temp.getWidth() * temp.getHeight()];

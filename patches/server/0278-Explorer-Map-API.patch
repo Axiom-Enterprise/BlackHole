@@ -29,10 +29,10 @@ index ae321b3b8d98e42ef07fd1f0f738c1a2b428f6db..26da9e7c25ef6a89482838010d8ed6bc
      // CraftBukkit start
      public final CraftMapView mapView;
 diff --git a/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java b/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
-index 0cbbd915631904fe8c6effefb92895422b33eff6..aef19cfbecb4ddfc8dc71c4f3b2a011364c12dc2 100644
+index cf0920e5f84b35647882fb963e9972af4e8427e0..e30c851acf49a425cd4fd409a6d5bbb2ff836e0e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
-@@ -47,4 +47,10 @@ public class CraftMapRenderer extends MapRenderer {
+@@ -49,4 +49,10 @@ public class CraftMapRenderer extends MapRenderer {
          }
      }
  

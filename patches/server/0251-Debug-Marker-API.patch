@@ -52,10 +52,10 @@ index cc645ae4f1d17784b6e966f78b8b6eb0117ea9a2..5af6fb52eaf99cf92aec8435c73a3003
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 3be5c25f8ce15e2f035c92e5fe90693e0236967d..ea1b4f0073f775fdd18eb080886d60c71a08ab2c 100644
+index f1e954fc1a1cd65c5ce2e43fab57a3cd81e5af5b..9a104c48bb1a92655b1feaab3e01a3be6ec7d942 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2403,6 +2403,42 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2395,6 +2395,42 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      public float getLocalDifficultyAt(Location location) {
          return getHandle().getCurrentDifficultyAt(io.papermc.paper.util.MCUtil.toBlockPosition(location)).getEffectiveDifficulty();
      }

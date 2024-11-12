@@ -5,10 +5,10 @@ Subject: [PATCH] Add local difficulty api
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index d41c81158c00931e6b11093cce141f6a3085ba05..3be5c25f8ce15e2f035c92e5fe90693e0236967d 100644
+index 3134fab97260897601d7c8e2810f11b8be86dbec..f1e954fc1a1cd65c5ce2e43fab57a3cd81e5af5b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2399,6 +2399,12 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2391,6 +2391,12 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          return (this.getHandle().getDragonFight() == null) ? null : new CraftDragonBattle(this.getHandle().getDragonFight());
      }
  

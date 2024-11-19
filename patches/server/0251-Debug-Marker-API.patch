@@ -5,7 +5,7 @@ Subject: [PATCH] Debug Marker API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index cc645ae4f1d17784b6e966f78b8b6eb0117ea9a2..5af6fb52eaf99cf92aec8435c73a3003bbcf513d 100644
+index 7f19a0b86925502544c898be5d88248325aa0fba..49b27e7f2a6c56040013300110c870b9e08ca645 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1631,6 +1631,42 @@ public final class CraftServer implements Server {
@@ -52,10 +52,10 @@ index cc645ae4f1d17784b6e966f78b8b6eb0117ea9a2..5af6fb52eaf99cf92aec8435c73a3003
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index f1e954fc1a1cd65c5ce2e43fab57a3cd81e5af5b..9a104c48bb1a92655b1feaab3e01a3be6ec7d942 100644
+index 10413e550895f21cac43f5a15eaf51e51313b06f..bbd2da3a646421d1b05e7c8154a7aa7fd9223c2f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2395,6 +2395,42 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2383,6 +2383,42 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      public float getLocalDifficultyAt(Location location) {
          return getHandle().getCurrentDifficultyAt(io.papermc.paper.util.MCUtil.toBlockPosition(location)).getEffectiveDifficulty();
      }

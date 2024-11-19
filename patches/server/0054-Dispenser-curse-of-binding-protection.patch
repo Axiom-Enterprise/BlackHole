@@ -18,10 +18,10 @@ index bf8c511739265c6a9cd277752e844481598f8966..ffe2399ab6b1f311536475d8216238b5
  
              // CraftBukkit start
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 1420a435463d69f4f811dd4e47a8ae7da48f1339..e14533a047acaf4c1178f0b23427b23179334b88 100644
+index 952b498b3514205accf48104da37ff713074e484..2bf46dbc9afb2b19ef183b674c5be26f48af55d5 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -4670,7 +4670,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -4692,7 +4692,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
              if (equippable != null && equippable.dispensable()) {
                  EquipmentSlot enumitemslot = equippable.slot();
  
@@ -30,7 +30,7 @@ index 1420a435463d69f4f811dd4e47a8ae7da48f1339..e14533a047acaf4c1178f0b23427b231
              } else {
                  return false;
              }
-@@ -4695,6 +4695,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -4717,6 +4717,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
          return equippable == null ? slot == EquipmentSlot.MAINHAND && this.canUseSlot(EquipmentSlot.MAINHAND) : slot == equippable.slot() && this.canUseSlot(equippable.slot()) && equippable.canBeEquippedBy(this.getType());
      }
  

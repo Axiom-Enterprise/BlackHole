@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 20df4a12d8e5fd5c167f03403d1331d2a0974c00..a78b6d453e59947a70e1c27e1d62efe68d912f88 100644
+index 24ab4e40d9edb4834dd91c7638e2b0fd27927513..8097b31867b1095ff826510df9c51e3b08f6eb0d 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -618,6 +618,22 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -33,7 +33,7 @@ index 20df4a12d8e5fd5c167f03403d1331d2a0974c00..a78b6d453e59947a70e1c27e1d62efe6
          this.id = Entity.ENTITY_COUNTER.incrementAndGet();
          this.passengers = ImmutableList.of();
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 305f6bea2ac00b7587091ee10bfd2deca1034412..543eef5062fb77c880905b9b550e5be75893d2db 100644
+index 42e9c9842a2fd08ac64d7906251da2298f5735f6..b3be740bbffc16622da64d7ea609adacdab176bd 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -297,6 +297,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -64,7 +64,7 @@ index 305f6bea2ac00b7587091ee10bfd2deca1034412..543eef5062fb77c880905b9b550e5be7
      }
  
      // CraftBukkit start
-@@ -3755,6 +3762,34 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3777,6 +3784,34 @@ public abstract class LivingEntity extends Entity implements Attackable {
              }
          }
  
@@ -357,7 +357,7 @@ index d79eb7bd6d38a4f1aee89cf0cf331a126351e767..b34dec421adc3ce56c0720a839a43ce4
          }
          // Paper end - Add more Zombie API
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index f68c1d6c7003202c4d107663b9c60c2fb1c95455..b5885d16cd3371d34bd031bd00a22a0ba6db6509 100644
+index ac4064172f982a6efc25378fbd088cca1dda4a14..02b07d43364c7dec37f1d2adffe123a5b595f669 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 @@ -87,6 +87,13 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {

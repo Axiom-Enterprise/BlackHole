@@ -5,10 +5,10 @@ Subject: [PATCH] Option for if rain and thunder should stop on sleep
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index c866bf67b28e3a40c76837145a4ab4abcebd72dd..c99ac408f5e3cfa7b56633a7768c60fd16227485 100644
+index 679066abd94261fc49b749a4e3dc91cc24d5cd5d..0188f1e9c571a6949f922c53047ccc32253454f5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1274,6 +1274,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -1281,6 +1281,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
      @VisibleForTesting
      public void resetWeatherCycle() {
          // CraftBukkit start
@@ -16,7 +16,7 @@ index c866bf67b28e3a40c76837145a4ab4abcebd72dd..c99ac408f5e3cfa7b56633a7768c60fd
          this.serverLevelData.setRaining(false, org.bukkit.event.weather.WeatherChangeEvent.Cause.SLEEP); // Paper - Add cause to Weather/ThunderChangeEvents
          // If we stop due to everyone sleeping we should reset the weather duration to some other random value.
          // Not that everyone ever manages to get the whole server to sleep at the same time....
-@@ -1281,6 +1282,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -1288,6 +1289,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              this.serverLevelData.setRainTime(0);
          }
          // CraftBukkit end

@@ -5,10 +5,10 @@ Subject: [PATCH] Customizable sleeping actionbar messages
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index b4b0579b84ae26f8ca2d0ab34e8bc963b09cf93e..c866bf67b28e3a40c76837145a4ab4abcebd72dd 100644
+index a4370361d9f834fbb475f881adae5ff50b25cf14..679066abd94261fc49b749a4e3dc91cc24d5cd5d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1114,11 +1114,27 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -1121,11 +1121,27 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          if (this.canSleepThroughNights()) {
              if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
                  int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
@@ -38,7 +38,7 @@ index b4b0579b84ae26f8ca2d0ab34e8bc963b09cf93e..c866bf67b28e3a40c76837145a4ab4ab
                  }
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index ab8cb645cd388c3db395fadfb932ca414cb90726..7bfb43f9163e690069249fb1fa401ec06a52bbf1 100644
+index 50c78ed8197eb1dc7a1d9a54b0d720602c3a895b..0191f47b2f02fe7b13474c5d5ba5a80ec9432917 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1839,7 +1839,19 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple

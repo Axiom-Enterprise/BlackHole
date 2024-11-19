@@ -5,10 +5,10 @@ Subject: [PATCH] Config for skipping night
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index a1a01af28ca4a6da8f317839d457c655c14efe8d..95802eb8de88dc3e8d9266184e88a5b8530edd49 100644
+index 7b4b70abd82f669b8ecfa4c8d486ccd7c95b36f1..a244a37e573bbadf1fbb83b89ab766ab2a6f9a1e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -741,7 +741,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -748,7 +748,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
          long j;
  

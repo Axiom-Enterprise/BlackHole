@@ -5,13 +5,13 @@ Subject: [PATCH] ItemStack convenience methods
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index 756c73a401437566258813946fa10c7caa8f2469..2b6f9fce59178525b1211f2133645a7991a146dd 100644
+index bfddaa146c1bcb6a3fdd43773ec06f91a259b200..53929a8827e2cf93cff70aaa08b2646505052aed 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-@@ -526,4 +526,285 @@ public final class CraftItemStack extends ItemStack {
-         return this.pdcView;
+@@ -660,4 +660,285 @@ public final class CraftItemStack extends ItemStack {
      }
-     // Paper end - pdc
+ 
+     // Paper end - data component API
 +
 +    // Purpur start
 +    @Override

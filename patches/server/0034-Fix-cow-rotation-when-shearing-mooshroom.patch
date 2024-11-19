@@ -5,7 +5,7 @@ Subject: [PATCH] Fix cow rotation when shearing mooshroom
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-index 358f8d6650ed9820e7378d29f993b71504e779f3..2382b82d3d4c09e50e62dd353b4a1149ec9169b4 100644
+index 0005cd7156e46ae790d629d7a985cdace1cc5577..c7039d7d5e38392fef8787f6e245a44842e2f2a3 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 @@ -217,6 +217,13 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
@@ -20,5 +20,5 @@ index 358f8d6650ed9820e7378d29f993b71504e779f3..2382b82d3d4c09e50e62dd353b4a1149
 +            entitycow.xRotO = this.xRotO;
 +            // Purpur end
              // Paper start - custom shear drops; moved drop generation to separate method
-             drops.forEach(itemstack1 -> {
-                 for (final ItemStack drop : drops) {
+             drops.forEach(drop -> {
+                 ItemEntity entityitem = new ItemEntity(this.level(), this.getX(), this.getY(1.0D), this.getZ(), drop);

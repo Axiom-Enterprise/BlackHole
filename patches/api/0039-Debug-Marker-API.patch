@@ -179,10 +179,10 @@ index 40aaa5123a5a15c434e422c0fa6adf686df6d7bd..ddb1ff894910761a78b91a343f32e129
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 24d39c8c449e0ea6175989295d24eee902baec17..36cf567973900d1e472616748926aecb9afcb42f 100644
+index 26a0ed5437842492432a26778fadd9ae41dc0569..820c22c7a20d19a74139bc1537515405b4b2f46c 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -4217,6 +4217,76 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -4254,6 +4254,76 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
       * @return The local difficulty
       */
      public float getLocalDifficultyAt(@NotNull Location location);

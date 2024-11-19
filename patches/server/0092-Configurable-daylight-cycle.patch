@@ -18,7 +18,7 @@ index 9b93c5e5671bc910e8880a29ced9c4a5f0d36d53..f937454c9bb398a612a6f25ab8579c88
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 0ba171e226eee4e140f6bae61dcb6f7660554548..a1a01af28ca4a6da8f317839d457c655c14efe8d 100644
+index d49e26a1b719ff4dae6a3a10fc3695c39f400465..7b4b70abd82f669b8ecfa4c8d486ccd7c95b36f1 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -223,6 +223,8 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -30,7 +30,7 @@ index 0ba171e226eee4e140f6bae61dcb6f7660554548..a1a01af28ca4a6da8f317839d457c655
      private final RandomSequences randomSequences;
  
      // CraftBukkit start
-@@ -687,6 +689,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -694,6 +696,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          this.chunkDataController = new ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.ChunkDataController((ServerLevel)(Object)this, this.chunkTaskScheduler);
          // Paper end - rewrite chunk system
          this.getCraftServer().addWorld(this.getWorld()); // CraftBukkit
@@ -38,7 +38,7 @@ index 0ba171e226eee4e140f6bae61dcb6f7660554548..a1a01af28ca4a6da8f317839d457c655
      }
  
      // Paper start
-@@ -852,6 +855,13 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -859,6 +862,13 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              this.serverLevelData.getScheduledEvents().tick(this.server, i);
              Profiler.get().pop();
              if (this.serverLevelData.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
@@ -52,7 +52,7 @@ index 0ba171e226eee4e140f6bae61dcb6f7660554548..a1a01af28ca4a6da8f317839d457c655
                  this.setDayTime(this.levelData.getDayTime() + 1L);
              }
  
-@@ -860,7 +870,21 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -867,7 +877,21 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
  
      public void setDayTime(long timeOfDay) {
          this.serverLevelData.setDayTime(timeOfDay);

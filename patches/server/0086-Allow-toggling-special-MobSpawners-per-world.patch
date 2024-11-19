@@ -6,10 +6,10 @@ Subject: [PATCH] Allow toggling special MobSpawners per world
 In vanilla, these are all hardcoded on for world type 0 (overworld) and hardcoded off for every other world type. Default config behaviour matches this.
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index bfe46102dd41a46c1cc0cdf7fa03a6a60254c529..0ba171e226eee4e140f6bae61dcb6f7660554548 100644
+index a0ff876d951f62eb172ee3763a9bc7ba5b191034..d49e26a1b719ff4dae6a3a10fc3695c39f400465 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -598,7 +598,24 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -605,7 +605,24 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
          // CraftBukkit end
          this.tickTime = flag1;
          this.server = minecraftserver;

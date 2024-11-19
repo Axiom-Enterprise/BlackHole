@@ -5,7 +5,7 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 99472b1ae2261a53555c5212f5d8b0deebaa4c48..718b9f237448685900cbb722510c93353a8c28b2 100644
+index cf8b7f93a1ba027c00d7f45809fa51f1ab55a5de..595302e0177824c1e3ad54e9a088337eeb2d872b 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1116,6 +1116,27 @@ public abstract class PlayerList {
@@ -108,18 +108,18 @@ index a15d5ff872dbd77f3c3145e0328f3d02e431ff8c..1dcf36d502990d32fc4cd3ea69c3ea33
          this.activeChest = blockEntity;
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/EnderChestBlock.java b/src/main/java/net/minecraft/world/level/block/EnderChestBlock.java
-index ebb9baca7a65173f7c9fdf9bf47a8db876719625..d9a1ec9c6ccab71618a42121f049005cf821eb42 100644
+index 2a207fb2e1c26b562de42240e11c856bd2a23458..6ad4aa371607ab92616626285a7e71757c76a3db 100644
 --- a/src/main/java/net/minecraft/world/level/block/EnderChestBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/EnderChestBlock.java
-@@ -88,7 +88,7 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
-             } else {
+@@ -89,7 +89,7 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
                  // Paper start - Fix InventoryOpenEvent cancellation - moved up;
+                 playerEnderChestContainer.setActiveChest(enderChestBlockEntity); // Needs to happen before ChestMenu.threeRows as it is required for opening animations
                  if (world instanceof ServerLevel serverLevel && player.openMenu(
 -                    new SimpleMenuProvider((i, inventory, playerx) -> ChestMenu.threeRows(i, inventory, playerEnderChestContainer), CONTAINER_TITLE)
 +                    new SimpleMenuProvider((i, inventory, playerx) -> org.purpurmc.purpur.PurpurConfig.enderChestSixRows ? getEnderChestSixRows(i, inventory, player, playerEnderChestContainer) : ChestMenu.threeRows(i, inventory, playerEnderChestContainer), CONTAINER_TITLE) // Purpur
                  ).isPresent()) {
                  // Paper end - Fix InventoryOpenEvent cancellation - moved up;
-                     playerEnderChestContainer.setActiveChest(enderChestBlockEntity);
+                     // Paper - Fix InventoryOpenEvent cancellation - moved up;
 @@ -104,6 +104,35 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
          }
      }

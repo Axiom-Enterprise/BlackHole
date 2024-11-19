@@ -5,13 +5,13 @@ Subject: [PATCH] ItemStack convenience methods
 
 
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 615eb24ffdd8f6d55ccd4f21760b809c1098bc68..fbbe9e52ed3437d2407e042f45b0a18abdd48fe1 100644
+index c7ce8fa1ff9feda66d5a4e497112a24ff51c9d2b..f588307487368ea686f22a50b0a5d79ade3dcb04 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -5799,4 +5799,40 @@ public enum Material implements Keyed, Translatable, net.kyori.adventure.transla
-     public BlockType asBlockType() {
-         return blockType.get();
+@@ -5840,4 +5840,40 @@ public enum Material implements Keyed, Translatable, net.kyori.adventure.transla
+         return this.asItemType().getDefaultDataTypes();
      }
+     // Paper end - data component API
 +
 +    // Purpur start
 +    public boolean isArmor() {
@@ -50,7 +50,7 @@ index 615eb24ffdd8f6d55ccd4f21760b809c1098bc68..fbbe9e52ed3437d2407e042f45b0a18a
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/inventory/ItemStack.java b/src/main/java/org/bukkit/inventory/ItemStack.java
-index b59222b8c262545d100a9fd28b3bf1d2a4cf4eb0..4414381ac942c040480d53b03565b160eb85c444 100644
+index 6e4ca7d95953a25c0aaafd35e54ef9254a1b5f0b..f5961444f1c05b66c410d64e4e9c4f79fe360382 100644
 --- a/src/main/java/org/bukkit/inventory/ItemStack.java
 +++ b/src/main/java/org/bukkit/inventory/ItemStack.java
 @@ -19,6 +19,13 @@ import org.bukkit.inventory.meta.ItemMeta;
@@ -67,10 +67,10 @@ index b59222b8c262545d100a9fd28b3bf1d2a4cf4eb0..4414381ac942c040480d53b03565b160
  
  /**
   * Represents a stack of items.
-@@ -1137,4 +1144,482 @@ public class ItemStack implements Cloneable, ConfigurationSerializable, Translat
-         return Bukkit.getUnsafe().computeTooltipLines(this, tooltipContext, player);
+@@ -1318,4 +1325,482 @@ public class ItemStack implements Cloneable, ConfigurationSerializable, Translat
+         return this.craftDelegate.matchesWithoutData(item, excludeTypes, ignoreCount);
      }
-     // Paper end - expose itemstack tooltip lines
+     // Paper end - data component API
 +
 +    // Purpur start
 +    /**

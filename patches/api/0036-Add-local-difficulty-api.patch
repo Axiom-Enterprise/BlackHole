@@ -5,10 +5,10 @@ Subject: [PATCH] Add local difficulty api
 
 
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index ef32a937e6faf1e8a5d6b1207986715bae5a246c..24d39c8c449e0ea6175989295d24eee902baec17 100644
+index 7a439c99fc4c5ee17d674460c8e58a9fe0c64e02..26a0ed5437842492432a26778fadd9ae41dc0569 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -4209,6 +4209,16 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -4246,6 +4246,16 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
      @Nullable
      public DragonBattle getEnderDragonBattle();
  

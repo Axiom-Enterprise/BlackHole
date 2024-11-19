@@ -34,19 +34,19 @@ index 64b56abf8900d0424100da460fc68ac964394793..e37e11c7912cc2824b67928811a8e542
              gameprofilerfiller.push(() -> {
                  String s = String.valueOf(worldserver);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 3b6b6483bf855493948417f44f06427b625bc910..6d05da7a13a81b279ecb30aa94c191222f48b6d0 100644
+index 957cae6ddeba9efe3b55588567ae51e8b86b6a42..32339a18345feddb49cffe5ed1f18a2bfaf931ba 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -230,6 +230,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
-     public final UUID uuid;
+@@ -231,6 +231,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
      public boolean hasPhysicsEvent = true; // Paper - BlockPhysicsEvent
      public boolean hasEntityMoveEvent; // Paper - Add EntityMoveEvent
+     private final alternate.current.wire.WireHandler wireHandler = new alternate.current.wire.WireHandler(this); // Paper - optimize redstone (Alternate Current)
 +    public boolean hasRidableMoveEvent = false; // Purpur
  
      public LevelChunk getChunkIfLoaded(int x, int z) {
          return this.chunkSource.getChunkAtIfLoadedImmediately(x, z); // Paper - Use getChunkIfLoadedImmediately
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 4cd799505ad4f9e02eef5f015a6c092af0efba14..c69080f68ac1a7e7113da692ae7baba467393d48 100644
+index 9dbf86a365b37bf3fcbf901e5dee5821648288d0..84dd32c83d05708acc4ffea1ed358697f320ecbe 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1033,6 +1033,15 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -190,7 +190,7 @@ index b851c3ee1426bc0a259bf6c4a662af0c9883dd71..7c11b5e73d4f3c0be7c467f7522c2d97
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index e86314de8d908a0c3e9f17d3e163c11180cf3f59..b8303404f8a81e2b446a9a40861787ca786aad47 100644
+index f36a075dbee2b96d01899e02460b1d8443e91749..b027633d6c854f481fbd4a2e4b89ace4b9d7a398 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -248,9 +248,9 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -223,7 +223,7 @@ index e86314de8d908a0c3e9f17d3e163c11180cf3f59..b8303404f8a81e2b446a9a40861787ca
  
      @Override
      protected void checkFallDamage(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition) {
-@@ -3670,8 +3671,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3692,8 +3693,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.pushEntities();
          gameprofilerfiller.pop();
          // Paper start - Add EntityMoveEvent
@@ -236,7 +236,7 @@ index e86314de8d908a0c3e9f17d3e163c11180cf3f59..b8303404f8a81e2b446a9a40861787ca
                  Location from = new Location(this.level().getWorld(), this.xo, this.yo, this.zo, this.yRotO, this.xRotO);
                  Location to = new Location(this.level().getWorld(), this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                  io.papermc.paper.event.entity.EntityMoveEvent event = new io.papermc.paper.event.entity.EntityMoveEvent(this.getBukkitLivingEntity(), from, to.clone());
-@@ -3681,6 +3684,21 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3703,6 +3706,21 @@ public abstract class LivingEntity extends Entity implements Attackable {
                      this.absMoveTo(event.getTo().getX(), event.getTo().getY(), event.getTo().getZ(), event.getTo().getYaw(), event.getTo().getPitch());
                  }
              }
@@ -1144,7 +1144,7 @@ index e07b79ef172095c1800c88342b3ac8dc7703aea2..9d82fec6f5969816095dbd5a11325c79
                  float f1 = 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
  
 diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-index feeb7bc34ae02e44d7f13f0bae5d175ef924c53a..d554c62b89f382018c5be872077cccf1425c8e35 100644
+index eea02ea0d99425a60575f5fa729782494d579080..ba8d47111cf80c8e9a0b47793f125ca91f5f906e 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 @@ -65,6 +65,23 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
@@ -1699,7 +1699,7 @@ index 661997c39df777b6e332f0a5710e7f63a116a499..18e5d9787590dbb2c780873266525585
      public int getMaxSchoolSize() {
          return 5;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Sheep.java b/src/main/java/net/minecraft/world/entity/animal/Sheep.java
-index 432ad1c785e133ef18390108fd342be50ec4dddc..b5f559181f82a7afeb035ea3cbd539dd5aa4d1c8 100644
+index 0b7f8b8d8cd119d83e67a2cee389bd6117ac4cf7..e19a0f7b805b6292c2b4c68981b3484645129dba 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Sheep.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Sheep.java
 @@ -91,10 +91,28 @@ public class Sheep extends Animal implements Shearable {
@@ -3113,7 +3113,7 @@ index e33fa82ca1332b95bb067fd621212d3026eee1b7..86c56940e0bbd3a9bfdd9d7617f27bbc
          if (this.nextHeightOffsetChangeTick <= 0) {
              this.nextHeightOffsetChangeTick = 100;
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Bogged.java b/src/main/java/net/minecraft/world/entity/monster/Bogged.java
-index 18dae37d65552077aa3825c76f433bbd31152db9..4e3d535d7c6facb5e5544545343973173ed90d45 100644
+index 975477663b6d76a69c006a89e440e21471b39b89..d96f6eb4fc881bf0cb2e7fdb46805f169297d923 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Bogged.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Bogged.java
 @@ -44,6 +44,23 @@ public class Bogged extends AbstractSkeleton implements Shearable {
@@ -5112,7 +5112,7 @@ index ddabaed899c755925ad8618b78c33dacaf2126ac..0d835621a7af64563c86c17358632aa2
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index deba03eb37012c638e08e20cd1c98e9db190c790..26d7e7ace4491c444c31dc11359427259c04f93c 100644
+index e37aaf77f94b97b736cc20ef070cefdff0400188..e3013916952012e69a23ac2efe9fc5e31a2b3d87 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -602,6 +602,15 @@ public class CraftEventFactory {

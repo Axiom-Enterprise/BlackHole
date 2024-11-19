@@ -5,10 +5,10 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index e14533a047acaf4c1178f0b23427b23179334b88..585cda7afc6532196ddbd53b9d4ff3215afb67da 100644
+index 2bf46dbc9afb2b19ef183b674c5be26f48af55d5..37f9e79cef4d2b68af61b4a1fbd42199bec6e28e 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -3739,7 +3739,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3761,7 +3761,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
                      }).toList();
                      EquipmentSlot enumitemslot = (EquipmentSlot) Util.getRandom(list, this.random);
  
@@ -27,7 +27,7 @@ index e14533a047acaf4c1178f0b23427b23179334b88..585cda7afc6532196ddbd53b9d4ff321
                  }
  
                  this.gameEvent(GameEvent.ELYTRA_GLIDE);
-@@ -3748,7 +3758,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3770,7 +3780,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
  
      }
  
@@ -50,7 +50,7 @@ index f4823112f2daf2aa75e1f4520fb91077c9c94e09..773be9c116a664e4d0349c58c00df34f
      }
  
 diff --git a/src/main/java/net/minecraft/world/item/FireworkRocketItem.java b/src/main/java/net/minecraft/world/item/FireworkRocketItem.java
-index 7e308b364227dedc2d05496f5e0c90573f4a53f7..52e0a741e0a2274d3d70e8d8cdfa56f5e934deb2 100644
+index 29a048a9b09166838616ac7ba1d31625d56b0bca..184e6d9bf393188fc1f1c7acd545b4ac6d31f6a4 100644
 --- a/src/main/java/net/minecraft/world/item/FireworkRocketItem.java
 +++ b/src/main/java/net/minecraft/world/item/FireworkRocketItem.java
 @@ -66,6 +66,18 @@ public class FireworkRocketItem extends Item implements ProjectileItem {

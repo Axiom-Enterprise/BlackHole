@@ -5,7 +5,7 @@ Subject: [PATCH] Option to disable turtle egg trampling with feather falling
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java b/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
-index e1c984ec64565584c78fe0a6c7db3537108bac59..3829dbae8542396f8360eae54f0ed18fbde4cd8c 100644
+index 72c89f14977844e1460e9a914f39e896c9d498fd..f1dfb23160ff70e0da4dd2af2d83e879527c6651 100644
 --- a/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
 @@ -220,7 +220,13 @@ public class TurtleEggBlock extends Block {
@@ -21,10 +21,10 @@ index e1c984ec64565584c78fe0a6c7db3537108bac59..3829dbae8542396f8360eae54f0ed18f
 +            return true;
 +        }
  
-         return world.purpurConfig.turtleEggsBypassMobGriefing || world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+         return world.purpurConfig.turtleEggsBypassMobGriefing ^ world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
          // Purpur end
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 68585a9a1a1c62e7e6b075c6b12ca0397d43eb5a..86eea11d91a8d0f4d6d40ddbf83bdba9f7525ab1 100644
+index def9267df2cf09e2f2798581e7bb98ee358f7f16..a81fdeb38abaf03eb7231ed2ba4e8b693e378a4f 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1049,12 +1049,14 @@ public class PurpurWorldConfig {

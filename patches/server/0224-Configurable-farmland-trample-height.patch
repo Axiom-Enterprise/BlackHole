@@ -22,20 +22,20 @@ Value set -> Actual fall distance needed to trample
    6.0 -> 6.75
 
 diff --git a/src/main/java/net/minecraft/world/level/block/FarmBlock.java b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
-index bc149eb17695ac727aa8db08db6209497f7d20bf..6db97982972bfc67c828f574fb86391e1cdcd4a5 100644
+index af135f8b70b0e2af470afce9053976c3a1e03477..eaac00e2534aca4eab92c7b9f9248e04b35b47df 100644
 --- a/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 @@ -112,7 +112,7 @@ public class FarmBlock extends Block {
      public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
          super.fallOn(world, state, pos, entity, fallDistance); // CraftBukkit - moved here as game rules / events shouldn't affect fall damage.
          if (world instanceof ServerLevel worldserver) {
--            if (world.random.nextFloat() < fallDistance - 0.5F && entity instanceof LivingEntity && (entity instanceof Player || worldserver.purpurConfig.farmlandBypassMobGriefing || worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) { // Purpur
-+            if ((worldserver.purpurConfig.farmlandTrampleHeight >= 0D ? fallDistance >= worldserver.purpurConfig.farmlandTrampleHeight : world.random.nextFloat() < fallDistance - 0.5F) && entity instanceof LivingEntity && (entity instanceof Player || worldserver.purpurConfig.farmlandBypassMobGriefing || worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) { // Purpur
+-            if (world.random.nextFloat() < fallDistance - 0.5F && entity instanceof LivingEntity && (entity instanceof Player || worldserver.purpurConfig.farmlandBypassMobGriefing ^ worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) { // Purpur
++            if ((worldserver.purpurConfig.farmlandTrampleHeight >= 0D ? fallDistance >= worldserver.purpurConfig.farmlandTrampleHeight : world.random.nextFloat() < fallDistance - 0.5F) && entity instanceof LivingEntity && (entity instanceof Player || worldserver.purpurConfig.farmlandBypassMobGriefing ^ worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) { // Purpur
                  // CraftBukkit start - Interact soil
                  org.bukkit.event.Cancellable cancellable;
                  if (entity instanceof Player) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index cd53426663b15a1c077b27db6fc28f722cd2bb41..7f766e9d6d501595ed830682ed157b74feb736bc 100644
+index 0fd337e4c24d6851b59c85e2ea48903abd8b3152..19f9cb28e84605574d0da3b96d780c155d2eba40 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -927,6 +927,7 @@ public class PurpurWorldConfig {

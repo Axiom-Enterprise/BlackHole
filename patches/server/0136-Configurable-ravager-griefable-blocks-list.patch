@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable ravager griefable blocks list
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Ravager.java b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
-index 159b542361debf397bbd24ac9a4f037e584de876..d4d02459f078788b404f39e84d1547a6c9d0313c 100644
+index 48c66c97784f7c81029a81efb63eb6da4a2d88c2..94f5b153627eca433905106a90e1bbdfb73e4e2d 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Ravager.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
 @@ -199,7 +199,7 @@ public class Ravager extends Raider {
@@ -18,20 +18,20 @@ index 159b542361debf397bbd24ac9a4f037e584de876..d4d02459f078788b404f39e84d1547a6
                              if (!CraftEventFactory.callEntityChangeBlockEvent(this, blockposition, iblockdata.getFluidState().createLegacyBlock())) { // Paper - fix wrong block state
                                  continue;
 diff --git a/src/main/java/net/minecraft/world/level/block/CropBlock.java b/src/main/java/net/minecraft/world/level/block/CropBlock.java
-index d1efd728f0660b77361fa4f9c2bf5f2e654be0d2..ab58c4dbe9deb8807478a8e66e01f81a30221532 100644
+index 49484773e67eb84e7dadc993406edd6da568dcd5..3f7440eb164ea7593844de6c496ee1a998759347 100644
 --- a/src/main/java/net/minecraft/world/level/block/CropBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CropBlock.java
 @@ -180,7 +180,7 @@ public class CropBlock extends BushBlock implements BonemealableBlock {
      protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
          if (!new io.papermc.paper.event.entity.EntityInsideBlockEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.block.CraftBlock.at(world, pos)).callEvent()) { return; } // Paper - Add EntityInsideBlockEvent
          if (world instanceof ServerLevel worldserver) {
--            if (entity instanceof Ravager && CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), (!world.purpurConfig.ravagerBypassMobGriefing && !worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)))) { // CraftBukkit // Purpur
-+            if (entity instanceof Ravager && world.purpurConfig.ravagerGriefableBlocks.contains(world.getBlockState(pos).getBlock()) && CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), (!world.purpurConfig.ravagerBypassMobGriefing && !worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)))) { // CraftBukkit // Purpur
+-            if (entity instanceof Ravager && CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), !world.purpurConfig.ravagerBypassMobGriefing == !worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))) { // CraftBukkit // Purpur
++            if (entity instanceof Ravager && world.purpurConfig.ravagerGriefableBlocks.contains(world.getBlockState(pos).getBlock()) && CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), !world.purpurConfig.ravagerBypassMobGriefing == !worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))) { // CraftBukkit // Purpur
                  worldserver.destroyBlock(pos, true, entity);
              }
          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c31d4deff4e91057fc1b5d93bfd1b59c012ce6e7..8d8ddf1c491b9a56ed3138a4999a64a2de4c306f 100644
+index 33c679619ddb73642d546367debbe1bf13f0d716..27a5c78f37b46582402741f5943acd8d807655f2 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1768,6 +1768,7 @@ public class PurpurWorldConfig {

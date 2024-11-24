@@ -5,10 +5,10 @@ Subject: [PATCH] Drowning Settings
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 4971daaad718e1f37fb72c2d1a00dcb7cdf70af0..20df4a12d8e5fd5c167f03403d1331d2a0974c00 100644
+index d61840da8edad607b6bb3e0b6e168417e4c59f23..b4668e9f49aba4ae68c7d51a37f26c9bf754accc 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3698,7 +3698,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3706,7 +3706,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
  
      public int getMaxAirSupply() {
@@ -18,7 +18,7 @@ index 4971daaad718e1f37fb72c2d1a00dcb7cdf70af0..20df4a12d8e5fd5c167f03403d1331d2
  
      public int getAirSupply() {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index b9038151cb69d018b89d65ab3af9f64447e6df8c..9777719cae27035bdf0c81e5f866dae96095a9c4 100644
+index 713b84c2c07145febc1e5cf4af833dd8f5f1588e..34aca945029f061ca21e8b3e0a2bde490140dd54 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -491,7 +491,7 @@ public abstract class LivingEntity extends Entity implements Attackable {

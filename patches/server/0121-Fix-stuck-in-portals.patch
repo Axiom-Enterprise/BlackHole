@@ -5,7 +5,7 @@ Subject: [PATCH] Fix stuck in portals
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 976dfffac3895015d0eb00bab0ea93f9e5cc27a2..430ea84cbca69b6d119c2739bed9de37a970c2e5 100644
+index 6ffb7d0c9c6c7410af9efaf899296a8cb74ee105..ab14a199a588cec0d7df92e55fee596aeebde6f0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1687,6 +1687,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -17,10 +17,10 @@ index 976dfffac3895015d0eb00bab0ea93f9e5cc27a2..430ea84cbca69b6d119c2739bed9de37
                  this.connection.internalTeleport(PositionMoveRotation.of(teleportTarget), teleportTarget.relatives()); // CraftBukkit - use internal teleport without event
                  this.connection.resetPosition();
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 8a8676424d2b87542e583040fc0b5b1c8ccd91ca..4971daaad718e1f37fb72c2d1a00dcb7cdf70af0 100644
+index 9d8c26a59b23e8c3cf82168b3716280cfb380f43..d61840da8edad607b6bb3e0b6e168417e4c59f23 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3471,14 +3471,17 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3479,14 +3479,17 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return Vec3.directionFromRotation(this.getRotationVector());
      }
  

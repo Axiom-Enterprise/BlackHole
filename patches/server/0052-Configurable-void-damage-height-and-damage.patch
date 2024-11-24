@@ -7,10 +7,10 @@ temporarily migrate to paper's config
 drop patch on the next minecraft release
 
 diff --git a/src/main/java/io/papermc/paper/configuration/PaperConfigurations.java b/src/main/java/io/papermc/paper/configuration/PaperConfigurations.java
-index 1029b6de6f36b08bf634b4056ef5701383f6f258..ee0d1df78838e05450ad1a06ce70eab2d5e5d3b8 100644
+index c5644d8d64f12073e39bc6ed79c8714f4560ff89..47a2cba0db36b11548d06ec21f7c7d7c9a962d6e 100644
 --- a/src/main/java/io/papermc/paper/configuration/PaperConfigurations.java
 +++ b/src/main/java/io/papermc/paper/configuration/PaperConfigurations.java
-@@ -260,6 +260,7 @@ public class PaperConfigurations extends Configurations<GlobalConfiguration, Wor
+@@ -263,6 +263,7 @@ public class PaperConfigurations extends Configurations<GlobalConfiguration, Wor
          for (final NodePath path : RemovedConfigurations.REMOVED_WORLD_PATHS) {
              builder.addAction(path, TransformAction.remove());
          }
@@ -19,10 +19,10 @@ index 1029b6de6f36b08bf634b4056ef5701383f6f258..ee0d1df78838e05450ad1a06ce70eab2
  
          final ConfigurationTransformation.VersionedBuilder versionedBuilder = Transformations.versionedBuilder();
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index dad3fcc689ec806f985122a7cbd501a7d0fd0d36..b7428b8c287980941eaa5c5d1f1d321955277a09 100644
+index b1c917d65076a3805e5b78cb946753f0c101e214..82210667376fd466d5d4cdcb56b62f6165bd5cde 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -400,6 +400,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -409,6 +409,7 @@ public class WorldConfiguration extends ConfigurationPart {
          public boolean useVanillaWorldScoreboardNameColoring = false;
      }
  
@@ -30,7 +30,7 @@ index dad3fcc689ec806f985122a7cbd501a7d0fd0d36..b7428b8c287980941eaa5c5d1f1d3219
      public Environment environment;
  
      public class Environment extends ConfigurationPart {
-@@ -409,7 +410,9 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -418,7 +419,9 @@ public class WorldConfiguration extends ConfigurationPart {
          public boolean disableExplosionKnockback = false;
          public boolean generateFlatBedrock = false;
          public FrostedIce frostedIce;
@@ -41,10 +41,10 @@ index dad3fcc689ec806f985122a7cbd501a7d0fd0d36..b7428b8c287980941eaa5c5d1f1d3219
  
          public class FrostedIce extends ConfigurationPart {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 9a48d35cf1266c6fb7ab6cbf23b63a0b56451c0d..d6b97aed27a628110145f83e120a54fcf650c621 100644
+index d6b1ab5c380f044fd11f5639e1422a55459a2e30..930b2925a1a4cc41d671f8c496a1b9f5fa620a7c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1267,7 +1267,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1268,7 +1268,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  LOGGER.info("*************************************************************************************");
              }
              // Paper end - Add onboarding message for initial server start

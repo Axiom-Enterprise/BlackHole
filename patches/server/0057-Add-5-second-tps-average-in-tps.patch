@@ -26,7 +26,7 @@ index 12b327eea95e0de9e9c39b7d039badee8ec46508..849ecc5af70901f1e40cb6c419f33f1c
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index d6b97aed27a628110145f83e120a54fcf650c621..9b93c5e5671bc910e8880a29ced9c4a5f0d36d53 100644
+index 930b2925a1a4cc41d671f8c496a1b9f5fa620a7c..7aef829dbda80d6b2ced79e46db26083f9205ccc 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -324,7 +324,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -38,7 +38,7 @@ index d6b97aed27a628110145f83e120a54fcf650c621..9b93c5e5671bc910e8880a29ced9c4a5
      // Spigot end
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations; // Paper - add paper configuration files
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
-@@ -1181,6 +1181,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1182,6 +1182,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
      private long lastTick = 0;
      private long catchupTime = 0;
@@ -46,7 +46,7 @@ index d6b97aed27a628110145f83e120a54fcf650c621..9b93c5e5671bc910e8880a29ced9c4a5
      public final RollingAverage tps1 = new RollingAverage(60);
      public final RollingAverage tps5 = new RollingAverage(60 * 5);
      public final RollingAverage tps15 = new RollingAverage(60 * 15);
-@@ -1302,14 +1303,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1303,14 +1304,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  if (++MinecraftServer.currentTick % MinecraftServer.SAMPLE_INTERVAL == 0) {
                      final long diff = currentTime - tickSection;
                      final java.math.BigDecimal currentTps = TPS_BASE.divide(new java.math.BigDecimal(diff), 30, java.math.RoundingMode.HALF_UP);
@@ -82,7 +82,7 @@ index 096c89bd01cec2abd151bf6fffc4847d1bcd548f..cd0a8a6a1be75cab8bbb8ee3ac17bb73
          this.values[this.vp++ & 0xFF] = (int)(l * 100L / Runtime.getRuntime().maxMemory());
          this.repaint();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 67c8ce82a2e525fafd45a6bef660cc9bbd2fe3b1..f129103f378e6582bd976e3377190bd01a26038e 100644
+index 95121c71034d4fcae2e61152d2c3f9c9a441ae05..0f660c363ffd03e74dff76745e451fb6d0376fec 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -3063,6 +3063,7 @@ public final class CraftServer implements Server {

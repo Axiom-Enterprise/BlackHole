@@ -5,7 +5,7 @@ Subject: [PATCH] UPnP Port Forwarding
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 11a93d772164bd104be860ac9e8855ba5b6904c3..f46523e4eeeca027fe116625741b7af21041a027 100644
+index 3ae09a3459c804c57ce08001216120ee2d0fead2..3901b66cb8f3c2629b8f6094160498610e7686b9 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -330,6 +330,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -16,7 +16,7 @@ index 11a93d772164bd104be860ac9e8855ba5b6904c3..f46523e4eeeca027fe116625741b7af2
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1054,6 +1055,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1055,6 +1056,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
          MinecraftServer.LOGGER.info("Stopping server");
          Commands.COMMAND_SENDING_POOL.shutdownNow(); // Paper - Perf: Async command map building; Shutdown and don't bother finishing

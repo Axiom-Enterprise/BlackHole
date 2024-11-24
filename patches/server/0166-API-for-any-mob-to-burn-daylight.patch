@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 24ab4e40d9edb4834dd91c7638e2b0fd27927513..8097b31867b1095ff826510df9c51e3b08f6eb0d 100644
+index b4668e9f49aba4ae68c7d51a37f26c9bf754accc..5720e700b0e4bf2b58cbfd07efc80accdeac2734 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -618,6 +618,22 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -619,6 +619,22 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
      // Purpur end
  
@@ -31,7 +31,7 @@ index 24ab4e40d9edb4834dd91c7638e2b0fd27927513..8097b31867b1095ff826510df9c51e3b
 +
      public Entity(EntityType<?> type, Level world) {
          this.id = Entity.ENTITY_COUNTER.incrementAndGet();
-         this.passengers = ImmutableList.of();
+         this.despawnTime = type == EntityType.PLAYER ? -1 : world.paperConfig().entities.spawning.despawnTime.getOrDefault(type, io.papermc.paper.configuration.type.number.IntOr.Disabled.DISABLED).or(-1); // Paper - entity despawn time limit
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 index 42e9c9842a2fd08ac64d7906251da2298f5735f6..b3be740bbffc16622da64d7ea609adacdab176bd 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java

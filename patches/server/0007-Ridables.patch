@@ -22,10 +22,10 @@ index f58a94efafbc01d402cd03a108bb90f60930a316..21ea63da99c5b3e2e1ab9cc1049c903b
          super(x, y, z);
      }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 64b56abf8900d0424100da460fc68ac964394793..e37e11c7912cc2824b67928811a8e542fa0a9337 100644
+index 663b4ecd520e82aa108d44f2d5c2a20cfc7bc01f..1c1ce108840c522d5db49846ad3cac08916a7911 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1853,6 +1853,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1855,6 +1855,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              worldserver.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = worldserver.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
              worldserver.updateLagCompensationTick(); // Paper - lag compensation
@@ -79,7 +79,7 @@ index b5d5dbc50a7b8c40739a15f164ffd08fdc534f9c..5d322e613a0116057373a3c9d7125620
                              if ((entity instanceof Bucketable && entity instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                  entity.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 8be1b051543cda2b2e9e3d337834757e53f442de..9df3c915456e054790127e544b6a9af5f92d73d8 100644
+index ed5b00620527c1776722d25b1b45f1544802a341..697c8c8fd0cdca4bb8bc3db62f7de8999785ec1e 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -384,7 +384,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -91,7 +91,7 @@ index 8be1b051543cda2b2e9e3d337834757e53f442de..9df3c915456e054790127e544b6a9af5
      private float eyeHeight;
      public boolean isInPowderSnow;
      public boolean wasInPowderSnow;
-@@ -3330,6 +3330,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3338,6 +3338,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -105,7 +105,7 @@ index 8be1b051543cda2b2e9e3d337834757e53f442de..9df3c915456e054790127e544b6a9af5
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -3369,6 +3376,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3377,6 +3384,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -120,7 +120,7 @@ index 8be1b051543cda2b2e9e3d337834757e53f442de..9df3c915456e054790127e544b6a9af5
              if (this.passengers.size() == 1 && this.passengers.get(0) == entity) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5361,4 +5376,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5369,4 +5384,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((net.minecraft.server.level.ServerLevel) this.level).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
@@ -1963,7 +1963,7 @@ index d6605c15111dbdb6ee61a24822bc0a9aed7198d6..a9aae028195c0646d1692f55d2ebfe58
                      this.turtle.setSpeed(Mth.lerp(0.125F, this.turtle.getSpeed(), f1));
                      this.turtle.setDeltaMovement(this.turtle.getDeltaMovement().add(0.0D, (double) this.turtle.getSpeed() * d1 * 0.1D, 0.0D));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index fc19bd326f00d1e8bd08ef6cc430c555337a6e3d..6eadd5064148a7b75a1946274c25ff90fa49096a 100644
+index fb84ee1225cd762ef306d1fc3e1baed42c034a3c..04b6cb63bac767b386b8f67cf80a4d75df9d7fe5 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 @@ -124,9 +124,32 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol

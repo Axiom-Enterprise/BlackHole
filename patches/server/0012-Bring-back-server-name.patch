@@ -17,13 +17,13 @@ index c3ec370b83b895be0f03662e3884fa4a2442a2a6..05e16103af3fd276f0196ddf1a2e5b72
      public final boolean allowFlight = this.get("allow-flight", false);
      public final String motd = this.get("motd", "A Minecraft Server");
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4f1567c80987ee502c56be8da06d8dfcd1dc189e..fd68126c149a9ba8e9da39a4d3154ff7f8829222 100644
+index 04f4d70f6b278b2ec3a94cb104f4a4497a9ba4bf..6bf7b4dcee4258cd9c23d2cf2eac5194a03f73e3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -3261,4 +3261,11 @@ public final class CraftServer implements Server {
-         return this.potionBrewer;
+@@ -3273,4 +3273,11 @@ public final class CraftServer implements Server {
+         this.console.addPluginAllowingSleep(plugin.getName(), value);
      }
-     // Paper end
+     // Paper end - API to check if the server is sleeping
 +
 +    // Purpur start
 +    @Override

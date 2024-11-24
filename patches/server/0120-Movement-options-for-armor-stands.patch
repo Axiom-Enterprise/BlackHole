@@ -17,10 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index c98083c33458c506f045ff6f2f7bd5956a2b44df..8a8676424d2b87542e583040fc0b5b1c8ccd91ca 100644
+index 2add41657b8f868bcd4755ca843e457b8dfc7ef0..9d8c26a59b23e8c3cf82168b3716280cfb380f43 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -2050,7 +2050,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2058,7 +2058,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return this.isInWater() || flag;
      }
  

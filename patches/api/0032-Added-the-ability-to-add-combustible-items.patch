@@ -34,10 +34,10 @@ index 76a86df9c0f9bfbd4f5d67e288c81994879592bc..1496957997198b64b9a55b5c882a4df6
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index ae5b8ae3294957e26dc807eb0cb84175a6c16eb5..40aaa5123a5a15c434e422c0fa6adf686df6d7bd 100644
+index 58d6a38a1a48b4dee428051718f185b962782e64..65527ab58a7247408889f71c02ef40c2c183e0ed 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2599,5 +2599,20 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2615,5 +2615,20 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       * @return True if lagging
       */
      boolean isLagging();

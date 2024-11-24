@@ -99,10 +99,10 @@ index 1496957997198b64b9a55b5c882a4df633be71c6..8f5fde63b195d08029305ee0172687df
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 40aaa5123a5a15c434e422c0fa6adf686df6d7bd..ddb1ff894910761a78b91a343f32e129f03a03c4 100644
+index 65527ab58a7247408889f71c02ef40c2c183e0ed..6328d4da00fedc1d59635254a95a2a76a4ef16a1 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2614,5 +2614,75 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2630,5 +2630,75 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       * @param material The material that will no longer be a fuel
       */
      public void removeFuel(@NotNull Material material);

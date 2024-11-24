@@ -17,10 +17,10 @@ index 24c2568db30f970aed1a4897cfbc7d07297047d3..5d94b71bd54f99040b76cca74964a32d
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index f937454c9bb398a612a6f25ab8579c8800dfa4d0..509175e1dd9f64d1a4f343cc21e0dc6d04dea68d 100644
+index 1ce5cd0fdade08093e03033fb15687dc098c8ba1..211c43ea25cc1c0a4345c19bc036cff9668d787b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1155,6 +1155,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1156,6 +1156,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.safeShutdown(waitForShutdown, false);
      }
      public void safeShutdown(boolean waitForShutdown, boolean isRestarting) {
@@ -41,7 +41,7 @@ index de6f842349dee273eb84b2f12ea6a41d43f17fb1..94d292b97ca2404fa1ae8ceec7c48540
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 3b9ebf98eab678938e2b619eb42025c0322bf5dd..976dfffac3895015d0eb00bab0ea93f9e5cc27a2 100644
+index b8944420a4f84c350f653e43ed0069c0bfcddf02..6ffb7d0c9c6c7410af9efaf899296a8cb74ee105 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -330,6 +330,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -83,7 +83,7 @@ index 3b9ebf98eab678938e2b619eb42025c0322bf5dd..976dfffac3895015d0eb00bab0ea93f9
      // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 54e8d35edd45afd2dc152e60cc4ac96dd2916d55..5476701392abb1b6fb70ab90e72b59a8bfbef02b 100644
+index 73c83770e1acd6c57742405a04ffa7a733aea4f6..af6ddb3231083244455d750f91bd3e4b2b4b5a0d 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -419,6 +419,7 @@ public abstract class PlayerList {

@@ -25,13 +25,13 @@ index 391a1e3e07657a404520c1462507a2c731f32b27..51a071668ff708cae93900ea09765f62
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 625421183a3953d0d72d477e231f6831c87b7843..ba7d4682671b643c8af2a1bfaa79186da1fa065e 100644
+index a3a0b9c974792d735ec235b01d831e2e1e4a6768..513b34f1043e74184da179f1a9d86880731d4c70 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2584,4 +2584,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2600,4 +2600,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
-     boolean isOwnedByCurrentRegion(@NotNull Entity entity);
-     // Paper end - Folia region threading API
+     void allowPausing(@NotNull org.bukkit.plugin.Plugin plugin, boolean value);
+     // Paper end - API to check if the server is sleeping
 +
 +    // Purpur start
 +    /**

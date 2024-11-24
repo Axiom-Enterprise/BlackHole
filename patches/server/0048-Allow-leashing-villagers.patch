@@ -5,10 +5,10 @@ Subject: [PATCH] Allow leashing villagers
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 2750f1f0d572f7c4f8b855c32bd1946c2de1bc00..45e53779e30763077b5374680a63cc277715500c 100644
+index 1e639ab3e48d884ee6e2c33be85dde51e24183b6..75b0a66be9f94c82a02f714860ae8bee323db2a3 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3126,6 +3126,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3134,6 +3134,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          if (this.isAlive() && this instanceof Leashable leashable) {
              if (leashable.getLeashHolder() == player) {
                  if (!this.level().isClientSide()) {

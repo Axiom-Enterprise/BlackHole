@@ -27,7 +27,7 @@ index ea9d118f99a62004db8fc093ff67794a1ec99ac9..2add41657b8f868bcd4755ca843e457b
  
      public boolean canTeleport(Level from, Level to) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 3fb03b012873999e2ff82b480908655303e47aaf..b901f058f82033fe1750bfc4fb472c80268f1920 100644
+index ff41df1aefb9c0062af302251e97fad101a7cef3..478756e5e1f5e2fe4878715687d7d6e7d4b10128 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -101,12 +101,14 @@ public class PurpurWorldConfig {

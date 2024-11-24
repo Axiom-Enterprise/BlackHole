@@ -6,10 +6,10 @@ Subject: [PATCH] Implement configurable search radius for villagers to spawn
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 052a131d7222ac490b5c40e65c1f801a4299b4e9..c885b214f4d7d91627e98d8779aab8515f205636 100644
+index f787aec8bfa291447b3bca297239f44a9fe342a7..38594d3f520b4d75db441cfdde121ac65d2295cc 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -1065,6 +1065,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -1066,6 +1066,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
  
      public void spawnGolemIfNeeded(ServerLevel world, long time, int requiredCount) {
@@ -18,10 +18,10 @@ index 052a131d7222ac490b5c40e65c1f801a4299b4e9..c885b214f4d7d91627e98d8779aab851
              AABB axisalignedbb = this.getBoundingBox().inflate(10.0D, 10.0D, 10.0D);
              List<Villager> list = world.getEntitiesOfClass(Villager.class, axisalignedbb);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 86eea11d91a8d0f4d6d40ddbf83bdba9f7525ab1..3bfdb3c2c1f67a1281cfca44eb1eae6c888d8e92 100644
+index a81fdeb38abaf03eb7231ed2ba4e8b693e378a4f..d7789c4969e0c56322d411bfc5d0e9666e719fbc 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2906,6 +2906,8 @@ public class PurpurWorldConfig {
+@@ -2907,6 +2907,8 @@ public class PurpurWorldConfig {
      public int villagerLobotomizeCheckInterval = 100;
      public boolean villagerLobotomizeWaitUntilTradeLocked = false;
      public boolean villagerDisplayTradeItem = true;
@@ -30,7 +30,7 @@ index 86eea11d91a8d0f4d6d40ddbf83bdba9f7525ab1..3bfdb3c2c1f67a1281cfca44eb1eae6c
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -2941,6 +2943,8 @@ public class PurpurWorldConfig {
+@@ -2943,6 +2945,8 @@ public class PurpurWorldConfig {
          villagerLobotomizeCheckInterval = getInt("mobs.villager.lobotomize.check-interval", villagerLobotomizeCheckInterval);
          villagerLobotomizeWaitUntilTradeLocked = getBoolean("mobs.villager.lobotomize.wait-until-trade-locked", villagerLobotomizeWaitUntilTradeLocked);
          villagerDisplayTradeItem = getBoolean("mobs.villager.display-trade-item", villagerDisplayTradeItem);

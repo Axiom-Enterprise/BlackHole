@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable villager breeding
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 9008eeae3187024862bef886801d197c4c425df3..62a1d6876ce75676c5fa381e48bc58b8ef92701b 100644
+index 329db0049e0792b2c066349849ebd7c26a9178d7..c50cfa8225d5098f978da42cdf6c6860e93e9f2a 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -761,7 +761,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -762,7 +762,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
  
      @Override
      public boolean canBreed() {
@@ -18,20 +18,20 @@ index 9008eeae3187024862bef886801d197c4c425df3..62a1d6876ce75676c5fa381e48bc58b8
  
      private boolean hungry() {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index feddf1aeb817e5bf3fbde76943c36da6bd4c1133..436f04b56ac6795e393008e4eeae4fc09cd2e2a9 100644
+index 296285cd96f0b1a96216608474c78ef5333ae110..1510a14f18851c6906a0ae9249f0fbf8b0edc750 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1745,6 +1745,7 @@ public class PurpurWorldConfig {
-     public double villagerScale = 1.0D;
+@@ -1746,6 +1746,7 @@ public class PurpurWorldConfig {
      public boolean villagerFollowEmeraldBlock = false;
+     public double villagerTemptRange = 10.0D;
      public boolean villagerCanBeLeashed = false;
 +    public boolean villagerCanBreed = true;
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -1758,6 +1759,7 @@ public class PurpurWorldConfig {
-         villagerScale = Mth.clamp(getDouble("mobs.villager.attributes.scale", villagerScale), 0.0625D, 16.0D);
+@@ -1760,6 +1761,7 @@ public class PurpurWorldConfig {
          villagerFollowEmeraldBlock = getBoolean("mobs.villager.follow-emerald-blocks", villagerFollowEmeraldBlock);
+         villagerTemptRange = getDouble("mobs.villager.attributes.tempt_range", villagerTemptRange);
          villagerCanBeLeashed = getBoolean("mobs.villager.can-be-leashed", villagerCanBeLeashed);
 +        villagerCanBreed = getBoolean("mobs.villager.can-breed", villagerCanBreed);
      }

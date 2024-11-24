@@ -75,7 +75,7 @@ index d49e26a1b719ff4dae6a3a10fc3695c39f400465..7b4b70abd82f669b8ecfa4c8d486ccd7
      public void tickCustomSpawners(boolean spawnMonsters, boolean spawnAnimals) {
          Iterator iterator = this.customSpawners.iterator();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b78f6b3e8b70a10f260c233be93947ac27e9edbd..c895c2e2bbdcc0cbdd69b2086e2d2d76a105f225 100644
+index ef3decbb19f0d17701c7be7b4da09de1f8f910f0..f1961a6bc50bdc2b00c8245de621b3302c6359b7 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -119,6 +119,13 @@ public class PurpurWorldConfig {

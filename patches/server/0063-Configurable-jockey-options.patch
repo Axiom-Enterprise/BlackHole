@@ -167,7 +167,7 @@ index ba1ce7e0ed888bd47312e9d7da5426f5c1015d07..650f9e1ca3a5ddec5123133c9604f331
      public void setPersistentAngerTarget(@Nullable UUID angryAt) {
          this.persistentAngerTarget = angryAt;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 0766f4cb00caac477e7ee0d537dc1f5304cd7d1a..7c1f903c41839251a69d38ba58fb4a7038f8901a 100644
+index 17cac265378429f1cdcc9d183cc5588660c7f92e..3f6288eff7f38e17115916521f17fa53b520ae01 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -636,6 +636,9 @@ public class PurpurWorldConfig {
@@ -210,7 +210,7 @@ index 0766f4cb00caac477e7ee0d537dc1f5304cd7d1a..7c1f903c41839251a69d38ba58fb4a70
      }
  
      public boolean illusionerRidable = false;
-@@ -1824,6 +1836,9 @@ public class PurpurWorldConfig {
+@@ -1828,6 +1840,9 @@ public class PurpurWorldConfig {
      public double zombieMaxHealth = 20.0D;
      public double zombieScale = 1.0D;
      public double zombieSpawnReinforcements = 0.1D;
@@ -220,7 +220,7 @@ index 0766f4cb00caac477e7ee0d537dc1f5304cd7d1a..7c1f903c41839251a69d38ba58fb4a70
      private void zombieSettings() {
          zombieRidable = getBoolean("mobs.zombie.ridable", zombieRidable);
          zombieRidableInWater = getBoolean("mobs.zombie.ridable-in-water", zombieRidableInWater);
-@@ -1836,6 +1851,9 @@ public class PurpurWorldConfig {
+@@ -1840,6 +1855,9 @@ public class PurpurWorldConfig {
          zombieMaxHealth = getDouble("mobs.zombie.attributes.max_health", zombieMaxHealth);
          zombieScale = Mth.clamp(getDouble("mobs.zombie.attributes.scale", zombieScale), 0.0625D, 16.0D);
          zombieSpawnReinforcements = getDouble("mobs.zombie.attributes.spawn_reinforcements", zombieSpawnReinforcements);
@@ -230,7 +230,7 @@ index 0766f4cb00caac477e7ee0d537dc1f5304cd7d1a..7c1f903c41839251a69d38ba58fb4a70
      }
  
      public boolean zombieHorseRidable = false;
-@@ -1873,6 +1891,9 @@ public class PurpurWorldConfig {
+@@ -1877,6 +1895,9 @@ public class PurpurWorldConfig {
      public double zombieVillagerMaxHealth = 20.0D;
      public double zombieVillagerScale = 1.0D;
      public double zombieVillagerSpawnReinforcements = 0.1D;
@@ -240,7 +240,7 @@ index 0766f4cb00caac477e7ee0d537dc1f5304cd7d1a..7c1f903c41839251a69d38ba58fb4a70
      private void zombieVillagerSettings() {
          zombieVillagerRidable = getBoolean("mobs.zombie_villager.ridable", zombieVillagerRidable);
          zombieVillagerRidableInWater = getBoolean("mobs.zombie_villager.ridable-in-water", zombieVillagerRidableInWater);
-@@ -1885,6 +1906,9 @@ public class PurpurWorldConfig {
+@@ -1889,6 +1910,9 @@ public class PurpurWorldConfig {
          zombieVillagerMaxHealth = getDouble("mobs.zombie_villager.attributes.max_health", zombieVillagerMaxHealth);
          zombieVillagerScale = Mth.clamp(getDouble("mobs.zombie_villager.attributes.scale", zombieVillagerScale), 0.0625D, 16.0D);
          zombieVillagerSpawnReinforcements = getDouble("mobs.zombie_villager.attributes.spawn_reinforcements", zombieVillagerSpawnReinforcements);
@@ -250,7 +250,7 @@ index 0766f4cb00caac477e7ee0d537dc1f5304cd7d1a..7c1f903c41839251a69d38ba58fb4a70
      }
  
      public boolean zombifiedPiglinRidable = false;
-@@ -1893,6 +1917,9 @@ public class PurpurWorldConfig {
+@@ -1897,6 +1921,9 @@ public class PurpurWorldConfig {
      public double zombifiedPiglinMaxHealth = 20.0D;
      public double zombifiedPiglinScale = 1.0D;
      public double zombifiedPiglinSpawnReinforcements = 0.0D;
@@ -260,7 +260,7 @@ index 0766f4cb00caac477e7ee0d537dc1f5304cd7d1a..7c1f903c41839251a69d38ba58fb4a70
      private void zombifiedPiglinSettings() {
          zombifiedPiglinRidable = getBoolean("mobs.zombified_piglin.ridable", zombifiedPiglinRidable);
          zombifiedPiglinRidableInWater = getBoolean("mobs.zombified_piglin.ridable-in-water", zombifiedPiglinRidableInWater);
-@@ -1905,5 +1932,8 @@ public class PurpurWorldConfig {
+@@ -1909,5 +1936,8 @@ public class PurpurWorldConfig {
          zombifiedPiglinMaxHealth = getDouble("mobs.zombified_piglin.attributes.max_health", zombifiedPiglinMaxHealth);
          zombifiedPiglinScale = Mth.clamp(getDouble("mobs.zombified_piglin.attributes.scale", zombifiedPiglinScale), 0.0625D, 16.0D);
          zombifiedPiglinSpawnReinforcements = getDouble("mobs.zombified_piglin.attributes.spawn_reinforcements", zombifiedPiglinSpawnReinforcements);

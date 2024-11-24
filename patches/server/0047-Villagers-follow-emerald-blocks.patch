@@ -4,6 +4,19 @@ Date: Fri, 29 Nov 2019 22:10:12 -0600
 Subject: [PATCH] Villagers follow emerald blocks
 
 
+diff --git a/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
+index 157fe8979c780300b6f72cbaa17729031e3b386d..0bb08af954d224a2b4404615bee720ac4bdbac55 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
++++ b/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
+@@ -161,7 +161,7 @@ public class DefaultAttributes {
+         .put(EntityType.VILLAGER, Villager.createAttributes().build())
+         .put(EntityType.VINDICATOR, Vindicator.createAttributes().build())
+         .put(EntityType.WARDEN, Warden.createAttributes().build())
+-        .put(EntityType.WANDERING_TRADER, Mob.createMobAttributes().build())
++        .put(EntityType.WANDERING_TRADER, net.minecraft.world.entity.npc.WanderingTrader.createAttributes().build()) // Purpur
+         .put(EntityType.WITCH, Witch.createAttributes().build())
+         .put(EntityType.WITHER, WitherBoss.createAttributes().build())
+         .put(EntityType.WITHER_SKELETON, AbstractSkeleton.createAttributes().build())
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java
 index 84ab90dd1fe693da71732533ccff940c1007e1b6..179fdf7b7f68db610925a9d7b88879289b1b98b8 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java
@@ -30,22 +43,55 @@ index 5f656fc726a1dc5f42657095a2f2b7cf85b92d7c..6c74cf1dea99b3b967b8c3d76f405f82
      // CraftBukkit start
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 37c26008486ffdf7f1d6bdfd0253067a1c6bf942..448f3cacd0c599eb1841b31b1c3bfc60ba3da7d3 100644
+index 37c26008486ffdf7f1d6bdfd0253067a1c6bf942..aad307477e687db1a7868cca6674b1226dfd5035 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -154,6 +154,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
-         this.getNavigation().setRequiredPathLength(48.0F);
-         this.setCanPickUpLoot(true);
-         this.setVillagerData(this.getVillagerData().setType(type).setProfession(VillagerProfession.NONE));
+@@ -175,6 +175,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     @Override
+     protected void registerGoals() {
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
 +        if (level().purpurConfig.villagerFollowEmeraldBlock) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.TemptGoal(this, 1.0D, TEMPT_ITEMS, false));
      }
+     // Purpur end
  
-     // Purpur start
+@@ -182,6 +183,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     public void initAttributes() {
+         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.villagerMaxHealth);
+         this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.villagerScale);
++        this.getAttribute(Attributes.TEMPT_RANGE).setBaseValue(this.level().purpurConfig.villagerTemptRange); // Purpur
+     }
+ 
+     @Override
+@@ -245,7 +247,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     }
+ 
+     public static AttributeSupplier.Builder createAttributes() {
+-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5D);
++        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.TEMPT_RANGE, 10.0D); // Purpur - add TEMPT_RANGE
+     }
+ 
+     public boolean assignProfessionWhenSpawned() {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index f741aca818bc983b034b3ac9864c1d71c714f9b4..c8f6a6fd0d954346e8651b83e05063e09b53f7f9 100644
+index f741aca818bc983b034b3ac9864c1d71c714f9b4..a821a7bc7de7458ceb8afdb61bde32f74534f012 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -114,6 +114,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -92,8 +92,15 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+     @Override
+     public void initAttributes() {
+         this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.wanderingTraderMaxHealth);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.TEMPT_RANGE).setBaseValue(this.level().purpurConfig.wanderingTraderTemptRange); // Purpur
+     }
+ 
++    // Purpur start
++    public static net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder createAttributes() {
++        return Mob.createMobAttributes().add(net.minecraft.world.entity.ai.attributes.Attributes.TEMPT_RANGE, 10.0D);
++    }
++    // Purpur end
++
+     @Override
+     protected void registerGoals() {
+         this.goalSelector.addGoal(0, new FloatGoal(this));
+@@ -114,6 +121,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
          this.goalSelector.addGoal(1, new PanicGoal(this, 0.5D));
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
@@ -54,38 +100,42 @@ index f741aca818bc983b034b3ac9864c1d71c714f9b4..c8f6a6fd0d954346e8651b83e05063e0
          this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 0.35D));
          this.goalSelector.addGoal(9, new InteractGoal(this, Player.class, 3.0F, 1.0F));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index df21a5f89b1c659bc0dfea8f42362ef09b368d81..228ad3c9186d7128430be0edcd4447b168206721 100644
+index df21a5f89b1c659bc0dfea8f42362ef09b368d81..a36fd98b7acaa8bf9107f5f1a7091437eb2ea829 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1575,6 +1575,7 @@ public class PurpurWorldConfig {
+@@ -1575,6 +1575,8 @@ public class PurpurWorldConfig {
      public boolean villagerControllable = true;
      public double villagerMaxHealth = 20.0D;
      public double villagerScale = 1.0D;
 +    public boolean villagerFollowEmeraldBlock = false;
++    public double villagerTemptRange = 10.0D;
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -1586,6 +1587,7 @@ public class PurpurWorldConfig {
+@@ -1586,6 +1588,8 @@ public class PurpurWorldConfig {
          }
          villagerMaxHealth = getDouble("mobs.villager.attributes.max_health", villagerMaxHealth);
          villagerScale = Mth.clamp(getDouble("mobs.villager.attributes.scale", villagerScale), 0.0625D, 16.0D);
 +        villagerFollowEmeraldBlock = getBoolean("mobs.villager.follow-emerald-blocks", villagerFollowEmeraldBlock);
++        villagerTemptRange = getDouble("mobs.villager.attributes.tempt_range", villagerTemptRange);
      }
  
      public boolean vindicatorRidable = false;
-@@ -1611,6 +1613,7 @@ public class PurpurWorldConfig {
+@@ -1611,6 +1615,8 @@ public class PurpurWorldConfig {
      public boolean wanderingTraderControllable = true;
      public double wanderingTraderMaxHealth = 20.0D;
      public double wanderingTraderScale = 1.0D;
 +    public boolean wanderingTraderFollowEmeraldBlock = false;
++    public double wanderingTraderTemptRange = 10.0D;
      private void wanderingTraderSettings() {
          wanderingTraderRidable = getBoolean("mobs.wandering_trader.ridable", wanderingTraderRidable);
          wanderingTraderRidableInWater = getBoolean("mobs.wandering_trader.ridable-in-water", wanderingTraderRidableInWater);
-@@ -1622,6 +1625,7 @@ public class PurpurWorldConfig {
+@@ -1622,6 +1628,8 @@ public class PurpurWorldConfig {
          }
          wanderingTraderMaxHealth = getDouble("mobs.wandering_trader.attributes.max_health", wanderingTraderMaxHealth);
          wanderingTraderScale = Mth.clamp(getDouble("mobs.wandering_trader.attributes.scale", wanderingTraderScale), 0.0625D, 16.0D);
 +        wanderingTraderFollowEmeraldBlock = getBoolean("mobs.wandering_trader.follow-emerald-blocks", wanderingTraderFollowEmeraldBlock);
++        wanderingTraderTemptRange = getDouble("mobs.wandering_trader.attributes.tempt_range", wanderingTraderTemptRange);
      }
  
      public boolean wardenRidable = false;

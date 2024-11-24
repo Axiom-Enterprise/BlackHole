@@ -36,10 +36,10 @@ index 3513b15f6622bfc134ecfcd9129f81a8acc2c601..6e70579a58a1bf906b176b81713e5531
                      } else {
                          DoorBlock blockdoor = (DoorBlock) iblockdata.getBlock();
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index 485a49bb13532177a949938d4b99c934518a0af1..dac073bf9626bd8198c912241d4ca36d90b8441c 100644
+index 5ffe9bf4e325570fef0b23d3fcb0b5d9afac4107..14577fb82069750d513c13ebb22c35d097feefd5 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -157,8 +157,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -164,8 +164,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
                  }
                  if (level().purpurConfig.wanderingTraderRidable && itemstack.isEmpty()) return tryRide(player, hand); // Purpur
                  if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur
@@ -82,7 +82,7 @@ index 077b99caf0ec0ee098786d23194d88e1dc4481ce..daf865c20cc193a12db0d98e3c0472ee
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index aa81bb0133900ce9fefc219b9a093c9cf6ca6216..fbf03f4111d1d7c49a6f4f630aa95299d9d91992 100644
+index 6ecbf56cf873f48d46aa7da869636c6ec313b00b..5653a9713454a99a862444194bd902de9e2cd77b 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -464,6 +464,16 @@ public class PurpurWorldConfig {

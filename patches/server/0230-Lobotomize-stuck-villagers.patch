@@ -5,7 +5,7 @@ Subject: [PATCH] Lobotomize stuck villagers
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index b1a0a11f8443a797146dbaf46b9830133f3a51e0..052a131d7222ac490b5c40e65c1f801a4299b4e9 100644
+index e9032364c78514e7a0a2aa162ba564dc0598a3c4..f787aec8bfa291447b3bca297239f44a9fe342a7 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,6 +141,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -17,7 +17,7 @@ index b1a0a11f8443a797146dbaf46b9830133f3a51e0..052a131d7222ac490b5c40e65c1f801a
  
      public Villager(EntityType<? extends Villager> entityType, Level world) {
          this(entityType, world, VillagerType.PLAINS);
-@@ -200,6 +202,48 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -201,6 +203,48 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          return this.level().purpurConfig.villagerAlwaysDropExp;
      }
  
@@ -66,7 +66,7 @@ index b1a0a11f8443a797146dbaf46b9830133f3a51e0..052a131d7222ac490b5c40e65c1f801a
      @Override
      public Brain<Villager> getBrain() {
          return (Brain<Villager>) super.getBrain(); // CraftBukkit - decompile error
-@@ -294,11 +338,19 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -295,11 +339,19 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          // Paper start - EAR 2
          this.customServerAiStep(world, false);
      }
@@ -104,10 +104,10 @@ index 8e895d6f84f7d84b219f2424909dd42e5f08dec4..53dcce0701d713c5dd097340a91b8be4
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 3be84a156379bbb529ffcbe78a6750fc9f356132..a46e3c0d5ef33f4ef39be237ab24e434dda8c570 100644
+index 97e8fc04a61f7c3844a74c99859c4f4b938b1810..d5dc045f2ca66af0f484fd9ed15bf12db02baeef 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2892,6 +2892,9 @@ public class PurpurWorldConfig {
+@@ -2893,6 +2893,9 @@ public class PurpurWorldConfig {
      public boolean villagerAllowTrading = true;
      public boolean villagerAlwaysDropExp = false;
      public int villagerMinimumDemand = 0;
@@ -117,7 +117,7 @@ index 3be84a156379bbb529ffcbe78a6750fc9f356132..a46e3c0d5ef33f4ef39be237ab24e434
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -2914,6 +2917,18 @@ public class PurpurWorldConfig {
+@@ -2916,6 +2919,18 @@ public class PurpurWorldConfig {
          villagerAllowTrading = getBoolean("mobs.villager.allow-trading", villagerAllowTrading);
          villagerAlwaysDropExp = getBoolean("mobs.villager.always-drop-exp", villagerAlwaysDropExp);
          villagerMinimumDemand = getInt("mobs.villager.minimum-demand", villagerMinimumDemand);

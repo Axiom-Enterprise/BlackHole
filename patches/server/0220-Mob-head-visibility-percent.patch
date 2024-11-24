@@ -5,7 +5,7 @@ Subject: [PATCH] Mob head visibility percent
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index fd18e01249d9b9958200ee16efaeeaf11360bafe..9790c3ad54ff28ccb85db224b799bbdb08a34ba5 100644
+index 58be94a164c3413dad4b3a7bb1a1544edb88e9ba..b4dd7d602dc062cc96aff048688fd808db0e4b12 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -1069,9 +1069,20 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -32,7 +32,7 @@ index fd18e01249d9b9958200ee16efaeeaf11360bafe..9790c3ad54ff28ccb85db224b799bbdb
              // Purpur start
              if (entity instanceof LivingEntity entityliving) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 212ae6988d67fac1354ebd6a8cb7cd252f261c2f..7863dda1663e2d6794e0c5fa6ee4fe1628c5afd3 100644
+index 72cc0f0164860e56ff90aeee3a0be6a9dd6f305d..670ace33d3016e94031517802ce9f5b746fe0930 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1379,6 +1379,7 @@ public class PurpurWorldConfig {
@@ -83,7 +83,7 @@ index 212ae6988d67fac1354ebd6a8cb7cd252f261c2f..7863dda1663e2d6794e0c5fa6ee4fe16
      }
  
      public boolean skeletonHorseRidable = false;
-@@ -3105,6 +3111,7 @@ public class PurpurWorldConfig {
+@@ -3109,6 +3115,7 @@ public class PurpurWorldConfig {
      public boolean zombieBypassMobGriefing = false;
      public boolean zombieTakeDamageFromWater = false;
      public boolean zombieAlwaysDropExp = false;
@@ -91,7 +91,7 @@ index 212ae6988d67fac1354ebd6a8cb7cd252f261c2f..7863dda1663e2d6794e0c5fa6ee4fe16
      private void zombieSettings() {
          zombieRidable = getBoolean("mobs.zombie.ridable", zombieRidable);
          zombieRidableInWater = getBoolean("mobs.zombie.ridable-in-water", zombieRidableInWater);
-@@ -3124,6 +3131,7 @@ public class PurpurWorldConfig {
+@@ -3128,6 +3135,7 @@ public class PurpurWorldConfig {
          zombieBypassMobGriefing = getBoolean("mobs.zombie.bypass-mob-griefing", zombieBypassMobGriefing);
          zombieTakeDamageFromWater = getBoolean("mobs.zombie.takes-damage-from-water", zombieTakeDamageFromWater);
          zombieAlwaysDropExp = getBoolean("mobs.zombie.always-drop-exp", zombieAlwaysDropExp);

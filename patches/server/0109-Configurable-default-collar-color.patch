@@ -26,7 +26,7 @@ index f79146925e99da08492e7b445006be003a56f340..8a89ea47d79065e85bb831578c6a1ab7
      @Override
      public Cat getBreedOffspring(ServerLevel world, AgeableMob entity) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 37687335041ae47725c6931e2c7d54c192e2de36..7343c5a81ddf7db1e9e434796489fd8a98b9a70c 100644
+index 34ca92be146bec3d2f6e46f473c3e68b0a97b168..89566a88a98af2e4ec2b062ed12d4828a32b576d 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 @@ -212,6 +212,12 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
@@ -43,7 +43,7 @@ index 37687335041ae47725c6931e2c7d54c192e2de36..7343c5a81ddf7db1e9e434796489fd8a
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new FloatGoal(this));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index f6a47daaf8f03d9f0cfc8a49e242e8c1dffe62f8..57a5631a139251ae23592c10b082ab738f5cbb0b 100644
+index c39156bd01e030b06ce1eff68808a97f0371a02c..434310452cb21a83fc6ed03047fc3ac1f897bf46 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -619,6 +619,7 @@ public class PurpurWorldConfig {
@@ -66,7 +66,7 @@ index f6a47daaf8f03d9f0cfc8a49e242e8c1dffe62f8..57a5631a139251ae23592c10b082ab73
      }
  
      public boolean caveSpiderRidable = false;
-@@ -2047,6 +2053,7 @@ public class PurpurWorldConfig {
+@@ -2051,6 +2057,7 @@ public class PurpurWorldConfig {
      public boolean wolfControllable = true;
      public double wolfMaxHealth = 8.0D;
      public double wolfScale = 1.0D;
@@ -74,7 +74,7 @@ index f6a47daaf8f03d9f0cfc8a49e242e8c1dffe62f8..57a5631a139251ae23592c10b082ab73
      public boolean wolfMilkCuresRabies = true;
      public double wolfNaturalRabid = 0.0D;
      public int wolfBreedingTicks = 6000;
-@@ -2061,6 +2068,11 @@ public class PurpurWorldConfig {
+@@ -2065,6 +2072,11 @@ public class PurpurWorldConfig {
          }
          wolfMaxHealth = getDouble("mobs.wolf.attributes.max_health", wolfMaxHealth);
          wolfScale = Mth.clamp(getDouble("mobs.wolf.attributes.scale", wolfScale), 0.0625D, 16.0D);

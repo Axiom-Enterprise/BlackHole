@@ -9,10 +9,10 @@ This patch adds a config option to allow the minimum demand to instead
 be configurable.
 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 8e519706b025579aad1b74be3b8c6c49146a64a2..b1a0a11f8443a797146dbaf46b9830133f3a51e0 100644
+index 0f79a5560a6bacde786a1eacbdcbe0d946e03674..e9032364c78514e7a0a2aa162ba564dc0598a3c4 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -539,7 +539,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -540,7 +540,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          while (iterator.hasNext()) {
              MerchantOffer merchantrecipe = (MerchantOffer) iterator.next();
  
@@ -40,10 +40,10 @@ index 0efc8d997b34302c3e0a5d7ec73a11a940dbeefe..af157881d440b34cfe79fbc9b03cc9ef
  
      public ItemStack assemble() {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 9882be8d2a0c235b61dabfd31d7680a934f3ce81..3be84a156379bbb529ffcbe78a6750fc9f356132 100644
+index ffd547eccd7356c29957a9621653ff04d5dc8b1b..97e8fc04a61f7c3844a74c99859c4f4b938b1810 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2891,6 +2891,7 @@ public class PurpurWorldConfig {
+@@ -2892,6 +2892,7 @@ public class PurpurWorldConfig {
      public boolean villagerTakeDamageFromWater = false;
      public boolean villagerAllowTrading = true;
      public boolean villagerAlwaysDropExp = false;
@@ -51,7 +51,7 @@ index 9882be8d2a0c235b61dabfd31d7680a934f3ce81..3be84a156379bbb529ffcbe78a6750fc
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -2912,6 +2913,7 @@ public class PurpurWorldConfig {
+@@ -2914,6 +2915,7 @@ public class PurpurWorldConfig {
          villagerTakeDamageFromWater = getBoolean("mobs.villager.takes-damage-from-water", villagerTakeDamageFromWater);
          villagerAllowTrading = getBoolean("mobs.villager.allow-trading", villagerAllowTrading);
          villagerAlwaysDropExp = getBoolean("mobs.villager.always-drop-exp", villagerAlwaysDropExp);

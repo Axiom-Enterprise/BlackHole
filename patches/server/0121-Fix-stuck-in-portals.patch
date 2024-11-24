@@ -39,7 +39,7 @@ index 9d8c26a59b23e8c3cf82168b3716280cfb380f43..d61840da8edad607b6bb3e0b6e168417
              } else {
                  this.portalProcess = new PortalProcessor(portal, pos.immutable());
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c51747bf291561359b028500652e556f677a0aa0..0347b0d83a9824a355bdcaaaf36f98fd6828effd 100644
+index 0e6c36fafdf5f12d80340daf1c967f9700ec4ad7..2a0a5cd3952db6e519c3d9cda3310eb06f347451 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -327,6 +327,7 @@ public class PurpurWorldConfig {

@@ -44,10 +44,10 @@ index de87483600e55d88176fe25db621bbd3e464729f..287ba483614e79e78022e703ef891f59
 +    // Purpur end - Shears can defuse TNT
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index be88a9c0847349d3460d1e7b851c2e9d673ff093..7b78365741d0a6bcf6381debdf3f2e5896b4c679 100644
+index cdb67f9e73865d0cefa9ce34e43a7d1daa642f89..bb434b12c7400e6129addd5d6672ea9847c00c79 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -3397,4 +3397,11 @@ public class PurpurWorldConfig {
+@@ -3401,4 +3401,11 @@ public class PurpurWorldConfig {
          cauldronDripstoneWaterFillChance = (float) getDouble("blocks.cauldron.fill-chances.dripstone-water", cauldronDripstoneWaterFillChance);
          cauldronDripstoneLavaFillChance = (float) getDouble("blocks.cauldron.fill-chances.dripstone-lava", cauldronDripstoneLavaFillChance);
      }

@@ -29,7 +29,7 @@ index 1f9d7c85f2ee5f6653e11457e19c03e6fa0419d9..8ecb72f6cd12d1e12f5ae9b240ccd6d9
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index d4ba95503b26274c768eca9a4c740b9a36387916..f63907aa140ba2c38c8804b49a9e4539d59d1a8f 100644
+index a4a913b089a4867cbfe6786f1eaa9682dde9ca98..12c74e91648779ec12d1ffd31ce2da478b970640 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -966,6 +966,7 @@ public class PurpurWorldConfig {
@@ -48,7 +48,7 @@ index d4ba95503b26274c768eca9a4c740b9a36387916..f63907aa140ba2c38c8804b49a9e4539
      }
  
      public boolean endermanRidable = false;
-@@ -2266,6 +2268,7 @@ public class PurpurWorldConfig {
+@@ -2270,6 +2272,7 @@ public class PurpurWorldConfig {
      public int witherHealthRegenDelay = 20;
      public boolean witherBypassMobGriefing = false;
      public boolean witherTakeDamageFromWater = false;
@@ -56,7 +56,7 @@ index d4ba95503b26274c768eca9a4c740b9a36387916..f63907aa140ba2c38c8804b49a9e4539
      private void witherSettings() {
          witherRidable = getBoolean("mobs.wither.ridable", witherRidable);
          witherRidableInWater = getBoolean("mobs.wither.ridable-in-water", witherRidableInWater);
-@@ -2286,6 +2289,7 @@ public class PurpurWorldConfig {
+@@ -2290,6 +2293,7 @@ public class PurpurWorldConfig {
          witherHealthRegenDelay = getInt("mobs.wither.health-regen-delay", witherHealthRegenDelay);
          witherBypassMobGriefing = getBoolean("mobs.wither.bypass-mob-griefing", witherBypassMobGriefing);
          witherTakeDamageFromWater = getBoolean("mobs.wither.takes-damage-from-water", witherTakeDamageFromWater);

@@ -376,7 +376,7 @@ index bae4931fff0db56aa125248e17b29f7c2557221f..4eb0f7a9cf6b12c02d0bd42980ae302d
      }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index afd52da926501e8a99b7d889e8fdbb8c5d20f5cc..9b0bdd1d70f7c50e81d273612919e7ccf7721df8 100644
+index 44db4f1f86758535300cb88941aa466990f55f92..fbbf7153606fc3ccad12ca4a164436ee17184288 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -121,6 +121,9 @@ public class PurpurWorldConfig {
@@ -628,7 +628,7 @@ index afd52da926501e8a99b7d889e8fdbb8c5d20f5cc..9b0bdd1d70f7c50e81d273612919e7cc
      }
  
      public boolean snifferRidable = false;
-@@ -1936,6 +1975,7 @@ public class PurpurWorldConfig {
+@@ -1937,6 +1976,7 @@ public class PurpurWorldConfig {
      public int villagerBreedingTicks = 6000;
      public boolean villagerClericsFarmWarts = false;
      public boolean villagerClericFarmersThrowWarts = true;
@@ -636,7 +636,7 @@ index afd52da926501e8a99b7d889e8fdbb8c5d20f5cc..9b0bdd1d70f7c50e81d273612919e7cc
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -1953,6 +1993,7 @@ public class PurpurWorldConfig {
+@@ -1955,6 +1995,7 @@ public class PurpurWorldConfig {
          villagerBreedingTicks = getInt("mobs.villager.breeding-delay-ticks", villagerBreedingTicks);
          villagerClericsFarmWarts = getBoolean("mobs.villager.clerics-farm-warts", villagerClericsFarmWarts);
          villagerClericFarmersThrowWarts = getBoolean("mobs.villager.cleric-wart-farmers-throw-warts-at-villagers", villagerClericFarmersThrowWarts);
@@ -644,7 +644,7 @@ index afd52da926501e8a99b7d889e8fdbb8c5d20f5cc..9b0bdd1d70f7c50e81d273612919e7cc
      }
  
      public boolean vindicatorRidable = false;
-@@ -2032,6 +2073,7 @@ public class PurpurWorldConfig {
+@@ -2036,6 +2077,7 @@ public class PurpurWorldConfig {
      public double witherScale = 1.0D;
      public float witherHealthRegenAmount = 1.0f;
      public int witherHealthRegenDelay = 20;
@@ -652,7 +652,7 @@ index afd52da926501e8a99b7d889e8fdbb8c5d20f5cc..9b0bdd1d70f7c50e81d273612919e7cc
      private void witherSettings() {
          witherRidable = getBoolean("mobs.wither.ridable", witherRidable);
          witherRidableInWater = getBoolean("mobs.wither.ridable-in-water", witherRidableInWater);
-@@ -2050,6 +2092,7 @@ public class PurpurWorldConfig {
+@@ -2054,6 +2096,7 @@ public class PurpurWorldConfig {
          witherScale = Mth.clamp(getDouble("mobs.wither.attributes.scale", witherScale), 0.0625D, 16.0D);
          witherHealthRegenAmount = (float) getDouble("mobs.wither.health-regen-amount", witherHealthRegenAmount);
          witherHealthRegenDelay = getInt("mobs.wither.health-regen-delay", witherHealthRegenDelay);
@@ -660,7 +660,7 @@ index afd52da926501e8a99b7d889e8fdbb8c5d20f5cc..9b0bdd1d70f7c50e81d273612919e7cc
      }
  
      public boolean witherSkeletonRidable = false;
-@@ -2128,6 +2171,7 @@ public class PurpurWorldConfig {
+@@ -2132,6 +2175,7 @@ public class PurpurWorldConfig {
      public double zombieJockeyChance = 0.05D;
      public boolean zombieJockeyTryExistingChickens = true;
      public boolean zombieAggressiveTowardsVillagerWhenLagging = true;
@@ -668,7 +668,7 @@ index afd52da926501e8a99b7d889e8fdbb8c5d20f5cc..9b0bdd1d70f7c50e81d273612919e7cc
      private void zombieSettings() {
          zombieRidable = getBoolean("mobs.zombie.ridable", zombieRidable);
          zombieRidableInWater = getBoolean("mobs.zombie.ridable-in-water", zombieRidableInWater);
-@@ -2144,6 +2188,7 @@ public class PurpurWorldConfig {
+@@ -2148,6 +2192,7 @@ public class PurpurWorldConfig {
          zombieJockeyChance = getDouble("mobs.zombie.jockey.chance", zombieJockeyChance);
          zombieJockeyTryExistingChickens = getBoolean("mobs.zombie.jockey.try-existing-chickens", zombieJockeyTryExistingChickens);
          zombieAggressiveTowardsVillagerWhenLagging = getBoolean("mobs.zombie.aggressive-towards-villager-when-lagging", zombieAggressiveTowardsVillagerWhenLagging);

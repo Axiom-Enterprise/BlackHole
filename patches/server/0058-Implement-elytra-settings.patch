@@ -90,20 +90,22 @@ index 239bd6e3d756dc4ecab6ca639fa84ccbf89418a7..dcb656be3d37f29bdbe7d25ace05c6dd
              this.shrink(1);
              breakCallback.accept(item);
 diff --git a/src/main/java/net/minecraft/world/item/TridentItem.java b/src/main/java/net/minecraft/world/item/TridentItem.java
-index 8b9a93ef71164cce8a616735b71d96d37e83b1a8..24b97c8e2758e4a991dbbbf5276580e1fe027439 100644
+index 8b9a93ef71164cce8a616735b71d96d37e83b1a8..5133443911f932e8f6b5d3ca8baccecfd6f81c00 100644
 --- a/src/main/java/net/minecraft/world/item/TridentItem.java
 +++ b/src/main/java/net/minecraft/world/item/TridentItem.java
-@@ -132,6 +132,16 @@ public class TridentItem extends Item implements ProjectileItem {
+@@ -132,6 +132,18 @@ public class TridentItem extends Item implements ProjectileItem {
                          f4 *= f / f6;
                          f5 *= f / f6;
                          org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerRiptideEvent(entityhuman, stack, f3, f4, f5); // CraftBukkit
 +
 +                        // Purpur start
 +                        List<EquipmentSlot> list = EquipmentSlot.VALUES.stream().filter((enumitemslot) -> LivingEntity.canGlideUsing(entityhuman.getItemBySlot(enumitemslot), enumitemslot)).toList();
-+                        EquipmentSlot enumitemslot = net.minecraft.Util.getRandom(list, entityhuman.random);
-+                        ItemStack glideItem = entityhuman.getItemBySlot(enumitemslot);
-+                        if (glideItem.has(net.minecraft.core.component.DataComponents.GLIDER) && world.purpurConfig.elytraDamagePerTridentBoost > 0) {
-+                            glideItem.hurtAndBreak(world.purpurConfig.elytraDamagePerTridentBoost, entityhuman, enumitemslot);
++                        if (!list.isEmpty()) {
++                            EquipmentSlot enumitemslot = net.minecraft.Util.getRandom(list, entityhuman.random);
++                            ItemStack glideItem = entityhuman.getItemBySlot(enumitemslot);
++                            if (glideItem.has(net.minecraft.core.component.DataComponents.GLIDER) && world.purpurConfig.elytraDamagePerTridentBoost > 0) {
++                                glideItem.hurtAndBreak(world.purpurConfig.elytraDamagePerTridentBoost, entityhuman, enumitemslot);
++                            }
 +                        }
 +                        // Purpur end
 +

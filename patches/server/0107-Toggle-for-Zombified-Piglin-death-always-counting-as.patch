@@ -35,10 +35,10 @@ index 650f9e1ca3a5ddec5123133c9604f33140e948a8..cb47b15d197b1167dcbac1b989903bbf
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 35341a19536fbc1456e7a81d6d768a2d7abfae9c..a68eacc7e5c6a16e4c7f3ab084c097b02294616e 100644
+index 53a740b2d85afc1fc09f91037aaff8b7e1caf5ea..09bf59c95f57f5beb718e74d99a6399317cf1222 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2176,6 +2176,7 @@ public class PurpurWorldConfig {
+@@ -2189,6 +2189,7 @@ public class PurpurWorldConfig {
      public boolean zombifiedPiglinJockeyOnlyBaby = true;
      public double zombifiedPiglinJockeyChance = 0.05D;
      public boolean zombifiedPiglinJockeyTryExistingChickens = true;
@@ -46,7 +46,7 @@ index 35341a19536fbc1456e7a81d6d768a2d7abfae9c..a68eacc7e5c6a16e4c7f3ab084c097b0
      private void zombifiedPiglinSettings() {
          zombifiedPiglinRidable = getBoolean("mobs.zombified_piglin.ridable", zombifiedPiglinRidable);
          zombifiedPiglinRidableInWater = getBoolean("mobs.zombified_piglin.ridable-in-water", zombifiedPiglinRidableInWater);
-@@ -2191,5 +2192,6 @@ public class PurpurWorldConfig {
+@@ -2204,5 +2205,6 @@ public class PurpurWorldConfig {
          zombifiedPiglinJockeyOnlyBaby = getBoolean("mobs.zombified_piglin.jockey.only-babies", zombifiedPiglinJockeyOnlyBaby);
          zombifiedPiglinJockeyChance = getDouble("mobs.zombified_piglin.jockey.chance", zombifiedPiglinJockeyChance);
          zombifiedPiglinJockeyTryExistingChickens = getBoolean("mobs.zombified_piglin.jockey.try-existing-chickens", zombifiedPiglinJockeyTryExistingChickens);

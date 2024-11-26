@@ -6,7 +6,7 @@ Subject: [PATCH] option to make ravagers afraid of rabbits
 https://github.com/PurpurMC/Purpur/discussions/713
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Ravager.java b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
-index 06aa58b0e036ce4e9615365d03060eb9d9a518b7..487f21c6e6ffc0dc9c0733241a8ded8c73a5ec8f 100644
+index 1c8cb19a8b25593d16518006247bdf0e71e16ab1..98c1934b4895a86cd8748edf906aaa721a87a123 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Ravager.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
 @@ -122,6 +122,7 @@ public class Ravager extends Raider {
@@ -18,10 +18,10 @@ index 06aa58b0e036ce4e9615365d03060eb9d9a518b7..487f21c6e6ffc0dc9c0733241a8ded8c
          this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.4D));
          this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index e10c7273130d3c4cf5e42b71d78df2621b1bab83..d39a0d455f10189054ebc894c55188c5cbc000d2 100644
+index e863b5cc35bbef332f430b6a7eaab53996b2d574..b7743b7b37293fd458b56f5e17359d2383719c90 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2472,6 +2472,7 @@ public class PurpurWorldConfig {
+@@ -2485,6 +2485,7 @@ public class PurpurWorldConfig {
      public boolean ravagerTakeDamageFromWater = false;
      public List<Block> ravagerGriefableBlocks = new ArrayList<>();
      public boolean ravagerAlwaysDropExp = false;
@@ -29,7 +29,7 @@ index e10c7273130d3c4cf5e42b71d78df2621b1bab83..d39a0d455f10189054ebc894c55188c5
      private void ravagerSettings() {
          ravagerRidable = getBoolean("mobs.ravager.ridable", ravagerRidable);
          ravagerRidableInWater = getBoolean("mobs.ravager.ridable-in-water", ravagerRidableInWater);
-@@ -2503,6 +2504,7 @@ public class PurpurWorldConfig {
+@@ -2516,6 +2517,7 @@ public class PurpurWorldConfig {
              }
          });
          ravagerAlwaysDropExp = getBoolean("mobs.ravager.always-drop-exp", ravagerAlwaysDropExp);

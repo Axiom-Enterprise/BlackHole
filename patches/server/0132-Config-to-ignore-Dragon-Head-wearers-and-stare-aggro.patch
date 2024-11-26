@@ -7,7 +7,7 @@ Prevents Enderman from becoming aggresive towards players that are wearing a Dra
 Adds functionality to a useless item!
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index a3cf68f3a43fb525112eaa669f2766b562bda535..737c3367faee2286984c8e7d161b128d7b6632a5 100644
+index 7eb57c02515045dbc569c6b1da412c9fb398bd28..6f3ccd2d437bacf7a7e828b62b51533eebc82b02 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 @@ -260,7 +260,7 @@ public class EnderMan extends Monster implements NeutralMob {
@@ -20,10 +20,10 @@ index a3cf68f3a43fb525112eaa669f2766b562bda535..737c3367faee2286984c8e7d161b128d
          event.setCancelled(!shouldAttack);
          return event.callEvent();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 27d10afc896600b0e4f3a696367d66821eddc033..55b3b2c781215c1c6e3caab72fa7e31706a046d4 100644
+index 6e199b1948fa7f4ba79fe21586aac94eabe189d7..a5bf37a0e9e5b818b1213bfe5e54bd3e4f08644d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1019,6 +1019,7 @@ public class PurpurWorldConfig {
+@@ -1032,6 +1032,7 @@ public class PurpurWorldConfig {
      public boolean endermanTakeDamageFromWater = true;
      public boolean endermanAggroEndermites = true;
      public boolean endermanAggroEndermitesOnlyIfPlayerSpawned = false;
@@ -31,7 +31,7 @@ index 27d10afc896600b0e4f3a696367d66821eddc033..55b3b2c781215c1c6e3caab72fa7e317
      private void endermanSettings() {
          endermanRidable = getBoolean("mobs.enderman.ridable", endermanRidable);
          endermanRidableInWater = getBoolean("mobs.enderman.ridable-in-water", endermanRidableInWater);
-@@ -1040,6 +1041,7 @@ public class PurpurWorldConfig {
+@@ -1053,6 +1054,7 @@ public class PurpurWorldConfig {
          endermanTakeDamageFromWater = getBoolean("mobs.enderman.takes-damage-from-water", endermanTakeDamageFromWater);
          endermanAggroEndermites = getBoolean("mobs.enderman.aggressive-towards-endermites", endermanAggroEndermites);
          endermanAggroEndermitesOnlyIfPlayerSpawned = getBoolean("mobs.enderman.aggressive-towards-endermites-only-spawned-by-player-thrown-ender-pearls", endermanAggroEndermitesOnlyIfPlayerSpawned);

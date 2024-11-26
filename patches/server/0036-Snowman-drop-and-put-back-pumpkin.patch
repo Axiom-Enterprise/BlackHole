@@ -24,10 +24,10 @@ index 607c6c5fa38892d8c1d1f9fffc9ccc8617d2140d..bfdb0c52db44e7cc4f37fd42a22c8dae
              return tryRide(player, hand); // Purpur
          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b5f30231f2b163271e677eaba38154b0e5cfa7ed..7c5b7e7df07117d7e6c3a1fdba8d0576d17f338f 100644
+index 419ebb012056d131d6d1b10c8bd72511a1c4df74..1fa34a6517b4b834354234471f9ed3bcaaf1ee03 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1298,6 +1298,7 @@ public class PurpurWorldConfig {
+@@ -1311,6 +1311,7 @@ public class PurpurWorldConfig {
      public boolean snowGolemLeaveTrailWhenRidden = false;
      public double snowGolemMaxHealth = 4.0D;
      public double snowGolemScale = 1.0D;
@@ -35,7 +35,7 @@ index b5f30231f2b163271e677eaba38154b0e5cfa7ed..7c5b7e7df07117d7e6c3a1fdba8d0576
      private void snowGolemSettings() {
          snowGolemRidable = getBoolean("mobs.snow_golem.ridable", snowGolemRidable);
          snowGolemRidableInWater = getBoolean("mobs.snow_golem.ridable-in-water", snowGolemRidableInWater);
-@@ -1310,6 +1311,7 @@ public class PurpurWorldConfig {
+@@ -1323,6 +1324,7 @@ public class PurpurWorldConfig {
          }
          snowGolemMaxHealth = getDouble("mobs.snow_golem.attributes.max_health", snowGolemMaxHealth);
          snowGolemScale = Mth.clamp(getDouble("mobs.snow_golem.attributes.scale", snowGolemScale), 0.0625D, 16.0D);

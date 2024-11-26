@@ -538,7 +538,7 @@ index 08c4a32b1195820eb574cdf4a499107565a551d6..0220fb517d99e8c9629d191eb554799a
      public boolean canBeLeashed() {
          return true;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc808cf6477 100644
+index 6805a2f2803bb4e859afba5369308dd4d2ac5165..e363a93bdfcef7408ecdd5618b63c345ab9525b4 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -463,23 +463,27 @@ public class PurpurWorldConfig {
@@ -648,8 +648,8 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
 +        cowBreedingTicks = getInt("mobs.cow.breeding-delay-ticks", cowBreedingTicks);
      }
  
-     public boolean creeperRidable = false;
-@@ -737,6 +751,7 @@ public class PurpurWorldConfig {
+     public boolean creakingRidable = false;
+@@ -750,6 +764,7 @@ public class PurpurWorldConfig {
      public double donkeyJumpStrengthMax = 0.5D;
      public double donkeyMovementSpeedMin = 0.175D;
      public double donkeyMovementSpeedMax = 0.175D;
@@ -657,7 +657,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void donkeySettings() {
          donkeyRidableInWater = getBoolean("mobs.donkey.ridable-in-water", donkeyRidableInWater);
          if (PurpurConfig.version < 10) {
-@@ -752,6 +767,7 @@ public class PurpurWorldConfig {
+@@ -765,6 +780,7 @@ public class PurpurWorldConfig {
          donkeyJumpStrengthMax = getDouble("mobs.donkey.attributes.jump_strength.max", donkeyJumpStrengthMax);
          donkeyMovementSpeedMin = getDouble("mobs.donkey.attributes.movement_speed.min", donkeyMovementSpeedMin);
          donkeyMovementSpeedMax = getDouble("mobs.donkey.attributes.movement_speed.max", donkeyMovementSpeedMax);
@@ -665,7 +665,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean drownedRidable = false;
-@@ -882,6 +898,7 @@ public class PurpurWorldConfig {
+@@ -895,6 +911,7 @@ public class PurpurWorldConfig {
      public double foxMaxHealth = 10.0D;
      public double foxScale = 1.0D;
      public boolean foxTypeChangesWithTulips = false;
@@ -673,7 +673,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void foxSettings() {
          foxRidable = getBoolean("mobs.fox.ridable", foxRidable);
          foxRidableInWater = getBoolean("mobs.fox.ridable-in-water", foxRidableInWater);
-@@ -894,17 +911,20 @@ public class PurpurWorldConfig {
+@@ -907,17 +924,20 @@ public class PurpurWorldConfig {
          foxMaxHealth = getDouble("mobs.fox.attributes.max_health", foxMaxHealth);
          foxScale = Mth.clamp(getDouble("mobs.fox.attributes.scale", foxScale), 0.0625D, 16.0D);
          foxTypeChangesWithTulips = getBoolean("mobs.fox.tulips-change-type", foxTypeChangesWithTulips);
@@ -694,7 +694,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean ghastRidable = false;
-@@ -979,12 +999,14 @@ public class PurpurWorldConfig {
+@@ -992,12 +1012,14 @@ public class PurpurWorldConfig {
      public boolean goatControllable = true;
      public double goatMaxHealth = 10.0D;
      public double goatScale = 1.0D;
@@ -709,7 +709,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean guardianRidable = false;
-@@ -1008,6 +1030,7 @@ public class PurpurWorldConfig {
+@@ -1021,6 +1043,7 @@ public class PurpurWorldConfig {
      public boolean hoglinControllable = true;
      public double hoglinMaxHealth = 40.0D;
      public double hoglinScale = 1.0D;
@@ -717,7 +717,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void hoglinSettings() {
          hoglinRidable = getBoolean("mobs.hoglin.ridable", hoglinRidable);
          hoglinRidableInWater = getBoolean("mobs.hoglin.ridable-in-water", hoglinRidableInWater);
-@@ -1019,6 +1042,7 @@ public class PurpurWorldConfig {
+@@ -1032,6 +1055,7 @@ public class PurpurWorldConfig {
          }
          hoglinMaxHealth = getDouble("mobs.hoglin.attributes.max_health", hoglinMaxHealth);
          hoglinScale = Mth.clamp(getDouble("mobs.hoglin.attributes.scale", hoglinScale), 0.0625D, 16.0D);
@@ -725,7 +725,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean horseRidableInWater = false;
-@@ -1028,6 +1052,7 @@ public class PurpurWorldConfig {
+@@ -1041,6 +1065,7 @@ public class PurpurWorldConfig {
      public double horseJumpStrengthMax = 1.0D;
      public double horseMovementSpeedMin = 0.1125D;
      public double horseMovementSpeedMax = 0.3375D;
@@ -733,7 +733,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void horseSettings() {
          horseRidableInWater = getBoolean("mobs.horse.ridable-in-water", horseRidableInWater);
          if (PurpurConfig.version < 10) {
-@@ -1043,6 +1068,7 @@ public class PurpurWorldConfig {
+@@ -1056,6 +1081,7 @@ public class PurpurWorldConfig {
          horseJumpStrengthMax = getDouble("mobs.horse.attributes.jump_strength.max", horseJumpStrengthMax);
          horseMovementSpeedMin = getDouble("mobs.horse.attributes.movement_speed.min", horseMovementSpeedMin);
          horseMovementSpeedMax = getDouble("mobs.horse.attributes.movement_speed.max", horseMovementSpeedMax);
@@ -741,7 +741,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean huskRidable = false;
-@@ -1126,6 +1152,7 @@ public class PurpurWorldConfig {
+@@ -1139,6 +1165,7 @@ public class PurpurWorldConfig {
      public double llamaJumpStrengthMax = 0.5D;
      public double llamaMovementSpeedMin = 0.175D;
      public double llamaMovementSpeedMax = 0.175D;
@@ -749,7 +749,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void llamaSettings() {
          llamaRidable = getBoolean("mobs.llama.ridable", llamaRidable);
          llamaRidableInWater = getBoolean("mobs.llama.ridable-in-water", llamaRidableInWater);
-@@ -1143,6 +1170,7 @@ public class PurpurWorldConfig {
+@@ -1156,6 +1183,7 @@ public class PurpurWorldConfig {
          llamaJumpStrengthMax = getDouble("mobs.llama.attributes.jump_strength.max", llamaJumpStrengthMax);
          llamaMovementSpeedMin = getDouble("mobs.llama.attributes.movement_speed.min", llamaMovementSpeedMin);
          llamaMovementSpeedMax = getDouble("mobs.llama.attributes.movement_speed.max", llamaMovementSpeedMax);
@@ -757,7 +757,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean magmaCubeRidable = false;
-@@ -1172,6 +1200,7 @@ public class PurpurWorldConfig {
+@@ -1185,6 +1213,7 @@ public class PurpurWorldConfig {
      public boolean mooshroomControllable = true;
      public double mooshroomMaxHealth = 10.0D;
      public double mooshroomScale = 1.0D;
@@ -765,7 +765,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void mooshroomSettings() {
          mooshroomRidable = getBoolean("mobs.mooshroom.ridable", mooshroomRidable);
          mooshroomRidableInWater = getBoolean("mobs.mooshroom.ridable-in-water", mooshroomRidableInWater);
-@@ -1183,6 +1212,7 @@ public class PurpurWorldConfig {
+@@ -1196,6 +1225,7 @@ public class PurpurWorldConfig {
          }
          mooshroomMaxHealth = getDouble("mobs.mooshroom.attributes.max_health", mooshroomMaxHealth);
          mooshroomScale = Mth.clamp(getDouble("mobs.mooshroom.attributes.scale", mooshroomScale), 0.0625D, 16.0D);
@@ -773,7 +773,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean muleRidableInWater = false;
-@@ -1192,6 +1222,7 @@ public class PurpurWorldConfig {
+@@ -1205,6 +1235,7 @@ public class PurpurWorldConfig {
      public double muleJumpStrengthMax = 0.5D;
      public double muleMovementSpeedMin = 0.175D;
      public double muleMovementSpeedMax = 0.175D;
@@ -781,7 +781,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void muleSettings() {
          muleRidableInWater = getBoolean("mobs.mule.ridable-in-water", muleRidableInWater);
          if (PurpurConfig.version < 10) {
-@@ -1207,6 +1238,7 @@ public class PurpurWorldConfig {
+@@ -1220,6 +1251,7 @@ public class PurpurWorldConfig {
          muleJumpStrengthMax = getDouble("mobs.mule.attributes.jump_strength.max", muleJumpStrengthMax);
          muleMovementSpeedMin = getDouble("mobs.mule.attributes.movement_speed.min", muleMovementSpeedMin);
          muleMovementSpeedMax = getDouble("mobs.mule.attributes.movement_speed.max", muleMovementSpeedMax);
@@ -789,7 +789,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean ocelotRidable = false;
-@@ -1214,6 +1246,7 @@ public class PurpurWorldConfig {
+@@ -1227,6 +1259,7 @@ public class PurpurWorldConfig {
      public boolean ocelotControllable = true;
      public double ocelotMaxHealth = 10.0D;
      public double ocelotScale = 1.0D;
@@ -797,7 +797,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void ocelotSettings() {
          ocelotRidable = getBoolean("mobs.ocelot.ridable", ocelotRidable);
          ocelotRidableInWater = getBoolean("mobs.ocelot.ridable-in-water", ocelotRidableInWater);
-@@ -1225,6 +1258,7 @@ public class PurpurWorldConfig {
+@@ -1238,6 +1271,7 @@ public class PurpurWorldConfig {
          }
          ocelotMaxHealth = getDouble("mobs.ocelot.attributes.max_health", ocelotMaxHealth);
          ocelotScale = Mth.clamp(getDouble("mobs.ocelot.attributes.scale", ocelotScale), 0.0625D, 16.0D);
@@ -805,7 +805,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean pandaRidable = false;
-@@ -1232,6 +1266,7 @@ public class PurpurWorldConfig {
+@@ -1245,6 +1279,7 @@ public class PurpurWorldConfig {
      public boolean pandaControllable = true;
      public double pandaMaxHealth = 20.0D;
      public double pandaScale = 1.0D;
@@ -813,7 +813,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void pandaSettings() {
          pandaRidable = getBoolean("mobs.panda.ridable", pandaRidable);
          pandaRidableInWater = getBoolean("mobs.panda.ridable-in-water", pandaRidableInWater);
-@@ -1243,6 +1278,7 @@ public class PurpurWorldConfig {
+@@ -1256,6 +1291,7 @@ public class PurpurWorldConfig {
          }
          pandaMaxHealth = getDouble("mobs.panda.attributes.max_health", pandaMaxHealth);
          pandaScale = Mth.clamp(getDouble("mobs.panda.attributes.scale", pandaScale), 0.0625D, 16.0D);
@@ -821,7 +821,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean parrotRidable = false;
-@@ -1329,6 +1365,7 @@ public class PurpurWorldConfig {
+@@ -1342,6 +1378,7 @@ public class PurpurWorldConfig {
      public double pigMaxHealth = 10.0D;
      public double pigScale = 1.0D;
      public boolean pigGiveSaddleBack = false;
@@ -829,7 +829,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void pigSettings() {
          pigRidable = getBoolean("mobs.pig.ridable", pigRidable);
          pigRidableInWater = getBoolean("mobs.pig.ridable-in-water", pigRidableInWater);
-@@ -1341,6 +1378,7 @@ public class PurpurWorldConfig {
+@@ -1354,6 +1391,7 @@ public class PurpurWorldConfig {
          pigMaxHealth = getDouble("mobs.pig.attributes.max_health", pigMaxHealth);
          pigScale = Mth.clamp(getDouble("mobs.pig.attributes.scale", pigScale), 0.0625D, 16.0D);
          pigGiveSaddleBack = getBoolean("mobs.pig.give-saddle-back", pigGiveSaddleBack);
@@ -837,7 +837,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean piglinRidable = false;
-@@ -1404,6 +1442,7 @@ public class PurpurWorldConfig {
+@@ -1417,6 +1455,7 @@ public class PurpurWorldConfig {
      public double polarBearScale = 1.0D;
      public String polarBearBreedableItemString = "";
      public Item polarBearBreedableItem = null;
@@ -845,7 +845,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void polarBearSettings() {
          polarBearRidable = getBoolean("mobs.polar_bear.ridable", polarBearRidable);
          polarBearRidableInWater = getBoolean("mobs.polar_bear.ridable-in-water", polarBearRidableInWater);
-@@ -1418,6 +1457,7 @@ public class PurpurWorldConfig {
+@@ -1431,6 +1470,7 @@ public class PurpurWorldConfig {
          polarBearBreedableItemString = getString("mobs.polar_bear.breedable-item", polarBearBreedableItemString);
          Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(polarBearBreedableItemString));
          if (item != Items.AIR) polarBearBreedableItem = item;
@@ -853,7 +853,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean pufferfishRidable = false;
-@@ -1443,6 +1483,7 @@ public class PurpurWorldConfig {
+@@ -1456,6 +1496,7 @@ public class PurpurWorldConfig {
      public double rabbitScale = 1.0D;
      public double rabbitNaturalToast = 0.0D;
      public double rabbitNaturalKiller = 0.0D;
@@ -861,7 +861,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void rabbitSettings() {
          rabbitRidable = getBoolean("mobs.rabbit.ridable", rabbitRidable);
          rabbitRidableInWater = getBoolean("mobs.rabbit.ridable-in-water", rabbitRidableInWater);
-@@ -1456,6 +1497,7 @@ public class PurpurWorldConfig {
+@@ -1469,6 +1510,7 @@ public class PurpurWorldConfig {
          rabbitScale = Mth.clamp(getDouble("mobs.rabbit.attributes.scale", rabbitScale), 0.0625D, 16.0D);
          rabbitNaturalToast = getDouble("mobs.rabbit.spawn-toast-chance", rabbitNaturalToast);
          rabbitNaturalKiller = getDouble("mobs.rabbit.spawn-killer-rabbit-chance", rabbitNaturalKiller);
@@ -869,7 +869,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean ravagerRidable = false;
-@@ -1497,6 +1539,7 @@ public class PurpurWorldConfig {
+@@ -1510,6 +1552,7 @@ public class PurpurWorldConfig {
      public boolean sheepControllable = true;
      public double sheepMaxHealth = 8.0D;
      public double sheepScale = 1.0D;
@@ -877,7 +877,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void sheepSettings() {
          sheepRidable = getBoolean("mobs.sheep.ridable", sheepRidable);
          sheepRidableInWater = getBoolean("mobs.sheep.ridable-in-water", sheepRidableInWater);
-@@ -1508,6 +1551,7 @@ public class PurpurWorldConfig {
+@@ -1521,6 +1564,7 @@ public class PurpurWorldConfig {
          }
          sheepMaxHealth = getDouble("mobs.sheep.attributes.max_health", sheepMaxHealth);
          sheepScale = Mth.clamp(getDouble("mobs.sheep.attributes.scale", sheepScale), 0.0625D, 16.0D);
@@ -885,7 +885,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean shulkerRidable = false;
-@@ -1644,12 +1688,14 @@ public class PurpurWorldConfig {
+@@ -1657,12 +1701,14 @@ public class PurpurWorldConfig {
      public boolean snifferControllable = true;
      public double snifferMaxHealth = 14.0D;
      public double snifferScale = 1.0D;
@@ -900,7 +900,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean squidRidable = false;
-@@ -1715,6 +1761,7 @@ public class PurpurWorldConfig {
+@@ -1728,6 +1774,7 @@ public class PurpurWorldConfig {
      public boolean striderControllable = true;
      public double striderMaxHealth = 20.0D;
      public double striderScale = 1.0D;
@@ -908,7 +908,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void striderSettings() {
          striderRidable = getBoolean("mobs.strider.ridable", striderRidable);
          striderRidableInWater = getBoolean("mobs.strider.ridable-in-water", striderRidableInWater);
-@@ -1726,6 +1773,7 @@ public class PurpurWorldConfig {
+@@ -1739,6 +1786,7 @@ public class PurpurWorldConfig {
          }
          striderMaxHealth = getDouble("mobs.strider.attributes.max_health", striderMaxHealth);
          striderScale = Mth.clamp(getDouble("mobs.strider.attributes.scale", striderScale), 0.0625D, 16.0D);
@@ -916,7 +916,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean tadpoleRidable = false;
-@@ -1746,6 +1794,7 @@ public class PurpurWorldConfig {
+@@ -1759,6 +1807,7 @@ public class PurpurWorldConfig {
      public double traderLlamaJumpStrengthMax = 0.5D;
      public double traderLlamaMovementSpeedMin = 0.175D;
      public double traderLlamaMovementSpeedMax = 0.175D;
@@ -924,7 +924,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void traderLlamaSettings() {
          traderLlamaRidable = getBoolean("mobs.trader_llama.ridable", traderLlamaRidable);
          traderLlamaRidableInWater = getBoolean("mobs.trader_llama.ridable-in-water", traderLlamaRidableInWater);
-@@ -1763,6 +1812,7 @@ public class PurpurWorldConfig {
+@@ -1776,6 +1825,7 @@ public class PurpurWorldConfig {
          traderLlamaJumpStrengthMax = getDouble("mobs.trader_llama.attributes.jump_strength.max", traderLlamaJumpStrengthMax);
          traderLlamaMovementSpeedMin = getDouble("mobs.trader_llama.attributes.movement_speed.min", traderLlamaMovementSpeedMin);
          traderLlamaMovementSpeedMax = getDouble("mobs.trader_llama.attributes.movement_speed.max", traderLlamaMovementSpeedMax);
@@ -932,7 +932,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean tropicalFishRidable = false;
-@@ -1786,6 +1836,7 @@ public class PurpurWorldConfig {
+@@ -1799,6 +1849,7 @@ public class PurpurWorldConfig {
      public boolean turtleControllable = true;
      public double turtleMaxHealth = 30.0D;
      public double turtleScale = 1.0D;
@@ -940,7 +940,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void turtleSettings() {
          turtleRidable = getBoolean("mobs.turtle.ridable", turtleRidable);
          turtleRidableInWater = getBoolean("mobs.turtle.ridable-in-water", turtleRidableInWater);
-@@ -1797,6 +1848,7 @@ public class PurpurWorldConfig {
+@@ -1810,6 +1861,7 @@ public class PurpurWorldConfig {
          }
          turtleMaxHealth = getDouble("mobs.turtle.attributes.max_health", turtleMaxHealth);
          turtleScale = Mth.clamp(getDouble("mobs.turtle.attributes.scale", turtleScale), 0.0625D, 16.0D);
@@ -948,7 +948,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean vexRidable = false;
-@@ -1828,6 +1880,7 @@ public class PurpurWorldConfig {
+@@ -1841,6 +1893,7 @@ public class PurpurWorldConfig {
      public double villagerTemptRange = 10.0D;
      public boolean villagerCanBeLeashed = false;
      public boolean villagerCanBreed = true;
@@ -956,7 +956,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -1843,6 +1896,7 @@ public class PurpurWorldConfig {
+@@ -1856,6 +1909,7 @@ public class PurpurWorldConfig {
          villagerTemptRange = getDouble("mobs.villager.attributes.tempt_range", villagerTemptRange);
          villagerCanBeLeashed = getBoolean("mobs.villager.can-be-leashed", villagerCanBeLeashed);
          villagerCanBreed = getBoolean("mobs.villager.can-breed", villagerCanBreed);
@@ -964,7 +964,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      }
  
      public boolean vindicatorRidable = false;
-@@ -1967,6 +2021,7 @@ public class PurpurWorldConfig {
+@@ -1980,6 +2034,7 @@ public class PurpurWorldConfig {
      public boolean wolfControllable = true;
      public double wolfMaxHealth = 8.0D;
      public double wolfScale = 1.0D;
@@ -972,7 +972,7 @@ index 62791c5dc87b1c392db4eaf2359c6625e1bff8e5..ffe18a49ecceee710843d9f32688adc8
      private void wolfSettings() {
          wolfRidable = getBoolean("mobs.wolf.ridable", wolfRidable);
          wolfRidableInWater = getBoolean("mobs.wolf.ridable-in-water", wolfRidableInWater);
-@@ -1978,6 +2033,7 @@ public class PurpurWorldConfig {
+@@ -1991,6 +2046,7 @@ public class PurpurWorldConfig {
          }
          wolfMaxHealth = getDouble("mobs.wolf.attributes.max_health", wolfMaxHealth);
          wolfScale = Mth.clamp(getDouble("mobs.wolf.attributes.scale", wolfScale), 0.0625D, 16.0D);

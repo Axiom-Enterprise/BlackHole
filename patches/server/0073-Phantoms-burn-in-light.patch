@@ -51,10 +51,10 @@ index bd1c23d849269df504c94da9d0ca0a6846b22c41..987b860f85a1be3159233fb329177379
                      list.sort(Comparator.comparing((Entity e) -> { return e.getY(); }).reversed()); // CraftBukkit - decompile error
                      Iterator iterator = list.iterator();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 30c0c6d582069c6a01b033bb9707f4fa1c82f4e9..feddf1aeb817e5bf3fbde76943c36da6bd4c1133 100644
+index 0d4eaa2933d2b6501eeb64a0d95b2d4d67fb5523..4fc86678e3c6459d88a0f7114dd858c6850290df 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1208,6 +1208,9 @@ public class PurpurWorldConfig {
+@@ -1221,6 +1221,9 @@ public class PurpurWorldConfig {
      public double phantomSpawnLocalDifficultyChance = 3.0D;
      public int phantomSpawnMinPerAttempt = 1;
      public int phantomSpawnMaxPerAttempt = -1;
@@ -64,7 +64,7 @@ index 30c0c6d582069c6a01b033bb9707f4fa1c82f4e9..feddf1aeb817e5bf3fbde76943c36da6
      private void phantomSettings() {
          phantomRidable = getBoolean("mobs.phantom.ridable", phantomRidable);
          phantomRidableInWater = getBoolean("mobs.phantom.ridable-in-water", phantomRidableInWater);
-@@ -1238,6 +1241,9 @@ public class PurpurWorldConfig {
+@@ -1251,6 +1254,9 @@ public class PurpurWorldConfig {
          phantomSpawnLocalDifficultyChance = getDouble("mobs.phantom.spawn.local-difficulty-chance", phantomSpawnLocalDifficultyChance);
          phantomSpawnMinPerAttempt = getInt("mobs.phantom.spawn.per-attempt.min", phantomSpawnMinPerAttempt);
          phantomSpawnMaxPerAttempt = getInt("mobs.phantom.spawn.per-attempt.max", phantomSpawnMaxPerAttempt);

@@ -21,10 +21,10 @@ index 2bfce82bee8f3a16a33bd937eb610d9df1b6ceeb..2f7da09e14787395e95211acadd5c693
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index ff2c7696bc1988d40a3db83e8071d767615a5bd0..e462e34f33adaba50af7b0ff60356e1153f6f4ac 100644
+index 35ce3c0385f72feea1a0741ee055994f5cf0190a..a4c20f7b679150425b192a9e4411fa987aed8e1f 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1776,6 +1776,7 @@ public class PurpurWorldConfig {
+@@ -1789,6 +1789,7 @@ public class PurpurWorldConfig {
      public boolean vindicatorControllable = true;
      public double vindicatorMaxHealth = 24.0D;
      public double vindicatorScale = 1.0D;
@@ -32,7 +32,7 @@ index ff2c7696bc1988d40a3db83e8071d767615a5bd0..e462e34f33adaba50af7b0ff60356e11
      private void vindicatorSettings() {
          vindicatorRidable = getBoolean("mobs.vindicator.ridable", vindicatorRidable);
          vindicatorRidableInWater = getBoolean("mobs.vindicator.ridable-in-water", vindicatorRidableInWater);
-@@ -1787,6 +1788,7 @@ public class PurpurWorldConfig {
+@@ -1800,6 +1801,7 @@ public class PurpurWorldConfig {
          }
          vindicatorMaxHealth = getDouble("mobs.vindicator.attributes.max_health", vindicatorMaxHealth);
          vindicatorScale = Mth.clamp(getDouble("mobs.vindicator.attributes.scale", vindicatorScale), 0.0625D, 16.0D);

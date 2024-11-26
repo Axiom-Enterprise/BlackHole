@@ -61,7 +61,7 @@ index 4ad3571403ee8044d17f53987bd47b6c43d42f0e..380bd41336d8d24bffd4e10885e46c95
  
      @Override
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 39663ab70587b62c52804955081af1c740cac429..4e4fda61d820a320215a64635421a804f6f63df5 100644
+index f3029600ef5eb73166a220f405bf5f8b62933436..4a3b4711aa82149299fb88301d69a23ada34e116 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1290,7 +1290,14 @@ public class PurpurWorldConfig {
@@ -87,4 +87,4 @@ index 39663ab70587b62c52804955081af1c740cac429..4e4fda61d820a320215a64635421a804
 +        cowNaturallyAggressiveToPlayersDamage = getDouble("mobs.cow.naturally-aggressive-to-players.damage", cowNaturallyAggressiveToPlayersDamage);
      }
  
-     public boolean creeperRidable = false;
+     public boolean creakingRidable = false;

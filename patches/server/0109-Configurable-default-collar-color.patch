@@ -43,7 +43,7 @@ index 34ca92be146bec3d2f6e46f473c3e68b0a97b168..89566a88a98af2e4ec2b062ed12d4828
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new FloatGoal(this));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c39156bd01e030b06ce1eff68808a97f0371a02c..434310452cb21a83fc6ed03047fc3ac1f897bf46 100644
+index ece3de874b4ad6dd9f17190281dcad2eab6a3097..8caef74b83984c6351f7366376b64be50b50a41c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -619,6 +619,7 @@ public class PurpurWorldConfig {
@@ -66,7 +66,7 @@ index c39156bd01e030b06ce1eff68808a97f0371a02c..434310452cb21a83fc6ed03047fc3ac1
      }
  
      public boolean caveSpiderRidable = false;
-@@ -2051,6 +2057,7 @@ public class PurpurWorldConfig {
+@@ -2064,6 +2070,7 @@ public class PurpurWorldConfig {
      public boolean wolfControllable = true;
      public double wolfMaxHealth = 8.0D;
      public double wolfScale = 1.0D;
@@ -74,7 +74,7 @@ index c39156bd01e030b06ce1eff68808a97f0371a02c..434310452cb21a83fc6ed03047fc3ac1
      public boolean wolfMilkCuresRabies = true;
      public double wolfNaturalRabid = 0.0D;
      public int wolfBreedingTicks = 6000;
-@@ -2065,6 +2072,11 @@ public class PurpurWorldConfig {
+@@ -2078,6 +2085,11 @@ public class PurpurWorldConfig {
          }
          wolfMaxHealth = getDouble("mobs.wolf.attributes.max_health", wolfMaxHealth);
          wolfScale = Mth.clamp(getDouble("mobs.wolf.attributes.scale", wolfScale), 0.0625D, 16.0D);

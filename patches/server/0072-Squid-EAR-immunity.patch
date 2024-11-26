@@ -5,10 +5,10 @@ Subject: [PATCH] Squid EAR immunity
 
 
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 89151a9538e22941ad55aab1807d6871a852364c..30c0c6d582069c6a01b033bb9707f4fa1c82f4e9 100644
+index b5d714f137257810ced4b4457bd5bb01123d3452..0d4eaa2933d2b6501eeb64a0d95b2d4d67fb5523 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1573,6 +1573,7 @@ public class PurpurWorldConfig {
+@@ -1586,6 +1586,7 @@ public class PurpurWorldConfig {
      public boolean squidControllable = true;
      public double squidMaxHealth = 10.0D;
      public double squidScale = 1.0D;
@@ -16,7 +16,7 @@ index 89151a9538e22941ad55aab1807d6871a852364c..30c0c6d582069c6a01b033bb9707f4fa
      private void squidSettings() {
          squidRidable = getBoolean("mobs.squid.ridable", squidRidable);
          squidControllable = getBoolean("mobs.squid.controllable", squidControllable);
-@@ -1583,6 +1584,7 @@ public class PurpurWorldConfig {
+@@ -1596,6 +1597,7 @@ public class PurpurWorldConfig {
          }
          squidMaxHealth = getDouble("mobs.squid.attributes.max_health", squidMaxHealth);
          squidScale = Mth.clamp(getDouble("mobs.squid.attributes.scale", squidScale), 0.0625D, 16.0D);
@@ -25,7 +25,7 @@ index 89151a9538e22941ad55aab1807d6871a852364c..30c0c6d582069c6a01b033bb9707f4fa
  
      public boolean spiderRidable = false;
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 2812fa381a2d91a4638583a43556a7eef2b3d298..e047c0a4a8638588b4ac0d47c4c96899fac4abb7 100644
+index 24d7eca3f0b06602a1026eda3432f0a4255d8b01..9d8d0a99f0b2a8e3452c4c86e6c53c66d58c5b3d 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -378,6 +378,7 @@ public class ActivationRange

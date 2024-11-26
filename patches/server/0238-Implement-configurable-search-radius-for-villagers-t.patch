@@ -18,10 +18,10 @@ index f787aec8bfa291447b3bca297239f44a9fe342a7..38594d3f520b4d75db441cfdde121ac6
              AABB axisalignedbb = this.getBoundingBox().inflate(10.0D, 10.0D, 10.0D);
              List<Villager> list = world.getEntitiesOfClass(Villager.class, axisalignedbb);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a81fdeb38abaf03eb7231ed2ba4e8b693e378a4f..d7789c4969e0c56322d411bfc5d0e9666e719fbc 100644
+index e1fb914b6569d3061321cfe9a42b873b9aee247c..c57b4ed2f136c290ee5a323bd343ddc04bd7e60a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2907,6 +2907,8 @@ public class PurpurWorldConfig {
+@@ -2920,6 +2920,8 @@ public class PurpurWorldConfig {
      public int villagerLobotomizeCheckInterval = 100;
      public boolean villagerLobotomizeWaitUntilTradeLocked = false;
      public boolean villagerDisplayTradeItem = true;
@@ -30,7 +30,7 @@ index a81fdeb38abaf03eb7231ed2ba4e8b693e378a4f..d7789c4969e0c56322d411bfc5d0e966
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -2943,6 +2945,8 @@ public class PurpurWorldConfig {
+@@ -2956,6 +2958,8 @@ public class PurpurWorldConfig {
          villagerLobotomizeCheckInterval = getInt("mobs.villager.lobotomize.check-interval", villagerLobotomizeCheckInterval);
          villagerLobotomizeWaitUntilTradeLocked = getBoolean("mobs.villager.lobotomize.wait-until-trade-locked", villagerLobotomizeWaitUntilTradeLocked);
          villagerDisplayTradeItem = getBoolean("mobs.villager.display-trade-item", villagerDisplayTradeItem);

@@ -27,10 +27,10 @@ index 8b9318713764f8429221b4f6fb162018408f5e1e..294545914dec0a06eadb6c2f139222b3
              if (!this.level().isClientSide) {
                  player.startRiding(this);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 4d85d928c05d488b5fc6efa96e65a5e31455d261..b5f30231f2b163271e677eaba38154b0e5cfa7ed 100644
+index 6eb25a9b4bb634e57f6de015c9a9f2fc78d0b86f..419ebb012056d131d6d1b10c8bd72511a1c4df74 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1003,6 +1003,7 @@ public class PurpurWorldConfig {
+@@ -1016,6 +1016,7 @@ public class PurpurWorldConfig {
      public boolean pigControllable = true;
      public double pigMaxHealth = 10.0D;
      public double pigScale = 1.0D;
@@ -38,7 +38,7 @@ index 4d85d928c05d488b5fc6efa96e65a5e31455d261..b5f30231f2b163271e677eaba38154b0
      private void pigSettings() {
          pigRidable = getBoolean("mobs.pig.ridable", pigRidable);
          pigRidableInWater = getBoolean("mobs.pig.ridable-in-water", pigRidableInWater);
-@@ -1014,6 +1015,7 @@ public class PurpurWorldConfig {
+@@ -1027,6 +1028,7 @@ public class PurpurWorldConfig {
          }
          pigMaxHealth = getDouble("mobs.pig.attributes.max_health", pigMaxHealth);
          pigScale = Mth.clamp(getDouble("mobs.pig.attributes.scale", pigScale), 0.0625D, 16.0D);

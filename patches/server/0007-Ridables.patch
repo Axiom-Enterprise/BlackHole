@@ -22,7 +22,7 @@ index f58a94efafbc01d402cd03a108bb90f60930a316..21ea63da99c5b3e2e1ab9cc1049c903b
          super(x, y, z);
      }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 663b4ecd520e82aa108d44f2d5c2a20cfc7bc01f..1c1ce108840c522d5db49846ad3cac08916a7911 100644
+index c26e3a239441376f2694782d4f07943538677c71..5cd3d7b30a8dea820d0e9569219cbc5858c80f6c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1855,6 +1855,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -4750,6 +4750,58 @@ index 03e3cbe73119ca76417d4dd192e1560bdfc373ec..aa4160892b9ba2486806b5a54bc1465a
      @Override
      public void setPersistentAngerTarget(@Nullable UUID angryAt) {
          this.persistentAngerTarget = angryAt;
+diff --git a/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java b/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
+index 7b5f9284972b3a6bd8125891b23f73438e875c08..f935d475fd1aca407bde420e9ba8002002ea55f6 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
++++ b/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
+@@ -63,6 +63,29 @@ public class Creaking extends Monster {
+         this.xpReward = 0;
+     }
+ 
++    // Purpur start
++    @Override
++    public boolean isRidable() {
++        return level().purpurConfig.creakingRidable;
++    }
++
++    @Override
++    public boolean dismountsUnderwater() {
++        return level().purpurConfig.useDismountsUnderwaterTag ? super.dismountsUnderwater() : !level().purpurConfig.creakingRidableInWater;
++    }
++
++    @Override
++    public boolean isControllable() {
++        return level().purpurConfig.creakingControllable;
++    }
++
++    @Override
++    protected void registerGoals() {
++        this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
++        this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
++    }
++    // Purpur end
++
+     @Override
+     protected BodyRotationControl createBodyControl() {
+         return new Creaking.CreakingBodyRotationControl(this);
+@@ -296,7 +319,7 @@ public class Creaking extends Monster {
+         }
+     }
+ 
+-    class CreakingLookControl extends LookControl {
++    class CreakingLookControl extends org.purpurmc.purpur.controller.LookControllerWASD { // Purpur
+         public CreakingLookControl(final Creaking creaking) {
+             super(creaking);
+         }
+@@ -309,7 +332,7 @@ public class Creaking extends Monster {
+         }
+     }
+ 
+-    class CreakingMoveControl extends MoveControl {
++    class CreakingMoveControl extends org.purpurmc.purpur.controller.MoveControllerWASD { // Purpur
+         public CreakingMoveControl(final Creaking creaking) {
+             super(creaking);
+         }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 index 6ea90e54759dbeab025e0a1896ee834ea9986427..b92c65703dfc4ed95de97534b1e8195c627aa212 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
@@ -5154,10 +5206,10 @@ index ceb45f313869ac3a0f650a4ee43ecff782c1be5f..09e7a11a241b6e306d5043fe66f14fd4
 +    }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 42e502cfcb8d2e775cbf738773caf1a087d2f3f4..2e35e494134e5294fd67a0bf9abbe3f68d5faea5 100644
+index 42e502cfcb8d2e775cbf738773caf1a087d2f3f4..5004e86747306cc8d4bbed6f10d3a6e9047cb5f4 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -90,4 +90,744 @@ public class PurpurWorldConfig {
+@@ -90,4 +90,753 @@ public class PurpurWorldConfig {
          final Map<String, Object> value = PurpurConfig.getMap("world-settings." + worldName + "." + path, null);
          return value.isEmpty() ? fallback : value;
      }
@@ -5286,6 +5338,15 @@ index 42e502cfcb8d2e775cbf738773caf1a087d2f3f4..2e35e494134e5294fd67a0bf9abbe3f6
 +        cowRidable = getBoolean("mobs.cow.ridable", cowRidable);
 +        cowRidableInWater = getBoolean("mobs.cow.ridable-in-water", cowRidableInWater);
 +        cowControllable = getBoolean("mobs.cow.controllable", cowControllable);
++    }
++
++    public boolean creakingRidable = false;
++    public boolean creakingRidableInWater = true;
++    public boolean creakingControllable = true;
++    private void creakingSettings() {
++        creakingRidable = getBoolean("mobs.creaking.ridable", creakingRidable);
++        creakingRidableInWater = getBoolean("mobs.creaking.ridable-in-water", creakingRidableInWater);
++        creakingControllable = getBoolean("mobs.creaking.controllable", creakingControllable);
 +    }
 +
 +    public boolean creeperRidable = false;

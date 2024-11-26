@@ -5,10 +5,10 @@ Subject: [PATCH] Debug Marker API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 7f19a0b86925502544c898be5d88248325aa0fba..49b27e7f2a6c56040013300110c870b9e08ca645 100644
+index 268ab3f175ece52e7da6dfa50573089f49685d68..6b0308d081af880a79c369306e8ad69757bcd6de 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1631,6 +1631,42 @@ public final class CraftServer implements Server {
+@@ -1643,6 +1643,42 @@ public final class CraftServer implements Server {
          net.minecraft.world.item.ItemStack itemStack = net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(material));
          MinecraftServer.getServer().fuelValues().values.keySet().removeIf(itemStack::is);
      }

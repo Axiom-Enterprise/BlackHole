@@ -5,10 +5,10 @@ Subject: [PATCH] Bring back server name
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 391a1e3e07657a404520c1462507a2c731f32b27..51a071668ff708cae93900ea09765f62a4fd8a07 100644
+index 5ce98e09e9bfcae45896401c69578aa879222893..82c65e39d02b3bb63360d36df45f8ed7a0bc096b 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2945,4 +2945,15 @@ public final class Bukkit {
+@@ -2968,4 +2968,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -25,10 +25,10 @@ index 391a1e3e07657a404520c1462507a2c731f32b27..51a071668ff708cae93900ea09765f62
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index a3a0b9c974792d735ec235b01d831e2e1e4a6768..513b34f1043e74184da179f1a9d86880731d4c70 100644
+index f1c121c150d2ab7ca2d080846a5f726920210662..715ca4c541fb3bc2f30c53c2f52025ac2e70cd3c 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2600,4 +2600,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2619,4 +2619,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      void allowPausing(@NotNull org.bukkit.plugin.Plugin plugin, boolean value);
      // Paper end - API to check if the server is sleeping

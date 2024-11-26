@@ -37,10 +37,10 @@ index 61ef08ac941b1e8988d001241780d3a1582f7a2d..2eab5b43ab654966d26424597c1f3baa
      FuelValues(Object2IntSortedMap<Item> fuelValues) {
          this.values = fuelValues;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c08ed484a5fd32ce06855eab786e2b222ccfa2a3..a8ae9eab152e5d3dfe413708646265587e297910 100644
+index 1db859d7016dc96f00b985fc0bed67f18fdb88e3..268ab3f175ece52e7da6dfa50573089f49685d68 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1617,6 +1617,22 @@ public final class CraftServer implements Server {
+@@ -1629,6 +1629,22 @@ public final class CraftServer implements Server {
          return true;
      }
  

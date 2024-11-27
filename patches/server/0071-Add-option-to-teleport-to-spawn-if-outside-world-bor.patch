@@ -5,10 +5,10 @@ Subject: [PATCH] Add option to teleport to spawn if outside world border
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index b5054c762382bb81fa83069a97467af08946f6e5..3d05da7985402f1cf361182084b62145c9bf9856 100644
+index a91a4602b5bc72dc0162fd2d60eebf3a05df4065..cbe608df708d5530813230cddd78568c1a63b448 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -3413,4 +3413,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3410,4 +3410,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          return (CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end
@@ -36,7 +36,7 @@ index b5054c762382bb81fa83069a97467af08946f6e5..3d05da7985402f1cf361182084b62145
 +    // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 66ae89ade2bb19b0a8498573f8c0c68ff0628594..ba9fc0f5d9979aee43dcf716cf25ff42928a9f1b 100644
+index 37f9e79cef4d2b68af61b4a1fbd42199bec6e28e..5e5fc866a9126f5909e04c257139cbf34fd31d2d 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -479,6 +479,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -48,7 +48,7 @@ index 66ae89ade2bb19b0a8498573f8c0c68ff0628594..ba9fc0f5d9979aee43dcf716cf25ff42
                          }
                      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 722c95adbed966ddec57250a5fdc1978594fd499..89151a9538e22941ad55aab1807d6871a852364c 100644
+index bfd03c3cdc2b80415730aa1a18fad5afe838df25..b5d714f137257810ced4b4457bd5bb01123d3452 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -237,6 +237,7 @@ public class PurpurWorldConfig {

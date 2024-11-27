@@ -17,7 +17,7 @@ index 0090243f7e1a966534e489cebb88d71d9cbab7bb..d8ee4422a13c7f09b84e9bbe8b57f0c1
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7bfb43f9163e690069249fb1fa401ec06a52bbf1..9c5c5912931ce96bd61d08922d8eb55143639f0d 100644
+index 6a4ced206570f8c1c609e772c0b7d1cf5a6ff9ce..883317c9957c13049ff2c01ceb154fba1afe278b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -331,6 +331,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -44,7 +44,7 @@ index 7bfb43f9163e690069249fb1fa401ec06a52bbf1..9c5c5912931ce96bd61d08922d8eb551
      }
  
      private void saveParentVehicle(CompoundTag nbt) {
-@@ -3468,5 +3471,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3465,5 +3468,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public void tpsBar(boolean tpsBar) {
          this.tpsBar = tpsBar;
      }
@@ -89,7 +89,7 @@ index 8d41d9a8a2b5b7946c13b8c3ce961fea1a2bc728..e8dc97694f59cfce67e2fe061868a9f0
          hideHiddenPlayersFromEntitySelector = getBoolean("settings.command.hide-hidden-players-from-entity-selector", hideHiddenPlayersFromEntitySelector);
          uptimeFormat = getString("settings.command.uptime.format", uptimeFormat);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 8858336b39b97329457f7ee5f23139f1cc796330..b621943e9cdeaa6a547216c9525978e6d0f7c02f 100644
+index 36d6d52a83f4b5b9273661d816424025f76f4596..74515ad36cae0e838224caee3853d2f3d8bc0b11 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -215,6 +215,7 @@ public class PurpurWorldConfig {

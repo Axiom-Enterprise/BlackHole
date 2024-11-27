@@ -17,7 +17,7 @@ index 24c2568db30f970aed1a4897cfbc7d07297047d3..5d94b71bd54f99040b76cca74964a32d
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1ce5cd0fdade08093e03033fb15687dc098c8ba1..211c43ea25cc1c0a4345c19bc036cff9668d787b 100644
+index a094ca4ba0b1b8e671c9337df4cd22d3d5be17de..76ad795439dbaf8c39975639f3b9b5a7419391e6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1156,6 +1156,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -41,7 +41,7 @@ index de6f842349dee273eb84b2f12ea6a41d43f17fb1..94d292b97ca2404fa1ae8ceec7c48540
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index b8944420a4f84c350f653e43ed0069c0bfcddf02..6ffb7d0c9c6c7410af9efaf899296a8cb74ee105 100644
+index 36058eac6f861ae919bbe8ae6386e8f841586ac2..80426ba728016273990f00db638ea327b75c1883 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -330,6 +330,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -68,7 +68,7 @@ index b8944420a4f84c350f653e43ed0069c0bfcddf02..6ffb7d0c9c6c7410af9efaf899296a8c
      }
  
      private void saveParentVehicle(CompoundTag nbt) {
-@@ -3443,5 +3446,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3440,5 +3443,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
              this.server.getPlayerList().respawn(this, true, RemovalReason.KILLED, org.bukkit.event.player.PlayerRespawnEvent.RespawnReason.DEATH, to);
          }
      }

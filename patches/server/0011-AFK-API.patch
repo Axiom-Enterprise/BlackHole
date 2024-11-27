@@ -5,10 +5,10 @@ Subject: [PATCH] AFK API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index c69080f68ac1a7e7113da692ae7baba467393d48..a9228aa69e31b0e69f0b07170de0ac99b64fe0fe 100644
+index 749145ac5ee84b5ebbf4b1eba2df680c1c51bd88..d4ed1dd4e4c56cf40632b0857af82a944579da65 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2644,8 +2644,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -2641,8 +2641,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -223,7 +223,7 @@ index 5d7a6e4b73f032db356e7ec369b150013e940ee6..6b2cda6d578a0983b2401ea206292754
                  if (range < 0.0 || d < range * range) {
                      return true;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index c326014c5d18a6316cc96e0465fdc44409948279..80faf1857529d6ab3a2fbbd06e7c268b9dacfb7c 100644
+index cc0b99f87cdccaf899cb9da393d8e7dbef4f2e3c..5aa46971f19cfac6d2d3a2947badedcbc32711ba 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -583,10 +583,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -243,7 +243,7 @@ index c326014c5d18a6316cc96e0465fdc44409948279..80faf1857529d6ab3a2fbbd06e7c268b
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -3584,5 +3589,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3586,5 +3591,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public boolean usesPurpurClient() {
          return getHandle().purpurClient;
      }
@@ -288,7 +288,7 @@ index a83117ed0a0c98d7ae18e925338b58930946c96a..a6728ce7ac27512676cfa06fdfbfb865
  
      public static int barrelRows = 3;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 65cbd35892ab48fccda9bccf2b4dd66be5c84a0d..42bff6f2d864a31dcb1c0087a4e0c9027ece001e 100644
+index ee9bcb7d011f20575cbbbe2e0ded1e53087aba7a..9b1a4502aa6c26c7524ec17697250317b7f381fd 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -91,6 +91,24 @@ public class PurpurWorldConfig {
@@ -317,7 +317,7 @@ index 65cbd35892ab48fccda9bccf2b4dd66be5c84a0d..42bff6f2d864a31dcb1c0087a4e0c902
      public boolean untamedTamablesAreRidable = true;
      public boolean useNightVisionWhenRiding = false;
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index bd7c37123c70d2afdef252f39548725d4ef318ed..2812fa381a2d91a4638583a43556a7eef2b3d298 100644
+index 1d438ef44cbe4d1eedfba36d8fe5d2ad53464921..24d7eca3f0b06602a1026eda3432f0a4255d8b01 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -199,6 +199,8 @@ public class ActivationRange

@@ -18,7 +18,7 @@ index d8ee4422a13c7f09b84e9bbe8b57f0c139caac32..96449b0d153ce4124403368e406354fb
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index dc8198b6282523009a5a6f6b1069b7b463b3f136..07ad39d071cfb16bc9e2560fa1abffe92d42740e 100644
+index 323d474582cf796ae9d40f9d00f277496d3f2c0a..e6001fadc04b63b82e20652bbb16cb1db5cf44bd 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -332,6 +332,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -45,7 +45,7 @@ index dc8198b6282523009a5a6f6b1069b7b463b3f136..07ad39d071cfb16bc9e2560fa1abffe9
          nbt.putBoolean("Purpur.TPSBar", this.tpsBar); // Purpur
          nbt.putBoolean("Purpur.CompassBar", this.compassBar); // Purpur
      }
-@@ -3480,5 +3483,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3477,5 +3480,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public void compassBar(boolean compassBar) {
          this.compassBar = compassBar;
      }

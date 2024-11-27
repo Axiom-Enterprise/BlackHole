@@ -243,10 +243,10 @@ index 94ca0407303c4493ab4928b12ec6ecc75aaca549..a138e1b6b66d99f2035de054137a607a
 +    // Purpur end - OfflinePlayer API
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 800ea83ff1e927b38857dccc009dd57cd746749c..5676d81f54130f747adfd0d26f28d5ae288e656e 100644
+index 67a3bc89c790a436310972f2fe08b73bafd01070..3d824ed7b53b30493d0fc1714fc1b247f4a9ad9c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2773,6 +2773,28 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2775,6 +2775,28 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return this.getHandle().getAbilities().walkingSpeed * 2f;
      }
  

@@ -1157,7 +1157,7 @@ index 7d219c1bfdcdc6d06dcb91c33ef09f88dca13aa3..37ba31724fb3630c9c7d8040f47be36e
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 6954e3491cc21577931f9bd5eec33b05a670aca4..ecad05c231bee0245db1b30e9955fa6edd1596b0 100644
+index b9b47cd429c73c856d6ecd9d48fe0c46cee7330d..744730583ec613adc8e31565780fbcae72a9b69c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -1087,6 +1087,7 @@ public class PurpurWorldConfig {
@@ -1193,7 +1193,7 @@ index 6954e3491cc21577931f9bd5eec33b05a670aca4..ecad05c231bee0245db1b30e9955fa6e
  
      public boolean beeRidable = false;
 @@ -1142,6 +1146,7 @@ public class PurpurWorldConfig {
-     public boolean beeTakeDamageFromWater = false;
+     public boolean beeTakeDamageFromWater = true;
      public boolean beeCanWorkAtNight = false;
      public boolean beeCanWorkInRain = false;
 +    public boolean beeAlwaysDropExp = false;

@@ -1199,7 +1199,7 @@ index 738df68a988a8ba428bf2c74a12cb8d9dd525bee..116f47c7342dade1eaf0fabc62fb0ba2
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 126d2689166579785735cf250ddf0838512ce81b..5480f6fbc3b3f99297ff4de83c6501fa2161714a 100644
+index 126d2689166579785735cf250ddf0838512ce81b..9ab4dfe8cccbb8e4cc200930059acde1fb0341a6 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -549,12 +549,14 @@ public class PurpurWorldConfig {
@@ -1237,7 +1237,7 @@ index 126d2689166579785735cf250ddf0838512ce81b..5480f6fbc3b3f99297ff4de83c6501fa
      public double beeMaxHealth = 10.0D;
      public double beeScale = 1.0D;
      public int beeBreedingTicks = 6000;
-+    public boolean beeTakeDamageFromWater = false;
++    public boolean beeTakeDamageFromWater = true;
      private void beeSettings() {
          beeRidable = getBoolean("mobs.bee.ridable", beeRidable);
          beeRidableInWater = getBoolean("mobs.bee.ridable-in-water", beeRidableInWater);

@@ -5,10 +5,10 @@ Subject: [PATCH] Entities can use portals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index ea9d118f99a62004db8fc093ff67794a1ec99ac9..2add41657b8f868bcd4755ca843e457b8dfc7ef0 100644
+index 3e16f8ec52ff60f696a4a29dfbb9217b0c29106b..59000a7519071010d03063359c4508426753fe7c 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3482,7 +3482,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3438,7 +3438,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      public void setAsInsidePortal(Portal portal, BlockPos pos) {
          if (this.isOnPortalCooldown()) {
              this.setPortalCooldown();
@@ -17,7 +17,7 @@ index ea9d118f99a62004db8fc093ff67794a1ec99ac9..2add41657b8f868bcd4755ca843e457b
              if (this.portalProcess != null && this.portalProcess.isSamePortal(portal)) {
                  if (!this.portalProcess.isInsidePortalThisTick()) {
                      this.portalProcess.updateEntryPosition(pos.immutable());
-@@ -4201,7 +4201,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4157,7 +4157,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      // CraftBukkit end
  
      public boolean canUsePortal(boolean allowVehicles) {
@@ -27,7 +27,7 @@ index ea9d118f99a62004db8fc093ff67794a1ec99ac9..2add41657b8f868bcd4755ca843e457b
  
      public boolean canTeleport(Level from, Level to) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index ff41df1aefb9c0062af302251e97fad101a7cef3..478756e5e1f5e2fe4878715687d7d6e7d4b10128 100644
+index b04c1c2534bec8f2eee873b43969843f54644dca..a28548332baf610521a308a560a858b3fc737b60 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -101,12 +101,14 @@ public class PurpurWorldConfig {

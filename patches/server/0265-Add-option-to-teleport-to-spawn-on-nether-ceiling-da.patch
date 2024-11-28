@@ -5,10 +5,10 @@ Subject: [PATCH] Add option to teleport to spawn on nether ceiling damage
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index e787d72ff855c4db8a772bf1bbf7a77b93d33fc5..febd5e137290952d820a7869eaaef77e374a3b07 100644
+index c377339088c536255e319ee058e30d68e00c30f5..31326cc83130e4226aee443be880c00c2adc7ab0 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1041,6 +1041,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -997,6 +997,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
              && this.level.paperConfig().environment.netherCeilingVoidDamageHeight.test(v -> this.getY() >= v)
              && (!(this instanceof Player player) || !player.getAbilities().invulnerable))) {
              // Paper end - Configurable nether ceiling damage
@@ -17,7 +17,7 @@ index e787d72ff855c4db8a772bf1bbf7a77b93d33fc5..febd5e137290952d820a7869eaaef77e
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 04d9535ff5821f410be1c0c25bce207bf7d67dd9..67f8924ca07abfd95cef6a56669e976b837f253e 100644
+index 342d5111bd3d4b434071f7499467a860a278ee08..89e80073eb911e72d0bac5b50119421a91cd3a16 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -418,6 +418,7 @@ public class PurpurWorldConfig {

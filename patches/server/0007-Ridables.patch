@@ -34,7 +34,7 @@ index c26e3a239441376f2694782d4f07943538677c71..5cd3d7b30a8dea820d0e9569219cbc58
              gameprofilerfiller.push(() -> {
                  String s = String.valueOf(worldserver);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 957cae6ddeba9efe3b55588567ae51e8b86b6a42..32339a18345feddb49cffe5ed1f18a2bfaf931ba 100644
+index b4027f5cf90935a1fe3ab2c28b0bcbb55a7b541b..4c4729292a6b0665412bdea1c1c70af6b4867b74 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -231,6 +231,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -46,7 +46,7 @@ index 957cae6ddeba9efe3b55588567ae51e8b86b6a42..32339a18345feddb49cffe5ed1f18a2b
      public LevelChunk getChunkIfLoaded(int x, int z) {
          return this.chunkSource.getChunkAtIfLoadedImmediately(x, z); // Paper - Use getChunkIfLoadedImmediately
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 9dbf86a365b37bf3fcbf901e5dee5821648288d0..84dd32c83d05708acc4ffea1ed358697f320ecbe 100644
+index 785ea646cbefb8dc1e22a57bc3a18cdbee440e06..749145ac5ee84b5ebbf4b1eba2df680c1c51bd88 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1033,6 +1033,15 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -66,7 +66,7 @@ index 9dbf86a365b37bf3fcbf901e5dee5821648288d0..84dd32c83d05708acc4ffea1ed358697
  
      private void updatePlayerAttributes() {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index b5d5dbc50a7b8c40739a15f164ffd08fdc534f9c..5d322e613a0116057373a3c9d7125620c63b43d7 100644
+index cd1b6b539a62fa5237d6dab2d1c09a2e631d9941..52eb9238965a1c1522b2c523d48ac63e0db5d3d1 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2821,6 +2821,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -79,10 +79,10 @@ index b5d5dbc50a7b8c40739a15f164ffd08fdc534f9c..5d322e613a0116057373a3c9d7125620
                              if ((entity instanceof Bucketable && entity instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                  entity.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index ed5b00620527c1776722d25b1b45f1544802a341..697c8c8fd0cdca4bb8bc3db62f7de8999785ec1e 100644
+index a15546e433ebba6c0de01bdaaef201a3d99a87b5..b265a9c8b89c0026b6e74fc8aba10f4c03ca1750 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -384,7 +384,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -340,7 +340,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      private final Set<String> tags;
      private final double[] pistonDeltas;
      private long pistonDeltasGameTime;
@@ -91,7 +91,7 @@ index ed5b00620527c1776722d25b1b45f1544802a341..697c8c8fd0cdca4bb8bc3db62f7de899
      private float eyeHeight;
      public boolean isInPowderSnow;
      public boolean wasInPowderSnow;
-@@ -3338,6 +3338,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3294,6 +3294,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -105,7 +105,7 @@ index ed5b00620527c1776722d25b1b45f1544802a341..697c8c8fd0cdca4bb8bc3db62f7de899
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -3377,6 +3384,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3333,6 +3340,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -120,7 +120,7 @@ index ed5b00620527c1776722d25b1b45f1544802a341..697c8c8fd0cdca4bb8bc3db62f7de899
              if (this.passengers.size() == 1 && this.passengers.get(0) == entity) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5369,4 +5384,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5325,4 +5340,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((net.minecraft.server.level.ServerLevel) this.level).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter

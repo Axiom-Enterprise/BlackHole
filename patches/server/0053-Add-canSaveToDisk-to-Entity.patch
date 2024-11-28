@@ -5,10 +5,10 @@ Subject: [PATCH] Add canSaveToDisk to Entity
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 75b0a66be9f94c82a02f714860ae8bee323db2a3..77870857cb0207ad0da7a276a55d9eebac43b45c 100644
+index f2d580e9325497cf339b7c1dc043d40bd06ab00d..afa4d11c44e2159dfad080c6a45256e9b66fa18c 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -613,6 +613,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -569,6 +569,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          }
      }
      // Paper end - optimise entity tracker

@@ -5,10 +5,10 @@ Subject: [PATCH] Drowning Settings
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index d61840da8edad607b6bb3e0b6e168417e4c59f23..b4668e9f49aba4ae68c7d51a37f26c9bf754accc 100644
+index e613dd28453795184049e7dfcf2ce9e9e978c5ca..7751488ea7c2ebce1b51567e144e519781f2d060 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3706,7 +3706,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3662,7 +3662,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
  
      public int getMaxAirSupply() {
@@ -18,7 +18,7 @@ index d61840da8edad607b6bb3e0b6e168417e4c59f23..b4668e9f49aba4ae68c7d51a37f26c9b
  
      public int getAirSupply() {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 713b84c2c07145febc1e5cf4af833dd8f5f1588e..34aca945029f061ca21e8b3e0a2bde490140dd54 100644
+index c348aacb203ca913f6d12b64c611debef8fb27f5..1fa230d9f87819359a13cb2970b95c3088a7c718 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -491,7 +491,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -40,7 +40,7 @@ index 713b84c2c07145febc1e5cf4af833dd8f5f1588e..34aca945029f061ca21e8b3e0a2bde49
                  }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 3584b2ce21c1b6219acf2321065ca4eba85efff0..360a2e2a2b8849b3f792c93f2f0b4802abe732f6 100644
+index e6096491e26d5ad7df5f1d626a14c771662d2898..0f8348bedaf101fa9b9d50c3288aec0953cb56f6 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -165,6 +165,15 @@ public class PurpurWorldConfig {

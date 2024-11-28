@@ -17,10 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 2add41657b8f868bcd4755ca843e457b8dfc7ef0..9d8c26a59b23e8c3cf82168b3716280cfb380f43 100644
+index 59000a7519071010d03063359c4508426753fe7c..41237e06a0053b0a61af83b4c1d7cb4d18825884 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -2058,7 +2058,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2014,7 +2014,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return this.isInWater() || flag;
      }
  
@@ -66,7 +66,7 @@ index 12ff824ffa81ea45f76337ec2b6d80b01047b698..c954cb3255145e18e8ab1e5a1b0267b8
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index d77285976271ebd60892646e3050d947a2becc69..0e6c36fafdf5f12d80340daf1c967f9700ec4ad7 100644
+index 3739561c633627ba3fe80f89bce84a243705f4bc..86b27b11f178be0cc05842ccb3ffe4ef14196855 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -100,10 +100,16 @@ public class PurpurWorldConfig {

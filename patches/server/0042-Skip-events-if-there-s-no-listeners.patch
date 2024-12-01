@@ -5,10 +5,10 @@ Subject: [PATCH] Skip events if there's no listeners
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 5f3669e3eb371d65dd27c37053d4bc5640d93774..bb82e6519e6f1a6a8d87fb6293681fe32b39a6a1 100644
+index 64bf4444ffba25cb40743a32267aa790ad1738f9..1210305bcfc8a1158dbdc3c21647502a01b138a3 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -511,6 +511,7 @@ public class Commands {
+@@ -515,6 +515,7 @@ public class Commands {
      private void runSync(ServerPlayer player, Collection<String> bukkit, RootCommandNode<SharedSuggestionProvider> rootcommandnode) {
          // Paper end - Perf: Async command map building
          new com.destroystokyo.paper.event.brigadier.AsyncPlayerSendCommandsEvent<CommandSourceStack>(player.getBukkitEntity(), (RootCommandNode) rootcommandnode, true).callEvent(); // Paper - Brigadier API
@@ -16,7 +16,7 @@ index 5f3669e3eb371d65dd27c37053d4bc5640d93774..bb82e6519e6f1a6a8d87fb6293681fe3
          PlayerCommandSendEvent event = new PlayerCommandSendEvent(player.getBukkitEntity(), new LinkedHashSet<>(bukkit));
          event.getPlayer().getServer().getPluginManager().callEvent(event);
  
-@@ -521,6 +522,7 @@ public class Commands {
+@@ -525,6 +526,7 @@ public class Commands {
              }
          }
          // CraftBukkit end

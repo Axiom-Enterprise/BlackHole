@@ -5,10 +5,10 @@ Subject: [PATCH] ItemStack convenience methods
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index bfddaa146c1bcb6a3fdd43773ec06f91a259b200..53929a8827e2cf93cff70aaa08b2646505052aed 100644
+index 78975412da0f0c2b802bfce6d30d56b26d8023e2..4ec6a07796023aab2f8f84f131f48108c235c852 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-@@ -660,4 +660,285 @@ public final class CraftItemStack extends ItemStack {
+@@ -658,4 +658,285 @@ public final class CraftItemStack extends ItemStack {
      }
  
      // Paper end - data component API

@@ -1,0 +1,35 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Sat, 21 Mar 2020 11:47:39 -0500
+Subject: [PATCH] Configurable server mod name
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 69846993f5e5adef6ecf6c23f261b3dbabf6a193..21ae69e2430f1e111f98801749c3a278931374b0 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -2018,7 +2018,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+ 
+     @DontObfuscate
+     public String getServerModName() {
+-        return io.papermc.paper.ServerBuildInfo.buildInfo().brandName(); // Paper
++        return org.purpurmc.purpur.PurpurConfig.serverModName; // Paper // Purpur
+     }
+ 
+     public SystemReport fillSystemReport(SystemReport details) {
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index a6728ce7ac27512676cfa06fdfbfb8652f8ff6a5..df2be3351bcaaf1ffb73261da6c840314f5c11a1 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -191,6 +191,11 @@ public class PurpurConfig {
+         afkTabListSuffix = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(getString("settings.messages.afk-tab-list-suffix", afkTabListSuffix)));
+     }
+ 
++    public static String serverModName = io.papermc.paper.ServerBuildInfo.buildInfo().brandName();
++    private static void serverModName() {
++        serverModName = getString("settings.server-mod-name", serverModName);
++    }
++
+     public static int barrelRows = 3;
+     public static boolean enderChestSixRows = false;
+     public static boolean enderChestPermissionRows = false;

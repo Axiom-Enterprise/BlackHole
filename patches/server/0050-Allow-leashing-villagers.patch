@@ -1,0 +1,86 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Thu, 3 Oct 2019 18:08:03 -0500
+Subject: [PATCH] Allow leashing villagers
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index 1057497963a615ae1aaafa5aac1f53471a00c763..35c6cc4d0d76becba693d056534a9437bd3364e4 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -3093,6 +3093,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+         if (this.isAlive() && this instanceof Leashable leashable) {
+             if (leashable.getLeashHolder() == player) {
+                 if (!this.level().isClientSide()) {
++                    if (hand == InteractionHand.OFF_HAND && (level().purpurConfig.villagerCanBeLeashed || level().purpurConfig.wanderingTraderCanBeLeashed) && this instanceof net.minecraft.world.entity.npc.AbstractVillager) return InteractionResult.CONSUME; // Purpur
+                     // CraftBukkit start - fire PlayerUnleashEntityEvent
+                     // Paper start - Expand EntityUnleashEvent
+                     org.bukkit.event.player.PlayerUnleashEntityEvent event = CraftEventFactory.callPlayerUnleashEntityEvent(this, player, hand, !player.hasInfiniteMaterials());
+diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+index f0b0341a256f0e673bf18d25c6f9616f3afaa078..394c8667cfe57fa1fba93231a1ebb5be6dc63c63 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
++++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+@@ -179,6 +179,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
+         if (level().purpurConfig.villagerFollowEmeraldBlock) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.TemptGoal(this, 1.0D, TEMPT_ITEMS, false));
+     }
++
++    @Override
++    public boolean canBeLeashed() {
++        return level().purpurConfig.villagerCanBeLeashed;
++    }
+     // Purpur end
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
+index a821a7bc7de7458ceb8afdb61bde32f74534f012..738df68a988a8ba428bf2c74a12cb8d9dd525bee 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
++++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
+@@ -87,6 +87,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+     public boolean isControllable() {
+         return level().purpurConfig.wanderingTraderControllable;
+     }
++
++    @Override
++    public boolean canBeLeashed() {
++        return level().purpurConfig.wanderingTraderCanBeLeashed;
++    }
+     // Purpur end
+ 
+     @Override
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index b81790ec5a7e4b73fbef52229844506b072dfa0d..1b96a84a1c81c075aa5f7308b89d396a4578be33 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -1590,6 +1590,7 @@ public class PurpurWorldConfig {
+     public double villagerScale = 1.0D;
+     public boolean villagerFollowEmeraldBlock = false;
+     public double villagerTemptRange = 10.0D;
++    public boolean villagerCanBeLeashed = false;
+     private void villagerSettings() {
+         villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
+         villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
+@@ -1603,6 +1604,7 @@ public class PurpurWorldConfig {
+         villagerScale = Mth.clamp(getDouble("mobs.villager.attributes.scale", villagerScale), 0.0625D, 16.0D);
+         villagerFollowEmeraldBlock = getBoolean("mobs.villager.follow-emerald-blocks", villagerFollowEmeraldBlock);
+         villagerTemptRange = getDouble("mobs.villager.attributes.tempt_range", villagerTemptRange);
++        villagerCanBeLeashed = getBoolean("mobs.villager.can-be-leashed", villagerCanBeLeashed);
+     }
+ 
+     public boolean vindicatorRidable = false;
+@@ -1630,6 +1632,7 @@ public class PurpurWorldConfig {
+     public double wanderingTraderScale = 1.0D;
+     public boolean wanderingTraderFollowEmeraldBlock = false;
+     public double wanderingTraderTemptRange = 10.0D;
++    public boolean wanderingTraderCanBeLeashed = false;
+     private void wanderingTraderSettings() {
+         wanderingTraderRidable = getBoolean("mobs.wandering_trader.ridable", wanderingTraderRidable);
+         wanderingTraderRidableInWater = getBoolean("mobs.wandering_trader.ridable-in-water", wanderingTraderRidableInWater);
+@@ -1643,6 +1646,7 @@ public class PurpurWorldConfig {
+         wanderingTraderScale = Mth.clamp(getDouble("mobs.wandering_trader.attributes.scale", wanderingTraderScale), 0.0625D, 16.0D);
+         wanderingTraderFollowEmeraldBlock = getBoolean("mobs.wandering_trader.follow-emerald-blocks", wanderingTraderFollowEmeraldBlock);
+         wanderingTraderTemptRange = getDouble("mobs.wandering_trader.attributes.tempt_range", wanderingTraderTemptRange);
++        wanderingTraderCanBeLeashed = getBoolean("mobs.wandering_trader.can-be-leashed", wanderingTraderCanBeLeashed);
+     }
+ 
+     public boolean wardenRidable = false;

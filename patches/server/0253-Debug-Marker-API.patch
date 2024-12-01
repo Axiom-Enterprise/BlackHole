@@ -1,0 +1,148 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: YouHaveTrouble <youhavetrouble@youhavetrouble.me>
+Date: Sat, 23 Jul 2022 14:40:38 +0200
+Subject: [PATCH] Debug Marker API
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 268ab3f175ece52e7da6dfa50573089f49685d68..6b0308d081af880a79c369306e8ad69757bcd6de 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -1643,6 +1643,42 @@ public final class CraftServer implements Server {
+         net.minecraft.world.item.ItemStack itemStack = net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(material));
+         MinecraftServer.getServer().fuelValues().values.keySet().removeIf(itemStack::is);
+     }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration) {
++        sendBlockHighlight(location, duration, "", 0x6400FF00);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, int argb) {
++        sendBlockHighlight(location, duration, "", argb);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text) {
++        sendBlockHighlight(location, duration, text, 0x6400FF00);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text, int argb) {
++        this.worlds.forEach((name, world) -> world.sendBlockHighlight(location, duration, text, argb));
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, org.bukkit.Color color, int transparency) {
++        sendBlockHighlight(location, duration, "", color, transparency);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text, org.bukkit.Color color, int transparency) {
++        if (transparency < 0 || transparency > 255) throw new IllegalArgumentException("transparency is outside of 0-255 range");
++        sendBlockHighlight(location, duration, text, transparency << 24 | color.asRGB());
++    }
++
++    @Override
++    public void clearBlockHighlights() {
++        this.worlds.forEach((name, world) -> clearBlockHighlights());
++    }
+     // Purpur End
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 10413e550895f21cac43f5a15eaf51e51313b06f..bbd2da3a646421d1b05e7c8154a7aa7fd9223c2f 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -2383,6 +2383,42 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+     public float getLocalDifficultyAt(Location location) {
+         return getHandle().getCurrentDifficultyAt(io.papermc.paper.util.MCUtil.toBlockPosition(location)).getEffectiveDifficulty();
+     }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration) {
++        sendBlockHighlight(location, duration, "", 0x6400FF00);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, int argb) {
++        sendBlockHighlight(location, duration, "", argb);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text) {
++        sendBlockHighlight(location, duration, text, 0x6400FF00);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text, int argb) {
++        net.minecraft.network.protocol.game.DebugPackets.sendGameTestAddMarker(getHandle(), io.papermc.paper.util.MCUtil.toBlockPosition(location), text, argb, duration);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, org.bukkit.Color color, int transparency) {
++        sendBlockHighlight(location, duration, "", color, transparency);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text, org.bukkit.Color color, int transparency) {
++        if (transparency < 0 || transparency > 255) throw new IllegalArgumentException("transparency is outside of 0-255 range");
++        sendBlockHighlight(location, duration, text, transparency << 24 | color.asRGB());
++    }
++
++    @Override
++    public void clearBlockHighlights() {
++        net.minecraft.network.protocol.game.DebugPackets.sendGameTestClearPacket(getHandle());
++    }
+     // Purpur end
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 7be5b26b3d9e4d38838ecca8f65f8671c3c17ed2..674df8d09988b2509adf93d75b2b37009a709410 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -3629,5 +3629,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+     public void resetIdleTimer() {
+         getHandle().resetLastActionTime();
+     }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration) {
++        sendBlockHighlight(location, duration, "", 0x6400FF00);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, int argb) {
++        sendBlockHighlight(location, duration, "", argb);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text) {
++        sendBlockHighlight(location, duration, text, 0x6400FF00);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text, int argb) {
++        if (this.getHandle().connection == null) return;
++        this.getHandle().connection.send(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new net.minecraft.network.protocol.common.custom.GameTestAddMarkerDebugPayload(io.papermc.paper.util.MCUtil.toBlockPosition(location), argb, text, duration)));
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, org.bukkit.Color color, int transparency) {
++        sendBlockHighlight(location, duration, "", color, transparency);
++    }
++
++    @Override
++    public void sendBlockHighlight(Location location, int duration, String text, org.bukkit.Color color, int transparency) {
++        if (transparency < 0 || transparency > 255) throw new IllegalArgumentException("transparency is outside of 0-255 range");
++        sendBlockHighlight(location, duration, text, transparency << 24 | color.asRGB());
++    }
++
++    @Override
++    public void clearBlockHighlights() {
++        if (this.getHandle().connection == null) return;
++        this.getHandle().connection.send(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new net.minecraft.network.protocol.common.custom.GameTestClearMarkersDebugPayload()));
++    }
+     // Purpur end
+ }

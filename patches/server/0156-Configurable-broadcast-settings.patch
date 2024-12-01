@@ -1,0 +1,53 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: DoctaEnkoda <bierquejason@gmail.com>
+Date: Mon, 3 May 2021 01:33:14 +0200
+Subject: [PATCH] Configurable broadcast settings
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerAdvancements.java b/src/main/java/net/minecraft/server/PlayerAdvancements.java
+index 0a16aa193ef24aa8f1716f9e089b8027fa3c0a3c..1e85c9318ede93b8e9fe548a8945324b5b00e818 100644
+--- a/src/main/java/net/minecraft/server/PlayerAdvancements.java
++++ b/src/main/java/net/minecraft/server/PlayerAdvancements.java
+@@ -250,6 +250,7 @@ public class PlayerAdvancements {
+                 advancement.value().display().ifPresent((advancementdisplay) -> {
+                     // Paper start - Add Adventure message to PlayerAdvancementDoneEvent
+                     if (event.message() != null && this.player.serverLevel().getGameRules().getBoolean(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)) {
++                        if (org.purpurmc.purpur.PurpurConfig.advancementOnlyBroadcastToAffectedPlayer) this.player.sendMessage(message); else // Purpur
+                         this.playerList.broadcastSystemMessage(io.papermc.paper.adventure.PaperAdventure.asVanilla(event.message()), false);
+                         // Paper end
+                     }
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 5f6cab9de8a854ecbd031f9f9b4152f06b28267e..76c6624ba6233b951f7ded4e0ecc1a93fc81b331 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -1342,6 +1342,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+             }));
+             PlayerTeam scoreboardteam = this.getTeam();
+ 
++            if (org.purpurmc.purpur.PurpurConfig.deathMessageOnlyBroadcastToAffectedPlayer) this.sendSystemMessage(ichatbasecomponent); else // Purpur
+             if (scoreboardteam != null && scoreboardteam.getDeathMessageVisibility() != Team.Visibility.ALWAYS) {
+                 if (scoreboardteam.getDeathMessageVisibility() == Team.Visibility.HIDE_FOR_OTHER_TEAMS) {
+                     this.server.getPlayerList().broadcastSystemToTeam(this, ichatbasecomponent);
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index 8f242ff15731e0bb0c9d95a6b52a39b6141b0fb9..66fba2c7e3b0b75d5d6c1aebc031f77010cb73d9 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -206,6 +206,18 @@ public class PurpurConfig {
+         deathMsgRunWithScissors = getString("settings.messages.death-message.run-with-scissors", deathMsgRunWithScissors);
+     }
+ 
++    public static boolean advancementOnlyBroadcastToAffectedPlayer = false;
++    public static boolean deathMessageOnlyBroadcastToAffectedPlayer = false;
++    private static void broadcastSettings() {
++        if (version < 13) {
++            boolean oldValue = getBoolean("settings.advancement.only-broadcast-to-affected-player", false);
++            set("settings.broadcasts.advancement.only-broadcast-to-affected-player", oldValue);
++            set("settings.advancement.only-broadcast-to-affected-player", null);
++        }
++        advancementOnlyBroadcastToAffectedPlayer  = getBoolean("settings.broadcasts.advancement.only-broadcast-to-affected-player", advancementOnlyBroadcastToAffectedPlayer);
++        deathMessageOnlyBroadcastToAffectedPlayer = getBoolean("settings.broadcasts.death.only-broadcast-to-affected-player", deathMessageOnlyBroadcastToAffectedPlayer);
++    }
++
+     public static String serverModName = io.papermc.paper.ServerBuildInfo.buildInfo().brandName();
+     private static void serverModName() {
+         serverModName = getString("settings.server-mod-name", serverModName);

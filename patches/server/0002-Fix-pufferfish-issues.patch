@@ -1,0 +1,100 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: BillyGalbreath <Blake.Galbreath@Gmail.com>
+Date: Tue, 4 Jan 2022 23:05:41 -0600
+Subject: [PATCH] Fix pufferfish issues
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 1bb33b64bd73c8ea591c3ffdf5573c7c55a520f3..c8f5e9eaf5fb83148ffb8ff18cb33d51561a6610 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -62,7 +62,7 @@ dependencies {
+ 
+     // Pufferfish start
+     implementation("org.yaml:snakeyaml:1.32")
+-    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8.4") {
++    implementation ("com.github.carleslc.Simple-YAML:Simple-Yaml:1.8.4") { // Purpur
+         exclude(group="org.yaml", module="snakeyaml")
+     }
+     // Pufferfish end
+diff --git a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
+index f5a43a1e1a78b3eaabbcadc7af09750ee478eeb6..3175d421e39bf1315cf699f2df7c63a6535bb5b9 100644
+--- a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
++++ b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
+@@ -229,7 +229,7 @@ public class PufferfishConfig {
+     public static int activationDistanceMod;
+ 
+     private static void dynamicActivationOfBrains() throws IOException {
+-        dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", true);
++        dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", false); // Purpur
+         startDistance = getInt("dab.start-distance", "activation-range.start-distance", 12,
+                 "This value determines how far away an entity has to be",
+                 "from the player to start being effected by DEAR.");
+@@ -256,7 +256,7 @@ public class PufferfishConfig {
+     
+     public static boolean throttleInactiveGoalSelectorTick;
+ 	private static void inactiveGoalSelectorThrottle() {
+-		throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-throttle", "inactive-goal-selector-disable", true,
++		throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-throttle", "inactive-goal-selector-disable", false, // Purpur
+ 				"Throttles the AI goal selector in entity inactive ticks.",
+ 				"This can improve performance by a few percent, but has minor gameplay implications.");
+ 	}
+diff --git a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
+index 790bad0494454ca12ee152e3de6da3da634d9b20..bf1aacdfac2d501c62038a22cb9eac7f9b946619 100644
+--- a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
++++ b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
+@@ -31,6 +31,7 @@ public record ServerBuildInfoImpl(
+     private static final String ATTRIBUTE_GIT_COMMIT = "Git-Commit";
+ 
+     private static final String BRAND_PAPER_NAME = "Paper";
++    private static final String BRAND_PUFFERFISH_NAME = "Pufferfish"; // Purpur
+ 
+     private static final String BUILD_DEV = "DEV";
+ 
+@@ -42,9 +43,9 @@ public record ServerBuildInfoImpl(
+         this(
+             getManifestAttribute(manifest, ATTRIBUTE_BRAND_ID)
+                 .map(Key::key)
+-                .orElse(BRAND_PAPER_ID),
++                .orElse(BRAND_PUFFERFISH_ID), // Purpur
+             getManifestAttribute(manifest, ATTRIBUTE_BRAND_NAME)
+-                .orElse(BRAND_PAPER_NAME),
++                .orElse(BRAND_PUFFERFISH_NAME), // Purpur
+             SharedConstants.getCurrentVersion().getId(),
+             SharedConstants.getCurrentVersion().getName(),
+             getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
+@@ -61,7 +62,7 @@ public record ServerBuildInfoImpl(
+ 
+     @Override
+     public boolean isBrandCompatible(final @NotNull Key brandId) {
+-        return brandId.equals(this.brandId);
++        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID); // Purpur
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+index 5a791fad8c27e4997d53f2e5d9a5aa28189fdf28..af8dc4a57987cc84cb1002f2e5f25c28ec98173f 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+@@ -77,7 +77,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+             if (!isLoaded) {
+                 if (Projectile.loadedThisTick > gg.pufferfish.pufferfish.PufferfishConfig.maxProjectileLoadsPerTick) {
+                     if (++this.loadedLifetime > gg.pufferfish.pufferfish.PufferfishConfig.maxProjectileLoadsPerProjectile) {
+-                        this.discard();
++                        this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD); // Purpur
+                     }
+                     return;
+                 }
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+index 29e5234c008b8ac1df240a242ff7966057075171..5c4843f6cfd13790a44fc0f928f1fbcef8a648ce 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+@@ -134,7 +134,7 @@ public class LevelChunk extends ChunkAccess implements ca.spottedleaf.moonrise.p
+         this.defaultBlockState = empty ? VOID_AIR_BLOCKSTATE : AIR_BLOCKSTATE;
+         // Paper end - get block chunk optimisation
+ 
+-        this.lightningTick = new java.util.Random().nextInt(100000) << 1; // Pufferfish - initialize lightning tick
++        this.lightningTick = java.util.concurrent.ThreadLocalRandom.current().nextInt(100000) << 1; // Pufferfish - initialize lightning tick // Purpur - any random will do
+     }
+ 
+     // CraftBukkit start

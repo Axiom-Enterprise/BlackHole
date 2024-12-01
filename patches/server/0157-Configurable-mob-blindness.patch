@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Encode42 <me@encode42.dev>
+Date: Tue, 11 May 2021 21:00:53 -0400
+Subject: [PATCH] Configurable mob blindness
+
+Ported from https://github.com/raltsmc/mobblindness
+
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 127befc7514ca36b75735b718751fb4cf3f915c4..0b99628d51df2c4df7ddf1c4c9f54e6dc3612533 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -1078,6 +1078,17 @@ public abstract class LivingEntity extends Entity implements Attackable {
+             if (entitytypes == EntityType.SKELETON && itemstack.is(Items.SKELETON_SKULL) || entitytypes == EntityType.ZOMBIE && itemstack.is(Items.ZOMBIE_HEAD) || entitytypes == EntityType.PIGLIN && itemstack.is(Items.PIGLIN_HEAD) || entitytypes == EntityType.PIGLIN_BRUTE && itemstack.is(Items.PIGLIN_HEAD) || entitytypes == EntityType.CREEPER && itemstack.is(Items.CREEPER_HEAD)) {
+                 d0 *= 0.5D;
+             }
++
++            // Purpur start
++            if (entity instanceof LivingEntity entityliving) {
++                if (entityliving.hasEffect(MobEffects.BLINDNESS)) {
++                    int amplifier = entityliving.getEffect(MobEffects.BLINDNESS).getAmplifier();
++                    for (int i = 0; i < amplifier; i++) {
++                        d0 *= this.level().purpurConfig.mobsBlindnessMultiplier;
++                    }
++                }
++            }
++            // Purpur end
+         }
+ 
+         return d0;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 990fcb015588651fff7e720594a5d5341b3f9bba..8e86a96cfdb9b8deec4ef0de0dafb2f2635c4f2c 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -138,6 +138,7 @@ public class PurpurWorldConfig {
+     public boolean imposeTeleportRestrictionsOnNetherPortals = false;
+     public boolean imposeTeleportRestrictionsOnEndPortals = false;
+     public boolean tickFluids = true;
++    public double mobsBlindnessMultiplier = 1;
+     private void miscGameplayMechanicsSettings() {
+         useBetterMending = getBoolean("gameplay-mechanics.use-better-mending", useBetterMending);
+         alwaysTameInCreative = getBoolean("gameplay-mechanics.always-tame-in-creative", alwaysTameInCreative);
+@@ -158,6 +159,7 @@ public class PurpurWorldConfig {
+         imposeTeleportRestrictionsOnNetherPortals = getBoolean("gameplay-mechanics.impose-teleport-restrictions-on-nether-portals", imposeTeleportRestrictionsOnNetherPortals);
+         imposeTeleportRestrictionsOnEndPortals = getBoolean("gameplay-mechanics.impose-teleport-restrictions-on-end-portals", imposeTeleportRestrictionsOnEndPortals);
+         tickFluids = getBoolean("gameplay-mechanics.tick-fluids", tickFluids);
++        mobsBlindnessMultiplier = getDouble("gameplay-mechanics.entity-blindness-multiplier", mobsBlindnessMultiplier);
+     }
+ 
+     public int daytimeTicks = 12000;

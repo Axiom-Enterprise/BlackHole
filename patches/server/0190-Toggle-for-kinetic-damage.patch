@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: 12emin34 <macanovic.emin@gmail.com>
+Date: Wed, 4 Aug 2021 11:44:26 +0200
+Subject: [PATCH] Toggle for kinetic damage
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 3dade05c9299f339f94b8a29475dc5ba646b26c8..c23ca02f9adbbbf32b0bf9f8a82f55781468aade 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -3228,6 +3228,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+ 
+             if (f > 0.0F) {
+                 this.playSound(this.getFallDamageSound((int) f), 1.0F, 1.0F);
++                if (level().purpurConfig.elytraKineticDamage) // Purpur
+                 this.hurt(this.damageSources().flyIntoWall(), f);
+             }
+         }
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 74515ad36cae0e838224caee3853d2f3d8bc0b11..1522df03dab1e9e8e6d471f62067a15350b909d9 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -182,11 +182,13 @@ public class PurpurWorldConfig {
+     public double elytraDamageMultiplyBySpeed = 0;
+     public int elytraDamagePerFireworkBoost = 0;
+     public int elytraDamagePerTridentBoost = 0;
++    public boolean elytraKineticDamage = true;
+     private void elytraSettings() {
+         elytraDamagePerSecond = getInt("gameplay-mechanics.elytra.damage-per-second", elytraDamagePerSecond);
+         elytraDamageMultiplyBySpeed = getDouble("gameplay-mechanics.elytra.damage-multiplied-by-speed", elytraDamageMultiplyBySpeed);
+         elytraDamagePerFireworkBoost = getInt("gameplay-mechanics.elytra.damage-per-boost.firework", elytraDamagePerFireworkBoost);
+         elytraDamagePerTridentBoost = getInt("gameplay-mechanics.elytra.damage-per-boost.trident", elytraDamagePerTridentBoost);
++        elytraKineticDamage = getBoolean("gameplay-mechanics.elytra.kinetic-damage", elytraKineticDamage);
+     }
+ 
+     public int entityLifeSpan = 0;

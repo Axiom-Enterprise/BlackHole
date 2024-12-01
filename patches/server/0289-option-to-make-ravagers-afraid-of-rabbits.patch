@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: granny <granny@purpurmc.org>
+Date: Tue, 7 May 2024 04:59:57 -0700
+Subject: [PATCH] option to make ravagers afraid of rabbits
+
+https://github.com/PurpurMC/Purpur/discussions/713
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Ravager.java b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
+index 1c8cb19a8b25593d16518006247bdf0e71e16ab1..98c1934b4895a86cd8748edf906aaa721a87a123 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Ravager.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
+@@ -122,6 +122,7 @@ public class Ravager extends Raider {
+         this.goalSelector.addGoal(0, new FloatGoal(this));
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
+         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Creaking.class, 8.0F, 1.0D, 1.2D));
++        if (level().purpurConfig.ravagerAvoidRabbits) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.AvoidEntityGoal<>(this, net.minecraft.world.entity.animal.Rabbit.class, 6.0F, 1.0D, 1.2D)); // Purpur
+         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.4D));
+         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index d396a9fee2326620a0222ff91dba63f187907525..57ddb4e6a464567cc67e09ce06218cc25af4ddf9 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -2485,6 +2485,7 @@ public class PurpurWorldConfig {
+     public boolean ravagerTakeDamageFromWater = false;
+     public List<Block> ravagerGriefableBlocks = new ArrayList<>();
+     public boolean ravagerAlwaysDropExp = false;
++    public boolean ravagerAvoidRabbits = false;
+     private void ravagerSettings() {
+         ravagerRidable = getBoolean("mobs.ravager.ridable", ravagerRidable);
+         ravagerRidableInWater = getBoolean("mobs.ravager.ridable-in-water", ravagerRidableInWater);
+@@ -2516,6 +2517,7 @@ public class PurpurWorldConfig {
+             }
+         });
+         ravagerAlwaysDropExp = getBoolean("mobs.ravager.always-drop-exp", ravagerAlwaysDropExp);
++        ravagerAvoidRabbits = getBoolean("mobs.ravager.avoid-rabbits", ravagerAvoidRabbits);
+     }
+ 
+     public boolean salmonRidable = false;

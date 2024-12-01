@@ -1,0 +1,50 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Encode42 <me@encode42.dev>
+Date: Tue, 12 Jul 2022 14:16:10 -0400
+Subject: [PATCH] Add toggle for RNG manipulation
+
+Paper patches RNG maniplulation by using a shared (and locked) random source.
+This comes with a performance gain, but technical players may prefer the ability to manipulate RNG.
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index c1ba5eab15bb4b7599c1e5e23b90dfb361af93b6..2b612bfe6da7cc6d6447c60aa6f4b72b2616b72d 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -602,7 +602,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+         this.bb = Entity.INITIAL_AABB;
+         this.stuckSpeedMultiplier = Vec3.ZERO;
+         this.nextStep = 1.0F;
+-        this.random = SHARED_RANDOM; // Paper - Share random for entities to make them more random
++        this.random = world == null || world.purpurConfig.entitySharedRandom ? SHARED_RANDOM : RandomSource.create(); // Paper - Share random for entities to make them more random // Purpur
+         this.remainingFireTicks = -this.getFireImmuneTicks();
+         this.fluidHeight = new Object2DoubleArrayMap(2);
+         this.fluidOnEyes = new HashSet();
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Squid.java b/src/main/java/net/minecraft/world/entity/animal/Squid.java
+index 7cfd9e4e29b8f3cf277679f785bae3cb12d2bd20..36a56553702fa6e4a2ac92b3639c210c94faee73 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Squid.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Squid.java
+@@ -46,7 +46,7 @@ public class Squid extends AgeableWaterCreature {
+ 
+     public Squid(EntityType<? extends Squid> type, Level world) {
+         super(type, world);
+-        //this.random.setSeed((long)this.getId()); // Paper - Share random for entities to make them more random
++        if (!world.purpurConfig.entitySharedRandom) this.random.setSeed((long)this.getId()); // Paper - Share random for entities to make them more random // Purpur
+         this.tentacleSpeed = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
+     }
+ 
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index e13d1e6d15cdfc58f4655ff288d9393e4c134a51..47b29febec2af1f3a8ef7b9afc6a4982df08eb47 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -211,9 +211,11 @@ public class PurpurWorldConfig {
+ 
+     public int entityLifeSpan = 0;
+     public float entityLeftHandedChance = 0.05f;
++    public boolean entitySharedRandom = true;
+     private void entitySettings() {
+         entityLifeSpan = getInt("gameplay-mechanics.entity-lifespan", entityLifeSpan);
+         entityLeftHandedChance = (float) getDouble("gameplay-mechanics.entity-left-handed-chance", entityLeftHandedChance);
++        entitySharedRandom = getBoolean("settings.entity.shared-random", entitySharedRandom);
+     }
+ 
+     public boolean infinityWorksWithoutArrows = false;

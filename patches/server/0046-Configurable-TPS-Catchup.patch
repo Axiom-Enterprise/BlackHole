@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Thu, 26 Mar 2020 19:06:22 -0500
+Subject: [PATCH] Configurable TPS Catchup
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 95300ce21d9e5ddfcd6cbf7cc4bb1034c9284b43..ea823be49f1782e6e1dd1ebb66a3bf7642e43e40 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1344,7 +1344,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+                         this.mayHaveDelayedTasks = true;
+                         this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + i, this.nextTickTimeNanos);
+                         // Pufferfish start - tps catchup
+-                        if (!gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup) {
++                        if (!gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup || !gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup) { // Purpur
+                             this.nextTickTimeNanos = currentTime + i;
+                             this.delayedTasksMaxNextTickTimeNanos = nextTickTimeNanos;
+                         }
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index 1103935e49081c560b024b87f872e9b8c788bad2..c8e7e6333d20ca976ed74d839ccfaebdc02e5167 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -251,4 +251,9 @@ public class PurpurConfig {
+         loggerSuppressUnrecognizedRecipeErrors = getBoolean("settings.logger.suppress-unrecognized-recipe-errors", loggerSuppressUnrecognizedRecipeErrors);
+         loggerSuppressSetBlockFarChunk = getBoolean("settings.logger.suppress-setblock-in-far-chunk-errors", loggerSuppressSetBlockFarChunk);
+     }
++
++    public static boolean tpsCatchup = true;
++    private static void tpsCatchup() {
++        tpsCatchup = getBoolean("settings.tps-catchup", tpsCatchup);
++    }
+ }

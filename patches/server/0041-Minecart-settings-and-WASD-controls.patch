@@ -17,39 +17,50 @@ index d4ed1dd4e4c56cf40632b0857af82a944579da65..a91a4602b5bc72dc0162fd2d60eebf3a
  
              if (!flag && this.spawnInvulnerableTime > 0 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b0e13160b185151e08f2e5430aa7e96977965a04 100644
+index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b31940441596079aae1cd2a38b9d22be18358448 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-@@ -92,6 +92,7 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -92,6 +92,10 @@ public abstract class AbstractMinecart extends VehicleEntity {
      private double flyingY = 0.95;
      private double flyingZ = 0.95;
      public Double maxSpeed;
-+    public double storedMaxSpeed; // Purpur
++    // Purpur start
++    public double storedMaxSpeed;
++    public boolean isNewBehavior;
++    // Purpur end
      // CraftBukkit end
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
  
-@@ -103,6 +104,7 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -100,8 +104,13 @@ public abstract class AbstractMinecart extends VehicleEntity {
+         this.blocksBuilding = true;
+         if (AbstractMinecart.useExperimentalMovement(world)) {
+             this.behavior = new NewMinecartBehavior(this);
++            this.isNewBehavior = true; // Purpur
          } else {
              this.behavior = new OldMinecartBehavior(this);
++            // Purpur start
++            this.isNewBehavior = false;
++            maxSpeed = storedMaxSpeed = world.purpurConfig.minecartMaxSpeed;
++            // Purpur end
          }
-+        if (world != null) maxSpeed = storedMaxSpeed = world.purpurConfig.minecartMaxSpeed; // Purpur
  
      }
- 
-@@ -289,6 +291,12 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -289,6 +298,14 @@ public abstract class AbstractMinecart extends VehicleEntity {
  
      @Override
      public void tick() {
 +        // Purpur start
-+        if (storedMaxSpeed != level().purpurConfig.minecartMaxSpeed) {
-+            maxSpeed = storedMaxSpeed = level().purpurConfig.minecartMaxSpeed;
++        if (!this.isNewBehavior) {
++            if (storedMaxSpeed != level().purpurConfig.minecartMaxSpeed) {
++                maxSpeed = storedMaxSpeed = level().purpurConfig.minecartMaxSpeed;
++            }
 +        }
 +        // Purpur end
 +
          // CraftBukkit start
          double prevX = this.getX();
          double prevY = this.getY();
-@@ -426,16 +434,62 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -426,16 +443,62 @@ public abstract class AbstractMinecart extends VehicleEntity {
          this.behavior.moveAlongTrack(world);
      }
  

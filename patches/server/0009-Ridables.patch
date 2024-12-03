@@ -6206,15 +6206,17 @@ index 0000000000000000000000000000000000000000..dd219518150ca90f89ad238904fd4095
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/controller/MoveControllerWASD.java b/src/main/java/org/purpurmc/purpur/controller/MoveControllerWASD.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..21fd6ea2a482758a3016e3bc2cdebe2d89267481
+index 0000000000000000000000000000000000000000..ad85c1ff6cd5d5ce2262bdb367ce9c8a5b707170
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/controller/MoveControllerWASD.java
-@@ -0,0 +1,89 @@
+@@ -0,0 +1,92 @@
 +package org.purpurmc.purpur.controller;
 +
++import net.minecraft.server.level.ServerPlayer;
 +import net.minecraft.world.entity.Mob;
 +import net.minecraft.world.entity.ai.attributes.Attributes;
 +import net.minecraft.world.entity.ai.control.MoveControl;
++import net.minecraft.world.entity.player.Input;
 +import net.minecraft.world.entity.player.Player;
 +import org.purpurmc.purpur.event.entity.RidableSpacebarEvent;
 +
@@ -6251,8 +6253,9 @@ index 0000000000000000000000000000000000000000..21fd6ea2a482758a3016e3bc2cdebe2d
 +    }
 +
 +    public void purpurTick(Player rider) {
-+        float forward = rider.getForwardMot() * 0.5F;
-+        float strafe = rider.getStrafeMot() * 0.25F;
++        Input lastClientInput = ((ServerPlayer) rider).getLastClientInput();
++        float forward = (lastClientInput.forward() == lastClientInput.backward() ? 0.0F : lastClientInput.forward() ? 1.0F : -1.0F) * 0.5F;
++        float strafe = (lastClientInput.left() == lastClientInput.right() ? 0.0F : lastClientInput.left() ? 1.0F : -1.0F) * 0.25F;
 +
 +        if (forward <= 0.0F) {
 +            forward *= 0.5F;

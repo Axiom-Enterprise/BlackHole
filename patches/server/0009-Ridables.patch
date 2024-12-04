@@ -4757,7 +4757,7 @@ index 03e3cbe73119ca76417d4dd192e1560bdfc373ec..aa4160892b9ba2486806b5a54bc1465a
      public void setPersistentAngerTarget(@Nullable UUID angryAt) {
          this.persistentAngerTarget = angryAt;
 diff --git a/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java b/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
-index 7b5f9284972b3a6bd8125891b23f73438e875c08..f935d475fd1aca407bde420e9ba8002002ea55f6 100644
+index 7b5f9284972b3a6bd8125891b23f73438e875c08..399590df6ef7ec30dddf0ecc78308a3659b2970b 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
 @@ -63,6 +63,29 @@ public class Creaking extends Monster {
@@ -4790,7 +4790,7 @@ index 7b5f9284972b3a6bd8125891b23f73438e875c08..f935d475fd1aca407bde420e9ba80020
      @Override
      protected BodyRotationControl createBodyControl() {
          return new Creaking.CreakingBodyRotationControl(this);
-@@ -296,7 +319,7 @@ public class Creaking extends Monster {
+@@ -296,28 +319,28 @@ public class Creaking extends Monster {
          }
      }
  
@@ -4799,7 +4799,14 @@ index 7b5f9284972b3a6bd8125891b23f73438e875c08..f935d475fd1aca407bde420e9ba80020
          public CreakingLookControl(final Creaking creaking) {
              super(creaking);
          }
-@@ -309,7 +332,7 @@ public class Creaking extends Monster {
+ 
+         @Override
+-        public void tick() {
++        public void vanillaTick() { // Purpur
+             if (Creaking.this.canMove()) {
+-                super.tick();
++                super.vanillaTick(); // Purpur
+             }
          }
      }
  
@@ -4808,6 +4815,16 @@ index 7b5f9284972b3a6bd8125891b23f73438e875c08..f935d475fd1aca407bde420e9ba80020
          public CreakingMoveControl(final Creaking creaking) {
              super(creaking);
          }
+ 
+         @Override
+-        public void tick() {
++        public void vanillaTick() { // Purpur
+             if (Creaking.this.canMove()) {
+-                super.tick();
++                super.vanillaTick(); // Purpur
+             }
+         }
+     }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 index 9c20651b74157582e60793ceba8adde2c354f2a8..e978aab6055f9365885e2412afdc44cb6c729af2 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java

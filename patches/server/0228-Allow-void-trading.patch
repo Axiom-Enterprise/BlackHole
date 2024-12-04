@@ -5,10 +5,10 @@ Subject: [PATCH] Allow void trading
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 9ceaf051ebc9d58b584b93832cc21ad43ac1a558..48d6b3d45d73c8f235f51a9652f33c81b3472a12 100644
+index a580610c6e528cd3a54f88f6d1031db1e6c46028..d0653880e8f8852a27e16c5c964fb7b86c40d542 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -2850,7 +2850,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -2854,7 +2854,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              // Spigot Start
              if (entity.getBukkitEntity() instanceof org.bukkit.inventory.InventoryHolder && (!(entity instanceof ServerPlayer) || entity.getRemovalReason() != Entity.RemovalReason.KILLED)) { // SPIGOT-6876: closeInventory clears death message
                  // Paper start - Fix merchant inventory not closing on entity removal

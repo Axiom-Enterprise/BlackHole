@@ -5,7 +5,7 @@ Subject: [PATCH] Fire Immunity API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 2b612bfe6da7cc6d6447c60aa6f4b72b2616b72d..193c888d0ff2a8c2ef1a7fc8fd8af5d26e701092 100644
+index 7435ff1996e0a6db2f98f1218bf7d2b73a3e2b1d..1832f7ef8a14fb60e004cb7b99a0cd0155332349 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -393,6 +393,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -16,7 +16,7 @@ index 2b612bfe6da7cc6d6447c60aa6f4b72b2616b72d..193c888d0ff2a8c2ef1a7fc8fd8af5d2
  
      public void setOrigin(@javax.annotation.Nonnull Location location) {
          this.origin = location.toVector();
-@@ -1960,7 +1961,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -1983,7 +1984,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
  
      public boolean fireImmune() {
@@ -25,7 +25,7 @@ index 2b612bfe6da7cc6d6447c60aa6f4b72b2616b72d..193c888d0ff2a8c2ef1a7fc8fd8af5d2
      }
  
      public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
-@@ -2715,6 +2716,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2738,6 +2739,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  nbttagcompound.putBoolean("Paper.FreezeLock", true);
              }
              // Paper end
@@ -37,7 +37,7 @@ index 2b612bfe6da7cc6d6447c60aa6f4b72b2616b72d..193c888d0ff2a8c2ef1a7fc8fd8af5d2
              return nbttagcompound;
          } catch (Throwable throwable) {
              CrashReport crashreport = CrashReport.forThrowable(throwable, "Saving entity NBT");
-@@ -2863,6 +2869,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2888,6 +2894,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  freezeLocked = nbt.getBoolean("Paper.FreezeLock");
              }
              // Paper end
@@ -50,7 +50,7 @@ index 2b612bfe6da7cc6d6447c60aa6f4b72b2616b72d..193c888d0ff2a8c2ef1a7fc8fd8af5d2
          } catch (Throwable throwable) {
              CrashReport crashreport = CrashReport.forThrowable(throwable, "Loading entity NBT");
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 02b07d43364c7dec37f1d2adffe123a5b595f669..51aee9a468f4ebfa9672fd9ce84883cf080859e3 100644
+index d4396ece618c0fec437ed915ce07be3fb5f7dca9..1290c1587fe9e39d9350c1079ab27f3be0c6084f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 @@ -88,6 +88,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {

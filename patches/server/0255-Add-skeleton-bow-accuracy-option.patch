@@ -5,10 +5,10 @@ Subject: [PATCH] Add skeleton bow accuracy option
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 2cadbc0d56908ca978e1735eff07f5e634548606..39d02cf0e31832e30c4f034b0b5385e3e0057e60 100644
+index f90f3e3ad7c941e3222a8119d9b01d571eef4c1b..0235488faee8078186fbb78038789da0846aca29 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-@@ -197,7 +197,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+@@ -199,7 +199,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
              }
  
              if (event.getProjectile() == entityarrow.getBukkitEntity()) {

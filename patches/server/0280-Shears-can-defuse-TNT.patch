@@ -8,7 +8,7 @@ Shears can now defuse TNT. Each world can have a configured chance for the TNT t
 By default the option is disabled to avoid breaking any possible vanilla mechanics.
 
 diff --git a/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java b/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
-index de87483600e55d88176fe25db621bbd3e464729f..287ba483614e79e78022e703ef891f59f41ac455 100644
+index 809f5e847e2f5bb594c130cebd2cb897ea768d82..6f1e21d6c104d71fe4fc3376ed2f2273a5f3d3cc 100644
 --- a/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
 +++ b/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
 @@ -249,4 +249,31 @@ public class PrimedTnt extends Entity implements TraceableEntity {

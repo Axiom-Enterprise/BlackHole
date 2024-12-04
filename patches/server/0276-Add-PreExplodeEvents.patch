@@ -5,7 +5,7 @@ Subject: [PATCH] Add PreExplodeEvents
 
 
 diff --git a/src/main/java/net/minecraft/world/level/ServerExplosion.java b/src/main/java/net/minecraft/world/level/ServerExplosion.java
-index 913f7d5fd9823eea9fad2d4e6689511f8d0cfda6..3c3d219c9339f64c23ec0b31783bf68a4423636c 100644
+index 15a3849922664b85fa6bc9101c2af380d57ea0f3..e2763ee67530074d8ec78fbff694eb84f5373de0 100644
 --- a/src/main/java/net/minecraft/world/level/ServerExplosion.java
 +++ b/src/main/java/net/minecraft/world/level/ServerExplosion.java
 @@ -670,6 +670,23 @@ public class ServerExplosion implements Explosion {

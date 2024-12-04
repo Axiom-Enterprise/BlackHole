@@ -5,7 +5,7 @@ Subject: [PATCH] Stored Bee API
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
-index b7ad467d7d7f50bcb90e50f00f905873e89c7956..def408384cbd571b7bee23f5cecf430a5d690c4b 100644
+index 7f0e37e23ff4c64355fdc822c0ac683959b8588a..6fa25cac9d88808a590281bf90f619fa2f167d4a 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
 @@ -147,11 +147,33 @@ public class BeehiveBlockEntity extends BlockEntity {
@@ -42,7 +42,7 @@ index b7ad467d7d7f50bcb90e50f00f905873e89c7956..def408384cbd571b7bee23f5cecf430a
      // Paper start - Add EntityBlockStorage clearEntities
      public void clearBees() {
          this.stored.clear();
-@@ -472,9 +494,9 @@ public class BeehiveBlockEntity extends BlockEntity {
+@@ -467,9 +489,9 @@ public class BeehiveBlockEntity extends BlockEntity {
          }
      }
  

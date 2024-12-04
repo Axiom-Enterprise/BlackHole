@@ -38,7 +38,7 @@ index 8eb51119d60979f85bc98a9413d318522c732693..08a81a45371fd273fb35956bef3bb794
          gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 5bce26e9671aab15ac4bac9a0d00b5184bef74ea..430407b0cf06ba337c59cd576c7e40a8e5fe8229 100644
+index 628f7f784c830189c5718a20ce43a9352e400c33..c471a8c81ba067abcb22956ad1a30b5a9b64fc87 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -182,6 +182,12 @@ public class Main {

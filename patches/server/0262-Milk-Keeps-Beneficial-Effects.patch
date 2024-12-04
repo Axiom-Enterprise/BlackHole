@@ -5,7 +5,7 @@ Subject: [PATCH] Milk Keeps Beneficial Effects
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 71f735d2c91d08ab652ddc8f3fe37bbb3b425ba4..f4604e543a980d6aeb485252da5a4e755aa12bfa 100644
+index 239046ab467f499107d1e30ca183d79661a380f0..33fbe0f7a356dd847e546feffb468b2803c6744b 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -1162,6 +1162,7 @@ public abstract class LivingEntity extends Entity implements Attackable {

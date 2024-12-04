@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable block fall damage modifiers
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/BedBlock.java b/src/main/java/net/minecraft/world/level/block/BedBlock.java
-index 3b19395f2ddee654a77df5738a1942a08c20c179..c130d316e87f1f896d33ab43831063a89e3bef2b 100644
+index db79ef24ea01db5f619ab29700d3d391438fb742..54836f2a1e4cc9046ba29fb71ea237b358c9cb7d 100644
 --- a/src/main/java/net/minecraft/world/level/block/BedBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/BedBlock.java
 @@ -183,7 +183,7 @@ public class BedBlock extends HorizontalDirectionalBlock implements EntityBlock
@@ -18,7 +18,7 @@ index 3b19395f2ddee654a77df5738a1942a08c20c179..c130d316e87f1f896d33ab43831063a8
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index d324eefa500c528776df698e7f9dcdeab76da167..1748aea6613e0c8081f70092c9431e7e04907383 100644
+index b0fbadd0d6ec3e34e36c9f33ed89a3c315dc4289..91e68335d7007e3c1fe13eec0060db01c5f659ac 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
 @@ -88,6 +88,10 @@ public class Block extends BlockBehaviour implements ItemLike {

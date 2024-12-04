@@ -53,7 +53,7 @@ index bbfd8f5d404d0add94f0d8ac89a2964692b37e44..9f163ed07f8e6a5370c4c355b4e910f7
 +    // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/NetherWartBlock.java b/src/main/java/net/minecraft/world/level/block/NetherWartBlock.java
-index da1c7999ca64199387054de46489d3ff4a299289..b8355ea1de26c4b6905f477fb4e110f1762447b4 100644
+index b571bca4375ca7caf9b75dbf84009cb0604b66ad..264692baa4a20b66910d8ff379fa72acb99e27f8 100644
 --- a/src/main/java/net/minecraft/world/level/block/NetherWartBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/NetherWartBlock.java
 @@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;

@@ -5,10 +5,10 @@ Subject: [PATCH] Add option to teleport to spawn on nether ceiling damage
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 193c888d0ff2a8c2ef1a7fc8fd8af5d26e701092..aa171a1afb9800e6ec84f6b4f1b28e44177752f7 100644
+index 1832f7ef8a14fb60e004cb7b99a0cd0155332349..da7ffdf85907c92fe6c4c6a5ebe571ef4666fcb8 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1000,6 +1000,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -1004,6 +1004,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
              && this.level.paperConfig().environment.netherCeilingVoidDamageHeight.test(v -> this.getY() >= v)
              && (!(this instanceof Player player) || !player.getAbilities().invulnerable))) {
              // Paper end - Configurable nether ceiling damage

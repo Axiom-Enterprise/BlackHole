@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable block blast resistance
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 6b987ee220d94b482d2aeb4ff6bf271853605dc1..852bfe68ab722a5cbdd90dbd70501b751fe81a78 100644
+index 6376b8b3ff444f4cab93e2bb5d2becc77c33c118..c8ae6e4cd74549f753ec04def5d882de1ab72308 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -91,7 +91,7 @@ public abstract class BlockBehaviour implements FeatureElement {

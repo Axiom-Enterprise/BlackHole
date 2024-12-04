@@ -5,10 +5,10 @@ Subject: [PATCH] Add more logger output for invalid movement kicks
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 1e1b42f60679c8b8b27b3255feda4c6cf77d5536..9ae16e24013ea5664d4ea6d52ed7dd188404890f 100644
+index 3c98be45587f3f6ca6cdc53834ef7dae4962f58d..f8438bc2af43ee8883db75503deac10e1e34686e 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -761,6 +761,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -756,6 +756,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
          PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel());
          if (packet.getId() == this.awaitingTeleport) {
              if (this.awaitingPositionFromClient == null) {
@@ -16,7 +16,7 @@ index 1e1b42f60679c8b8b27b3255feda4c6cf77d5536..9ae16e24013ea5664d4ea6d52ed7dd18
                  this.disconnect((Component) Component.translatable("multiplayer.disconnect.invalid_player_movement"), org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PLAYER_MOVEMENT); // Paper - kick event cause
                  return;
              }
-@@ -1372,7 +1373,15 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1425,7 +1426,15 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
      @Override
      public void handleMovePlayer(ServerboundMovePlayerPacket packet) {
          PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel());

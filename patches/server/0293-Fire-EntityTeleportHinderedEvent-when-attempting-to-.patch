@@ -6,7 +6,7 @@ Subject: [PATCH] Fire EntityTeleportHinderedEvent when attempting to teleport
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 02339cdd1e8cd6496cb466eb4b1c7ce2d9b6f064..e7600715c0b063ef74ecd29ff4bba927d4e91519 100644
+index 8e0136c55e37d1f2732c555eb7c6129eb2b84c19..22abd7c837fe35423bd0c9e94107d47156d09266 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -1462,6 +1462,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {

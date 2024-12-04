@@ -5,7 +5,7 @@ Subject: [PATCH] Explorer Map API
 
 
 diff --git a/src/main/java/net/minecraft/world/item/MapItem.java b/src/main/java/net/minecraft/world/item/MapItem.java
-index 571f2540a1e9422025efe651167e26b44b437daa..c2f3c8b3d8eeb609b6d6067c4fb404aefbf94ec5 100644
+index 8ff50a4c7461bbd9f469d503f6b5ee482d2463d7..5c0a46c11003b6e154195a8ef299416cc73eae33 100644
 --- a/src/main/java/net/minecraft/world/item/MapItem.java
 +++ b/src/main/java/net/minecraft/world/item/MapItem.java
 @@ -194,6 +194,7 @@ public class MapItem extends Item {

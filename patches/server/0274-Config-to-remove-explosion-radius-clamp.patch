@@ -5,7 +5,7 @@ Subject: [PATCH] Config to remove explosion radius clamp
 
 
 diff --git a/src/main/java/net/minecraft/world/level/ServerExplosion.java b/src/main/java/net/minecraft/world/level/ServerExplosion.java
-index bbbd451ff184be8fa13bd93d53c89a9502f9951a..913f7d5fd9823eea9fad2d4e6689511f8d0cfda6 100644
+index 685ccfb73bf7125585ef90b6a0f51b2f81daa428..15a3849922664b85fa6bc9101c2af380d57ea0f3 100644
 --- a/src/main/java/net/minecraft/world/level/ServerExplosion.java
 +++ b/src/main/java/net/minecraft/world/level/ServerExplosion.java
 @@ -311,7 +311,7 @@ public class ServerExplosion implements Explosion {

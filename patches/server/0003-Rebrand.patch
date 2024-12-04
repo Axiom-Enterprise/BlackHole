@@ -5,7 +5,7 @@ Subject: [PATCH] Rebrand
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index c8f5e9eaf5fb83148ffb8ff18cb33d51561a6610..77602e4445b1b45a17e5552ac6a769e0ed46ebc7 100644
+index cfa25c0cd7f7e249a4f22dc1d316bbf702b27e37..74d7aaae57e0e9ea9e31c4b2189ba50a0ac83bea 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -25,7 +25,7 @@ abstract class MockitoAgentProvider : CommandLineArgumentProvider {
@@ -14,10 +14,10 @@ index c8f5e9eaf5fb83148ffb8ff18cb33d51561a6610..77602e4445b1b45a17e5552ac6a769e0
  dependencies {
 -    implementation(project(":pufferfish-api")) // Pufferfish // Paper
 +    implementation(project(":purpur-api")) // Pufferfish // Paper // Purpur
+     implementation("ca.spottedleaf:concurrentutil:0.0.2") // Paper - Add ConcurrentUtil dependency
      // Paper start
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
-     implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -67,6 +67,10 @@ dependencies {
+@@ -68,6 +68,10 @@ dependencies {
      }
      // Pufferfish end
  
@@ -28,7 +28,7 @@ index c8f5e9eaf5fb83148ffb8ff18cb33d51561a6610..77602e4445b1b45a17e5552ac6a769e0
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
      testImplementation("org.junit.platform:junit-platform-suite-engine:1.10.0")
-@@ -114,14 +118,14 @@ tasks.jar {
+@@ -115,14 +119,14 @@ tasks.jar {
          val gitBranch = git("rev-parse", "--abbrev-ref", "HEAD").getText().trim() // Paper
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -48,7 +48,7 @@ index c8f5e9eaf5fb83148ffb8ff18cb33d51561a6610..77602e4445b1b45a17e5552ac6a769e0
              "Build-Number" to (build ?: ""),
              "Build-Time" to Instant.now().toString(),
              "Git-Branch" to gitBranch, // Paper
-@@ -187,7 +191,7 @@ fun TaskContainer.registerRunTask(
+@@ -188,7 +192,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -254,7 +254,7 @@ index 4e56018b64d11f76c8da43fd8f85c6de72204e36..9607675e6c5bff2183c4420d11fc63ee
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-index 6fef86e47e37eab6721cfd67d494afb25a2ded68..c914e1e13c4f64f24efa5f825e58efb69632bfa6 100644
+index 1354ccfbf525e5e64483ac5f443cc2325ba63850..5e7b833fc9f37bc370c76e5c43e6c9919d6d20af 100644
 --- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
 +++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
 @@ -491,7 +491,7 @@ public class CraftScheduler implements BukkitScheduler {
@@ -267,7 +267,7 @@ index 6fef86e47e37eab6721cfd67d494afb25a2ded68..c914e1e13c4f64f24efa5f825e58efb6
                  // (async tasks must live with race-conditions if they attempt to cancel between these few lines of code)
              }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index da306aab94697a86ac052f4536c9eff1ff23a92f..86ba02ba848ee20a2e2b52baab8986dd5a013f98 100644
+index 6ef651e6dc16bad45aeb76f8e17b97871c506a64..8979956334ad5802d221e45eba91248e7f048d13 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -505,7 +505,7 @@ public final class CraftMagicNumbers implements UnsafeValues {

@@ -5,10 +5,10 @@ Subject: [PATCH] Component related conveniences
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 77823507f99bc39181fe3c285cd077ca6ef0296b..785ea646cbefb8dc1e22a57bc3a18cdbee440e06 100644
+index e223a732b8ff485645fa3a4c08c6bf6dff146dd7..5bad9af939411e23a84184cdc13004bc5e2e2568 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2253,6 +2253,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -2236,6 +2236,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          this.lastSentExp = -1; // CraftBukkit - Added to reset
      }
  
@@ -35,7 +35,7 @@ index 77823507f99bc39181fe3c285cd077ca6ef0296b..785ea646cbefb8dc1e22a57bc3a18cdb
      @Override
      public void displayClientMessage(Component message, boolean overlay) {
          this.sendSystemMessage(message, overlay);
-@@ -2477,6 +2497,20 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -2457,6 +2477,20 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          return new CommandSourceStack(this.commandSource(), this.position(), this.getRotationVector(), this.serverLevel(), this.getPermissionLevel(), this.getName().getString(), this.getDisplayName(), this.server, this);
      }
  
@@ -57,7 +57,7 @@ index 77823507f99bc39181fe3c285cd077ca6ef0296b..785ea646cbefb8dc1e22a57bc3a18cdb
          this.sendSystemMessage(message, false);
      }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 30de3d1a7792c38ae946f19cb0e14637919b5001..cf8b7f93a1ba027c00d7f45809fa51f1ab55a5de 100644
+index 9b71655a425356132afb786eff623f558e1e3498..b973a07d199bc856643b23c090eb56bd1aeb0104 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -991,6 +991,20 @@ public abstract class PlayerList {

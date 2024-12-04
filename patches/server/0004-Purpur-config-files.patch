@@ -92,10 +92,10 @@ index d62f7375394409a278bc565c8263506c598ceeba..2a7fd4420467cce0c4ddca749955ba45
          gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
          gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index eb9fdff179f59d49b17ee3af18cef7508d45987f..e7b9c8a473403002a75b6840250439c91ed12c1c 100644
+index 6470f145e2470574a40ddce6ca5bf924c1bb094c..31ec722cfb102eaea5511aca07a48e4ad36d73af 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -174,6 +174,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -175,6 +175,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
      // Paper end - add paper world config
  
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
@@ -103,7 +103,7 @@ index eb9fdff179f59d49b17ee3af18cef7508d45987f..e7b9c8a473403002a75b6840250439c9
      public static BlockPos lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
      private org.spigotmc.TickLimiter tileLimiter;
-@@ -842,6 +843,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -843,6 +844,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
          // Paper end - getblock optimisations - cache world height/sections
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = paperWorldConfigCreator.apply(this.spigotConfig); // Paper - create paper world config
@@ -159,7 +159,7 @@ index ac8af406180bc680d46e8edc3da0fc2e5211345a..48a8bdd45c063797144e98e76f6007ae
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index be0d38544395a9b3befb898bb961f34e32fe9509..9ad9239ae0804cc7a4a9ea4a05401b303ae9b372 100644
+index 1c2439ffc1e407ff69286817d22f127470ce07ba..ae274a56f7cb6200b3c556ed61254bb28146c771 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -176,6 +176,14 @@ public class Main {

@@ -5,10 +5,10 @@ Subject: [PATCH] Purpur client support
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5a8f396d47577f087abb415c972fd4f51e50faba..77823507f99bc39181fe3c285cd077ca6ef0296b 100644
+index 8aff5b7dd14b835788348b22b1fec4d381df816f..e223a732b8ff485645fa3a4c08c6bf6dff146dd7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -329,6 +329,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -327,6 +327,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public com.destroystokyo.paper.event.entity.PlayerNaturallySpawnCreaturesEvent playerNaturallySpawnedEvent; // Paper - PlayerNaturallySpawnCreaturesEvent
      public @Nullable String clientBrandName = null; // Paper - Brand support
      public org.bukkit.event.player.PlayerQuitEvent.QuitReason quitReason = null; // Paper - Add API for quit reason; there are a lot of changes to do if we change all methods leading to the event
@@ -43,10 +43,10 @@ index b0bc66dc7248aae691dcab68b925b52a1695e63f..b6dd6bde947ac7502f25d31603995961
              try {
                  String channels = payload.toString(com.google.common.base.Charsets.UTF_8);
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 554714e449d1d2439b05d7e15f72afccd17d4df5..3d2322233aff511bcc5c85b24230c2e08dc0bcd0 100644
+index 84c494ca81b8f58604b372ac7236147776817a4f..d86bf4f995e8156f594fa90ebbab4165e52c0e09 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3580,4 +3580,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3565,4 +3565,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundEntityEventPacket(((CraftEntity) target).getHandle(), effect.getData()));
      }
      // Paper end - entity effect API

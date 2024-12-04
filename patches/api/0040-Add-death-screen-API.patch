@@ -5,7 +5,7 @@ Subject: [PATCH] Add death screen API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 0b8f7c39ff90b57eb7104d3a0cf1c29ee551b522..a7f989121c493baff9d2b6910c39145a0e12477d 100644
+index 8cedbba4e65b0a8d3a17c6960033e2a324c64bc9..6f7f1fc3db0237021fa1bd0f11fe56b2d6d4f84a 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -4009,5 +4009,25 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM

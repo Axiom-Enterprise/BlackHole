@@ -5,7 +5,7 @@ Subject: [PATCH] Shears can have looting enchantment
 
 
 diff --git a/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java b/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
-index 5831ffe24eed01311c71989dcb1830dbc395607b..45f5493eebfecf56b7c0ef4659c078dfc62c0612 100644
+index bd653ad99e8e75af1494b595640c3910f4d37e6e..13b903e785a9ef5e513cb9d6483482133cc5f25b 100644
 --- a/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
 +++ b/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
 @@ -238,6 +238,16 @@ public enum EnchantmentTarget {

@@ -5,7 +5,7 @@ Subject: [PATCH] Purpur client support
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 95f0b3186e313c7fbd5c8531d52b82a69e525f94..76fd6c5377bb5b4d1c1f508456931bf27ad49e3e 100644
+index fac4aec289e07231d80a9890653432f688355afa..c8365c38c91b3e6c4f721074f0646fe5adffbdf6 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -3911,4 +3911,13 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM

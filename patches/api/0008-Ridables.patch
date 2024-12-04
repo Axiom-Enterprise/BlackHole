@@ -5,7 +5,7 @@ Subject: [PATCH] Ridables
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index d0ae8a94db20281d3664d74718c65234eb2e5f83..bf6d13cc6b0566f4076383c8f170dc8c9589e416 100644
+index 19272cff8d6d040e95b2644d70acdac606e06c16..5603ecc5d8f6ccf29333e1c47db3af36379a27d6 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -1172,4 +1172,35 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent

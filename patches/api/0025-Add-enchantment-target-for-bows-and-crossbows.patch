@@ -5,7 +5,7 @@ Subject: [PATCH] Add enchantment target for bows and crossbows
 
 
 diff --git a/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java b/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
-index 455ff52d90565838fe7640c3f045b27082a6c2f1..5831ffe24eed01311c71989dcb1830dbc395607b 100644
+index 6fcc15d588239481136876d117ab346a8deac1dd..bd653ad99e8e75af1494b595640c3910f4d37e6e 100644
 --- a/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
 +++ b/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
 @@ -227,6 +227,18 @@ public enum EnchantmentTarget {

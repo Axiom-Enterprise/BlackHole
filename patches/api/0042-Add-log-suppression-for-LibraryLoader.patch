@@ -5,7 +5,7 @@ Subject: [PATCH] Add log suppression for LibraryLoader
 
 
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 301e82369603f3dd6e6c1bd380da4bacacd7ef6c..0c6ca7588fb3d6b6497ddf032fe75e5c6c9719e5 100644
+index 45a9ca8969f635d20cc44c062fda85bbccd8f8ff..e2b631fc160f13ea6e27b69f835bbdf83d6d3dec 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -55,6 +55,7 @@ public final class JavaPluginLoader implements PluginLoader {

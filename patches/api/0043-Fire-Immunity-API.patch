@@ -5,7 +5,7 @@ Subject: [PATCH] Fire Immunity API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 22713e97e7c7b643b80c07a88ae890d7c4304730..b7d53973ac4e829a03821d59e0b3a28d6f6a4373 100644
+index a4136da96f0759ca137a86f2518af58bccb6b632..076fe310d500ebb52e705a3a69e895061702f470 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -1209,5 +1209,18 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent

@@ -5,7 +5,7 @@ Subject: [PATCH] Add predicate to recipe's ExactChoice ingredient
 
 
 diff --git a/src/main/java/org/bukkit/inventory/RecipeChoice.java b/src/main/java/org/bukkit/inventory/RecipeChoice.java
-index f1aa67997f904953742e8895e49341c2f73d44a2..993cf7995514fb0ef3c4388bb3ce49c3187ab251 100644
+index 922bb69b5f218e489a6dd5e0f207743c1f1d3d35..9b3e292be334d21eb978373f434bf3811ec4af2b 100644
 --- a/src/main/java/org/bukkit/inventory/RecipeChoice.java
 +++ b/src/main/java/org/bukkit/inventory/RecipeChoice.java
 @@ -191,6 +191,7 @@ public interface RecipeChoice extends Predicate<ItemStack>, Cloneable {

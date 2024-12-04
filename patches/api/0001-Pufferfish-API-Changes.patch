@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index e29e5024fa693baae469d47fe77b57118f14627c..aae422978887a0f2cf531b2dc862705148569676 100644
+index 8d76f0a8b6b67f0cae0b2fa23f0f79fc9fe97f30..ed46baad9fad925201cf2aeaea884a796af5dd9c 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -64,6 +64,7 @@ dependencies {
@@ -389,7 +389,7 @@ index 0000000000000000000000000000000000000000..ae2464920c9412ac90b819a540ee58be
 +	
 +}
 diff --git a/src/main/java/org/bukkit/map/MapPalette.java b/src/main/java/org/bukkit/map/MapPalette.java
-index 55a46db9d73885ea967ac929013906b687e476bb..b99796629100c7d5fff1b7f84026001e0013b477 100644
+index 6995f9cc08d162e3adcd3a28f6bfa6d329661999..b9edb96fc5bac8793477657dbb45ccf98ab17f27 100644
 --- a/src/main/java/org/bukkit/map/MapPalette.java
 +++ b/src/main/java/org/bukkit/map/MapPalette.java
 @@ -1,6 +1,7 @@
@@ -426,7 +426,7 @@ index 55a46db9d73885ea967ac929013906b687e476bb..b99796629100c7d5fff1b7f84026001e
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index b878e7167cfcdea0e224c182b40abeadd339d3b3..6b6edf9007997d9672e4c850464c1b71cb55f6b4 100644
+index 001465eedafa51ac027a4db51cba6223edfe1171..2e6d62c4f3687e299c34e876c503b400e13be05a 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -597,7 +597,9 @@ public final class SimplePluginManager implements PluginManager {
@@ -452,7 +452,7 @@ index b878e7167cfcdea0e224c182b40abeadd339d3b3..6b6edf9007997d9672e4c850464c1b71
                      callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
                  }
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index eaefbb00e9993d54906cc8cf35cf753c0d6c7707..301e82369603f3dd6e6c1bd380da4bacacd7ef6c 100644
+index b412aaf08901d169ac9fc89b36f9d6ccb95c53d3..45a9ca8969f635d20cc44c062fda85bbccd8f8ff 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -336,7 +336,13 @@ public final class JavaPluginLoader implements PluginLoader {

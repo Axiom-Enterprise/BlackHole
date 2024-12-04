@@ -5,7 +5,7 @@ Subject: [PATCH] Extended OfflinePlayer API
 
 
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index a028f2fe541491729856051780b33dba07832fb6..fc64902368a068481f16d5db99c94386caf6b60b 100644
+index 5622fe3165baad8138c22cfc016ed6c3834cf702..6d31b561d915180fcd473b317721064feed28f37 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
 @@ -573,4 +573,106 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio

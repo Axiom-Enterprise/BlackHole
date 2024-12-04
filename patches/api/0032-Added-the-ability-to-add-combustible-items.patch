@@ -5,7 +5,7 @@ Subject: [PATCH] Added the ability to add combustible items
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 30b4005b99a31de2c64d35432a751c00b3b335f6..c4de1352f3f061e950d3fdc114b6542cf13a34ce 100644
+index cd6c712a2ad92f73c7ce8f4ada8b810fcba00ba3..79528ad4408eac53754ccc810445970e263a1a32 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -2987,5 +2987,24 @@ public final class Bukkit {
@@ -34,7 +34,7 @@ index 30b4005b99a31de2c64d35432a751c00b3b335f6..c4de1352f3f061e950d3fdc114b6542c
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index ca315417c7e60d50f48af07c53f6e7405fb88053..30e52ca06cac23f35143767937ce474a8339018a 100644
+index 788702d1c5be00a78a0438e267fe5fca9985e4ce..c1523229138d5d07569c8e564cf27b8276cca153 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -2634,5 +2634,20 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi

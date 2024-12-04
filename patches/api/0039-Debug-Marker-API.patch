@@ -5,7 +5,7 @@ Subject: [PATCH] Debug Marker API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index c4de1352f3f061e950d3fdc114b6542cf13a34ce..d42c463ff5e60318470e6c3270ff7bc6f0aaaeb1 100644
+index 79528ad4408eac53754ccc810445970e263a1a32..db453d04efb00baaeabb904a7bd1b99dd0a50735 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -3006,5 +3006,89 @@ public final class Bukkit {
@@ -99,7 +99,7 @@ index c4de1352f3f061e950d3fdc114b6542cf13a34ce..d42c463ff5e60318470e6c3270ff7bc6
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 30e52ca06cac23f35143767937ce474a8339018a..9a25dd2166892d612d32a4611a2531a3cee6754f 100644
+index c1523229138d5d07569c8e564cf27b8276cca153..fcfad39173ecf2573a1ba77236bce8d9f73e02bb 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -2649,5 +2649,75 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -179,7 +179,7 @@ index 30e52ca06cac23f35143767937ce474a8339018a..9a25dd2166892d612d32a4611a2531a3
      // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 26a0ed5437842492432a26778fadd9ae41dc0569..820c22c7a20d19a74139bc1537515405b4b2f46c 100644
+index 3d1e2a6804980c091fe2a66a6810564d317d339f..5f7de23e419175e55459df760c7190639ea39f18 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
 @@ -4254,6 +4254,76 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
@@ -260,7 +260,7 @@ index 26a0ed5437842492432a26778fadd9ae41dc0569..820c22c7a20d19a74139bc1537515405
  
      /**
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 5d449299f958cb747e62e9ccfc8ff6cc32236dcd..0b8f7c39ff90b57eb7104d3a0cf1c29ee551b522 100644
+index ed0f892ed987419809fe1a0390b6278c99659919..8cedbba4e65b0a8d3a17c6960033e2a324c64bc9 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -3939,5 +3939,75 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM

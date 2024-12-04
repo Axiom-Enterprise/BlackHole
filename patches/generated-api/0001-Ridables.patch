@@ -5,7 +5,7 @@ Subject: [PATCH] Ridables
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index 35dfd25f21ca67b7f4d69326500980f4a021ef49..cd76656694067b333152ac46bc6a40ad8d28d2ac 100644
+index f15a7b4471cd31a487467ec7ecf7a186fa887a51..9b9eb256c4f17693e717e87e62a2e61b928f073a 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 @@ -441,6 +441,12 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {

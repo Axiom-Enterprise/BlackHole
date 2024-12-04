@@ -5,7 +5,7 @@ Subject: [PATCH] Iron golem poppy calms anger
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index e8b22b5ea11671d847a2e243ce570afd4ecb8aca..a9816fbfa466b3fe3f82c19aeeeb564c660e4b6a 100644
+index 6eea8fbe575c4570c2b760c9828f8ec5b81c7202..e7795889133063ac165d5b4783ddcbcbb442f189 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 @@ -450,6 +450,7 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {

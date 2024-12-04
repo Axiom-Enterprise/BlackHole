@@ -5,7 +5,7 @@ Subject: [PATCH] Phantoms attracted to crystals and crystals shoot phantoms
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index cd76656694067b333152ac46bc6a40ad8d28d2ac..d3b12268a01b0181b340175757c8b7f657540e94 100644
+index 9b9eb256c4f17693e717e87e62a2e61b928f073a..33eed1c791eeaeb4eba538d32ce8516c5d5fc6c0 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 @@ -445,6 +445,8 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {

@@ -5,7 +5,7 @@ Subject: [PATCH] Rabid Wolf API
 
 
 diff --git a/com/destroystokyo/paper/entity/ai/VanillaGoal.java b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
-index 79de9f1ab1e709d1402d3a8017cc729b7fffc961..e8b22b5ea11671d847a2e243ce570afd4ecb8aca 100644
+index 9ef2111b60ace1a088c8c3d4707b26c06f14037c..6eea8fbe575c4570c2b760c9828f8ec5b81c7202 100644
 --- a/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 +++ b/com/destroystokyo/paper/entity/ai/VanillaGoal.java
 @@ -449,6 +449,7 @@ public interface VanillaGoal<T extends Mob> extends Goal<T> {

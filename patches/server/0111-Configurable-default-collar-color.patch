@@ -1,0 +1,88 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Encode42 <me@encode42.dev>
+Date: Thu, 10 Dec 2020 13:43:28 -0500
+Subject: [PATCH] Configurable default collar color
+
+This allows for the server to set a default collar color when a wolf or cat is tamed.
+Resets to RED when the value is invalid.
+
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
+index 4be5d2c0ed8d314e09d43cb00d52f2452f84a426..c8e7eb5af0b7288d5ad3637ad5d1883b0cffc923 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Cat.java
+@@ -355,6 +355,14 @@ public class Cat extends TamableAnimal implements VariantHolder<Holder<CatVarian
+         return Mth.lerp(tickDelta, this.relaxStateOneAmountO, this.relaxStateOneAmount);
+     }
+ 
++    // Purpur start
++    @Override
++    public void tame(Player player) {
++        setCollarColor(level().purpurConfig.catDefaultCollarColor);
++        super.tame(player);
++    }
++    // Purpur end
++
+     @Nullable
+     @Override
+     public Cat getBreedOffspring(ServerLevel world, AgeableMob entity) {
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
+index 7eeb283d969c93e884791709734abf8b64b730d5..c05dd4e3489ea9c8a25244d2b4ccdb967c19d7db 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
+@@ -212,6 +212,12 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+         }
+     }
+ 
++    @Override
++    public void tame(Player player) {
++        setCollarColor(level().purpurConfig.wolfDefaultCollarColor);
++        super.tame(player);
++    }
++
+     @Override
+     protected void registerGoals() {
+         this.goalSelector.addGoal(1, new FloatGoal(this));
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index ece3de874b4ad6dd9f17190281dcad2eab6a3097..8caef74b83984c6351f7366376b64be50b50a41c 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -619,6 +619,7 @@ public class PurpurWorldConfig {
+     public int catSpawnSwampHutScanRange = 16;
+     public int catSpawnVillageScanRange = 48;
+     public int catBreedingTicks = 6000;
++    public DyeColor catDefaultCollarColor = DyeColor.RED;
+     private void catSettings() {
+         catRidable = getBoolean("mobs.cat.ridable", catRidable);
+         catRidableInWater = getBoolean("mobs.cat.ridable-in-water", catRidableInWater);
+@@ -634,6 +635,11 @@ public class PurpurWorldConfig {
+         catSpawnSwampHutScanRange = getInt("mobs.cat.scan-range-for-other-cats.swamp-hut", catSpawnSwampHutScanRange);
+         catSpawnVillageScanRange = getInt("mobs.cat.scan-range-for-other-cats.village", catSpawnVillageScanRange);
+         catBreedingTicks = getInt("mobs.cat.breeding-delay-ticks", catBreedingTicks);
++        try {
++            catDefaultCollarColor = DyeColor.valueOf(getString("mobs.cat.default-collar-color", catDefaultCollarColor.name()));
++        } catch (IllegalArgumentException ignore) {
++            catDefaultCollarColor = DyeColor.RED;
++        }
+     }
+ 
+     public boolean caveSpiderRidable = false;
+@@ -2064,6 +2070,7 @@ public class PurpurWorldConfig {
+     public boolean wolfControllable = true;
+     public double wolfMaxHealth = 8.0D;
+     public double wolfScale = 1.0D;
++    public DyeColor wolfDefaultCollarColor = DyeColor.RED;
+     public boolean wolfMilkCuresRabies = true;
+     public double wolfNaturalRabid = 0.0D;
+     public int wolfBreedingTicks = 6000;
+@@ -2078,6 +2085,11 @@ public class PurpurWorldConfig {
+         }
+         wolfMaxHealth = getDouble("mobs.wolf.attributes.max_health", wolfMaxHealth);
+         wolfScale = Mth.clamp(getDouble("mobs.wolf.attributes.scale", wolfScale), 0.0625D, 16.0D);
++        try {
++            wolfDefaultCollarColor = DyeColor.valueOf(getString("mobs.wolf.default-collar-color", wolfDefaultCollarColor.name()));
++        } catch (IllegalArgumentException ignore) {
++            wolfDefaultCollarColor = DyeColor.RED;
++        }
+         wolfMilkCuresRabies = getBoolean("mobs.wolf.milk-cures-rabid-wolves", wolfMilkCuresRabies);
+         wolfNaturalRabid = getDouble("mobs.wolf.spawn-rabid-chance", wolfNaturalRabid);
+         wolfBreedingTicks = getInt("mobs.wolf.breeding-delay-ticks", wolfBreedingTicks);

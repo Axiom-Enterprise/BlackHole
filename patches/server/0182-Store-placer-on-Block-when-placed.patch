@@ -5,10 +5,10 @@ Subject: [PATCH] Store placer on Block when placed
 
 
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index d644d02b039ca918391a32a04549f7a34386b3f9..42b259c3878bd34b8e7cb768887fd1456be8db35 100644
+index 095c86ea25fc4f385d96d2e92fa67a150e27c489..5964c2e77e9f21c72d9e0655e5f48d2798317779 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -503,6 +503,7 @@ public final class ItemStack implements DataComponentHolder {
+@@ -508,6 +508,7 @@ public final class ItemStack implements DataComponentHolder {
                      world.isBlockPlaceCancelled = true; // Paper - prevent calling cleanup logic when undoing a block place upon a cancelled BlockPlaceEvent
                          for (BlockState blockstate : blocks) {
                              blockstate.update(true, false);
@@ -16,7 +16,7 @@ index d644d02b039ca918391a32a04549f7a34386b3f9..42b259c3878bd34b8e7cb768887fd145
                          }
                      world.isBlockPlaceCancelled = false; // Paper - prevent calling cleanup logic when undoing a block place upon a cancelled BlockPlaceEvent
                          world.preventPoiUpdated = false;
-@@ -535,6 +536,7 @@ public final class ItemStack implements DataComponentHolder {
+@@ -540,6 +541,7 @@ public final class ItemStack implements DataComponentHolder {
                              if (!(block.getBlock() instanceof BaseEntityBlock)) { // Containers get placed automatically
                                  block.onPlace(world, newblockposition, oldBlock, true, context);
                              }
@@ -25,7 +25,7 @@ index d644d02b039ca918391a32a04549f7a34386b3f9..42b259c3878bd34b8e7cb768887fd145
                              world.notifyAndUpdatePhysics(newblockposition, null, oldBlock, block, world.getBlockState(newblockposition), updateFlag, 512); // send null chunk as chunk.k() returns false by this point
                          }
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index b6d6c2cb9b227a17fb4ce42bc75f92206fbea043..c35513d05bd70e296a0e5ffe92c36016a13173b4 100644
+index c0b1f903962b25d8ff6c2b4fcd2be0e45de09b35..17a157e2dcd977c9f7d886f8867056e88962c32e 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
 @@ -433,7 +433,17 @@ public class Block extends BlockBehaviour implements ItemLike {

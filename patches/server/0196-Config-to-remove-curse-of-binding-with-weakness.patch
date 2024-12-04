@@ -5,10 +5,10 @@ Subject: [PATCH] Config to remove curse of binding with weakness
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/ArmorSlot.java b/src/main/java/net/minecraft/world/inventory/ArmorSlot.java
-index 6c0b6abb1698fac9bb902f695b725d4ab783ee90..091e3c3514fcb378b68098114106d09f04d8fb0d 100644
+index db7caaa2e77b9b98adac8add3040131c673c036b..262d9b2507d37edf0ed9c0821059e518d1baa9e9 100644
 --- a/src/main/java/net/minecraft/world/inventory/ArmorSlot.java
 +++ b/src/main/java/net/minecraft/world/inventory/ArmorSlot.java
-@@ -45,7 +45,7 @@ class ArmorSlot extends Slot {
+@@ -44,7 +44,7 @@ class ArmorSlot extends Slot {
      @Override
      public boolean mayPickup(Player playerEntity) {
          ItemStack itemStack = this.getItem();

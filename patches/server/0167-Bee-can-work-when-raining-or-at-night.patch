@@ -5,10 +5,10 @@ Subject: [PATCH] Bee can work when raining or at night
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index d47e5f774567aa4710686430b66eb1409c2f0c97..8caee835f524d23d061ff73d9fb609482ed57505 100644
+index e6e5954ca4366ad20b1d1413053739c767c45824..ea5559e6f536ab823f987ce57fc01d6dab26314d 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-@@ -426,7 +426,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -430,7 +430,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
      }
  
      public static boolean isNightOrRaining(Level world) {

@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 8d0e578c5ee54af4e9f183b2865573881a3f9062..c1ba5eab15bb4b7599c1e5e23b90dfb361af93b6 100644
+index 60ffa728e6b8c861b0d108d1562150ccb671af33..433dbe3c9350cd55ff22d490e077bf1a31ae83be 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -578,6 +578,22 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -33,10 +33,10 @@ index 8d0e578c5ee54af4e9f183b2865573881a3f9062..c1ba5eab15bb4b7599c1e5e23b90dfb3
          this.id = Entity.ENTITY_COUNTER.incrementAndGet();
          this.despawnTime = type == EntityType.PLAYER ? -1 : world.paperConfig().entities.spawning.despawnTime.getOrDefault(type, io.papermc.paper.configuration.type.number.IntOr.Disabled.DISABLED).or(-1); // Paper - entity despawn time limit
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 0b99628d51df2c4df7ddf1c4c9f54e6dc3612533..3dade05c9299f339f94b8a29475dc5ba646b26c8 100644
+index 2a187f1b674a6e8279495921088d5a0620c4e404..33fe6d19b3702d8de987fd9292dfca35e08ca875 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -297,6 +297,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -295,6 +295,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
      public org.bukkit.craftbukkit.entity.CraftLivingEntity getBukkitLivingEntity() { return (org.bukkit.craftbukkit.entity.CraftLivingEntity) super.getBukkitEntity(); } // Paper
      public boolean silentDeath = false; // Paper - mark entity as dying silently for cancellable death event
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
@@ -64,7 +64,7 @@ index 0b99628d51df2c4df7ddf1c4c9f54e6dc3612533..3dade05c9299f339f94b8a29475dc5ba
      }
  
      // CraftBukkit start
-@@ -3804,6 +3811,34 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3815,6 +3822,34 @@ public abstract class LivingEntity extends Entity implements Attackable {
              }
          }
  
@@ -100,10 +100,10 @@ index 0b99628d51df2c4df7ddf1c4c9f54e6dc3612533..3dade05c9299f339f94b8a29475dc5ba
  
      public boolean isSensitiveToWater() {
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 01da954d982b59bca8d8b76e66021ee04138a923..7ca12a1128661ea36e2e33cda204c7d2df55a21c 100644
+index 30be625e2f9c84f9ee3dbb68c8fc3806eae8a510..5ce7224afc224698e8b1c200c66a1069aab4458c 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1776,17 +1776,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1777,17 +1777,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      protected void playAttackSound() {}
  
      public boolean isSunBurnTick() {
@@ -124,10 +124,10 @@ index 01da954d982b59bca8d8b76e66021ee04138a923..7ca12a1128661ea36e2e33cda204c7d2
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index cf8422f7b9234a16f4537dfd212c55ded92cb1aa..bbe4c1cb4244ab813ef7d56c46c3ae62701c4824 100644
+index 617d06f7757ffbdd3eea14f7cbd881eaac075cc3..d41ed97feabd5b37f1ffae2a7b12c10895404591 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-@@ -68,6 +68,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+@@ -70,6 +70,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
      protected AbstractSkeleton(EntityType<? extends AbstractSkeleton> type, Level world) {
          super(type, world);
          this.reassessWeaponGoal();
@@ -135,7 +135,7 @@ index cf8422f7b9234a16f4537dfd212c55ded92cb1aa..bbe4c1cb4244ab813ef7d56c46c3ae62
      }
  
      @Override
-@@ -98,37 +99,14 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+@@ -100,37 +101,14 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
      abstract SoundEvent getStepSound();
  
      // Paper start - shouldBurnInDay API
@@ -175,7 +175,7 @@ index cf8422f7b9234a16f4537dfd212c55ded92cb1aa..bbe4c1cb4244ab813ef7d56c46c3ae62
          super.aiStep();
      }
  
-@@ -245,7 +223,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+@@ -252,7 +230,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
          super.readAdditionalSaveData(nbt);
          this.reassessWeaponGoal();
          // Paper start - shouldBurnInDay API
@@ -184,7 +184,7 @@ index cf8422f7b9234a16f4537dfd212c55ded92cb1aa..bbe4c1cb4244ab813ef7d56c46c3ae62
              this.shouldBurnInDay = nbt.getBoolean("Paper.ShouldBurnInDay");
          }
          // Paper end - shouldBurnInDay API
-@@ -255,7 +233,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+@@ -262,7 +240,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
      @Override
      public void addAdditionalSaveData(CompoundTag nbt) {
          super.addAdditionalSaveData(nbt);
@@ -215,13 +215,13 @@ index 78e95f15de02cc0b2f2c6d71bf6c10828986c6f4..324fca775bacd06dcd521ce4b33d4f7d
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Phantom.java b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-index 6e665d75f2c3a6cec6307a2befb07e73e48da5eb..cc84fbab113f5633df274deb48de2484b05bb3ff 100644
+index 6a180656fb53b2f2a70cf219dc9ce7918b7d88ad..58318fcd78022eae68637e83d29498591a0387ad 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 @@ -60,6 +60,7 @@ public class Phantom extends FlyingMob implements Enemy {
          this.xpReward = 5;
          this.moveControl = new Phantom.PhantomMoveControl(this);
-         this.lookControl = new Phantom.PhantomLookControl(this, this);
+         this.lookControl = new Phantom.PhantomLookControl(this);
 +        this.setShouldBurnInDay(true); // Purpur - API for any mob to burn daylight
      }
  
@@ -357,7 +357,7 @@ index d79eb7bd6d38a4f1aee89cf0cf331a126351e767..b34dec421adc3ce56c0720a839a43ce4
          }
          // Paper end - Add more Zombie API
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index ac4064172f982a6efc25378fbd088cca1dda4a14..02b07d43364c7dec37f1d2adffe123a5b595f669 100644
+index c0b6efefc4d4f31602f39afa76f837300c22f804..d4396ece618c0fec437ed915ce07be3fb5f7dca9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 @@ -87,6 +87,13 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
@@ -375,7 +375,7 @@ index ac4064172f982a6efc25378fbd088cca1dda4a14..02b07d43364c7dec37f1d2adffe123a5
          Preconditions.checkArgument(entity != null, "Unknown entity");
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index d0c409f4efad289e3e325f44b500fc72589d89d4..bf84c9664ca6d6c3d862e592c39bcc59374b63fe 100644
+index 4f98d138a275a6c34528b7a5148ef265bc38d6b5..7ccc40555964b906be6987532de1f319e38741ce 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -1211,4 +1211,16 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {

@@ -5,10 +5,10 @@ Subject: [PATCH] Option to make drowned break doors
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Drowned.java b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
-index 1f41e4a88fb41347b8b1ac6b3d1c454ad35ebfc4..ec00c6b2a8b6a5e0ef030d65f86d4a7d72dbeb21 100644
+index f33fa55bd8f894389121d38eb811ff739f31c811..44f6949166cdf78e2d197ab5a5affae6eb649ec7 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Drowned.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
-@@ -127,6 +127,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
+@@ -130,6 +130,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
          this.goalSelector.addGoal(2, new Drowned.DrownedAttackGoal(this, 1.0, false));
          this.goalSelector.addGoal(5, new Drowned.DrownedGoToBeachGoal(this, 1.0));
          this.goalSelector.addGoal(6, new Drowned.DrownedSwimUpGoal(this, 1.0, this.level().getSeaLevel()));

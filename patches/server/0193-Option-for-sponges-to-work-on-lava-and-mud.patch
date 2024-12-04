@@ -6,7 +6,7 @@ Subject: [PATCH] Option for sponges to work on lava and mud
 Co-authored by: granny <granny@purpurmc.org>
 
 diff --git a/src/main/java/net/minecraft/world/level/block/SpongeBlock.java b/src/main/java/net/minecraft/world/level/block/SpongeBlock.java
-index d82c62cdb219cee0bbc3083e38e18b7615ad09ef..4c5bc71fef307d13b640e534ace0b4411f6e97e2 100644
+index 9201d911cf155aab7735600073426a0d4213f38b..4540d3a31ed89ea3684feeffb85a391655e9cbbc 100644
 --- a/src/main/java/net/minecraft/world/level/block/SpongeBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/SpongeBlock.java
 @@ -80,7 +80,7 @@ public class SpongeBlock extends Block {
@@ -15,7 +15,7 @@ index d82c62cdb219cee0bbc3083e38e18b7615ad09ef..4c5bc71fef307d13b640e534ace0b441
  
 -                if (!fluid.is(FluidTags.WATER)) {
 +                if (!fluid.is(FluidTags.WATER) && (!world.purpurConfig.spongeAbsorbsLava || !fluid.is(FluidTags.LAVA)) && (!world.purpurConfig.spongeAbsorbsWaterFromMud || !iblockdata.is(Blocks.MUD))) { // Purpur
-                     return false;
+                     return BlockPos.TraversalNodeStatus.SKIP;
                  } else {
                      Block block = iblockdata.getBlock();
 @@ -95,6 +95,10 @@ public class SpongeBlock extends Block {
@@ -28,7 +28,7 @@ index d82c62cdb219cee0bbc3083e38e18b7615ad09ef..4c5bc71fef307d13b640e534ace0b441
 +                    // Purpur end
                      } else {
                          if (!iblockdata.is(Blocks.KELP) && !iblockdata.is(Blocks.KELP_PLANT) && !iblockdata.is(Blocks.SEAGRASS) && !iblockdata.is(Blocks.TALL_SEAGRASS)) {
-                             return false;
+                             return BlockPos.TraversalNodeStatus.SKIP;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index 2710709349c9d32b4b7e83bbb1cc9b1fde29310a..afad9ec6ea76ba66cad2f895ce04cc704e8d3235 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java

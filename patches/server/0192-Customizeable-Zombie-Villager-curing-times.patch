@@ -5,7 +5,7 @@ Subject: [PATCH] Customizeable Zombie Villager curing times
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java b/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
-index 7298ba35cb27269e778de6b265933baed3077b36..623e8ef53d6336b3e3c83fd37eda13244a3b4ab6 100644
+index 95315588a523439a53ac7af3db5fc23adbed6f01..811c5c4bc98401bc9314894eb5cb64bf31b03f63 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
 @@ -227,7 +227,7 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {

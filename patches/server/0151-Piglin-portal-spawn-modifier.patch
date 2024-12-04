@@ -18,7 +18,7 @@ Difficulties:
 3 - hard
 
 diff --git a/src/main/java/net/minecraft/world/level/block/NetherPortalBlock.java b/src/main/java/net/minecraft/world/level/block/NetherPortalBlock.java
-index c00b13482ce3f603f1d85b9a5ad36b768de5a9f8..10e747edebd6463cdfcea592cec1c232d837f21b 100644
+index 5169cba4c43d80ce3597c57bf7d40bd0148ec8a0..2d53c57c961fa8977e37931775863665381595eb 100644
 --- a/src/main/java/net/minecraft/world/level/block/NetherPortalBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/NetherPortalBlock.java
 @@ -78,7 +78,7 @@ public class NetherPortalBlock extends Block implements Portal {

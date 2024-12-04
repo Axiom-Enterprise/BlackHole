@@ -5,10 +5,10 @@ Subject: [PATCH] Toggle for kinetic damage
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 3dade05c9299f339f94b8a29475dc5ba646b26c8..c23ca02f9adbbbf32b0bf9f8a82f55781468aade 100644
+index 33fe6d19b3702d8de987fd9292dfca35e08ca875..0af3e463971697626f847cb96f8a431857c1261e 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -3228,6 +3228,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3239,6 +3239,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
  
              if (f > 0.0F) {
                  this.playSound(this.getFallDamageSound((int) f), 1.0F, 1.0F);

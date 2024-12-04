@@ -5,10 +5,10 @@ Subject: [PATCH] Config to disable Enderman teleport on projectile hit
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index 7adfc08d511efcb69f954fc1f4b4eba90b9d15df..5d2ac5334899935e032f7c882710914906ddc94d 100644
+index dec6be6b823b00642a0066726e3cad298b7ed6a7..2681153860b37d49eb8b12ae08198e56b9fd5cf6 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-@@ -430,6 +430,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -429,6 +429,7 @@ public class EnderMan extends Monster implements NeutralMob {
              } else {
                  flag1 = flag && this.hurtWithCleanWater(world, source, (ThrownPotion) source.getDirectEntity(), amount);
  

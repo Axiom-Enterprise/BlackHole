@@ -17,10 +17,10 @@ index 068fa5baf5b031358a1ff71e7ac376448c0ec95c..eedb3707523b47ab79db326f6d7382cc
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6a4ced206570f8c1c609e772c0b7d1cf5a6ff9ce..883317c9957c13049ff2c01ceb154fba1afe278b 100644
+index 1b691eafa658bbdfd87dd4a7692e0f6a96103ac2..ed1d75fdee29ac92d71f219af79eb7fc5ae99099 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -331,6 +331,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -329,6 +329,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public org.bukkit.event.player.PlayerQuitEvent.QuitReason quitReason = null; // Paper - Add API for quit reason; there are a lot of changes to do if we change all methods leading to the event
      public boolean purpurClient = false; // Purpur
      private boolean tpsBar = false; // Purpur
@@ -28,7 +28,7 @@ index 6a4ced206570f8c1c609e772c0b7d1cf5a6ff9ce..883317c9957c13049ff2c01ceb154fba
  
      // Paper start - rewrite chunk system
      private ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -694,6 +695,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -692,6 +693,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          }
  
          if (nbt.contains("Purpur.TPSBar")) { this.tpsBar = nbt.getBoolean("Purpur.TPSBar"); } // Purpur
@@ -36,7 +36,7 @@ index 6a4ced206570f8c1c609e772c0b7d1cf5a6ff9ce..883317c9957c13049ff2c01ceb154fba
      }
  
      @Override
-@@ -747,6 +749,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -745,6 +747,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
  
          this.saveEnderPearls(nbt);
          nbt.putBoolean("Purpur.TPSBar", this.tpsBar); // Purpur
@@ -44,7 +44,7 @@ index 6a4ced206570f8c1c609e772c0b7d1cf5a6ff9ce..883317c9957c13049ff2c01ceb154fba
      }
  
      private void saveParentVehicle(CompoundTag nbt) {
-@@ -3465,5 +3468,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -3445,5 +3448,13 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public void tpsBar(boolean tpsBar) {
          this.tpsBar = tpsBar;
      }

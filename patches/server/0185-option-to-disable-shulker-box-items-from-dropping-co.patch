@@ -6,10 +6,10 @@ Subject: [PATCH] option to disable shulker box items from dropping contents
 
 
 diff --git a/src/main/java/net/minecraft/world/item/BlockItem.java b/src/main/java/net/minecraft/world/item/BlockItem.java
-index b5b7f1db21a22f16f06ced775c8173f90e36a91c..33d9b5fb6897fefb0f7b9009df7339341cb42317 100644
+index ac5dc472337cd9613db5fc03f64763245129dfd9..f8928d5ac2f107a904ecc636e6bdeee7edd8da45 100644
 --- a/src/main/java/net/minecraft/world/item/BlockItem.java
 +++ b/src/main/java/net/minecraft/world/item/BlockItem.java
-@@ -249,6 +249,7 @@ public class BlockItem extends Item {
+@@ -274,6 +274,7 @@ public class BlockItem extends Item {
          ItemContainerContents itemcontainercontents = (ItemContainerContents) entity.getItem().set(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
  
          if (itemcontainercontents != null) {

@@ -5,10 +5,10 @@ Subject: [PATCH] Add portal permission bypass
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index c7393d9c8cb2bc4583cd3715a154f9411cc223e1..81f88c838f35860fdb7d7f62ed1b98f5734c766e 100644
+index 6885f1fb87e9cb5ac5e1ddd55f8b836a711c6f0a..7fccb7672e41545d747de1425335df7061222e52 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -199,6 +199,7 @@ public abstract class Player extends LivingEntity {
+@@ -202,6 +202,7 @@ public abstract class Player extends LivingEntity {
      public net.kyori.adventure.util.TriState flyingFallDamage = net.kyori.adventure.util.TriState.NOT_SET; // Paper - flying fall damage
      public int sixRowEnderchestSlotCount = -1; // Purpur
      public int burpDelay = 0; // Purpur
@@ -17,7 +17,7 @@ index c7393d9c8cb2bc4583cd3715a154f9411cc223e1..81f88c838f35860fdb7d7f62ed1b98f5
      // CraftBukkit start
      public boolean fauxSleeping;
 diff --git a/src/main/java/net/minecraft/world/level/block/NetherPortalBlock.java b/src/main/java/net/minecraft/world/level/block/NetherPortalBlock.java
-index 10e747edebd6463cdfcea592cec1c232d837f21b..02bcba52e28f757b59e2f384d5744834962870f0 100644
+index 2d53c57c961fa8977e37931775863665381595eb..6c10860aee8b8fac4089fb7f1506c890fb3f5308 100644
 --- a/src/main/java/net/minecraft/world/level/block/NetherPortalBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/NetherPortalBlock.java
 @@ -137,7 +137,7 @@ public class NetherPortalBlock extends Block implements Portal {

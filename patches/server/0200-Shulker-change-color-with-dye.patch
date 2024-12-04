@@ -5,7 +5,7 @@ Subject: [PATCH] Shulker change color with dye
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Shulker.java b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
-index 79bf3d04fa2c7bcadfff08dc9a464e589866f7db..131c7d7e85a3d9ac0e485fd8e56bd419a775289d 100644
+index 8464a8288f7ec7ae14e44b93607ebb0617790c46..837a251afd68b68c5f5f6ab940d62332cb80fe6f 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Shulker.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
 @@ -126,6 +126,19 @@ public class Shulker extends AbstractGolem implements VariantHolder<Optional<Dye

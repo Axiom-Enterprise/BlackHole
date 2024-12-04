@@ -13,7 +13,7 @@ Subject: [PATCH] Shulker spawn from bullet options
 (7 - 1) / 5.0 = 1.2    1.0 - 1.2 = -0.2     0% (6 other shulkers)
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Shulker.java b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
-index 4a04ade0cfeac23afbac1a5ef7dfff0df2136191..79bf3d04fa2c7bcadfff08dc9a464e589866f7db 100644
+index ef44ab79cba3778111c9f27f77219b384761d9e4..8464a8288f7ec7ae14e44b93607ebb0617790c46 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Shulker.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
 @@ -512,12 +512,21 @@ public class Shulker extends AbstractGolem implements VariantHolder<Optional<Dye
@@ -53,12 +53,12 @@ index 4a04ade0cfeac23afbac1a5ef7dfff0df2136191..79bf3d04fa2c7bcadfff08dc9a464e58
  
      @Nullable
 diff --git a/src/main/java/net/minecraft/world/item/DyeColor.java b/src/main/java/net/minecraft/world/item/DyeColor.java
-index 79dc7cf5bfe92b4df21d164f39726dfe618331e4..6721432f9cdd11c9658c34f0ac407be217f9d276 100644
+index 648e6979aa72b9d1e1ea3b40d5a876e3c690b934..d9cd4f47e9990bdd85e30f68ca3b755a953332a1 100644
 --- a/src/main/java/net/minecraft/world/item/DyeColor.java
 +++ b/src/main/java/net/minecraft/world/item/DyeColor.java
-@@ -103,4 +103,10 @@ public enum DyeColor implements StringRepresentable {
-     public String getSerializedName() {
-         return this.name;
+@@ -123,4 +123,10 @@ public enum DyeColor implements StringRepresentable {
+     private static CraftingInput makeCraftColorInput(DyeColor first, DyeColor second) {
+         return CraftingInput.of(2, 1, List.of(new ItemStack(DyeItem.byColor(first)), new ItemStack(DyeItem.byColor(second))));
      }
 +
 +    // Purpur start

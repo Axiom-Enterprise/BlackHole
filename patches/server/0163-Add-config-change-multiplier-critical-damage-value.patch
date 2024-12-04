@@ -5,10 +5,10 @@ Subject: [PATCH] Add config change multiplier critical damage value
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index ae5f7c275003b6fb9f6c5a0277482b4fddf8e74c..4c42ad7e43ab1f19456a89f1b0e82b7a1f6e4108 100644
+index 3dbb473655c4f115e28ce31fa647cd0cb7fbe3c6..1cb8a5391e31017c0e0d958c72338904efc708cb 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1306,7 +1306,7 @@ public abstract class Player extends LivingEntity {
+@@ -1309,7 +1309,7 @@ public abstract class Player extends LivingEntity {
                      flag2 = flag2 && !this.level().paperConfig().entities.behavior.disablePlayerCrits; // Paper - Toggleable player crits
                      if (flag2) {
                          damagesource = damagesource.critical(true); // Paper start - critical damage API

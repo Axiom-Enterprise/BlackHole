@@ -18,10 +18,10 @@ index 11d1ee8fae7670f02cb3f5d57f4774dbde77f48c..88cf1353892a7ead4e0f16822216b151
  
          return true;
 diff --git a/src/main/java/net/minecraft/world/effect/PoisonMobEffect.java b/src/main/java/net/minecraft/world/effect/PoisonMobEffect.java
-index 83c6d17f75c3f0b531bdfd5b5f9bc2a5b3eb7a2c..df43c007e7b9fee58b2cd0892b966ce88cb1f890 100644
+index 3f1e59229d6a71117700a56c87914bc9401f1da2..32c8474ffa88e997bb484caecb21e3dc98991e70 100644
 --- a/src/main/java/net/minecraft/world/effect/PoisonMobEffect.java
 +++ b/src/main/java/net/minecraft/world/effect/PoisonMobEffect.java
-@@ -11,8 +11,8 @@ class PoisonMobEffect extends MobEffect {
+@@ -13,8 +13,8 @@ public class PoisonMobEffect extends MobEffect {
  
      @Override
      public boolean applyEffectTick(ServerLevel world, LivingEntity entity, int amplifier) {
@@ -59,10 +59,10 @@ index 98b74649a667fb9b10afef0ba5383a73022d8c71..837bdc7d6bd4e05b0deded829c678c86
  
              ((CraftPlayer) entityhuman.getBukkitEntity()).sendHealthUpdate();
 diff --git a/src/main/java/net/minecraft/world/effect/WitherMobEffect.java b/src/main/java/net/minecraft/world/effect/WitherMobEffect.java
-index 303cefba51e19ac43b1f6188ad64ef480715ebaf..98ec88751b3e71c2e7aad633096b7f41608c0b33 100644
+index 55132e6e064ddd15b26286eca335305ed57b2f9e..1e04947995009689315352b79989e7ce4e20073c 100644
 --- a/src/main/java/net/minecraft/world/effect/WitherMobEffect.java
 +++ b/src/main/java/net/minecraft/world/effect/WitherMobEffect.java
-@@ -10,7 +10,7 @@ class WitherMobEffect extends MobEffect {
+@@ -12,7 +12,7 @@ public class WitherMobEffect extends MobEffect {
  
      @Override
      public boolean applyEffectTick(ServerLevel world, LivingEntity entity, int amplifier) {

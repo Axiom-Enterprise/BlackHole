@@ -5,10 +5,10 @@ Subject: [PATCH] Give bee counts in beehives to Purpur clients
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 93a6edc65513753db7ee4127451a495ea3f45548..66cbaad4c92750ecf0c74ab52e6eae4a818da972 100644
+index 6111c300ea25e73cc8f840dfff94998d3b87dcf3..284b96cd1e9eaad4600c820a504c12d953961019 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1169,6 +1169,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1170,6 +1170,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
      public void safeShutdown(boolean waitForShutdown, boolean isRestarting) {
          org.purpurmc.purpur.task.BossBarTask.stopAll(); // Purpur

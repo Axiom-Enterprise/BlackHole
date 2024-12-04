@@ -22,10 +22,10 @@ index f58a94efafbc01d402cd03a108bb90f60930a316..21ea63da99c5b3e2e1ab9cc1049c903b
          super(x, y, z);
      }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 05e49085d71e5e93a0033d3ca2a670981d6dfe75..69846993f5e5adef6ecf6c23f261b3dbabf6a193 100644
+index 2a24e011b8a1128396a0a092456050c4b88f8260..ff4d04092aa6322788d55d3c0253cb7f6f3cd493 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1862,6 +1862,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1863,6 +1863,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              worldserver.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = worldserver.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
              worldserver.updateLagCompensationTick(); // Paper - lag compensation
@@ -34,7 +34,7 @@ index 05e49085d71e5e93a0033d3ca2a670981d6dfe75..69846993f5e5adef6ecf6c23f261b3db
              gameprofilerfiller.push(() -> {
                  String s = String.valueOf(worldserver);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8091e78e56c0e4ea880e6f88ec9c15ca5e67b9b0..1f49d018683fa19f498c8e68dab8a7ddde6cfad0 100644
+index 59f90878ec9f110d78bce998deb1dcd2830b0f08..498f0478bdb790bc3083d2cf5e81633054255fe2 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -231,6 +231,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -4809,10 +4809,10 @@ index 7b5f9284972b3a6bd8125891b23f73438e875c08..f935d475fd1aca407bde420e9ba80020
              super(creaking);
          }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index 3f625cb9b1237ca8f782bca2f182dfe72853bd96..cde73e0bac71d1c37c3335f6a2294622f9453fbd 100644
+index 9c20651b74157582e60793ceba8adde2c354f2a8..e978aab6055f9365885e2412afdc44cb6c729af2 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -92,6 +92,23 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+@@ -71,6 +71,23 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
          this.xpReward = 5;
      }
  
@@ -4836,14 +4836,14 @@ index 3f625cb9b1237ca8f782bca2f182dfe72853bd96..cde73e0bac71d1c37c3335f6a2294622
      @VisibleForTesting
      public void setTimeInOverworld(int timeInOverworld) {
          this.timeInOverworld = timeInOverworld;
-@@ -161,7 +178,7 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
-     protected void customServerAiStep(ServerLevel world) {
-         ProfilerFiller profilerFiller = Profiler.get();
-         profilerFiller.push("hoglinBrain");
+@@ -144,7 +161,7 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+         ProfilerFiller gameprofilerfiller = Profiler.get();
+ 
+         gameprofilerfiller.push("hoglinBrain");
 -        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
 +        if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish // Purpur - only use brain if no rider
          this.getBrain().tick(world, this);
-         profilerFiller.pop();
+         gameprofilerfiller.pop();
          HoglinAi.updateActivity(this);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 index d1870bf4c01c846a721480eb6611a67db9b98d02..9a3bc9c0ad1b0af3c8196a773dd93b069ca4e92c 100644

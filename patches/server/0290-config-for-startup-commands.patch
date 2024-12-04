@@ -5,10 +5,10 @@ Subject: [PATCH] config for startup commands
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 66cbaad4c92750ecf0c74ab52e6eae4a818da972..74504331648e016a5f0233f1b5311b558f6cb611 100644
+index 284b96cd1e9eaad4600c820a504c12d953961019..23505b0f80d643d9ef569b49192f44e0373dfb5f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1292,6 +1292,17 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1293,6 +1293,17 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  }
              }
              // Purpur end

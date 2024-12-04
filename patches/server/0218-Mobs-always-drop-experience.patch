@@ -1077,10 +1077,10 @@ index 4cd470db5a427e0c0bec0fe2a7c7307cac47b39b..8c3271dcc8c9aa58e2e007eba282c11e
      public void setPersistentAngerTarget(@Nullable UUID angryAt) {
          this.persistentAngerTarget = angryAt;
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index c01813b752ee2d23062806cf14b586807cc056d3..9550fd212bdf53a566940a42d85cc3f8a729b20b 100644
+index 1103274ba096b0cab3c89f0bdfeba15f8954a0de..6144613e834236ec0ebb12872ef9e47255b76b5b 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -130,6 +130,11 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+@@ -109,6 +109,11 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
          return this.level().purpurConfig.hoglinTakeDamageFromWater;
      }
  

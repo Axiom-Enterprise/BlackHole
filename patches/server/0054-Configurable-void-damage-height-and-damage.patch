@@ -41,10 +41,10 @@ index b1c917d65076a3805e5b78cb946753f0c101e214..82210667376fd466d5d4cdcb56b62f61
  
          public class FrostedIce extends ConfigurationPart {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index ea823be49f1782e6e1dd1ebb66a3bf7642e43e40..dac1d0d5ca1222e9922316b17370ba8c9b9cb77f 100644
+index f6ad220e3e228e978c8b635064e8d5bf65ac5a89..67db7d9f57fd4407412b9cfbc8b0ab06f15fff12 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1269,7 +1269,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1270,7 +1270,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  LOGGER.info("*************************************************************************************");
              }
              // Paper end - Add onboarding message for initial server start

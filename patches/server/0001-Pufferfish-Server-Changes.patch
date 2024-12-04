@@ -1017,7 +1017,7 @@ index 0000000000000000000000000000000000000000..facd55463d44cb7e3d2ca6892982f549
 +	}
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 780582ebaa8deb0c0b0c8de17de5abcebafa4bd3..05e49085d71e5e93a0033d3ca2a670981d6dfe75 100644
+index 4158473fd553a16fec23bcbcf9a278d413120600..2a24e011b8a1128396a0a092456050c4b88f8260 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -333,6 +333,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -1028,7 +1028,7 @@ index 780582ebaa8deb0c0b0c8de17de5abcebafa4bd3..05e49085d71e5e93a0033d3ca2a67098
  
      public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
          AtomicReference<S> atomicreference = new AtomicReference();
-@@ -1340,6 +1341,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1341,6 +1342,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                          gameprofilerfiller.popPush("nextTickWait");
                          this.mayHaveDelayedTasks = true;
                          this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + i, this.nextTickTimeNanos);
@@ -1041,7 +1041,7 @@ index 780582ebaa8deb0c0b0c8de17de5abcebafa4bd3..05e49085d71e5e93a0033d3ca2a67098
                          this.startMeasuringTaskExecutionTime();
                          this.waitUntilNextTick();
                          this.finishMeasuringTaskExecutionTime();
-@@ -2886,6 +2893,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2887,6 +2894,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      // CraftBukkit end
  
      private ProfilerFiller createProfiler() {
@@ -1198,7 +1198,7 @@ index 90eb4927fa51ce3df86aa7b6c71f49150a03e337..3ea4920323606150548d6e9fc1ce6772
                          this.wasOnGround = this.entity.onGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index b4027f5cf90935a1fe3ab2c28b0bcbb55a7b541b..8091e78e56c0e4ea880e6f88ec9c15ca5e67b9b0 100644
+index 585e2b43a0326f0b81597fa1234d3c67c76af550..59f90878ec9f110d78bce998deb1dcd2830b0f08 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -792,6 +792,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -1612,21 +1612,22 @@ index 48dcd2bc12ce1d08cc5195bff5460dc0dd9902d3..c7153cfec847fca4ce5d9ec729628aed
          boolean flag1 = iblockdata.getFluidState().is(FluidTags.WATER);
  
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index 6ea90e54759dbeab025e0a1896ee834ea9986427..3f625cb9b1237ca8f782bca2f182dfe72853bd96 100644
+index 92270912ef26924f611a1df7cb3d5b485b0a262d..9c20651b74157582e60793ceba8adde2c354f2a8 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -156,10 +156,12 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
-         return (Brain<Hoglin>)super.getBrain();
+@@ -138,11 +138,13 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+         return (Brain<Hoglin>) super.getBrain(); // CraftBukkit - decompile error
      }
  
 +    private int behaviorTick; // Pufferfish
      @Override
      protected void customServerAiStep(ServerLevel world) {
-         ProfilerFiller profilerFiller = Profiler.get();
-         profilerFiller.push("hoglinBrain");
+         ProfilerFiller gameprofilerfiller = Profiler.get();
+ 
+         gameprofilerfiller.push("hoglinBrain");
 +        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
          this.getBrain().tick(world, this);
-         profilerFiller.pop();
+         gameprofilerfiller.pop();
          HoglinAi.updateActivity(this);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 index e04d2c5e75dc774fe893a552474fdb8045c32693..d1870bf4c01c846a721480eb6611a67db9b98d02 100644

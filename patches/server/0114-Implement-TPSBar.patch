@@ -17,10 +17,10 @@ index 02c7b57eef9a4462af413415ff268b9daeea0b93..632fd1b7d3474889b700b153d9cb4967
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index d0f1ca68d25cdac127dc6385b29aa1e99438b866..3b5121bf06ea5ae528778ae643bc5e4c3bb736ae 100644
+index 1349b2bbdc38e9f13617c78d3f1079b9e36aece4..b389d24e6f6c2cb1d0592a48bd5b41aa818aad75 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1157,6 +1157,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1158,6 +1158,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.safeShutdown(waitForShutdown, false);
      }
      public void safeShutdown(boolean waitForShutdown, boolean isRestarting) {
@@ -83,7 +83,7 @@ index 36058eac6f861ae919bbe8ae6386e8f841586ac2..80426ba728016273990f00db638ea327
      // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 73c83770e1acd6c57742405a04ffa7a733aea4f6..af6ddb3231083244455d750f91bd3e4b2b4b5a0d 100644
+index 5ff27cecc7fc0ad5e42a61c18783c7f76fdcbcdf..9624e1fc13d794eab394bc05bfaa3cd120d3ad49 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -419,6 +419,7 @@ public abstract class PlayerList {

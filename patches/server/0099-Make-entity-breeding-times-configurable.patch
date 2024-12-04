@@ -522,10 +522,10 @@ index 6a45a62c578f033558c26935681f7de74dd98bac..0cc49b0a600a5e6fb4fc21e698e3a5fe
          BlockPos.MutableBlockPos blockposition_mutableblockposition = pos.mutable();
  
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index b94cde5e03ef98eb78386acc59b1b864054d97b7..e7f762682a57f13b3a1c00d37d88eb80233baace 100644
+index fc78df484bf747d4a00acd85a3f9f3775dcdd8b1..0ee5bdae0d8e42b3d6475bfe49bfa41ee3192769 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -120,6 +120,11 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+@@ -99,6 +99,11 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
          this.timeInOverworld = timeInOverworld;
      }
  

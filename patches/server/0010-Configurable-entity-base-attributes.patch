@@ -1570,10 +1570,10 @@ index f935d475fd1aca407bde420e9ba8002002ea55f6..9bf251915c8a126ba480f44ea203f1a4
      protected SoundEvent getHurtSound(DamageSource source) {
          return SoundEvents.CREAKING_SWAY;
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index cde73e0bac71d1c37c3335f6a2294622f9453fbd..b94cde5e03ef98eb78386acc59b1b864054d97b7 100644
+index e978aab6055f9365885e2412afdc44cb6c729af2..fc78df484bf747d4a00acd85a3f9f3775dcdd8b1 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -107,6 +107,12 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+@@ -86,6 +86,12 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
      public boolean isControllable() {
          return level().purpurConfig.hoglinControllable;
      }

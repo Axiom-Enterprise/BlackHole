@@ -1119,10 +1119,10 @@ index cb47b15d197b1167dcbac1b989903bbf84b079b4..4cd470db5a427e0c0bec0fe2a7c7307c
      public boolean jockeyOnlyBaby() {
          return level().purpurConfig.zombifiedPiglinJockeyOnlyBaby;
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index e7f762682a57f13b3a1c00d37d88eb80233baace..c01813b752ee2d23062806cf14b586807cc056d3 100644
+index 0ee5bdae0d8e42b3d6475bfe49bfa41ee3192769..1103274ba096b0cab3c89f0bdfeba15f8954a0de 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -125,6 +125,11 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+@@ -104,6 +104,11 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
          return this.level().purpurConfig.hoglinBreedingTicks;
      }
  

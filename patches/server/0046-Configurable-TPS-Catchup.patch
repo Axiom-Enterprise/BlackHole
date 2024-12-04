@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable TPS Catchup
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 95300ce21d9e5ddfcd6cbf7cc4bb1034c9284b43..ea823be49f1782e6e1dd1ebb66a3bf7642e43e40 100644
+index 85f5f8a30053cae087b223f0d80432c5318e67d6..f6ad220e3e228e978c8b635064e8d5bf65ac5a89 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1344,7 +1344,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1345,7 +1345,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                          this.mayHaveDelayedTasks = true;
                          this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + i, this.nextTickTimeNanos);
                          // Pufferfish start - tps catchup

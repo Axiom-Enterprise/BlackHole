@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <Blake.Galbreath@GMail.com>
+Date: Mon, 10 Aug 2020 21:46:22 -0500
+Subject: [PATCH] Short enderman height
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
+index fa15b22e464f1dfe83f3d07ff7a28b6740df79b4..2f08747612bd238f12c8d3dccb996118e7c34e33 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityType.java
++++ b/src/main/java/net/minecraft/world/entity/EntityType.java
+@@ -389,7 +389,8 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+     @Nullable
+     private Component description;
+     private final Optional<ResourceKey<LootTable>> lootTable;
+-    private final EntityDimensions dimensions;
++    private EntityDimensions dimensions; // Purpur - remove final
++    public void setDimensions(EntityDimensions dimensions) { this.dimensions = dimensions; } // Purpur
+     private final float spawnDimensionsScale;
+     private final FeatureFlagSet requiredFeatures;
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
+index 1fc16357283bb4f558ff02ca062440218b61ddbf..b6200fdef6d032cbaa3fdc4c2c8494fc0ad8ad65 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
++++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
+@@ -414,6 +414,7 @@ public class EnderMan extends Monster implements NeutralMob {
+         if (this.isInvulnerableTo(world, source)) {
+             return false;
+         } else if (getRider() != null && this.isControllable()) { return super.hurtServer(world, source, amount); // Purpur - no teleporting on damage
++        } else if (org.purpurmc.purpur.PurpurConfig.endermanShortHeight && source.is(net.minecraft.world.damagesource.DamageTypes.IN_WALL)) { return false; // Purpur - no suffocation damage if short height
+         } else {
+             boolean flag = source.getDirectEntity() instanceof ThrownPotion;
+             boolean flag1;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index 9f98b87ccc60db9a531180de1ed649de118db56f..0cafa4bbc530a80277cbf323f8d62dee9b08a426 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -247,6 +247,12 @@ public class PurpurConfig {
+         enderChestPermissionRows = getBoolean("settings.blocks.ender_chest.use-permissions-for-rows", enderChestPermissionRows);
+     }
+ 
++    public static boolean endermanShortHeight = false;
++    private static void entitySettings() {
++        endermanShortHeight = getBoolean("settings.entity.enderman.short-height", endermanShortHeight);
++        if (endermanShortHeight) EntityType.ENDERMAN.setDimensions(EntityDimensions.scalable(0.6F, 1.9F));
++    }
++
+     public static boolean allowWaterPlacementInTheEnd = true;
+     private static void allowWaterPlacementInEnd() {
+         allowWaterPlacementInTheEnd = getBoolean("settings.allow-water-placement-in-the-end", allowWaterPlacementInTheEnd);

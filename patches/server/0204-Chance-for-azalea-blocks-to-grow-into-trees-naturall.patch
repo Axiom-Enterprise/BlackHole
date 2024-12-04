@@ -1,0 +1,79 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Mon, 23 Aug 2021 20:57:04 -0500
+Subject: [PATCH] Chance for azalea blocks to grow into trees naturally
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/AzaleaBlock.java b/src/main/java/net/minecraft/world/level/block/AzaleaBlock.java
+index affbbf6abc6bc09ecb652c1dee92aa297458bc39..febc05dc39741807127cba4a2a55aaad62b0800c 100644
+--- a/src/main/java/net/minecraft/world/level/block/AzaleaBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/AzaleaBlock.java
+@@ -50,6 +50,20 @@ public class AzaleaBlock extends BushBlock implements BonemealableBlock {
+ 
+     @Override
+     public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
++        // Purpur start
++        growTree(world, random, pos, state);
++    }
++
++    @Override
++    public void randomTick(net.minecraft.world.level.block.state.BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
++        double chance = state.getBlock() == Blocks.FLOWERING_AZALEA ? world.purpurConfig.floweringAzaleaGrowthChance : world.purpurConfig.azaleaGrowthChance;
++        if (chance > 0.0D && world.getMaxLocalRawBrightness(pos.above()) > 9 && random.nextDouble() < chance) {
++            growTree(world, random, pos, state);
++        }
++    }
++
++    private void growTree(ServerLevel world, RandomSource random, BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
++        // Purpur end
+         TreeGrower.AZALEA.growTree(world, world.getChunkSource().getGenerator(), pos, state, random);
+     }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/block/Blocks.java b/src/main/java/net/minecraft/world/level/block/Blocks.java
+index 9bafac9b2c7b487f745fb64354f4bbc6a7ded468..1c34691da51d7f7ba3d54e095a3b58b74a5f2263 100644
+--- a/src/main/java/net/minecraft/world/level/block/Blocks.java
++++ b/src/main/java/net/minecraft/world/level/block/Blocks.java
+@@ -6454,6 +6454,7 @@ public class Blocks {
+         BlockBehaviour.Properties.of()
+             .mapColor(MapColor.PLANT)
+             .forceSolidOff()
++                .randomTicks() // Purpur
+             .instabreak()
+             .sound(SoundType.AZALEA)
+             .noOcclusion()
+@@ -6465,6 +6466,7 @@ public class Blocks {
+         BlockBehaviour.Properties.of()
+             .mapColor(MapColor.PLANT)
+             .forceSolidOff()
++                .randomTicks() // Purpur
+             .instabreak()
+             .sound(SoundType.FLOWERING_AZALEA)
+             .noOcclusion()
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 16d2dbafb996932dd99edbe6eea37c7036f4b77e..ea1314eb2ac0f8c1dd681b85951bcdd2cead1bf6 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -765,6 +765,11 @@ public class PurpurWorldConfig {
+         anvilColorsUseMiniMessage = getBoolean("blocks.anvil.use-mini-message", anvilColorsUseMiniMessage);
+     }
+ 
++    public double azaleaGrowthChance = 0.0D;
++    private void azaleaSettings() {
++        azaleaGrowthChance = getDouble("blocks.azalea.growth-chance", azaleaGrowthChance);
++    }
++
+     public int beaconLevelOne = 20;
+     public int beaconLevelTwo = 30;
+     public int beaconLevelThree = 40;
+@@ -902,6 +907,11 @@ public class PurpurWorldConfig {
+         farmlandTramplingFeatherFalling = getBoolean("blocks.farmland.feather-fall-distance-affects-trampling", farmlandTramplingFeatherFalling);
+     }
+ 
++    public double floweringAzaleaGrowthChance = 0.0D;
++    private void floweringAzaleaSettings() {
++        floweringAzaleaGrowthChance = getDouble("blocks.flowering_azalea.growth-chance", floweringAzaleaGrowthChance);
++    }
++
+     public boolean furnaceUseLavaFromUnderneath = false;
+     private void furnaceSettings() {
+         if (PurpurConfig.version < 17) {

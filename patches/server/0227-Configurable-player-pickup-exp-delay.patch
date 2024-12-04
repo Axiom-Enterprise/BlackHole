@@ -1,0 +1,56 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: BillyGalbreath <Blake.Galbreath@Gmail.com>
+Date: Mon, 10 Jan 2022 10:04:31 -0600
+Subject: [PATCH] Configurable player pickup exp delay
+
+Default vanilla value is to delay 2 ticks between picking up exp orbs.
+Players only pick up 1 orb at a time, so even with setting this to 0
+players still only pick up one orb every tick. However, setting this
+to any negative number will pick up all orbs instantly.
+
+diff --git a/src/main/java/net/minecraft/world/entity/ExperienceOrb.java b/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
+index f1eb74a43881400f23f3750c909f999b35c2f5ce..ba4fe614e2a3378f17b544c78c92a271523e8d37 100644
+--- a/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
++++ b/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
+@@ -335,7 +335,7 @@ public class ExperienceOrb extends Entity {
+     public void playerTouch(Player player) {
+         if (player instanceof ServerPlayer entityplayer) {
+             if (player.takeXpDelay == 0 && new com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent(entityplayer.getBukkitEntity(), (org.bukkit.entity.ExperienceOrb) this.getBukkitEntity()).callEvent()) { // Paper - PlayerPickupExperienceEvent
+-                player.takeXpDelay = CraftEventFactory.callPlayerXpCooldownEvent(player, 2, PlayerExpCooldownChangeEvent.ChangeReason.PICKUP_ORB).getNewCooldown(); // CraftBukkit - entityhuman.takeXpDelay = 2;
++                player.takeXpDelay = CraftEventFactory.callPlayerXpCooldownEvent(player, this.level().purpurConfig.playerExpPickupDelay, PlayerExpCooldownChangeEvent.ChangeReason.PICKUP_ORB).getNewCooldown(); // CraftBukkit - entityhuman.takeXpDelay = 2; // Purpur
+                 player.take(this, 1);
+                 int i = this.repairPlayerItems(entityplayer, this.value);
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index 2b3ec55bdc652bb432f9747d6215992fd3d710a5..d19b1e127a1018a798eed181d8060a781b589f90 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -665,7 +665,7 @@ public abstract class Player extends LivingEntity {
+             while (iterator.hasNext()) {
+                 Entity entity = (Entity) iterator.next();
+ 
+-                if (entity.getType() == EntityType.EXPERIENCE_ORB) {
++                if (entity.getType() == EntityType.EXPERIENCE_ORB && entity.level().purpurConfig.playerExpPickupDelay >= 0) { // Purpur
+                     list1.add(entity);
+                 } else if (!entity.isRemoved()) {
+                     this.touch(entity);
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index 529e8a930ca9e01cfdfd1e7c15027d85e7f8076d..11a914b310517c356807c5dc4dad0cc3ff309a51 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -421,6 +421,7 @@ public class PurpurWorldConfig {
+     public boolean playerRidableInWater = false;
+     public boolean playerRemoveBindingWithWeakness = false;
+     public int shiftRightClickRepairsMendingPoints = 0;
++    public int playerExpPickupDelay = 2;
+     private void playerSettings() {
+         if (PurpurConfig.version < 19) {
+             boolean oldVal = getBoolean("gameplay-mechanics.player.idle-timeout.mods-target", idleTimeoutTargetPlayer);
+@@ -446,6 +447,7 @@ public class PurpurWorldConfig {
+         playerRidableInWater = getBoolean("gameplay-mechanics.player.ridable-in-water", playerRidableInWater);
+         playerRemoveBindingWithWeakness = getBoolean("gameplay-mechanics.player.curse-of-binding.remove-with-weakness", playerRemoveBindingWithWeakness);
+         shiftRightClickRepairsMendingPoints = getInt("gameplay-mechanics.player.shift-right-click-repairs-mending-points", shiftRightClickRepairsMendingPoints);
++        playerExpPickupDelay = getInt("gameplay-mechanics.player.exp-pickup-delay-ticks", playerExpPickupDelay);
+     }
+ 
+     public boolean silkTouchEnabled = false;

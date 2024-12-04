@@ -5,10 +5,10 @@ Subject: [PATCH] Add option to allow loyalty on tridents to work in the void
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/ThrownTrident.java b/src/main/java/net/minecraft/world/entity/projectile/ThrownTrident.java
-index 322733266fdca8ce43434a8ffea304c51794bcbb..489c26423a7f5bc9da45d247de57ec989cc74119 100644
+index 1e045397763e8233c2e8f9955468788374b80068..3573a6cf0632dfb6859f5a5e7ceffb947e9d3692 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/ThrownTrident.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/ThrownTrident.java
-@@ -69,7 +69,7 @@ public class ThrownTrident extends AbstractArrow {
+@@ -70,7 +70,7 @@ public class ThrownTrident extends AbstractArrow {
          Entity entity = this.getOwner();
          byte b0 = (Byte) this.entityData.get(ThrownTrident.ID_LOYALTY);
  

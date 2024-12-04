@@ -5,7 +5,7 @@ Subject: [PATCH] PlayerSetSpawnerTypeWithEggEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 7e7603680310976312050aaff5bdaa805901617f..23b921a79bd563fd0a1bf7afd55a8e52ff1da521 100644
+index 8c1dad4b7f6461aca5ac37a25c880c550b0dcf5f..fa15b22e464f1dfe83f3d07ff7a28b6740df79b4 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -405,6 +405,16 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -25,7 +25,7 @@ index 7e7603680310976312050aaff5bdaa805901617f..23b921a79bd563fd0a1bf7afd55a8e52
      public static ResourceLocation getKey(EntityType<?> type) {
          return BuiltInRegistries.ENTITY_TYPE.getKey(type);
      }
-@@ -605,6 +615,16 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+@@ -615,6 +625,16 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
          return this.category;
      }
  
@@ -43,14 +43,13 @@ index 7e7603680310976312050aaff5bdaa805901617f..23b921a79bd563fd0a1bf7afd55a8e52
          return this.descriptionId;
      }
 diff --git a/src/main/java/net/minecraft/world/item/SpawnEggItem.java b/src/main/java/net/minecraft/world/item/SpawnEggItem.java
-index 9956ed42df55daa6d97fd6e3ab5368dad91cfaf0..e0e746d6c78421b40777125ba49f0a04809f5415 100644
+index cc7e9b87e919b4ef8cf77cd780c890fd9a9cfa50..a185d098175e504b7bb93d2cff03ca99eabc11eb 100644
 --- a/src/main/java/net/minecraft/world/item/SpawnEggItem.java
 +++ b/src/main/java/net/minecraft/world/item/SpawnEggItem.java
-@@ -73,6 +73,24 @@ public class SpawnEggItem extends Item {
+@@ -68,6 +68,23 @@ public class SpawnEggItem extends Item {
                  Spawner spawner = (Spawner) tileentity;
  
-                 entitytypes = this.getType(itemstack);
-+
+                 entitytypes = this.getType(world.registryAccess(), itemstack);
 +                // Purpur start
 +                if (spawner instanceof net.minecraft.world.level.block.entity.SpawnerBlockEntity) {
 +                    org.bukkit.block.Block bukkitBlock = world.getWorld().getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ());

@@ -5,7 +5,7 @@ Subject: [PATCH] Enchantment convenience methods
 
 
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
-index f99b87cf70df7eaac13d46f4e0234b1e6483d342..d8fc10f9cd0ab2c26e64613006569a86ce201550 100644
+index 4dd074d04c9a535f6cf24420058fd68594c59edc..64c315372277300e58ce413210f47eed5b6e1d6c 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
 +++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
 @@ -578,4 +578,14 @@ public class EnchantmentHelper {

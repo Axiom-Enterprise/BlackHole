@@ -5,17 +5,17 @@ Subject: [PATCH] Minecart settings and WASD controls
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index d4ed1dd4e4c56cf40632b0857af82a944579da65..a91a4602b5bc72dc0162fd2d60eebf3a05df4065 100644
+index ae4733c402662630a3892aecd01646d2e7613eed..d8a5d37e3b796392d6b0548371d4f0801d4d9bec 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1442,6 +1442,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -1439,6 +1439,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          if (this.isInvulnerableTo(world, source)) {
              return false;
          } else {
-+            if (source.is(DamageTypeTags.IS_FALL) && getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) return false; // Purpur
-             boolean flag = this.server.isDedicatedServer() && this.isPvpAllowed() && source.is(DamageTypeTags.IS_FALL);
++            if (source.is(net.minecraft.tags.DamageTypeTags.IS_FALL) && getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) return false; // Purpur
+             Entity entity = source.getEntity();
  
-             if (!flag && this.spawnInvulnerableTime > 0 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+             if (entity instanceof net.minecraft.world.entity.player.Player) {
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b31940441596079aae1cd2a38b9d22be18358448 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
@@ -148,7 +148,7 @@ index 7153d9ed12276a0f2d8b8a17c79734aa25ed1fa5..dc49ea6454e04ae8ec68af12c4bf2ff0
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 99fd67a78539133adf78d65e2c520ff3dd260301..6b987ee220d94b482d2aeb4ff6bf271853605dc1 100644
+index 8c0f332a1a0918f60226d969918ae7fe4fe74166..6376b8b3ff444f4cab93e2bb5d2becc77c33c118 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -99,7 +99,7 @@ public abstract class BlockBehaviour implements FeatureElement {

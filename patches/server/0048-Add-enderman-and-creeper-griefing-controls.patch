@@ -18,10 +18,10 @@ index e95afb70fa13f7f2617cbd42b7f5d17b9bc1ec4f..54225cfd13e7b62e80f24b4885c720d6
              this.triggerOnDeathMobEffects(worldserver, Entity.RemovalReason.KILLED);
              this.discard(EntityRemoveEvent.Cause.EXPLODE); // CraftBukkit - add Bukkit remove cause
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index f1d4e32085085b06a07fec88737e1ad9e9da2adf..04fdefe4c38ef9ed3001f95b34d1632944fcae85 100644
+index 17b0254f8dd99937496210fcdb478a341707114c..1fc16357283bb4f558ff02ca062440218b61ddbf 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-@@ -520,6 +520,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -519,6 +519,7 @@ public class EnderMan extends Monster implements NeutralMob {
  
          @Override
          public boolean canUse() {
@@ -29,7 +29,7 @@ index f1d4e32085085b06a07fec88737e1ad9e9da2adf..04fdefe4c38ef9ed3001f95b34d16329
              return this.enderman.getCarriedBlock() == null ? false : (!getServerLevel((Entity) this.enderman).getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) ? false : this.enderman.getRandom().nextInt(reducedTickDelay(2000)) == 0);
          }
  
-@@ -565,6 +566,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -564,6 +565,7 @@ public class EnderMan extends Monster implements NeutralMob {
  
          @Override
          public boolean canUse() {

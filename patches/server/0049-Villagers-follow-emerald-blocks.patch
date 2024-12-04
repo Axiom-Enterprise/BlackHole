@@ -5,10 +5,10 @@ Subject: [PATCH] Villagers follow emerald blocks
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index 157fe8979c780300b6f72cbaa17729031e3b386d..0bb08af954d224a2b4404615bee720ac4bdbac55 100644
+index b37b82f3313e51d187d76452624b386c8bdbbf58..074d2d4e85d3e3ad546fcb15dfd00b757bf549a8 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-@@ -161,7 +161,7 @@ public class DefaultAttributes {
+@@ -162,7 +162,7 @@ public class DefaultAttributes {
          .put(EntityType.VILLAGER, Villager.createAttributes().build())
          .put(EntityType.VINDICATOR, Vindicator.createAttributes().build())
          .put(EntityType.WARDEN, Warden.createAttributes().build())
@@ -31,7 +31,7 @@ index 84ab90dd1fe693da71732533ccff940c1007e1b6..179fdf7b7f68db610925a9d7b8887928
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/npc/AbstractVillager.java b/src/main/java/net/minecraft/world/entity/npc/AbstractVillager.java
-index 5f656fc726a1dc5f42657095a2f2b7cf85b92d7c..6c74cf1dea99b3b967b8c3d76f405f823c881fb9 100644
+index 3c037cabd8331eb96a6523b37abab4e73ab79a02..e2b00681e427bc99c3b3660d8f4830379b98c7a0 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/AbstractVillager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/AbstractVillager.java
 @@ -48,6 +48,7 @@ import org.bukkit.event.entity.VillagerAcquireTradeEvent;
@@ -43,7 +43,7 @@ index 5f656fc726a1dc5f42657095a2f2b7cf85b92d7c..6c74cf1dea99b3b967b8c3d76f405f82
      // CraftBukkit start
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 9505402564893b3046b86f95fa1e34a64ac98e8e..f0b0341a256f0e673bf18d25c6f9616f3afaa078 100644
+index 24b456dfa4d5383639fb79a45ffceb5c31e8ae53..032e26700322b22f93ff8b35dfdfd077b86c0a07 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -177,6 +177,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

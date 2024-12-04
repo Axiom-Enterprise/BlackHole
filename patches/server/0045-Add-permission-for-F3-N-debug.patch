@@ -5,7 +5,7 @@ Subject: [PATCH] Add permission for F3+N debug
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 595302e0177824c1e3ad54e9a088337eeb2d872b..73c83770e1acd6c57742405a04ffa7a733aea4f6 100644
+index 88678fb527f170c81d5e2d4a28f65e398dab8939..98992aae7c7724a25fc6f6aaee27b07dccbe2292 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1108,6 +1108,7 @@ public abstract class PlayerList {

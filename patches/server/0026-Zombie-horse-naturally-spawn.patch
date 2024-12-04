@@ -5,10 +5,10 @@ Subject: [PATCH] Zombie horse naturally spawn
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 1f49d018683fa19f498c8e68dab8a7ddde6cfad0..c05d0d836ced6db6b4a3e85fe0973dd7b1aaad81 100644
+index d571b4a56807bcc4206d54573604c01290cd3dd7..9451c6fa2307bc12b47a106f2d82508548b109a8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -953,10 +953,18 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -954,10 +954,18 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
                  boolean flag1 = this.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING) && this.random.nextDouble() < (double) difficultydamagescaler.getEffectiveDifficulty() * this.paperConfig().entities.spawning.skeletonHorseThunderSpawnChance.or(0.01D) && !this.getBlockState(blockposition.below()).is(Blocks.LIGHTNING_ROD); // Paper - Configurable spawn chances for skeleton horses
  
                  if (flag1) {

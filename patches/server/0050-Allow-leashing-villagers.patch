@@ -5,10 +5,10 @@ Subject: [PATCH] Allow leashing villagers
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 1057497963a615ae1aaafa5aac1f53471a00c763..35c6cc4d0d76becba693d056534a9437bd3364e4 100644
+index 2e57077a184809e70481c9bba1891e01a9e203f7..f7b6044d99dd01ce1491631ec75920e79d42ce29 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3093,6 +3093,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3118,6 +3118,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          if (this.isAlive() && this instanceof Leashable leashable) {
              if (leashable.getLeashHolder() == player) {
                  if (!this.level().isClientSide()) {
@@ -17,7 +17,7 @@ index 1057497963a615ae1aaafa5aac1f53471a00c763..35c6cc4d0d76becba693d056534a9437
                      // Paper start - Expand EntityUnleashEvent
                      org.bukkit.event.player.PlayerUnleashEntityEvent event = CraftEventFactory.callPlayerUnleashEntityEvent(this, player, hand, !player.hasInfiniteMaterials());
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index f0b0341a256f0e673bf18d25c6f9616f3afaa078..394c8667cfe57fa1fba93231a1ebb5be6dc63c63 100644
+index 032e26700322b22f93ff8b35dfdfd077b86c0a07..0ba9fac5214405c40a151954cbf615caca6d4cb3 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -179,6 +179,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

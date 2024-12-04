@@ -5,22 +5,22 @@ Subject: [PATCH] Silk touch spawners
 
 
 diff --git a/src/main/java/net/minecraft/world/item/BlockItem.java b/src/main/java/net/minecraft/world/item/BlockItem.java
-index c816c935ecc74a811ffdffbe6ded73c06e92324a..b5b7f1db21a22f16f06ced775c8173f90e36a91c 100644
+index 4377fa2400c4320e0023ece230090a2a3b4b2ab6..ac5dc472337cd9613db5fc03f64763245129dfd9 100644
 --- a/src/main/java/net/minecraft/world/item/BlockItem.java
 +++ b/src/main/java/net/minecraft/world/item/BlockItem.java
-@@ -213,6 +213,7 @@ public class BlockItem extends Item {
+@@ -223,6 +223,7 @@ public class BlockItem extends Item {
+                     }
  
-                 if (tileentity != null) {
-                     if (!world.isClientSide && tileentity.onlyOpCanSetNbt() && (player == null || !(player.canUseGameMasterBlocks() || (player.getAbilities().instabuild && player.getBukkitEntity().hasPermission("minecraft.nbt.place"))))) { // Spigot - add permission
-+                        if (!(!world.isClientSide && world.purpurConfig.silkTouchEnabled && tileentity instanceof net.minecraft.world.level.block.entity.SpawnerBlockEntity && player.getBukkitEntity().hasPermission("purpur.drop.spawners")))
+                     if (tileentitytypes1.onlyOpCanSetNbt() && (player == null || !(player.canUseGameMasterBlocks() || (player.getAbilities().instabuild && player.getBukkitEntity().hasPermission("minecraft.nbt.place"))))) { // Spigot - add permission
++                        if (!(world.purpurConfig.silkTouchEnabled && tileentity instanceof net.minecraft.world.level.block.entity.SpawnerBlockEntity && player.getBukkitEntity().hasPermission("purpur.drop.spawners")))
                          return false;
                      }
  
 diff --git a/src/main/java/net/minecraft/world/item/Items.java b/src/main/java/net/minecraft/world/item/Items.java
-index 5a70111cd39af50981cfd440c021340da1de5eab..bf7d12594375d5b252db540a6d669a6e6aca7de8 100644
+index 6d16b4433e79eca0ff8008941f0b9b807b1db9db..41fbe61268c0a16078b5f846ab12bde172872ff7 100644
 --- a/src/main/java/net/minecraft/world/item/Items.java
 +++ b/src/main/java/net/minecraft/world/item/Items.java
-@@ -363,7 +363,7 @@ public class Items {
+@@ -367,7 +367,7 @@ public class Items {
      public static final Item PURPUR_BLOCK = registerBlock(Blocks.PURPUR_BLOCK);
      public static final Item PURPUR_PILLAR = registerBlock(Blocks.PURPUR_PILLAR);
      public static final Item PURPUR_STAIRS = registerBlock(Blocks.PURPUR_STAIRS);
@@ -30,7 +30,7 @@ index 5a70111cd39af50981cfd440c021340da1de5eab..bf7d12594375d5b252db540a6d669a6e
      public static final Item CHEST = registerBlock(Blocks.CHEST, settings -> settings.component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
      public static final Item CRAFTING_TABLE = registerBlock(Blocks.CRAFTING_TABLE);
 diff --git a/src/main/java/net/minecraft/world/level/block/SpawnerBlock.java b/src/main/java/net/minecraft/world/level/block/SpawnerBlock.java
-index 4f190a40b8474aa06a92c8afcc06d0044120ff7b..80ee7a6f010cc838625674007a3ea908f2f9dadd 100644
+index d751b280a8bf2066d458f8eb548d7aa123fa69c9..fb88b5c1d9e764bf1211d601527133ea8e8268b3 100644
 --- a/src/main/java/net/minecraft/world/level/block/SpawnerBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/SpawnerBlock.java
 @@ -42,6 +42,57 @@ public class SpawnerBlock extends BaseEntityBlock {

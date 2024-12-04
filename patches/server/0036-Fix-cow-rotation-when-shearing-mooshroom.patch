@@ -5,10 +5,10 @@ Subject: [PATCH] Fix cow rotation when shearing mooshroom
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-index 0005cd7156e46ae790d629d7a985cdace1cc5577..c7039d7d5e38392fef8787f6e245a44842e2f2a3 100644
+index 575a3f5e2c003474a4a4d09db4ba495eddad3ce7..e5d8f23032244c77b4e2bcb8ead0b20a27acadf7 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-@@ -217,6 +217,13 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
+@@ -218,6 +218,13 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
          world.playSound((Player) null, (Entity) this, SoundEvents.MOOSHROOM_SHEAR, shearedSoundCategory, 1.0F, 1.0F);
          this.convertTo(EntityType.COW, ConversionParams.single(this, false, false), (entitycow) -> {
              world.sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);

@@ -5,10 +5,10 @@ Subject: [PATCH] AFK API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 749145ac5ee84b5ebbf4b1eba2df680c1c51bd88..d4ed1dd4e4c56cf40632b0857af82a944579da65 100644
+index cff9e1877d3abcf92417ff56f4db2d14ad188f97..ae4733c402662630a3892aecd01646d2e7613eed 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2641,8 +2641,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -2621,8 +2621,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -78,10 +78,10 @@ index 749145ac5ee84b5ebbf4b1eba2df680c1c51bd88..d4ed1dd4e4c56cf40632b0857af82a94
          return this.stats;
      }
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index d2145df4e9b0dd16e7d394b8983c36fd073d3e31..f48b13b9b57e3a25e8afeb37f54e883fd1cadf4d 100644
+index e6c4b62daece71edae995a3c3fd21e18b5616bb1..236402e35eb04a2c12ed7ef28ce7c78d7be125cf 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -342,6 +342,20 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -344,6 +344,20 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
      private boolean justTeleported = false;
      // CraftBukkit end
  
@@ -102,7 +102,7 @@ index d2145df4e9b0dd16e7d394b8983c36fd073d3e31..f48b13b9b57e3a25e8afeb37f54e883f
      @Override
      public void tick() {
          if (this.ackBlockChangesUpTo > -1) {
-@@ -398,6 +412,12 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -400,6 +414,12 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
          this.recipeSpamPackets.tick(); // Paper - auto recipe limit
          this.dropSpamThrottler.tick();
          if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) this.server.getPlayerIdleTimeout() * 1000L * 60L && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits
@@ -115,7 +115,7 @@ index d2145df4e9b0dd16e7d394b8983c36fd073d3e31..f48b13b9b57e3a25e8afeb37f54e883f
              this.player.resetLastActionTime(); // CraftBukkit - SPIGOT-854
              this.disconnect((Component) Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING); // Paper - kick event cause
          }
-@@ -663,6 +683,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -656,6 +676,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                      this.lastYaw = to.getYaw();
                      this.lastPitch = to.getPitch();
  
@@ -124,7 +124,7 @@ index d2145df4e9b0dd16e7d394b8983c36fd073d3e31..f48b13b9b57e3a25e8afeb37f54e883f
                      Location oldTo = to.clone();
                      PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
                      this.cserver.getPluginManager().callEvent(event);
-@@ -1501,7 +1523,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1554,7 +1576,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                                      movedWrongly = true;
                                      if (event.getLogWarning())
                                  // Paper end
@@ -133,7 +133,7 @@ index d2145df4e9b0dd16e7d394b8983c36fd073d3e31..f48b13b9b57e3a25e8afeb37f54e883f
                                  } // Paper
                              }
  
-@@ -1569,6 +1591,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1622,6 +1644,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                                      this.lastYaw = to.getYaw();
                                      this.lastPitch = to.getPitch();
  
@@ -192,10 +192,10 @@ index 52982c1e6a4da36392569c791853279f5f9ac31a..b3d4c61b1769b6fcc98b7af854f774d2
              if (tester == null) {
                  if (this.isCombat && (!target.canBeSeenAsEnemy() || world.getDifficulty() == Difficulty.PEACEFUL)) {
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 7e9f9b1f9e932116fc12db9cc2c0135144156eda..d1b6e7cf8d110d9106ea99431cf9719ea3b102d5 100644
+index e5c11504f85abdf49cea4ebd2aaaccdaff35a75c..47d2f1af81d64054e30b353b66c0a6ad68583298 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -203,6 +203,13 @@ public abstract class Player extends LivingEntity {
+@@ -206,6 +206,13 @@ public abstract class Player extends LivingEntity {
      public boolean fauxSleeping;
      public int oldLevel = -1;
  
@@ -223,7 +223,7 @@ index 5d7a6e4b73f032db356e7ec369b150013e940ee6..6b2cda6d578a0983b2401ea206292754
                  if (range < 0.0 || d < range * range) {
                      return true;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 3d2322233aff511bcc5c85b24230c2e08dc0bcd0..358f42585c865efbd814787879f919f70234e5c4 100644
+index d86bf4f995e8156f594fa90ebbab4165e52c0e09..350165d6616a1dfe931d0a35de0dbbd9222da216 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -583,10 +583,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -243,7 +243,7 @@ index 3d2322233aff511bcc5c85b24230c2e08dc0bcd0..358f42585c865efbd814787879f919f7
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -3586,5 +3591,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3571,5 +3576,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public boolean usesPurpurClient() {
          return getHandle().purpurClient;
      }

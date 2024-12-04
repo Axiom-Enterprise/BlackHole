@@ -5,7 +5,7 @@ Subject: [PATCH] Rabbit naturally spawn toast and killer
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Rabbit.java b/src/main/java/net/minecraft/world/entity/animal/Rabbit.java
-index 6f3fdf72dd4e8d7399b205818c863e754c898101..b0cdc25f6592d44a3ad3fdf4d461e95887105257 100644
+index bd513a21c9fb683f5768cebb69058bd00c808412..d851f25ca886f0e0939e397c4562b88db59f6885 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Rabbit.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Rabbit.java
 @@ -469,10 +469,23 @@ public class Rabbit extends Animal implements VariantHolder<Rabbit.Variant> {

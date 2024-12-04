@@ -5,7 +5,7 @@ Subject: [PATCH] Tulips change fox type
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Fox.java b/src/main/java/net/minecraft/world/entity/animal/Fox.java
-index bb98caa1e5ca711293e50ac82a5cad2fa5972db9..355965d88d5ef008111cc72f39e4f8d35741fdfd 100644
+index 23ee27f70ae4c02a9add7562f75c6dd5e12028b4..75fd5fb03aec52c76df55ab75ba5d446e094c9c8 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Fox.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Fox.java
 @@ -384,6 +384,11 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {

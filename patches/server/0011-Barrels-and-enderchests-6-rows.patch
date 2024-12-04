@@ -5,7 +5,7 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index cf8b7f93a1ba027c00d7f45809fa51f1ab55a5de..595302e0177824c1e3ad54e9a088337eeb2d872b 100644
+index b973a07d199bc856643b23c090eb56bd1aeb0104..88678fb527f170c81d5e2d4a28f65e398dab8939 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1116,6 +1116,27 @@ public abstract class PlayerList {
@@ -37,10 +37,10 @@ index cf8b7f93a1ba027c00d7f45809fa51f1ab55a5de..595302e0177824c1e3ad54e9a088337e
  
      public boolean isWhiteListed(GameProfile profile) {
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 21f85ffe12a6ac11a67c808e4878f9a46f01344e..7e9f9b1f9e932116fc12db9cc2c0135144156eda 100644
+index e4d8fadd6ef32823f8581dab68567c5da9270566..e5c11504f85abdf49cea4ebd2aaaccdaff35a75c 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -197,6 +197,7 @@ public abstract class Player extends LivingEntity {
+@@ -200,6 +200,7 @@ public abstract class Player extends LivingEntity {
      private int currentImpulseContextResetGraceTime;
      public boolean affectsSpawning = true; // Paper - Affects Spawning API
      public net.kyori.adventure.util.TriState flyingFallDamage = net.kyori.adventure.util.TriState.NOT_SET; // Paper - flying fall damage
@@ -108,10 +108,10 @@ index a15d5ff872dbd77f3c3145e0328f3d02e431ff8c..1dcf36d502990d32fc4cd3ea69c3ea33
          this.activeChest = blockEntity;
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/EnderChestBlock.java b/src/main/java/net/minecraft/world/level/block/EnderChestBlock.java
-index 2a207fb2e1c26b562de42240e11c856bd2a23458..6ad4aa371607ab92616626285a7e71757c76a3db 100644
+index 9b6ab617ab7f503cf0b2d4e29333c706ffe95f46..bfe79431dc5707677671df5c0787817c6e14a676 100644
 --- a/src/main/java/net/minecraft/world/level/block/EnderChestBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/EnderChestBlock.java
-@@ -89,7 +89,7 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
+@@ -84,7 +84,7 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
                  // Paper start - Fix InventoryOpenEvent cancellation - moved up;
                  playerEnderChestContainer.setActiveChest(enderChestBlockEntity); // Needs to happen before ChestMenu.threeRows as it is required for opening animations
                  if (world instanceof ServerLevel serverLevel && player.openMenu(
@@ -120,7 +120,7 @@ index 2a207fb2e1c26b562de42240e11c856bd2a23458..6ad4aa371607ab92616626285a7e7175
                  ).isPresent()) {
                  // Paper end - Fix InventoryOpenEvent cancellation - moved up;
                      // Paper - Fix InventoryOpenEvent cancellation - moved up;
-@@ -104,6 +104,35 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
+@@ -99,6 +99,35 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
          }
      }
  
@@ -240,7 +240,7 @@ index 6d3f9d5dab6c9a2860ae31cae24310aa2d62da7c..4f29c579f94efe59a8c78520d75676fc
              case DISPENSER:
              case DROPPER:
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
-index af1ae3dacb628da23f7d2988c6e76d3fb2d64103..4ee2d501f882279b48edb4b8bf0824587c276bf6 100644
+index c6159c70f7a37b9bffe268b91905ce848d1d2927..d02adaaa6fbdc1c0eff44cb4a1f1642f9575a821 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
 @@ -84,7 +84,7 @@ public class CraftInventory implements Inventory {

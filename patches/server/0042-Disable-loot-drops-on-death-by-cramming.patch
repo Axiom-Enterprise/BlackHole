@@ -5,10 +5,10 @@ Subject: [PATCH] Disable loot drops on death by cramming
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 1077eae6e0952d09410518a856ebece808aefef5..af017da528924bae0542dd0e59d23c3bf59aa7b3 100644
+index a16c7069a2ac349a6de366229b77da9a7cec71c0..9c31efc4d8c16c8f3c3e384ad247db28e82628d2 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1927,6 +1927,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1938,6 +1938,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
  
          this.dropEquipment(world); // CraftBukkit - from below
          if (this.shouldDropLoot() && world.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
@@ -16,7 +16,7 @@ index 1077eae6e0952d09410518a856ebece808aefef5..af017da528924bae0542dd0e59d23c3b
              this.dropFromLootTable(world, damageSource, flag);
              // Paper start
              final boolean prev = this.clearEquipmentSlots;
-@@ -1935,6 +1936,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1946,6 +1947,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
              // Paper end
              this.dropCustomDeathLoot(world, damageSource, flag);
              this.clearEquipmentSlots = prev; // Paper

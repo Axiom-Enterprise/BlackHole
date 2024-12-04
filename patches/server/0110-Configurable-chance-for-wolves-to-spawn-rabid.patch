@@ -7,7 +7,7 @@ Configurable chance to spawn a wolf that is rabid.
 Rabid wolves attack all players, mobs, and animals.
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 71f76046b37705d064dc532ae1244ecc2920393a..7eeb283d969c93e884791709734abf8b64b730d5 100644
+index 71f76046b37705d064dc532ae1244ecc2920393a..e0e8ef7f579c36b082dbcd8c4f330fbc227e0d00 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 @@ -103,6 +103,37 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
@@ -140,7 +140,7 @@ index 71f76046b37705d064dc532ae1244ecc2920393a..7eeb283d969c93e884791709734abf8b
              this.interestedAngleO = this.interestedAngle;
              if (this.isInterested()) {
                  this.interestedAngle += (1.0F - this.interestedAngle) * 0.4F;
-@@ -534,6 +606,19 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -534,6 +606,20 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
              itemstack.consume(1, player);
              this.tryToTame(player);
              return InteractionResult.SUCCESS_SERVER;
@@ -151,9 +151,10 @@ index 71f76046b37705d064dc532ae1244ecc2920393a..7eeb283d969c93e884791709734abf8b
 +            }
 +            this.setRabid(false);
 +            for (int i = 0; i < 10; ++i) {
-+                ((ServerLevel) level()).sendParticles(((ServerLevel) level()).players(), null, ParticleTypes.HAPPY_VILLAGER,
++                ((ServerLevel) level()).sendParticlesSource(((ServerLevel) level()).players(), null, ParticleTypes.HAPPY_VILLAGER,
++                        false, true,
 +                        getX() + random.nextFloat(), getY() + (random.nextFloat() * 1.5), getZ() + random.nextFloat(), 1,
-+                        random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, 0, true);
++                        random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, 0);
 +            }
 +            return InteractionResult.SUCCESS_SERVER;
 +        // Purpur end

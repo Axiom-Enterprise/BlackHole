@@ -5,7 +5,7 @@ Subject: [PATCH] Cows eat mushrooms
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cow.java b/src/main/java/net/minecraft/world/entity/animal/Cow.java
-index 8229a99d4454df64def52bbf686183284d62c900..e6fa66a8c88d4f20a7383e8fd5b3df44718478fa 100644
+index 8229a99d4454df64def52bbf686183284d62c900..5b1cd0003f48a44609ed42919a191ec22c379640 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cow.java
 @@ -74,7 +74,7 @@ public class Cow extends Animal {
@@ -28,7 +28,7 @@ index 8229a99d4454df64def52bbf686183284d62c900..e6fa66a8c88d4f20a7383e8fd5b3df44
          } else {
              return super.mobInteract(player, hand);
          }
-@@ -151,4 +155,66 @@ public class Cow extends Animal {
+@@ -151,4 +155,67 @@ public class Cow extends Animal {
      public EntityDimensions getDefaultDimensions(Pose pose) {
          return this.isBaby() ? Cow.BABY_DIMENSIONS : super.getDefaultDimensions(pose);
      }
@@ -87,9 +87,10 @@ index 8229a99d4454df64def52bbf686183284d62c900..e6fa66a8c88d4f20a7383e8fd5b3df44
 +            stack.shrink(1);
 +        }
 +        for (int i = 0; i < 15; ++i) {
-+            ((ServerLevel) level()).sendParticles(((ServerLevel) level()).players(), null, net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
++            ((ServerLevel) level()).sendParticlesSource(((ServerLevel) level()).players(), null, net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
++                    false, true,
 +                    getX() + random.nextFloat(), getY() + (random.nextFloat() * 2), getZ() + random.nextFloat(), 1,
-+                    random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, 0, true);
++                    random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, 0);
 +        }
 +        return InteractionResult.SUCCESS;
 +    }

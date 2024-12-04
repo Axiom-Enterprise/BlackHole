@@ -1786,7 +1786,7 @@ index fd9f6c17448a4d87f940eb8f544ecb9669068582..3a0b71cad2c68e972c5989bd37de8395
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Squid.java b/src/main/java/net/minecraft/world/entity/animal/Squid.java
-index 97a3f0ab3dfca24991051395229dd4c601a66fa0..99255bb3a5c3198fe1aaa4b897c970420bd20288 100644
+index 97a3f0ab3dfca24991051395229dd4c601a66fa0..803c36f87dbbb72a245b47baebacdea8dd038320 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Squid.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Squid.java
 @@ -50,9 +50,32 @@ public class Squid extends AgeableWaterCreature {
@@ -1804,7 +1804,7 @@ index 97a3f0ab3dfca24991051395229dd4c601a66fa0..99255bb3a5c3198fe1aaa4b897c97042
 +        return level().purpurConfig.squidControllable;
 +    }
 +
-+    protected void rotateVectorAroundY(org.bukkit.util.Vector vector, double degrees) {
++    protected static void rotateVectorAroundY(org.bukkit.util.Vector vector, double degrees) {
 +        double rad = Math.toRadians(degrees);
 +        double cos = Math.cos(rad);
 +        double sine = Math.sin(rad);
@@ -6370,10 +6370,10 @@ index 0000000000000000000000000000000000000000..ba2a37dad43e238e54632975abea8ee6
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java b/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..89c476c740b4efb4f44c1dcd384b908626d96780
+index 0000000000000000000000000000000000000000..5a3df169da4a673d07d17f4f0f016721b9e6bf95
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java
-@@ -0,0 +1,100 @@
+@@ -0,0 +1,101 @@
 +package org.purpurmc.purpur.entity;
 +
 +import net.minecraft.core.particles.ParticleTypes;
@@ -6429,10 +6429,11 @@ index 0000000000000000000000000000000000000000..89c476c740b4efb4f44c1dcd384b9086
 +        Vec3 motDouble = mot.scale(2.0);
 +        for (int i = 0; i < 5; i++) {
 +            ((ServerLevel) level()).sendParticles(null, ParticleTypes.BUBBLE,
++                    false, true,
 +                    getX() + random.nextFloat() / 2 - 0.25F,
 +                    getY() + random.nextFloat() / 2 - 0.25F,
 +                    getZ() + random.nextFloat() / 2 - 0.25F,
-+                    0, motDouble.x(), motDouble.y(), motDouble.z(), 0.1D, true);
++                    0, motDouble.x(), motDouble.y(), motDouble.z(), 0.1D);
 +        }
 +
 +        if (++ticksLived > 20) {
@@ -6476,10 +6477,10 @@ index 0000000000000000000000000000000000000000..89c476c740b4efb4f44c1dcd384b9086
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d7f5686fe897f3c2424b146c8e7d2862223d1eaf
+index 0000000000000000000000000000000000000000..f6358e9afc6758f2b20e97b6037f6db0204a7dd5
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
-@@ -0,0 +1,122 @@
+@@ -0,0 +1,123 @@
 +package org.purpurmc.purpur.entity;
 +
 +import net.minecraft.core.particles.ParticleTypes;
@@ -6537,10 +6538,11 @@ index 0000000000000000000000000000000000000000..d7f5686fe897f3c2424b146c8e7d2862
 +        Vec3 motDouble = mot.scale(2.0);
 +        for (int i = 0; i < 5; i++) {
 +            ((ServerLevel) level()).sendParticles(null, ParticleTypes.FLAME,
++                    false, true,
 +                    getX() + random.nextFloat() / 2 - 0.25F,
 +                    getY() + random.nextFloat() / 2 - 0.25F,
 +                    getZ() + random.nextFloat() / 2 - 0.25F,
-+                    0, motDouble.x(), motDouble.y(), motDouble.z(), 0.1D, true);
++                    0, motDouble.x(), motDouble.y(), motDouble.z(), 0.1D);
 +        }
 +
 +        if (++ticksLived > 20) {

@@ -5,7 +5,7 @@ Subject: [PATCH] Skeletons eat wither roses
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
-index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..3cbe4c1ed514936a00e0181cb1e647fbb58032bb 100644
+index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..84bd180ce29d4560675b029a1fa01b03ac698249 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 @@ -17,6 +17,16 @@ import net.minecraft.world.item.Items;
@@ -25,7 +25,7 @@ index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..3cbe4c1ed514936a00e0181cb1e647fb
  public class Skeleton extends AbstractSkeleton {
  
      private static final int TOTAL_CONVERSION_TIME = 300;
-@@ -181,4 +191,63 @@ public class Skeleton extends AbstractSkeleton {
+@@ -181,4 +191,64 @@ public class Skeleton extends AbstractSkeleton {
          }
  
      }
@@ -81,9 +81,10 @@ index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..3cbe4c1ed514936a00e0181cb1e647fb
 +        }
 +
 +        for (int i = 0; i < 15; ++i) {
-+            ((ServerLevel) level()).sendParticles(((ServerLevel) level()).players(), null, ParticleTypes.HAPPY_VILLAGER,
++            ((ServerLevel) level()).sendParticlesSource(((ServerLevel) level()).players(), null, ParticleTypes.HAPPY_VILLAGER,
++                    false, true,
 +                    getX() + random.nextFloat(), getY() + (random.nextFloat() * 2), getZ() + random.nextFloat(), 1,
-+                    random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, 0, true);
++                    random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, 0);
 +        }
 +        return InteractionResult.SUCCESS;
 +    }

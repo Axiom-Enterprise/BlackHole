@@ -5,7 +5,7 @@ Subject: [PATCH] Add allow water in end world option
 
 
 diff --git a/src/main/java/net/minecraft/world/item/BucketItem.java b/src/main/java/net/minecraft/world/item/BucketItem.java
-index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..6aa8ee091d3a7d2826d08ab9a03f970ef71a81ea 100644
+index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..5e64a3243c1d8536a1e86983e4486a58ef6ab9fc 100644
 --- a/src/main/java/net/minecraft/world/item/BucketItem.java
 +++ b/src/main/java/net/minecraft/world/item/BucketItem.java
 @@ -196,7 +196,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
@@ -22,7 +22,7 @@ index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..6aa8ee091d3a7d2826d08ab9a03f970e
  
                  for (int l = 0; l < 8; ++l) {
 -                    world.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);
-+                    ((ServerLevel) world).sendParticles(null, ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 1, 0.0D, 0.0D, 0.0D, 0.0D, true); // Purpur
++                    ((ServerLevel) world).sendParticles(null, ParticleTypes.LARGE_SMOKE, false, true, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 1, 0.0D, 0.0D, 0.0D, 0.0D); // Purpur
                  }
  
                  return true;

@@ -6,7 +6,7 @@ Subject: [PATCH] Dont run with scissors!
 inspired by https://modrinth.com/mod/dont-run-with-scissors
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 7c58f969d86c87555764afcac56961de7f43e114..f993d33caa44a2d782780c8829a7785ed74b3dcc 100644
+index 7c58f969d86c87555764afcac56961de7f43e114..4049eeb7d448dfe83b758d268ce1ef8612d32542 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1720,6 +1720,13 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -31,7 +31,7 @@ index 7c58f969d86c87555764afcac56961de7f43e114..f993d33caa44a2d782780c8829a7785e
 +    public boolean isScissor(ItemStack stack) {
 +        if (!stack.is(Items.SHEARS)) return false;
 +        net.minecraft.world.item.component.CustomModelData customModelData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA);
-+        return customModelData == null || customModelData.value() == 0;
++        return customModelData == null || customModelData.strings().contains("purpurmc:scissors");
 +    }
 +    // Purpur end
 +

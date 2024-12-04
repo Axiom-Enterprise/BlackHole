@@ -46,10 +46,10 @@ index fbb252029c049d19eb8dc2e89688e036fd9c23de..f951905a9b985cfeb3a960898724651e
                      this.level().broadcastEntityEvent(this, (byte) 7);
                  } else {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 988b98a1b29af94b4fcc78abdaa72375bc4f0ac6..cbc28ca0d359f64bf583e9a1134bc18363e516ec 100644
+index 986a732aedf8a271384129b2bdbcbe2acf845986..be949279dabeabee6b6b24910d82bee73a194a83 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-@@ -637,7 +637,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -638,7 +638,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
  
      private void tryToTame(Player player) {
          // CraftBukkit - added event call and isCancelled check.

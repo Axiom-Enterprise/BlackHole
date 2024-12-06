@@ -17,10 +17,10 @@ index 305c3350116f656c3d0e6134e4d8023eac50f3ad..b1db1e92de3a88a0f0e0fdb42b0bf973
  
      // Purpur start
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 89e80073eb911e72d0bac5b50119421a91cd3a16..991d13948d90039a4a344b51317b52f882b34e5f 100644
+index 114d8082fe8d5a0cb8bbf48dbbf8d315e6a039d5..6e634c6997c98a8242a6a8b3056c6bb2efed1c2f 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -915,6 +915,7 @@ public class PurpurWorldConfig {
+@@ -917,6 +917,7 @@ public class PurpurWorldConfig {
      public double basedEndCrystalExplosionPower = 6.0D;
      public boolean basedEndCrystalExplosionFire = false;
      public net.minecraft.world.level.Level.ExplosionInteraction basedEndCrystalExplosionEffect = net.minecraft.world.level.Level.ExplosionInteraction.BLOCK;
@@ -28,7 +28,7 @@ index 89e80073eb911e72d0bac5b50119421a91cd3a16..991d13948d90039a4a344b51317b52f8
      private void endCrystalSettings() {
          if (PurpurConfig.version < 31) {
              if ("DESTROY".equals(getString("blocks.end-crystal.baseless.explosion-effect", baselessEndCrystalExplosionEffect.name()))) {
-@@ -942,6 +943,7 @@ public class PurpurWorldConfig {
+@@ -944,6 +945,7 @@ public class PurpurWorldConfig {
              log(Level.SEVERE, "Unknown value for `blocks.end-crystal.base.explosion-effect`! Using default of `BLOCK`");
              basedEndCrystalExplosionEffect = net.minecraft.world.level.Level.ExplosionInteraction.BLOCK;
          }

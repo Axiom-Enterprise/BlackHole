@@ -6,7 +6,7 @@ Subject: [PATCH] Dont run with scissors!
 inspired by https://modrinth.com/mod/dont-run-with-scissors
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index b4cd58ae2c89cb3875cff2bcbe60511d94a926d4..10757591f1318222f79ff4e3df4c59bacfc41dee 100644
+index b4cd58ae2c89cb3875cff2bcbe60511d94a926d4..c8cf05ac72a7b30e8d2239c4e07c9cc52d5990e2 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1721,6 +1721,13 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -14,8 +14,8 @@ index b4cd58ae2c89cb3875cff2bcbe60511d94a926d4..10757591f1318222f79ff4e3df4c59ba
                                  }
  
 +                                // Purpur Start
-+                                if (this.player.level().purpurConfig.dontRunWithScissors && this.player.isSprinting() && !(this.player.level().purpurConfig.ignoreScissorsInWater && this.player.isInWater()) && !(this.player.level().purpurConfig.ignoreScissorsInLava && this.player.isInLava()) && (isScissor(this.player.getItemInHand(InteractionHand.MAIN_HAND)) || isScissor(this.player.getItemInHand(InteractionHand.OFF_HAND))) && (int) (Math.random() * 10) == 0) {
-+                                    this.player.hurt(this.player.damageSources().scissors(), (float) this.player.level().purpurConfig.scissorsRunningDamage);
++                                if (this.player.serverLevel().purpurConfig.dontRunWithScissors && this.player.isSprinting() && !(this.player.serverLevel().purpurConfig.ignoreScissorsInWater && this.player.isInWater()) && !(this.player.serverLevel().purpurConfig.ignoreScissorsInLava && this.player.isInLava()) && (isScissors(this.player.getItemInHand(InteractionHand.MAIN_HAND)) || isScissors(this.player.getItemInHand(InteractionHand.OFF_HAND))) && (int) (Math.random() * 10) == 0) {
++                                    this.player.hurtServer(this.player.serverLevel(), this.player.damageSources().scissors(), (float) this.player.serverLevel().purpurConfig.scissorsRunningDamage);
 +                                    if (!org.purpurmc.purpur.PurpurConfig.dontRunWithScissors.isBlank()) this.player.sendActionBarMessage(org.purpurmc.purpur.PurpurConfig.dontRunWithScissors);
 +                                }
 +                                // Purpur End
@@ -23,15 +23,18 @@ index b4cd58ae2c89cb3875cff2bcbe60511d94a926d4..10757591f1318222f79ff4e3df4c59ba
                                  this.player.checkMovementStatistics(this.player.getX() - d3, this.player.getY() - d4, this.player.getZ() - d5);
                                  this.lastGoodX = this.player.getX();
                                  this.lastGoodY = this.player.getY();
-@@ -1760,6 +1767,14 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1760,6 +1767,17 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
          }
      }
  
 +    // Purpur start
-+    public boolean isScissor(ItemStack stack) {
++    public boolean isScissors(ItemStack stack) {
 +        if (!stack.is(Items.SHEARS)) return false;
-+        net.minecraft.world.item.component.CustomModelData customModelData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA);
-+        return customModelData == null || customModelData.strings().contains("purpurmc:scissors");
++
++        ResourceLocation itemModelReference = stack.get(net.minecraft.core.component.DataComponents.ITEM_MODEL);
++        if (itemModelReference != null && itemModelReference.equals(this.player.serverLevel().purpurConfig.dontRunWithScissorsItemModelReference)) return true;
++
++        return stack.getOrDefault(DataComponents.CUSTOM_MODEL_DATA, net.minecraft.world.item.component.CustomModelData.EMPTY).equals(net.minecraft.world.item.component.CustomModelData.EMPTY);
 +    }
 +    // Purpur end
 +
@@ -149,25 +152,27 @@ index 64c84cb6cc647ca37a0664b83eb24e7202aeb1e2..28800c519ab8a6648d632a577ffbecae
  
      public static String serverModName = io.papermc.paper.ServerBuildInfo.buildInfo().brandName();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 066a6407ed76a3a2b77541f24d4c3429d3a1a189..a980b4d3e1e4df4e2e2d7ecedafe23abe434fccb 100644
+index 066a6407ed76a3a2b77541f24d4c3429d3a1a189..2fd0df56e94dca5ce91d0db29b56fa4bd5a2d1f2 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -191,6 +191,10 @@ public class PurpurWorldConfig {
+@@ -191,6 +191,11 @@ public class PurpurWorldConfig {
      public List<Item> itemImmuneToExplosion = new ArrayList<>();
      public List<Item> itemImmuneToFire = new ArrayList<>();
      public List<Item> itemImmuneToLightning = new ArrayList<>();
 +    public boolean dontRunWithScissors = false;
++    public ResourceLocation dontRunWithScissorsItemModelReference = ResourceLocation.parse("purpurmc:scissors");
 +    public boolean ignoreScissorsInWater = false;
 +    public boolean ignoreScissorsInLava = false;
 +    public double scissorsRunningDamage = 1D;
      private void itemSettings() {
          itemImmuneToCactus.clear();
          getList("gameplay-mechanics.item.immune.cactus", new ArrayList<>()).forEach(key -> {
-@@ -228,6 +232,10 @@ public class PurpurWorldConfig {
+@@ -228,6 +233,11 @@ public class PurpurWorldConfig {
              Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
              if (item != Items.AIR) itemImmuneToLightning.add(item);
          });
 +        dontRunWithScissors = getBoolean("gameplay-mechanics.item.shears.damage-if-sprinting", dontRunWithScissors);
++        dontRunWithScissorsItemModelReference = ResourceLocation.parse(getString("gameplay-mechanics.item.shears.damage-if-sprinting-item-model", "purpurmc:scissors"));
 +        ignoreScissorsInWater = getBoolean("gameplay-mechanics.item.shears.ignore-in-water", ignoreScissorsInWater);
 +        ignoreScissorsInLava = getBoolean("gameplay-mechanics.item.shears.ignore-in-lava", ignoreScissorsInLava);
 +        scissorsRunningDamage = getDouble("gameplay-mechanics.item.shears.sprinting-damage", scissorsRunningDamage);

@@ -18,10 +18,10 @@ index 93ed9406c34804831b86d006dbd6087db9948f08..26cb9990b91991e0a2eadc2dcbbf229e
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 1522df03dab1e9e8e6d471f62067a15350b909d9..1dcd7031ba7f5e759b98533736218c5c0e28be23 100644
+index e4abac46f4bf2011a84acb07df424af10214588b..1f7a8f2b5196d5b15b047e6d67491a8335cbdbc3 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -362,6 +362,11 @@ public class PurpurWorldConfig {
+@@ -364,6 +364,11 @@ public class PurpurWorldConfig {
          villageSiegeSpawning = getBoolean("gameplay-mechanics.mob-spawning.village-sieges", predicate);
      }
  

@@ -18,10 +18,10 @@ index a265c5bf1a4d6f3c84cad20f9b3c285dcebd0372..72c89f14977844e1460e9a914f39e896
  
      @Override
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 931e2a3d04e2ec43b5389144c675914cb595b04d..0e3c1b37d386a7115cdfa027a5afb235ec4d363f 100644
+index ef835aa6568bad1a20cc7ebb8775a538234b7915..957e6d3570a4ad7472afb5dc83da70f4c88ba541 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1034,11 +1034,13 @@ public class PurpurWorldConfig {
+@@ -1036,11 +1036,13 @@ public class PurpurWorldConfig {
      public boolean turtleEggsBreakFromItems = false;
      public boolean turtleEggsBreakFromMinecarts = false;
      public boolean turtleEggsBypassMobGriefing = false;

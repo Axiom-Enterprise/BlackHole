@@ -18,10 +18,10 @@ index ac5dc472337cd9613db5fc03f64763245129dfd9..f8928d5ac2f107a904ecc636e6bdeee7
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index ff9bb8f21d6da7f8d3b0a726098227d95e6e3207..277c1be1ede46b50f865a2c1d1b38ab22cae9ef9 100644
+index 6cb8722c1ca2c182ed24d8e7770025560898c9e1..294153e02ea584ab5a8fc8209dc87660bddc27a7 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -214,6 +214,7 @@ public class PurpurWorldConfig {
+@@ -215,6 +215,7 @@ public class PurpurWorldConfig {
      public int enderPearlCooldownCreative = 20;
      public float enderPearlEndermiteChance = 0.05F;
      public int glowBerriesEatGlowDuration = 0;
@@ -29,7 +29,7 @@ index ff9bb8f21d6da7f8d3b0a726098227d95e6e3207..277c1be1ede46b50f865a2c1d1b38ab2
      private void itemSettings() {
          itemImmuneToCactus.clear();
          getList("gameplay-mechanics.item.immune.cactus", new ArrayList<>()).forEach(key -> {
-@@ -260,6 +261,7 @@ public class PurpurWorldConfig {
+@@ -262,6 +263,7 @@ public class PurpurWorldConfig {
          enderPearlCooldownCreative = getInt("gameplay-mechanics.item.ender-pearl.creative-cooldown", enderPearlCooldownCreative);
          enderPearlEndermiteChance = (float) getDouble("gameplay-mechanics.item.ender-pearl.endermite-spawn-chance", enderPearlEndermiteChance);
          glowBerriesEatGlowDuration = getInt("gameplay-mechanics.item.glow_berries.eat-glow-duration", glowBerriesEatGlowDuration);

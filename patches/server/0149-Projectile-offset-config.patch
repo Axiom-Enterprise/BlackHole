@@ -96,10 +96,10 @@ index aff4f33be216f62d6c6e139dcd7fd82efdbd267c..810082126567eb02bec395065b95b3c3
                              com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent event = new com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent((org.bukkit.entity.Player) entityhuman.getBukkitEntity(), org.bukkit.craftbukkit.inventory.CraftItemStack.asCraftMirror(stack), (org.bukkit.entity.Projectile) tridentDelayed.projectile().getBukkitEntity());
                              if (!event.callEvent() || !tridentDelayed.attemptSpawn()) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 3a334078a69c1b6456ba2c1ed7249bf66c922960..33ed5f8c42dcdf378fa5140177dbd290397d1092 100644
+index 1b1c6e20acef4e2dda93cbc89ae1d527d76e81ce..c6d39361fe5f02de3119e2d2bfc603e096c03160 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -414,6 +414,23 @@ public class PurpurWorldConfig {
+@@ -416,6 +416,23 @@ public class PurpurWorldConfig {
          });
      }
  

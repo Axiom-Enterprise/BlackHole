@@ -87,10 +87,10 @@ index 9264ba58188a7a682eeb8eb449b89ff8e60f91d6..809a820dd8eec3e48dd3263335c62fbe
      protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
          int i = (Integer) state.getValue(ComposterBlock.LEVEL);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index e040507a861ad283d95f42b6ef08b8b2f5b83418..7bb429cbb41e1a7ac7e138663dec988d29d62798 100644
+index 99a1c69938be124ad6fd1ae9a96024cc9fafd62c..09fa9a18dc1bb6a3df80cb2237dc0d55affc0453 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -439,6 +439,11 @@ public class PurpurWorldConfig {
+@@ -441,6 +441,11 @@ public class PurpurWorldConfig {
          chestOpenWithBlockOnTop = getBoolean("blocks.chest.open-with-solid-block-on-top", chestOpenWithBlockOnTop);
      }
  

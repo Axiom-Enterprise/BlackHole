@@ -136,10 +136,10 @@ index 39aac959775afeaeea211f21d498cb0ddf0a3fcb..6349a342c023f378af431a73a62fb017
 +    // Purpur
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 647852226244c862735c113e16fcf4410d39698d..37dc3ba688e546f3feb64927134b6ef926929a5f 100644
+index c4d13f49beeaf2e0a5059a7e916d59502e6c36c1..716ec5b0afcd4e3818d5d749eb5d12d3917e0e86 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1556,6 +1556,11 @@ public class PurpurWorldConfig {
+@@ -1558,6 +1558,11 @@ public class PurpurWorldConfig {
          elderGuardianAlwaysDropExp = getBoolean("mobs.elder_guardian.always-drop-exp", elderGuardianAlwaysDropExp);
      }
  

@@ -29,10 +29,10 @@ index 8464a8288f7ec7ae14e44b93607ebb0617790c46..837a251afd68b68c5f5f6ab940d62332
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 3cf70e3e79b581d97a0e76e88075600aaa2af7d4..cf0ca3f712e825898cda9ca0a8d6699195d6f26c 100644
+index 22ca0a30da56af326741fa000bedb37751a5b5fe..6eccd21195c648e8e59ac2e02616d004ce1f2dba 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2318,6 +2318,7 @@ public class PurpurWorldConfig {
+@@ -2320,6 +2320,7 @@ public class PurpurWorldConfig {
      public double shulkerSpawnFromBulletNearbyRange = 8.0D;
      public String shulkerSpawnFromBulletNearbyEquation = "(nearby - 1) / 5.0";
      public boolean shulkerSpawnFromBulletRandomColor = false;
@@ -40,7 +40,7 @@ index 3cf70e3e79b581d97a0e76e88075600aaa2af7d4..cf0ca3f712e825898cda9ca0a8d66991
      private void shulkerSettings() {
          shulkerRidable = getBoolean("mobs.shulker.ridable", shulkerRidable);
          shulkerRidableInWater = getBoolean("mobs.shulker.ridable-in-water", shulkerRidableInWater);
-@@ -2335,6 +2336,7 @@ public class PurpurWorldConfig {
+@@ -2337,6 +2338,7 @@ public class PurpurWorldConfig {
          shulkerSpawnFromBulletNearbyRange = getDouble("mobs.shulker.spawn-from-bullet.nearby-range", shulkerSpawnFromBulletNearbyRange);
          shulkerSpawnFromBulletNearbyEquation = getString("mobs.shulker.spawn-from-bullet.nearby-equation", shulkerSpawnFromBulletNearbyEquation);
          shulkerSpawnFromBulletRandomColor = getBoolean("mobs.shulker.spawn-from-bullet.random-color", shulkerSpawnFromBulletRandomColor);

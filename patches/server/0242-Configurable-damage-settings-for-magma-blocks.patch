@@ -18,10 +18,10 @@ index 7ffdcf18bf4bd8b5325c76945b2d80ca3fe52958..dfa931316fde0b2e80068a0edd1427ff
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 30b11ecbf75e5a4752d6d117f738828273b63b2f..8893ce54385e8b6d9de6b87ebf203efde140fff4 100644
+index 22ae60309fa0b19ba3d2b58c919a6e262eb1903d..4eb94ba260c76984f78a96e0ceb721a857be6e75 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -985,6 +985,11 @@ public class PurpurWorldConfig {
+@@ -987,6 +987,11 @@ public class PurpurWorldConfig {
          pistonBlockPushLimit = getInt("blocks.piston.block-push-limit", pistonBlockPushLimit);
      }
  

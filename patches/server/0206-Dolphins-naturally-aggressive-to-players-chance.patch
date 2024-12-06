@@ -48,10 +48,10 @@ index bcc6435c177189aa59a3fbe67795ae5092685133..fad0b8157a9c30a0e9b35fe32b6a9f2e
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index e351feee5916492edebb92f9af47c87e582b239d..2fd6f601524f8fc748be73a38edf4df06c5e9459 100644
+index fcc093edad7e4e79cd51dbbf1be13a3d13035fe1..f15373de0dda4bfc318891beaaf995469a83ba06 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1358,6 +1358,7 @@ public class PurpurWorldConfig {
+@@ -1360,6 +1360,7 @@ public class PurpurWorldConfig {
      public double dolphinScale = 1.0D;
      public boolean dolphinDisableTreasureSearching = false;
      public boolean dolphinTakeDamageFromWater = false;
@@ -59,7 +59,7 @@ index e351feee5916492edebb92f9af47c87e582b239d..2fd6f601524f8fc748be73a38edf4df0
      private void dolphinSettings() {
          dolphinRidable = getBoolean("mobs.dolphin.ridable", dolphinRidable);
          dolphinControllable = getBoolean("mobs.dolphin.controllable", dolphinControllable);
-@@ -1373,6 +1374,7 @@ public class PurpurWorldConfig {
+@@ -1375,6 +1376,7 @@ public class PurpurWorldConfig {
          dolphinScale = Mth.clamp(getDouble("mobs.dolphin.attributes.scale", dolphinScale), 0.0625D, 16.0D);
          dolphinDisableTreasureSearching = getBoolean("mobs.dolphin.disable-treasure-searching", dolphinDisableTreasureSearching);
          dolphinTakeDamageFromWater = getBoolean("mobs.dolphin.takes-damage-from-water", dolphinTakeDamageFromWater);

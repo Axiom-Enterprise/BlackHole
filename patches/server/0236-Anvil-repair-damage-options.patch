@@ -63,10 +63,10 @@ index 50c907c962f936d2035bb7550750cdbd220b29c2..f9a2d2d4f798efa0d691996ec5ff7fe0
      protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
          if (!world.isClientSide) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 74373b7875906bd79595ca02b86add222d9645e0..f34de537ab3bd3727572313f7e8004703c73f641 100644
+index 1a37f10b480c9d63b912543afbc80913095aaa7b..3d545e57066270d1d39e9ca45c559a707966f815 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -788,9 +788,13 @@ public class PurpurWorldConfig {
+@@ -790,9 +790,13 @@ public class PurpurWorldConfig {
  
      public boolean anvilAllowColors = false;
      public boolean anvilColorsUseMiniMessage;

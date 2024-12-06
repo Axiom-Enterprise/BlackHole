@@ -18,10 +18,10 @@ index 7990a6c225c27845ccada0df91cf5ed7e4315a88..db2b21d5842fafa48dbde25a461505d0
  
      @Override
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 37dc3ba688e546f3feb64927134b6ef926929a5f..1b55aacef555565308b9182a7664bed4d98ac18c 100644
+index 716ec5b0afcd4e3818d5d749eb5d12d3917e0e86..3ad962a28cd4471f2d7593f6053008871a78e50c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1023,6 +1023,11 @@ public class PurpurWorldConfig {
+@@ -1025,6 +1025,11 @@ public class PurpurWorldConfig {
          }
      }
  

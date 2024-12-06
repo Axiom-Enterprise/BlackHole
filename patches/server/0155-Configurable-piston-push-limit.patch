@@ -36,10 +36,10 @@ index 205e223c356634bd6bc6bd58c6f0b7fda61a6f5f..bea05cb928d540a2f19b51bb7352d032
                      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 204ab35e0ee032a5596b836141eea604b3eeb5ac..990fcb015588651fff7e720594a5d5341b3f9bba 100644
+index 176dc97524c6383a4c10ebd0918fd2ca209af3b0..19e77eadb5ece2da43eb82f7b7d196e1616348af 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -570,6 +570,11 @@ public class PurpurWorldConfig {
+@@ -572,6 +572,11 @@ public class PurpurWorldConfig {
          lavaSpeedNotNether = getInt("blocks.lava.speed.not-nether", lavaSpeedNotNether);
      }
  

@@ -18,10 +18,10 @@ index e0f25b057b7b908a10038d9e9695a500aa883c75..e63b408594b5d2673148e39c1deafc85
  
              if (!event.isCancelled()) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a41a3957696d47c5059e96308d17e11b68bb1723..204ab35e0ee032a5596b836141eea604b3eeb5ac 100644
+index be247fe9ca24407350044b020db613ce9a70ff26..176dc97524c6383a4c10ebd0918fd2ca209af3b0 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2414,6 +2414,7 @@ public class PurpurWorldConfig {
+@@ -2416,6 +2416,7 @@ public class PurpurWorldConfig {
      public boolean witherBypassMobGriefing = false;
      public boolean witherTakeDamageFromWater = false;
      public boolean witherCanRideVehicles = false;
@@ -29,7 +29,7 @@ index a41a3957696d47c5059e96308d17e11b68bb1723..204ab35e0ee032a5596b836141eea604
      private void witherSettings() {
          witherRidable = getBoolean("mobs.wither.ridable", witherRidable);
          witherRidableInWater = getBoolean("mobs.wither.ridable-in-water", witherRidableInWater);
-@@ -2435,6 +2436,7 @@ public class PurpurWorldConfig {
+@@ -2437,6 +2438,7 @@ public class PurpurWorldConfig {
          witherBypassMobGriefing = getBoolean("mobs.wither.bypass-mob-griefing", witherBypassMobGriefing);
          witherTakeDamageFromWater = getBoolean("mobs.wither.takes-damage-from-water", witherTakeDamageFromWater);
          witherCanRideVehicles = getBoolean("mobs.wither.can-ride-vehicles", witherCanRideVehicles);

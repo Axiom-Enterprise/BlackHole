@@ -18,10 +18,10 @@ index c1b76a1ebc1eea7ab70cf61d8175a31794dd122a..dc15c15951e4ca30b8341d24f813259a
                              if (entityhuman != null) {
                                  double d2 = entityhuman.distanceToSqr(d0, (double) i, d1);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 47b29febec2af1f3a8ef7b9afc6a4982df08eb47..e94c9fb93191d880b7cbd1b293a8da5c1074aba4 100644
+index a0c49166a93ee18abc24dd40e95bdf4ece7e90b3..bff614ae120300622b803187bcfdf7e6f88fa7a8 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -378,6 +378,7 @@ public class PurpurWorldConfig {
+@@ -380,6 +380,7 @@ public class PurpurWorldConfig {
      public boolean phantomSpawning;
      public boolean villagerTraderSpawning;
      public boolean villageSiegeSpawning;
@@ -29,7 +29,7 @@ index 47b29febec2af1f3a8ef7b9afc6a4982df08eb47..e94c9fb93191d880b7cbd1b293a8da5c
      private void mobSpawnerSettings() {
          // values of "default" or null will default to true only if the world environment is normal (aka overworld)
          Predicate<Boolean> predicate = (bool) -> (bool != null && bool) || (bool == null && environment == World.Environment.NORMAL);
-@@ -386,6 +387,7 @@ public class PurpurWorldConfig {
+@@ -388,6 +389,7 @@ public class PurpurWorldConfig {
          phantomSpawning = getBoolean("gameplay-mechanics.mob-spawning.phantoms", predicate);
          villagerTraderSpawning = getBoolean("gameplay-mechanics.mob-spawning.wandering-traders", predicate);
          villageSiegeSpawning = getBoolean("gameplay-mechanics.mob-spawning.village-sieges", predicate);

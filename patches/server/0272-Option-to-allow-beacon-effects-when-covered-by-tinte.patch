@@ -36,10 +36,10 @@ index fbc6b0099af34b0247f6144a9cef020f9ccddeef..2d190b3a6378b8cbadfa65510df1ccfb
                  BeaconBlockEntity.playSound(world, pos, SoundEvents.BEACON_AMBIENT);
              }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 991d13948d90039a4a344b51317b52f882b34e5f..5fb1b4ca45faaf9d172adb8f3a7879322ae29117 100644
+index 6e634c6997c98a8242a6a8b3056c6bb2efed1c2f..2cb1a54fd54504ef5ac2ac284df0e7a3052edb4a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -814,11 +814,13 @@ public class PurpurWorldConfig {
+@@ -816,11 +816,13 @@ public class PurpurWorldConfig {
      public int beaconLevelTwo = 30;
      public int beaconLevelThree = 40;
      public int beaconLevelFour = 50;

@@ -17,7 +17,7 @@ index 068fa5baf5b031358a1ff71e7ac376448c0ec95c..eedb3707523b47ab79db326f6d7382cc
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 1b691eafa658bbdfd87dd4a7692e0f6a96103ac2..ed1d75fdee29ac92d71f219af79eb7fc5ae99099 100644
+index 59433ad1b3e187233e69a3a08781f61b022f5707..a8994b1edcc82d15afbe11d12a6a8a0a00c76143 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -329,6 +329,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -89,10 +89,10 @@ index 8d41d9a8a2b5b7946c13b8c3ce961fea1a2bc728..e8dc97694f59cfce67e2fe061868a9f0
          hideHiddenPlayersFromEntitySelector = getBoolean("settings.command.hide-hidden-players-from-entity-selector", hideHiddenPlayersFromEntitySelector);
          uptimeFormat = getString("settings.command.uptime.format", uptimeFormat);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 36d6d52a83f4b5b9273661d816424025f76f4596..74515ad36cae0e838224caee3853d2f3d8bc0b11 100644
+index b027f35fc78373d4314a3c7c4d30065f6a2af6ed..a7cecdaffb479a4eb866cd1d3128c4306641e20e 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -215,6 +215,7 @@ public class PurpurWorldConfig {
+@@ -216,6 +216,7 @@ public class PurpurWorldConfig {
      public float enderPearlEndermiteChance = 0.05F;
      public int glowBerriesEatGlowDuration = 0;
      public boolean shulkerBoxItemDropContentsWhenDestroyed = true;
@@ -100,7 +100,7 @@ index 36d6d52a83f4b5b9273661d816424025f76f4596..74515ad36cae0e838224caee3853d2f3
      private void itemSettings() {
          itemImmuneToCactus.clear();
          getList("gameplay-mechanics.item.immune.cactus", new ArrayList<>()).forEach(key -> {
-@@ -262,6 +263,7 @@ public class PurpurWorldConfig {
+@@ -264,6 +265,7 @@ public class PurpurWorldConfig {
          enderPearlEndermiteChance = (float) getDouble("gameplay-mechanics.item.ender-pearl.endermite-spawn-chance", enderPearlEndermiteChance);
          glowBerriesEatGlowDuration = getInt("gameplay-mechanics.item.glow_berries.eat-glow-duration", glowBerriesEatGlowDuration);
          shulkerBoxItemDropContentsWhenDestroyed = getBoolean("gameplay-mechanics.item.shulker_box.drop-contents-when-destroyed", shulkerBoxItemDropContentsWhenDestroyed);

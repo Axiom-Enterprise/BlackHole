@@ -19,10 +19,10 @@ index 30d15686b1a81de7ac28feb0c6188eb007c6f2fd..b6799db00e157892dd4339a01d2ca360
              BlockPos blockposition1 = pos.offset(world.random.nextInt(16) - world.random.nextInt(16), world.random.nextInt(8) - world.random.nextInt(8), world.random.nextInt(16) - world.random.nextInt(16));
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 56ca29d4cdc5007966a6f79a0e8f4cb0390c3a30..db82c66338f2224ac887f3a47fe5e7fcb3ba0a57 100644
+index b5712c7aa0de07736c7e6ae0686ed36ed3629235..427e257d7e53d0dc5fbd4acbaa2c1d1f2a12fff8 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -497,6 +497,11 @@ public class PurpurWorldConfig {
+@@ -499,6 +499,11 @@ public class PurpurWorldConfig {
          });
      }
  

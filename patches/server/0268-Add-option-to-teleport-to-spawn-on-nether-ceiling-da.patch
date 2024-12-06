@@ -5,7 +5,7 @@ Subject: [PATCH] Add option to teleport to spawn on nether ceiling damage
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 1832f7ef8a14fb60e004cb7b99a0cd0155332349..da7ffdf85907c92fe6c4c6a5ebe571ef4666fcb8 100644
+index d19c284986d7fdbb7a2685fcc4a4879db4269403..904805ada13164ec6989e2451583fcc8d290e51f 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -1004,6 +1004,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -17,10 +17,10 @@ index 1832f7ef8a14fb60e004cb7b99a0cd0155332349..da7ffdf85907c92fe6c4c6a5ebe571ef
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 342d5111bd3d4b434071f7499467a860a278ee08..89e80073eb911e72d0bac5b50119421a91cd3a16 100644
+index 6528d3c3e0d817e8e903ff99f8b71dc78d4f58c8..114d8082fe8d5a0cb8bbf48dbbf8d315e6a039d5 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -418,6 +418,7 @@ public class PurpurWorldConfig {
+@@ -420,6 +420,7 @@ public class PurpurWorldConfig {
      public String playerDeathExpDropEquation = "expLevel * 7";
      public int playerDeathExpDropMax = 100;
      public boolean teleportIfOutsideBorder = false;
@@ -28,7 +28,7 @@ index 342d5111bd3d4b434071f7499467a860a278ee08..89e80073eb911e72d0bac5b50119421a
      public boolean totemOfUndyingWorksInInventory = false;
      public boolean playerFixStuckPortal = false;
      public boolean creativeOnePunch = false;
-@@ -445,6 +446,7 @@ public class PurpurWorldConfig {
+@@ -447,6 +448,7 @@ public class PurpurWorldConfig {
          playerDeathExpDropEquation = getString("gameplay-mechanics.player.exp-dropped-on-death.equation", playerDeathExpDropEquation);
          playerDeathExpDropMax = getInt("gameplay-mechanics.player.exp-dropped-on-death.maximum", playerDeathExpDropMax);
          teleportIfOutsideBorder = getBoolean("gameplay-mechanics.player.teleport-if-outside-border", teleportIfOutsideBorder);

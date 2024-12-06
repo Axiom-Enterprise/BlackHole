@@ -22,10 +22,10 @@ index 5a522d73d41f9aa3977807173d7e34c057a37c7a..373d00fce9e8bcb8d9a8d3e8a05987cf
          this.brain.setMemory(MemoryModuleType.LAST_SLEPT, this.level().getGameTime()); // CraftBukkit - decompile error
          this.brain.eraseMemory(MemoryModuleType.WALK_TARGET);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 26c7ccd547430f04dad6495ba7db5be5c0349a8f..efecfd2379d5e955d78c48fb9771197f52263fd6 100644
+index de5d1c49f39cd1224bf52aae2f55e163feee96dc..b8e8f2dd0405f91bdda94cdb9bdae57f07486c41 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -784,6 +784,7 @@ public class PurpurWorldConfig {
+@@ -786,6 +786,7 @@ public class PurpurWorldConfig {
      }
  
      public boolean bedExplode = true;
@@ -33,7 +33,7 @@ index 26c7ccd547430f04dad6495ba7db5be5c0349a8f..efecfd2379d5e955d78c48fb9771197f
      public double bedExplosionPower = 5.0D;
      public boolean bedExplosionFire = true;
      public net.minecraft.world.level.Level.ExplosionInteraction bedExplosionEffect = net.minecraft.world.level.Level.ExplosionInteraction.BLOCK;
-@@ -794,6 +795,7 @@ public class PurpurWorldConfig {
+@@ -796,6 +797,7 @@ public class PurpurWorldConfig {
              }
          }
          bedExplode = getBoolean("blocks.bed.explode", bedExplode);

@@ -143,10 +143,10 @@ index 2090ecfebe8bc164239d198c1c50b134c7bc60c5..dba6a69891f50ba057187a8138ff227a
  
      public static boolean advancementOnlyBroadcastToAffectedPlayer = false;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 011ac10466da8720800f2764a316a9cc9bb50fd9..30b11ecbf75e5a4752d6d117f738828273b63b2f 100644
+index 26f90270a8b6f1eccf0ddf9babfc6d8026f1d509..22ae60309fa0b19ba3d2b58c919a6e262eb1903d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1044,6 +1044,11 @@ public class PurpurWorldConfig {
+@@ -1046,6 +1046,11 @@ public class PurpurWorldConfig {
          spongeAbsorbsWaterFromMud = getBoolean("blocks.sponge.absorbs-water-from-mud", spongeAbsorbsWaterFromMud);
      }
  

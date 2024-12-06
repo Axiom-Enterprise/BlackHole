@@ -5,7 +5,7 @@ Subject: [PATCH] Config for skipping night
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 34698bf825f4d857bca2b76fb368616731937786..bd4dbaee9a90909b9fd63d7c6fbac235a1d2264e 100644
+index 756740b1be54631b4d25343f9a5c826b4b6288cf..e3d2c0f569c76fc9af95f28f29e24be12ab1c476 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -749,7 +749,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -18,10 +18,10 @@ index 34698bf825f4d857bca2b76fb368616731937786..bd4dbaee9a90909b9fd63d7c6fbac235
              j = this.levelData.getDayTime() + 24000L;
              TimeSkipEvent event = new TimeSkipEvent(this.getWorld(), TimeSkipEvent.SkipReason.NIGHT_SKIP, (j - j % 24000L) - this.getDayTime());
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 7bb429cbb41e1a7ac7e138663dec988d29d62798..ca2b020e5c82749dbf93b1f91353b845a7d1442f 100644
+index 09fa9a18dc1bb6a3df80cb2237dc0d55affc0453..59156b6d2b8107a2031bc56387f002a6ef404022 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -349,6 +349,7 @@ public class PurpurWorldConfig {
+@@ -351,6 +351,7 @@ public class PurpurWorldConfig {
      public boolean playerFixStuckPortal = false;
      public boolean creativeOnePunch = false;
      public boolean playerSleepNearMonsters = false;
@@ -29,7 +29,7 @@ index 7bb429cbb41e1a7ac7e138663dec988d29d62798..ca2b020e5c82749dbf93b1f91353b845
      private void playerSettings() {
          if (PurpurConfig.version < 19) {
              boolean oldVal = getBoolean("gameplay-mechanics.player.idle-timeout.mods-target", idleTimeoutTargetPlayer);
-@@ -367,6 +368,7 @@ public class PurpurWorldConfig {
+@@ -369,6 +370,7 @@ public class PurpurWorldConfig {
          playerFixStuckPortal = getBoolean("gameplay-mechanics.player.fix-stuck-in-portal", playerFixStuckPortal);
          creativeOnePunch = getBoolean("gameplay-mechanics.player.one-punch-in-creative", creativeOnePunch);
          playerSleepNearMonsters = getBoolean("gameplay-mechanics.player.sleep-ignore-nearby-mobs", playerSleepNearMonsters);

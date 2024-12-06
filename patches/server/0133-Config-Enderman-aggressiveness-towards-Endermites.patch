@@ -18,10 +18,10 @@ index 8348c8191e6b576ac71aa5c5b5454f7ba38f7730..a5a13d9e56306f6fc53736d0c4af81fa
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 59134101345d765c436d42efcd7fbb78b0deec48..2a247ce59d429b7ddac845295c95a045e9fe3352 100644
+index aa089685179635e74cc4033b5335c1e79fab08a2..fe8988fc29be469af3d33fb87f0c88ee35f0b779 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1030,6 +1030,8 @@ public class PurpurWorldConfig {
+@@ -1032,6 +1032,8 @@ public class PurpurWorldConfig {
      public boolean endermanDespawnEvenWithBlock = false;
      public boolean endermanBypassMobGriefing = false;
      public boolean endermanTakeDamageFromWater = true;
@@ -30,7 +30,7 @@ index 59134101345d765c436d42efcd7fbb78b0deec48..2a247ce59d429b7ddac845295c95a045
      private void endermanSettings() {
          endermanRidable = getBoolean("mobs.enderman.ridable", endermanRidable);
          endermanRidableInWater = getBoolean("mobs.enderman.ridable-in-water", endermanRidableInWater);
-@@ -1039,12 +1041,18 @@ public class PurpurWorldConfig {
+@@ -1041,12 +1043,18 @@ public class PurpurWorldConfig {
              set("mobs.enderman.attributes.max-health", null);
              set("mobs.enderman.attributes.max_health", oldValue);
          }

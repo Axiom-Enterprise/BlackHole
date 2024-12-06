@@ -46,10 +46,10 @@ index f712963fcd80535eee2bd04ec55ae1abdadef2bd..6fdacf2f6934521a0dd4b25aea35a6a1
      protected void onHit(HitResult hitResult) {
          super.onHit(hitResult);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a5c9410c9ef3747004b09adac38ff54d63d0ec97..e3428e00f2b28bf2ec6aaed4de33905f25d0b68d 100644
+index ad639c2dfe6f74039387c23b214c2d85e0e8fcdd..23c0edd4a38f47335c492742c9a9accf5feb044c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -224,6 +224,9 @@ public class PurpurWorldConfig {
+@@ -225,6 +225,9 @@ public class PurpurWorldConfig {
      public int glowBerriesEatGlowDuration = 0;
      public boolean shulkerBoxItemDropContentsWhenDestroyed = true;
      public boolean compassItemShowsBossBar = false;
@@ -59,7 +59,7 @@ index a5c9410c9ef3747004b09adac38ff54d63d0ec97..e3428e00f2b28bf2ec6aaed4de33905f
      private void itemSettings() {
          itemImmuneToCactus.clear();
          getList("gameplay-mechanics.item.immune.cactus", new ArrayList<>()).forEach(key -> {
-@@ -272,6 +275,9 @@ public class PurpurWorldConfig {
+@@ -274,6 +277,9 @@ public class PurpurWorldConfig {
          glowBerriesEatGlowDuration = getInt("gameplay-mechanics.item.glow_berries.eat-glow-duration", glowBerriesEatGlowDuration);
          shulkerBoxItemDropContentsWhenDestroyed = getBoolean("gameplay-mechanics.item.shulker_box.drop-contents-when-destroyed", shulkerBoxItemDropContentsWhenDestroyed);
          compassItemShowsBossBar = getBoolean("gameplay-mechanics.item.compass.holding-shows-bossbar", compassItemShowsBossBar);

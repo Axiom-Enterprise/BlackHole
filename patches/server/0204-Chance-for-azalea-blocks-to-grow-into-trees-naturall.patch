@@ -50,10 +50,10 @@ index 9bafac9b2c7b487f745fb64354f4bbc6a7ded468..1c34691da51d7f7ba3d54e095a3b58b7
              .sound(SoundType.FLOWERING_AZALEA)
              .noOcclusion()
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 16d2dbafb996932dd99edbe6eea37c7036f4b77e..ea1314eb2ac0f8c1dd681b85951bcdd2cead1bf6 100644
+index c2b7e0ebcaf1f95bf496e703760ed2fa29438ed5..8fc61bd5ac93ea63d7ed01c34ef0dc971bb73290 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -765,6 +765,11 @@ public class PurpurWorldConfig {
+@@ -767,6 +767,11 @@ public class PurpurWorldConfig {
          anvilColorsUseMiniMessage = getBoolean("blocks.anvil.use-mini-message", anvilColorsUseMiniMessage);
      }
  
@@ -65,7 +65,7 @@ index 16d2dbafb996932dd99edbe6eea37c7036f4b77e..ea1314eb2ac0f8c1dd681b85951bcdd2
      public int beaconLevelOne = 20;
      public int beaconLevelTwo = 30;
      public int beaconLevelThree = 40;
-@@ -902,6 +907,11 @@ public class PurpurWorldConfig {
+@@ -904,6 +909,11 @@ public class PurpurWorldConfig {
          farmlandTramplingFeatherFalling = getBoolean("blocks.farmland.feather-fall-distance-affects-trampling", farmlandTramplingFeatherFalling);
      }
  

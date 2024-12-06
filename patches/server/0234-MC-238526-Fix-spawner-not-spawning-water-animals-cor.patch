@@ -17,10 +17,10 @@ index 8c4532a250f8679d729a35c17e9b5bd339264450..2b8336bd88641cfb29e94c8f01abfbdb
      }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index fc357473f30258a54a2ee36dc0d63c2a52f2eaea..f4584785ce8b16d3acc27c848eb79cc55bf08a18 100644
+index 8edb79160b90f9caaa58233608621078ad31cb47..5a9073ceeac3f41ed8ee9659dd7a33769f4e2f04 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1021,8 +1021,10 @@ public class PurpurWorldConfig {
+@@ -1023,8 +1023,10 @@ public class PurpurWorldConfig {
      }
  
      public boolean spawnerDeactivateByRedstone = false;

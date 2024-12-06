@@ -5,7 +5,7 @@ Subject: [PATCH] Config to ignore nearby mobs when sleeping
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index ca88e602674e85b63b9622c0f94b588448480c12..af7d238fafa84428509563548d343005fe17d460 100644
+index 2bc946e62099ab3020d38a304a6b686ccf7a39af..79f4ea221b791e605a7865de111c64a86ddd11ef 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1789,7 +1789,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -18,10 +18,10 @@ index ca88e602674e85b63b9622c0f94b588448480c12..af7d238fafa84428509563548d343005
                          }
                      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 35b0f46278c2c536c1b8738aea1b900e6f7065cf..59134101345d765c436d42efcd7fbb78b0deec48 100644
+index e196d391b4c1a02211f221ef10dda9df05c5ab5c..aa089685179635e74cc4033b5335c1e79fab08a2 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -347,6 +347,7 @@ public class PurpurWorldConfig {
+@@ -349,6 +349,7 @@ public class PurpurWorldConfig {
      public boolean totemOfUndyingWorksInInventory = false;
      public boolean playerFixStuckPortal = false;
      public boolean creativeOnePunch = false;
@@ -29,7 +29,7 @@ index 35b0f46278c2c536c1b8738aea1b900e6f7065cf..59134101345d765c436d42efcd7fbb78
      private void playerSettings() {
          if (PurpurConfig.version < 19) {
              boolean oldVal = getBoolean("gameplay-mechanics.player.idle-timeout.mods-target", idleTimeoutTargetPlayer);
-@@ -364,6 +365,7 @@ public class PurpurWorldConfig {
+@@ -366,6 +367,7 @@ public class PurpurWorldConfig {
          totemOfUndyingWorksInInventory = getBoolean("gameplay-mechanics.player.totem-of-undying-works-in-inventory", totemOfUndyingWorksInInventory);
          playerFixStuckPortal = getBoolean("gameplay-mechanics.player.fix-stuck-in-portal", playerFixStuckPortal);
          creativeOnePunch = getBoolean("gameplay-mechanics.player.one-punch-in-creative", creativeOnePunch);

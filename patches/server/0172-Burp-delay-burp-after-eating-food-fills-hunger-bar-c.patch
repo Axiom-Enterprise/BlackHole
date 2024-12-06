@@ -80,10 +80,10 @@ index 648c2510beb162e73aed236a3169d0bbb8fc5050..3563a241c0b697dc0167cf7b1aa73fef
              }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index f6f645b2d7449fdf3e6bdc618ad2fb38c05846ae..8fb83dae4c835ffbdd77fb55c518e37124815743 100644
+index 2b5543f070925421e3b924e373a9610fd9b24f2a..849532c99cfad2870fd22be6e759e153e8fae10b 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -381,6 +381,8 @@ public class PurpurWorldConfig {
+@@ -383,6 +383,8 @@ public class PurpurWorldConfig {
      public boolean playerSleepNearMonsters = false;
      public boolean playersSkipNight = true;
      public double playerCriticalDamageMultiplier = 1.5D;
@@ -92,7 +92,7 @@ index f6f645b2d7449fdf3e6bdc618ad2fb38c05846ae..8fb83dae4c835ffbdd77fb55c518e371
      private void playerSettings() {
          if (PurpurConfig.version < 19) {
              boolean oldVal = getBoolean("gameplay-mechanics.player.idle-timeout.mods-target", idleTimeoutTargetPlayer);
-@@ -401,6 +403,8 @@ public class PurpurWorldConfig {
+@@ -403,6 +405,8 @@ public class PurpurWorldConfig {
          playerSleepNearMonsters = getBoolean("gameplay-mechanics.player.sleep-ignore-nearby-mobs", playerSleepNearMonsters);
          playersSkipNight = getBoolean("gameplay-mechanics.player.can-skip-night", playersSkipNight);
          playerCriticalDamageMultiplier = getDouble("gameplay-mechanics.player.critical-damage-multiplier", playerCriticalDamageMultiplier);

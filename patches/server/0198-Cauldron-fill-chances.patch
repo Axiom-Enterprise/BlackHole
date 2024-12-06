@@ -47,10 +47,10 @@ index 53cea36ec931de89e0060613acf87beb51dc16ec..fd5489993dca0f940da69e9163f78e5c
  
                      if (dripChance < f1) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index d42047c0e5495a52d324eb6ec2f293bec4b6c472..7b9bf48039c457f95f23b4d0b80f095a65c55e22 100644
+index 69128f50386bc8a7f0b484493bc24cbc4544a9c1..e3130f456aa1d7e981018017cf3853bd027a41a1 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -3053,4 +3053,15 @@ public class PurpurWorldConfig {
+@@ -3055,4 +3055,15 @@ public class PurpurWorldConfig {
          });
          conduitBlocks = conduitBlockList.toArray(Block[]::new);
      }

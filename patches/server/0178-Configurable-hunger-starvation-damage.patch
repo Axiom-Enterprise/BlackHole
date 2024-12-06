@@ -18,10 +18,10 @@ index 4f8ee2e5db3352306f3c035052866d95630f4aaf..b8b0b89b7f0a21ecff4ab6286f8a114e
  
                  this.tickTimer = 0;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index acbe91bba0b245fcd4940ea19795babaaf438c80..51aee36c56a8fc36c3f827ea972ed10dc7130c17 100644
+index 7d4570b6cc775e73a64e0a7ec4fa15397636a0f3..d78c39b9db77ee6948fd87c664ab5fa5b61367ea 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2703,4 +2703,9 @@ public class PurpurWorldConfig {
+@@ -2705,4 +2705,9 @@ public class PurpurWorldConfig {
          zombifiedPiglinCountAsPlayerKillWhenAngry = getBoolean("mobs.zombified_piglin.count-as-player-kill-when-angry", zombifiedPiglinCountAsPlayerKillWhenAngry);
          zombifiedPiglinTakeDamageFromWater = getBoolean("mobs.zombified_piglin.takes-damage-from-water", zombifiedPiglinTakeDamageFromWater);
      }

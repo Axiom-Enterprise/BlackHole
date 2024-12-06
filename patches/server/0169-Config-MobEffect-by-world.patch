@@ -72,10 +72,10 @@ index 55132e6e064ddd15b26286eca335305ed57b2f9e..1e04947995009689315352b79989e7ce
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 1083c6cc35206e09b57ae993623bffa5eecfb1f6..cf3480e98912271cc057d944c8e6931651e9da33 100644
+index 8eaff3384ed2fa6b4f557e82b6c0f89fa8ae7cb4..b279cd51d5661c304bff6a2638bf39df0e3cf952 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -324,6 +324,21 @@ public class PurpurWorldConfig {
+@@ -326,6 +326,21 @@ public class PurpurWorldConfig {
          poweredRailBoostModifier = getDouble("gameplay-mechanics.minecart.powered-rail.boost-modifier", poweredRailBoostModifier);
      }
  

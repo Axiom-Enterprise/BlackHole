@@ -22,10 +22,10 @@ index 9908a0b5b1fec5f9de518a733f7abbbff7e1a9f9..0ad444cf7f798f63e9140a42c5d5d8ca
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 8893ce54385e8b6d9de6b87ebf203efde140fff4..4a6646711c1aa32a7123396126933d74d2cb5173 100644
+index 4eb94ba260c76984f78a96e0ceb721a857be6e75..eb84c63b029a39ac352d1b0cf5a264c0c14d2f8e 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -966,9 +966,11 @@ public class PurpurWorldConfig {
+@@ -968,9 +968,11 @@ public class PurpurWorldConfig {
  
      public boolean mobsSpawnOnPackedIce = true;
      public boolean mobsSpawnOnBlueIce = true;

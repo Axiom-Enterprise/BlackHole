@@ -5,7 +5,7 @@ Subject: [PATCH] Cows naturally aggressive to players chance
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cow.java b/src/main/java/net/minecraft/world/entity/animal/Cow.java
-index 4ad3571403ee8044d17f53987bd47b6c43d42f0e..380bd41336d8d24bffd4e10885e46c95e5bb71fd 100644
+index 2b887a05cbf43a53869c740aa9df7bc75048de05..7ff6425276c7c9004caeee46f1138287ef5e5b64 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cow.java
 @@ -37,6 +37,7 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -61,10 +61,10 @@ index 4ad3571403ee8044d17f53987bd47b6c43d42f0e..380bd41336d8d24bffd4e10885e46c95
  
      @Override
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 2fd6f601524f8fc748be73a38edf4df06c5e9459..26c7ccd547430f04dad6495ba7db5be5c0349a8f 100644
+index f15373de0dda4bfc318891beaaf995469a83ba06..de5d1c49f39cd1224bf52aae2f55e163feee96dc 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1290,7 +1290,14 @@ public class PurpurWorldConfig {
+@@ -1292,7 +1292,14 @@ public class PurpurWorldConfig {
      public int cowFeedMushrooms = 0;
      public int cowBreedingTicks = 6000;
      public boolean cowTakeDamageFromWater = false;
@@ -79,7 +79,7 @@ index 2fd6f601524f8fc748be73a38edf4df06c5e9459..26c7ccd547430f04dad6495ba7db5be5
          cowRidable = getBoolean("mobs.cow.ridable", cowRidable);
          cowRidableInWater = getBoolean("mobs.cow.ridable-in-water", cowRidableInWater);
          cowControllable = getBoolean("mobs.cow.controllable", cowControllable);
-@@ -1304,6 +1311,8 @@ public class PurpurWorldConfig {
+@@ -1306,6 +1313,8 @@ public class PurpurWorldConfig {
          cowFeedMushrooms = getInt("mobs.cow.feed-mushrooms-for-mooshroom", cowFeedMushrooms);
          cowBreedingTicks = getInt("mobs.cow.breeding-delay-ticks", cowBreedingTicks);
          cowTakeDamageFromWater = getBoolean("mobs.cow.takes-damage-from-water", cowTakeDamageFromWater);

@@ -18,10 +18,10 @@ index db7caaa2e77b9b98adac8add3040131c673c036b..262d9b2507d37edf0ed9c0821059e518
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 081a8a388b354210f3ea04e8a4b6428fc97a9d84..55d2c1729f639ef2bbb41e72ddd0945dd5662aaf 100644
+index 72d2f15839d04b588e8f43d6a1f06680e7b3d9ee..bb8f71030a2da27cc66820a032ffacf667c0d42b 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -397,6 +397,7 @@ public class PurpurWorldConfig {
+@@ -399,6 +399,7 @@ public class PurpurWorldConfig {
      public int playerBurpDelay = 10;
      public boolean playerBurpWhenFull = false;
      public boolean playerRidableInWater = false;
@@ -29,7 +29,7 @@ index 081a8a388b354210f3ea04e8a4b6428fc97a9d84..55d2c1729f639ef2bbb41e72ddd0945d
      private void playerSettings() {
          if (PurpurConfig.version < 19) {
              boolean oldVal = getBoolean("gameplay-mechanics.player.idle-timeout.mods-target", idleTimeoutTargetPlayer);
-@@ -420,6 +421,7 @@ public class PurpurWorldConfig {
+@@ -422,6 +423,7 @@ public class PurpurWorldConfig {
          playerBurpDelay = getInt("gameplay-mechanics.player.burp-delay", playerBurpDelay);
          playerBurpWhenFull = getBoolean("gameplay-mechanics.player.burp-when-full", playerBurpWhenFull);
          playerRidableInWater = getBoolean("gameplay-mechanics.player.ridable-in-water", playerRidableInWater);

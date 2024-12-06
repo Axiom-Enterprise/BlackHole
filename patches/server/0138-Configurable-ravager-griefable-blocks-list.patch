@@ -31,10 +31,10 @@ index 8cf8aeb34cba078bc7a554f03054d580d96fe908..c1707b502911d76d0c3a706e44bfdc3a
              }
          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 6c4bd9a18ecb9c3fea1d46f674dc6c8f3b9aea73..e040507a861ad283d95f42b6ef08b8b2f5b83418 100644
+index 36262ccf9c5d308230ad112078d14a78f41243bd..99a1c69938be124ad6fd1ae9a96024cc9fafd62c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1781,6 +1781,7 @@ public class PurpurWorldConfig {
+@@ -1783,6 +1783,7 @@ public class PurpurWorldConfig {
      public double ravagerScale = 1.0D;
      public boolean ravagerBypassMobGriefing = false;
      public boolean ravagerTakeDamageFromWater = false;
@@ -42,7 +42,7 @@ index 6c4bd9a18ecb9c3fea1d46f674dc6c8f3b9aea73..e040507a861ad283d95f42b6ef08b8b2
      private void ravagerSettings() {
          ravagerRidable = getBoolean("mobs.ravager.ridable", ravagerRidable);
          ravagerRidableInWater = getBoolean("mobs.ravager.ridable-in-water", ravagerRidableInWater);
-@@ -1794,6 +1795,23 @@ public class PurpurWorldConfig {
+@@ -1796,6 +1797,23 @@ public class PurpurWorldConfig {
          ravagerScale = Mth.clamp(getDouble("mobs.ravager.attributes.scale", ravagerScale), 0.0625D, 16.0D);
          ravagerBypassMobGriefing = getBoolean("mobs.ravager.bypass-mob-griefing", ravagerBypassMobGriefing);
          ravagerTakeDamageFromWater = getBoolean("mobs.ravager.takes-damage-from-water", ravagerTakeDamageFromWater);

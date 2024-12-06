@@ -50,10 +50,10 @@ index f951905a9b985cfeb3a960898724651e395b42e8..4a6137b3984a6a7c4bc0472ada4b61f9
  
      @Nullable
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index defe5b19e5595d5c18fcf1100a8b1470cbc5e670..aaa0fe0a1cf368bc680d0a2b94fdb4e6ddee0503 100644
+index 5caaaa88d71f84562f8ab403062bf9ac4eb4dfb9..3d226e2cd3d805a7f53f845f5b873506b6ef274a 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1618,6 +1618,7 @@ public class PurpurWorldConfig {
+@@ -1620,6 +1620,7 @@ public class PurpurWorldConfig {
      public double parrotMaxHealth = 6.0D;
      public double parrotScale = 1.0D;
      public boolean parrotTakeDamageFromWater = false;
@@ -61,7 +61,7 @@ index defe5b19e5595d5c18fcf1100a8b1470cbc5e670..aaa0fe0a1cf368bc680d0a2b94fdb4e6
      private void parrotSettings() {
          parrotRidable = getBoolean("mobs.parrot.ridable", parrotRidable);
          parrotRidableInWater = getBoolean("mobs.parrot.ridable-in-water", parrotRidableInWater);
-@@ -1631,6 +1632,7 @@ public class PurpurWorldConfig {
+@@ -1633,6 +1634,7 @@ public class PurpurWorldConfig {
          parrotMaxHealth = getDouble("mobs.parrot.attributes.max_health", parrotMaxHealth);
          parrotScale = Mth.clamp(getDouble("mobs.parrot.attributes.scale", parrotScale), 0.0625D, 16.0D);
          parrotTakeDamageFromWater = getBoolean("mobs.parrot.takes-damage-from-water", parrotTakeDamageFromWater);

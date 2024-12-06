@@ -18,10 +18,10 @@ index 2bee342e59e600426c8681a3ce641a12f22790be..e75930f26604b772a141a93c6f4b7782
          } else {
              BlockPos blockposition1 = blockposition.above(); final BlockPos aboveBlockPosition = blockposition1; // Paper - OBFHELPER
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a040f13bd39bd9e0b24ac9be4a95a093930977d1..c9ad3129146f5f29f1a1d0afbbc911d92bb4e8fb 100644
+index 35db58344e79bd3c83099626a425ea8d75a95ae5..b966d7cbdc8f62e0d5df93e84e2829b6c4818e7c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -935,6 +935,7 @@ public class PurpurWorldConfig {
+@@ -937,6 +937,7 @@ public class PurpurWorldConfig {
      public boolean basedEndCrystalExplosionFire = false;
      public net.minecraft.world.level.Level.ExplosionInteraction basedEndCrystalExplosionEffect = net.minecraft.world.level.Level.ExplosionInteraction.BLOCK;
      public int endCrystalCramming = 0;
@@ -29,7 +29,7 @@ index a040f13bd39bd9e0b24ac9be4a95a093930977d1..c9ad3129146f5f29f1a1d0afbbc911d9
      private void endCrystalSettings() {
          if (PurpurConfig.version < 31) {
              if ("DESTROY".equals(getString("blocks.end-crystal.baseless.explosion-effect", baselessEndCrystalExplosionEffect.name()))) {
-@@ -963,6 +964,7 @@ public class PurpurWorldConfig {
+@@ -965,6 +966,7 @@ public class PurpurWorldConfig {
              basedEndCrystalExplosionEffect = net.minecraft.world.level.Level.ExplosionInteraction.BLOCK;
          }
          endCrystalCramming = getInt("blocks.end-crystal.cramming-amount", endCrystalCramming);

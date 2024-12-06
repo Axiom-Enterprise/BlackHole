@@ -24,10 +24,10 @@ index e2de074bbe7bab0e5a7aecc1fae4c5914a203dd4..c2061f575c731ecc6071384b007517c0
              return false;
          } else {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index cbca90e2008e0ed3736a1ad1d645ca1ee532fbba..c9cc7f51b2f86b4caf25d642159be418ddd20d61 100644
+index 60413ce72af16a81e97b875da85988fec8c88780..f83e25e7586aa5b84a6a87cdd32ca7ee005e01c6 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -525,6 +525,13 @@ public class PurpurWorldConfig {
+@@ -527,6 +527,13 @@ public class PurpurWorldConfig {
          furnaceUseLavaFromUnderneath = getBoolean("blocks.furnace.use-lava-from-underneath", furnaceUseLavaFromUnderneath);
      }
  

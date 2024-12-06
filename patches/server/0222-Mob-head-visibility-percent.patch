@@ -32,10 +32,10 @@ index 0af3e463971697626f847cb96f8a431857c1261e..8c2c14769ae32c9a92bc043f9e753abf
              // Purpur start
              if (entity instanceof LivingEntity entityliving) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 0e3c1b37d386a7115cdfa027a5afb235ec4d363f..b49d8ef5fe4a3b4bd99124cca2e5e661762552ff 100644
+index 957e6d3570a4ad7472afb5dc83da70f4c88ba541..db707841e9d7f2840ff00c2e32933634045315df 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1392,6 +1392,7 @@ public class PurpurWorldConfig {
+@@ -1394,6 +1394,7 @@ public class PurpurWorldConfig {
      public boolean creeperExplodeWhenKilled = false;
      public boolean creeperHealthRadius = false;
      public boolean creeperAlwaysDropExp = false;
@@ -43,7 +43,7 @@ index 0e3c1b37d386a7115cdfa027a5afb235ec4d363f..b49d8ef5fe4a3b4bd99124cca2e5e661
      private void creeperSettings() {
          creeperRidable = getBoolean("mobs.creeper.ridable", creeperRidable);
          creeperRidableInWater = getBoolean("mobs.creeper.ridable-in-water", creeperRidableInWater);
-@@ -1410,6 +1411,7 @@ public class PurpurWorldConfig {
+@@ -1412,6 +1413,7 @@ public class PurpurWorldConfig {
          creeperExplodeWhenKilled = getBoolean("mobs.creeper.explode-when-killed", creeperExplodeWhenKilled);
          creeperHealthRadius = getBoolean("mobs.creeper.health-impacts-explosion", creeperHealthRadius);
          creeperAlwaysDropExp = getBoolean("mobs.creeper.always-drop-exp", creeperAlwaysDropExp);
@@ -51,7 +51,7 @@ index 0e3c1b37d386a7115cdfa027a5afb235ec4d363f..b49d8ef5fe4a3b4bd99124cca2e5e661
      }
  
      public boolean dolphinRidable = false;
-@@ -2237,6 +2239,7 @@ public class PurpurWorldConfig {
+@@ -2239,6 +2241,7 @@ public class PurpurWorldConfig {
      public boolean piglinTakeDamageFromWater = false;
      public int piglinPortalSpawnModifier = 2000;
      public boolean piglinAlwaysDropExp = false;
@@ -59,7 +59,7 @@ index 0e3c1b37d386a7115cdfa027a5afb235ec4d363f..b49d8ef5fe4a3b4bd99124cca2e5e661
      private void piglinSettings() {
          piglinRidable = getBoolean("mobs.piglin.ridable", piglinRidable);
          piglinRidableInWater = getBoolean("mobs.piglin.ridable-in-water", piglinRidableInWater);
-@@ -2252,6 +2255,7 @@ public class PurpurWorldConfig {
+@@ -2254,6 +2257,7 @@ public class PurpurWorldConfig {
          piglinTakeDamageFromWater = getBoolean("mobs.piglin.takes-damage-from-water", piglinTakeDamageFromWater);
          piglinPortalSpawnModifier = getInt("mobs.piglin.portal-spawn-modifier", piglinPortalSpawnModifier);
          piglinAlwaysDropExp = getBoolean("mobs.piglin.always-drop-exp", piglinAlwaysDropExp);
@@ -67,7 +67,7 @@ index 0e3c1b37d386a7115cdfa027a5afb235ec4d363f..b49d8ef5fe4a3b4bd99124cca2e5e661
      }
  
      public boolean piglinBruteRidable = false;
-@@ -2536,6 +2540,7 @@ public class PurpurWorldConfig {
+@@ -2538,6 +2542,7 @@ public class PurpurWorldConfig {
      public double skeletonScale = 1.0D;
      public boolean skeletonTakeDamageFromWater = false;
      public boolean skeletonAlwaysDropExp = false;
@@ -75,7 +75,7 @@ index 0e3c1b37d386a7115cdfa027a5afb235ec4d363f..b49d8ef5fe4a3b4bd99124cca2e5e661
      private void skeletonSettings() {
          skeletonRidable = getBoolean("mobs.skeleton.ridable", skeletonRidable);
          skeletonRidableInWater = getBoolean("mobs.skeleton.ridable-in-water", skeletonRidableInWater);
-@@ -2549,6 +2554,7 @@ public class PurpurWorldConfig {
+@@ -2551,6 +2556,7 @@ public class PurpurWorldConfig {
          skeletonScale = Mth.clamp(getDouble("mobs.skeleton.attributes.scale", skeletonScale), 0.0625D, 16.0D);
          skeletonTakeDamageFromWater = getBoolean("mobs.skeleton.takes-damage-from-water", skeletonTakeDamageFromWater);
          skeletonAlwaysDropExp = getBoolean("mobs.skeleton.always-drop-exp", skeletonAlwaysDropExp);
@@ -83,7 +83,7 @@ index 0e3c1b37d386a7115cdfa027a5afb235ec4d363f..b49d8ef5fe4a3b4bd99124cca2e5e661
      }
  
      public boolean skeletonHorseRidable = false;
-@@ -3122,6 +3128,7 @@ public class PurpurWorldConfig {
+@@ -3124,6 +3130,7 @@ public class PurpurWorldConfig {
      public boolean zombieBypassMobGriefing = false;
      public boolean zombieTakeDamageFromWater = false;
      public boolean zombieAlwaysDropExp = false;
@@ -91,7 +91,7 @@ index 0e3c1b37d386a7115cdfa027a5afb235ec4d363f..b49d8ef5fe4a3b4bd99124cca2e5e661
      private void zombieSettings() {
          zombieRidable = getBoolean("mobs.zombie.ridable", zombieRidable);
          zombieRidableInWater = getBoolean("mobs.zombie.ridable-in-water", zombieRidableInWater);
-@@ -3141,6 +3148,7 @@ public class PurpurWorldConfig {
+@@ -3143,6 +3150,7 @@ public class PurpurWorldConfig {
          zombieBypassMobGriefing = getBoolean("mobs.zombie.bypass-mob-griefing", zombieBypassMobGriefing);
          zombieTakeDamageFromWater = getBoolean("mobs.zombie.takes-damage-from-water", zombieTakeDamageFromWater);
          zombieAlwaysDropExp = getBoolean("mobs.zombie.always-drop-exp", zombieAlwaysDropExp);

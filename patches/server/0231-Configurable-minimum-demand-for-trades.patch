@@ -40,10 +40,10 @@ index 0efc8d997b34302c3e0a5d7ec73a11a940dbeefe..af157881d440b34cfe79fbc9b03cc9ef
  
      public ItemStack assemble() {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index af9e6ee31e0ad8436a0a43b6d914445ca7737d9d..70258ae10d19f0aac01e3a550ec0d538f598d077 100644
+index aa8ea52c7e9a4c60864328a30a86530e73385563..73510c194f9c15611f5776f60cc9bee07aa816ab 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2905,6 +2905,7 @@ public class PurpurWorldConfig {
+@@ -2907,6 +2907,7 @@ public class PurpurWorldConfig {
      public boolean villagerTakeDamageFromWater = false;
      public boolean villagerAllowTrading = true;
      public boolean villagerAlwaysDropExp = false;
@@ -51,7 +51,7 @@ index af9e6ee31e0ad8436a0a43b6d914445ca7737d9d..70258ae10d19f0aac01e3a550ec0d538
      private void villagerSettings() {
          villagerRidable = getBoolean("mobs.villager.ridable", villagerRidable);
          villagerRidableInWater = getBoolean("mobs.villager.ridable-in-water", villagerRidableInWater);
-@@ -2927,6 +2928,7 @@ public class PurpurWorldConfig {
+@@ -2929,6 +2930,7 @@ public class PurpurWorldConfig {
          villagerTakeDamageFromWater = getBoolean("mobs.villager.takes-damage-from-water", villagerTakeDamageFromWater);
          villagerAllowTrading = getBoolean("mobs.villager.allow-trading", villagerAllowTrading);
          villagerAlwaysDropExp = getBoolean("mobs.villager.always-drop-exp", villagerAlwaysDropExp);

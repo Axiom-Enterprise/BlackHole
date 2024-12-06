@@ -5,7 +5,7 @@ Subject: [PATCH] Signs allow color codes
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index ed1d75fdee29ac92d71f219af79eb7fc5ae99099..7e785394de3db56e5d0fd8bea5edf5df9fa129fa 100644
+index a8994b1edcc82d15afbe11d12a6a8a0a00c76143..5d7e539d0baaddffe1bd4660b3552887dfacca5f 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1959,6 +1959,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -84,10 +84,10 @@ index 7a1d9a718dc57b5f630ca8e5358120cebaeefb9c..b51b0b0f48b1da6187387d6ec025681e
      public ClientboundBlockEntityDataPacket getUpdatePacket() {
          return ClientboundBlockEntityDataPacket.create(this);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 70807e2540ac7f7d376df9b41b0b4e5fd3092d60..b9b47cd429c73c856d6ecd9d48fe0c46cee7330d 100644
+index a61c0a67996ae71e2cfde8e8bafaa49bd18cbf22..0f02d924d8b8fd939e268923d234d50c3e406ca9 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1000,6 +1000,11 @@ public class PurpurWorldConfig {
+@@ -1002,6 +1002,11 @@ public class PurpurWorldConfig {
          }
      }
  

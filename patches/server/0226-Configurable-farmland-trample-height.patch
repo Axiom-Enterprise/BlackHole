@@ -35,10 +35,10 @@ index af135f8b70b0e2af470afce9053976c3a1e03477..eaac00e2534aca4eab92c7b9f9248e04
                  org.bukkit.event.Cancellable cancellable;
                  if (entity instanceof Player) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 01306ed51e4ca205bc58c171e6df5594c96aa22e..529e8a930ca9e01cfdfd1e7c15027d85e7f8076d 100644
+index ecef27cf83b1c77d33ffd1cb96e0d72f91427b75..2e2b84ea36dfd33fe7f78f14d07e9bce1211a98d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -927,6 +927,7 @@ public class PurpurWorldConfig {
+@@ -929,6 +929,7 @@ public class PurpurWorldConfig {
      public boolean farmlandTramplingDisabled = false;
      public boolean farmlandTramplingOnlyPlayers = false;
      public boolean farmlandTramplingFeatherFalling = false;
@@ -46,7 +46,7 @@ index 01306ed51e4ca205bc58c171e6df5594c96aa22e..529e8a930ca9e01cfdfd1e7c15027d85
      private void farmlandSettings() {
          farmlandBypassMobGriefing = getBoolean("blocks.farmland.bypass-mob-griefing", farmlandBypassMobGriefing);
          farmlandGetsMoistFromBelow = getBoolean("blocks.farmland.gets-moist-from-below", farmlandGetsMoistFromBelow);
-@@ -934,6 +935,7 @@ public class PurpurWorldConfig {
+@@ -936,6 +937,7 @@ public class PurpurWorldConfig {
          farmlandTramplingDisabled = getBoolean("blocks.farmland.disable-trampling", farmlandTramplingDisabled);
          farmlandTramplingOnlyPlayers = getBoolean("blocks.farmland.only-players-trample", farmlandTramplingOnlyPlayers);
          farmlandTramplingFeatherFalling = getBoolean("blocks.farmland.feather-fall-distance-affects-trampling", farmlandTramplingFeatherFalling);

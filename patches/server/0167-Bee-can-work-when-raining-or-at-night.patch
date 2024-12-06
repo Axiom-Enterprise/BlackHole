@@ -5,7 +5,7 @@ Subject: [PATCH] Bee can work when raining or at night
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index e6e5954ca4366ad20b1d1413053739c767c45824..ea5559e6f536ab823f987ce57fc01d6dab26314d 100644
+index 82ddbc95370effc5aec4957486915843217c4efa..7804911f296991c15b40d75e51f27b4e30a53245 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
 @@ -430,7 +430,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -18,10 +18,10 @@ index e6e5954ca4366ad20b1d1413053739c767c45824..ea5559e6f536ab823f987ce57fc01d6d
  
      public void setStayOutOfHiveCountdown(int cannotEnterHiveTicks) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index db82c66338f2224ac887f3a47fe5e7fcb3ba0a57..1083c6cc35206e09b57ae993623bffa5eecfb1f6 100644
+index 427e257d7e53d0dc5fbd4acbaa2c1d1f2a12fff8..8eaff3384ed2fa6b4f557e82b6c0f89fa8ae7cb4 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -748,6 +748,8 @@ public class PurpurWorldConfig {
+@@ -750,6 +750,8 @@ public class PurpurWorldConfig {
      public double beeScale = 1.0D;
      public int beeBreedingTicks = 6000;
      public boolean beeTakeDamageFromWater = true;
@@ -30,7 +30,7 @@ index db82c66338f2224ac887f3a47fe5e7fcb3ba0a57..1083c6cc35206e09b57ae993623bffa5
      private void beeSettings() {
          beeRidable = getBoolean("mobs.bee.ridable", beeRidable);
          beeRidableInWater = getBoolean("mobs.bee.ridable-in-water", beeRidableInWater);
-@@ -762,6 +764,8 @@ public class PurpurWorldConfig {
+@@ -764,6 +766,8 @@ public class PurpurWorldConfig {
          beeScale = Mth.clamp(getDouble("mobs.bee.attributes.scale", beeScale), 0.0625D, 16.0D);
          beeBreedingTicks = getInt("mobs.bee.breeding-delay-ticks", beeBreedingTicks);
          beeTakeDamageFromWater = getBoolean("mobs.bee.takes-damage-from-water", beeTakeDamageFromWater);

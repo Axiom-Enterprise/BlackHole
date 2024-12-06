@@ -24,10 +24,10 @@ index 72c89f14977844e1460e9a914f39e896c9d498fd..f1dfb23160ff70e0da4dd2af2d83e879
          return world.purpurConfig.turtleEggsBypassMobGriefing ^ world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
          // Purpur end
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index f34de537ab3bd3727572313f7e8004703c73f641..a50e634a83234a3396a5e1471706f77dcfbb5d7c 100644
+index 3d545e57066270d1d39e9ca45c559a707966f815..f7ef17c90205e129d776c0faa9aaf6a2607a31ba 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1049,12 +1049,14 @@ public class PurpurWorldConfig {
+@@ -1051,12 +1051,14 @@ public class PurpurWorldConfig {
      public boolean turtleEggsBreakFromMinecarts = false;
      public boolean turtleEggsBypassMobGriefing = false;
      public int turtleEggsRandomTickCrackChance = 500;

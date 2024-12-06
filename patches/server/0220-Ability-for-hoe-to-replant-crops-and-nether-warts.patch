@@ -74,10 +74,10 @@ index 7bb4994d6474c8ea59c102009253552020691b8f..b571bca4375ca7caf9b75dbf84009cb0
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 744730583ec613adc8e31565780fbcae72a9b69c..931e2a3d04e2ec43b5389144c675914cb595b04d 100644
+index d6f3f21751613038dae7db5ada4aa89444a82546..ef835aa6568bad1a20cc7ebb8775a538234b7915 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -507,6 +507,8 @@ public class PurpurWorldConfig {
+@@ -509,6 +509,8 @@ public class PurpurWorldConfig {
      public Map<Block, Weatherable> axeWeatherables = new HashMap<>();
      public Map<Block, Tillable> hoeTillables = new HashMap<>();
      public Map<Block, Flattenable> shovelFlattenables = new HashMap<>();
@@ -86,7 +86,7 @@ index 744730583ec613adc8e31565780fbcae72a9b69c..931e2a3d04e2ec43b5389144c675914c
      private void toolSettings() {
          axeStrippables.clear();
          axeWaxables.clear();
-@@ -774,6 +776,8 @@ public class PurpurWorldConfig {
+@@ -776,6 +778,8 @@ public class PurpurWorldConfig {
              });
              shovelFlattenables.put(block, new Flattenable(into, drops));
          });

@@ -91,10 +91,10 @@ index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..84bd180ce29d4560675b029a1fa01b03
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 4a6646711c1aa32a7123396126933d74d2cb5173..647852226244c862735c113e16fcf4410d39698d 100644
+index eb84c63b029a39ac352d1b0cf5a264c0c14d2f8e..c4d13f49beeaf2e0a5059a7e916d59502e6c36c1 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2580,6 +2580,7 @@ public class PurpurWorldConfig {
+@@ -2582,6 +2582,7 @@ public class PurpurWorldConfig {
      public boolean skeletonTakeDamageFromWater = false;
      public boolean skeletonAlwaysDropExp = false;
      public double skeletonHeadVisibilityPercent = 0.5D;
@@ -102,7 +102,7 @@ index 4a6646711c1aa32a7123396126933d74d2cb5173..647852226244c862735c113e16fcf441
      private void skeletonSettings() {
          skeletonRidable = getBoolean("mobs.skeleton.ridable", skeletonRidable);
          skeletonRidableInWater = getBoolean("mobs.skeleton.ridable-in-water", skeletonRidableInWater);
-@@ -2594,6 +2595,7 @@ public class PurpurWorldConfig {
+@@ -2596,6 +2597,7 @@ public class PurpurWorldConfig {
          skeletonTakeDamageFromWater = getBoolean("mobs.skeleton.takes-damage-from-water", skeletonTakeDamageFromWater);
          skeletonAlwaysDropExp = getBoolean("mobs.skeleton.always-drop-exp", skeletonAlwaysDropExp);
          skeletonHeadVisibilityPercent = getDouble("mobs.skeleton.head-visibility-percent", skeletonHeadVisibilityPercent);

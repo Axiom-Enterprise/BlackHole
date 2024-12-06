@@ -32,10 +32,10 @@ index 0b81415233df20fe7143c87ee964a6a1f490476f..227638f369a6581f37e892fa457e2d67
          this.caravanHead.caravanTail = this;
      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a3ad9d2610ba27d4dbfa22cf8e3b9f8365310d40..ba7be016f1a76c95d04254cbbb6a0a51df23b0d0 100644
+index dd33aa2d92296090d6d75d294e91f2272b57e6fc..c62a22c8c7821041d890123c61cb04fb43955108 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1386,6 +1386,7 @@ public class PurpurWorldConfig {
+@@ -1388,6 +1388,7 @@ public class PurpurWorldConfig {
      public double llamaMovementSpeedMax = 0.175D;
      public int llamaBreedingTicks = 6000;
      public boolean llamaTakeDamageFromWater = false;
@@ -43,7 +43,7 @@ index a3ad9d2610ba27d4dbfa22cf8e3b9f8365310d40..ba7be016f1a76c95d04254cbbb6a0a51
      private void llamaSettings() {
          llamaRidable = getBoolean("mobs.llama.ridable", llamaRidable);
          llamaRidableInWater = getBoolean("mobs.llama.ridable-in-water", llamaRidableInWater);
-@@ -1405,6 +1406,7 @@ public class PurpurWorldConfig {
+@@ -1407,6 +1408,7 @@ public class PurpurWorldConfig {
          llamaMovementSpeedMax = getDouble("mobs.llama.attributes.movement_speed.max", llamaMovementSpeedMax);
          llamaBreedingTicks = getInt("mobs.llama.breeding-delay-ticks", llamaBreedingTicks);
          llamaTakeDamageFromWater = getBoolean("mobs.llama.takes-damage-from-water", llamaTakeDamageFromWater);

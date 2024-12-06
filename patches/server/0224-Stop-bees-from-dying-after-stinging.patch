@@ -5,7 +5,7 @@ Subject: [PATCH] Stop bees from dying after stinging
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index 8e2b71d7fe766261cfa539e9f18fede83958408f..5ca5f128e5614146e76935e6d674e0699c65dfdb 100644
+index e2c6691ecca79df5828e6136568933b41ba5e1fa..c533e8c98411ea857df56a98581e903a871b98e2 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
 @@ -465,6 +465,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -17,10 +17,10 @@ index 8e2b71d7fe766261cfa539e9f18fede83958408f..5ca5f128e5614146e76935e6d674e069
              ++this.timeSinceSting;
              if (this.timeSinceSting % 5 == 0 && this.random.nextInt(Mth.clamp(1200 - this.timeSinceSting, 1, 1200)) == 0) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b49d8ef5fe4a3b4bd99124cca2e5e661762552ff..01306ed51e4ca205bc58c171e6df5594c96aa22e 100644
+index db707841e9d7f2840ff00c2e32933634045315df..ecef27cf83b1c77d33ffd1cb96e0d72f91427b75 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1153,6 +1153,7 @@ public class PurpurWorldConfig {
+@@ -1155,6 +1155,7 @@ public class PurpurWorldConfig {
      public boolean beeCanWorkAtNight = false;
      public boolean beeCanWorkInRain = false;
      public boolean beeAlwaysDropExp = false;
@@ -28,7 +28,7 @@ index b49d8ef5fe4a3b4bd99124cca2e5e661762552ff..01306ed51e4ca205bc58c171e6df5594
      private void beeSettings() {
          beeRidable = getBoolean("mobs.bee.ridable", beeRidable);
          beeRidableInWater = getBoolean("mobs.bee.ridable-in-water", beeRidableInWater);
-@@ -1170,6 +1171,7 @@ public class PurpurWorldConfig {
+@@ -1172,6 +1173,7 @@ public class PurpurWorldConfig {
          beeCanWorkAtNight = getBoolean("mobs.bee.can-work-at-night", beeCanWorkAtNight);
          beeCanWorkInRain = getBoolean("mobs.bee.can-work-in-rain", beeCanWorkInRain);
          beeAlwaysDropExp = getBoolean("mobs.bee.always-drop-exp", beeAlwaysDropExp);

@@ -18,10 +18,10 @@ index 1b94f26e78db062f80d806b82f714a815b4710ff..299d782c4e84d8548f2faddfb03712ba
  
      @Override
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 8c2fa8ef4630f69998cb8e893a94a6470b035506..a5c9410c9ef3747004b09adac38ff54d63d0ec97 100644
+index a783b9cbe2f76f91fc85e514464e078e0dff23ba..ad639c2dfe6f74039387c23b214c2d85e0e8fcdd 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -827,6 +827,11 @@ public class PurpurWorldConfig {
+@@ -829,6 +829,11 @@ public class PurpurWorldConfig {
          cactusBreaksFromSolidNeighbors = getBoolean("blocks.cactus.breaks-from-solid-neighbors", cactusBreaksFromSolidNeighbors);
      }
  

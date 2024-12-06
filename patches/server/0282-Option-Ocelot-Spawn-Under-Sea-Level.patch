@@ -18,10 +18,10 @@ index 14634de26c218a3d26afd3e7e6ca89c1a0595178..dee59cb4b87845c940ee089aa932aa69
              }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index f8c49f69297fac41f65c3d37ba0e1020fa3f0736..29c934fa57da481730d80601bf86a90d5b8def09 100644
+index 640a7380fe1d3091eed8ca6c95dc8ddb4faf8edc..ad1c62c92a0fa2ff49f14108c69370cb73e7f4e6 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2150,6 +2150,7 @@ public class PurpurWorldConfig {
+@@ -2152,6 +2152,7 @@ public class PurpurWorldConfig {
      public int ocelotBreedingTicks = 6000;
      public boolean ocelotTakeDamageFromWater = false;
      public boolean ocelotAlwaysDropExp = false;
@@ -29,7 +29,7 @@ index f8c49f69297fac41f65c3d37ba0e1020fa3f0736..29c934fa57da481730d80601bf86a90d
      private void ocelotSettings() {
          ocelotRidable = getBoolean("mobs.ocelot.ridable", ocelotRidable);
          ocelotRidableInWater = getBoolean("mobs.ocelot.ridable-in-water", ocelotRidableInWater);
-@@ -2164,6 +2165,7 @@ public class PurpurWorldConfig {
+@@ -2166,6 +2167,7 @@ public class PurpurWorldConfig {
          ocelotBreedingTicks = getInt("mobs.ocelot.breeding-delay-ticks", ocelotBreedingTicks);
          ocelotTakeDamageFromWater = getBoolean("mobs.ocelot.takes-damage-from-water", ocelotTakeDamageFromWater);
          ocelotAlwaysDropExp = getBoolean("mobs.ocelot.always-drop-exp", ocelotAlwaysDropExp);

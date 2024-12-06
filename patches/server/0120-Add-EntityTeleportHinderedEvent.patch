@@ -83,10 +83,10 @@ index 12c65755f85acce10c2d5359539d64498138127b..c0b6efefc4d4f31602f39afa76f83730
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 350165d6616a1dfe931d0a35de0dbbd9222da216..75986a13b87c2024c96742fbbab960026b256837 100644
+index cfc85a7089de9e30ac9a703b87440475cc2e2cf0..ad477e53a2a33e47a5bac42eebe46a59ece659ee 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1440,6 +1440,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1441,6 +1441,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          // Paper start - Teleport passenger API
          // Don't allow teleporting between worlds while keeping passengers
          if (ignorePassengers && entity.isVehicle() && location.getWorld() != this.getWorld()) {

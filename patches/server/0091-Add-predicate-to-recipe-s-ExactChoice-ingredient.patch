@@ -5,20 +5,20 @@ Subject: [PATCH] Add predicate to recipe's ExactChoice ingredient
 
 
 diff --git a/src/main/java/net/minecraft/world/item/crafting/Ingredient.java b/src/main/java/net/minecraft/world/item/crafting/Ingredient.java
-index 0bd0935e76038e07c063bbfc61fa1a6339c23eed..e38cab89bd58a91cf91044d23900b5d83fa191f6 100644
+index 0b0054b3d5d56ba24e1aee0e3ab56ea5b01a82a8..2e3a834643d56543418e9b9beb9d3448bf059d22 100644
 --- a/src/main/java/net/minecraft/world/item/crafting/Ingredient.java
 +++ b/src/main/java/net/minecraft/world/item/crafting/Ingredient.java
-@@ -45,6 +45,7 @@ public final class Ingredient implements StackedContents.IngredientInfo<Holder<I
+@@ -45,6 +45,7 @@ public final class Ingredient implements StackedContents.IngredientInfo<io.paper
      // CraftBukkit start
      @Nullable
-     private List<ItemStack> itemStacks;
+     private java.util.Set<ItemStack> itemStacks; // Paper - Improve exact choice recipe ingredients
 +    public Predicate<org.bukkit.inventory.ItemStack> predicate; // Purpur
  
      public boolean isExact() {
          return this.itemStacks != null;
-@@ -102,6 +103,11 @@ public final class Ingredient implements StackedContents.IngredientInfo<Holder<I
- 
-             return false;
+@@ -100,6 +101,11 @@ public final class Ingredient implements StackedContents.IngredientInfo<io.paper
+         if (this.isExact()) {
+             return this.itemStacks.contains(itemstack); // Paper - Improve exact choice recipe ingredients (hashing FTW!)
          }
 +        // Purpur start
 +        if (predicate != null) {

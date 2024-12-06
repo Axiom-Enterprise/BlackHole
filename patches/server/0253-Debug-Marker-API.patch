@@ -5,7 +5,7 @@ Subject: [PATCH] Debug Marker API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 268ab3f175ece52e7da6dfa50573089f49685d68..6b0308d081af880a79c369306e8ad69757bcd6de 100644
+index 82c8dc67fc40e253a4765a215864d40c007de3c2..efb81eec2680fc9ae2b92edead07d1d78fbe2b00 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1643,6 +1643,42 @@ public final class CraftServer implements Server {
@@ -52,10 +52,10 @@ index 268ab3f175ece52e7da6dfa50573089f49685d68..6b0308d081af880a79c369306e8ad697
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 5d0f4395617bcd59aad7cea221f6009d08dc0913..41077511328a31f39639af1d02e7a3041992676d 100644
+index 4f3da35084d1c69d1b697196a17f932fedee9b88..eb9bb689a52a7e9c95d6f2e07bb16799286e9057 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2388,6 +2388,42 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2378,6 +2378,42 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      public float getLocalDifficultyAt(Location location) {
          return getHandle().getCurrentDifficultyAt(io.papermc.paper.util.MCUtil.toBlockPosition(location)).getEffectiveDifficulty();
      }
@@ -99,10 +99,10 @@ index 5d0f4395617bcd59aad7cea221f6009d08dc0913..41077511328a31f39639af1d02e7a304
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 3c76dd383ec0ba19eea19d12902833dc410f96c0..f63b02573b3d42ae8743f591aff2282ece927e31 100644
+index 02ef1446ed3ef1bc15949a2bc9dacc842cf2f02d..2a2f19d9fe756b9e017cb5640343d2a7852e7ece 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3614,5 +3614,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3606,5 +3606,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void resetIdleTimer() {
          getHandle().resetLastActionTime();
      }

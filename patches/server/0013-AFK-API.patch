@@ -5,7 +5,7 @@ Subject: [PATCH] AFK API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index cff9e1877d3abcf92417ff56f4db2d14ad188f97..ae4733c402662630a3892aecd01646d2e7613eed 100644
+index 1e0ca760b18e34a4c320439838283b8fcd87075a..0f979af9131678991860765163fcc4b0453ef52a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2621,8 +2621,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -78,7 +78,7 @@ index cff9e1877d3abcf92417ff56f4db2d14ad188f97..ae4733c402662630a3892aecd01646d2
          return this.stats;
      }
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index e6c4b62daece71edae995a3c3fd21e18b5616bb1..236402e35eb04a2c12ed7ef28ce7c78d7be125cf 100644
+index ddbfd4884daaa4cffdb5e4d8923a8755dab76d91..ea579334ea9f0c1675186af3192f3f7a1c23e859 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -344,6 +344,20 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -124,7 +124,7 @@ index e6c4b62daece71edae995a3c3fd21e18b5616bb1..236402e35eb04a2c12ed7ef28ce7c78d
                      Location oldTo = to.clone();
                      PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
                      this.cserver.getPluginManager().callEvent(event);
-@@ -1554,7 +1576,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1555,7 +1577,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                                      movedWrongly = true;
                                      if (event.getLogWarning())
                                  // Paper end
@@ -133,7 +133,7 @@ index e6c4b62daece71edae995a3c3fd21e18b5616bb1..236402e35eb04a2c12ed7ef28ce7c78d
                                  } // Paper
                              }
  
-@@ -1622,6 +1644,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1623,6 +1645,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                                      this.lastYaw = to.getYaw();
                                      this.lastPitch = to.getPitch();
  
@@ -223,10 +223,10 @@ index 5d7a6e4b73f032db356e7ec369b150013e940ee6..6b2cda6d578a0983b2401ea206292754
                  if (range < 0.0 || d < range * range) {
                      return true;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index d86bf4f995e8156f594fa90ebbab4165e52c0e09..350165d6616a1dfe931d0a35de0dbbd9222da216 100644
+index 0528b90bf718e4b3dc144cc33806126dfbe736e2..cfc85a7089de9e30ac9a703b87440475cc2e2cf0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -583,10 +583,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -584,10 +584,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public void setPlayerListName(String name) {
@@ -243,7 +243,7 @@ index d86bf4f995e8156f594fa90ebbab4165e52c0e09..350165d6616a1dfe931d0a35de0dbbd9
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -3571,5 +3576,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3563,5 +3568,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public boolean usesPurpurClient() {
          return getHandle().purpurClient;
      }

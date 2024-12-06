@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 60ffa728e6b8c861b0d108d1562150ccb671af33..433dbe3c9350cd55ff22d490e077bf1a31ae83be 100644
+index 3bf381f766c478bdb1e645777bd79ba5e8e3949f..00714b79ed8f5bb1c1e2e27905e38683e7ee2fdb 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -578,6 +578,22 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -100,10 +100,10 @@ index 2a187f1b674a6e8279495921088d5a0620c4e404..33fe6d19b3702d8de987fd9292dfca35
  
      public boolean isSensitiveToWater() {
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 30be625e2f9c84f9ee3dbb68c8fc3806eae8a510..5ce7224afc224698e8b1c200c66a1069aab4458c 100644
+index 0846becd1da3b7b311c491be176a3394c258dd2e..0d68cd513cfed80fcbe011648cc8779beb782aaa 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1777,17 +1777,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1779,17 +1779,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      protected void playAttackSound() {}
  
      public boolean isSunBurnTick() {

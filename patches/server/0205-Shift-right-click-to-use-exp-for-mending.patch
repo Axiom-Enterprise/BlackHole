@@ -36,10 +36,10 @@ index 7315e604a2f9cb068eb5bbca744e44eeabac09c9..88eb3774f688bcff383efa7f113bd0b1
 +    // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index f993d33caa44a2d782780c8829a7785ed74b3dcc..3c98be45587f3f6ca6cdc53834ef7dae4962f58d 100644
+index 10757591f1318222f79ff4e3df4c59bacfc41dee..8d52446ddd452a62fa727469f2e191acba1b7d24 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2152,6 +2152,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2153,6 +2153,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
                  boolean cancelled;
                  if (movingobjectposition == null || movingobjectposition.getType() != HitResult.Type.BLOCK) {

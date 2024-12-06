@@ -18,10 +18,10 @@ index 1add518a30e1f44849aea6c805cf3cef849f1992..fe183dcfb32e915af4c58f8b40c35e34
                      BlockState iblockdata = Blocks.WITHER_ROSE.defaultBlockState();
  
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 263db57683045e99210a68184de382a6d91e0f71..30be625e2f9c84f9ee3dbb68c8fc3806eae8a510 100644
+index 81fb0826a1e4ec3ab36447ec0a4dcbf1196cb441..0846becd1da3b7b311c491be176a3394c258dd2e 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -714,7 +714,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -716,7 +716,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
          Level world = this.level();
  
          if (world instanceof ServerLevel worldserver) {

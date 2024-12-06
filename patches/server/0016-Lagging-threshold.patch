@@ -5,13 +5,13 @@ Subject: [PATCH] Lagging threshold
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 5a85471d26130c893ad619dbfc9b61c0ee1b938b..93aa1dce5c9bfdfff9372b0a84bfa2d5bf5c1169 100644
+index a79a30b951325d046b38b4dc62c4cc6f22db564e..bac36e5798ae92c75c73a0d0bd53d7bd6ddb07a8 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -328,6 +328,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-     // Spigot end
+@@ -329,6 +329,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations; // Paper - add paper configuration files
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
+     private final Set<String> pluginsBlockingSleep = new java.util.HashSet<>(); // Paper - API to allow/disallow tick sleeping
 +    public boolean lagging = false; // Purpur
  
      public volatile Thread shutdownThread; // Paper
@@ -25,7 +25,7 @@ index 5a85471d26130c893ad619dbfc9b61c0ee1b938b..93aa1dce5c9bfdfff9372b0a84bfa2d5
                  }
                  // Paper end - further improve server tick loop
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 96f0ff6877e2959fe1ab26728ee64b9c9b777d26..5fa7d429b19d135c5b3f719c35042818499b4563 100644
+index 5c1d968d560cb1caf69549ff03a960a7a960d952..6e4725f49de3ddb74002732b9f462bcfcd161be0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -3291,5 +3291,10 @@ public final class CraftServer implements Server {

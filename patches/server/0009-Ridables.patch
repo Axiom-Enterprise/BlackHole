@@ -22,7 +22,7 @@ index faffd87c357511ef00646971a16acf1009362c59..c98e0d9d8bc9e6ef12a9b9d6082e98bc
          super(x, y, z);
      }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 81591e2b51755b0b76ddceea32ea9f19004bfb13..48e40ef7fba63d9354152a02440656ceb3a9b7a6 100644
+index 312edb4c47a404c1d20e6bdf748a4ccb49a330f4..c391d42e1e84beeee6cf8796f748b70be9c98b52 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1864,6 +1864,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -34,7 +34,7 @@ index 81591e2b51755b0b76ddceea32ea9f19004bfb13..48e40ef7fba63d9354152a02440656ce
              gameprofilerfiller.push(() -> {
                  String s = String.valueOf(worldserver);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 430e29b61feaf525ffa054469dd098a2c1d760f1..d571b4a56807bcc4206d54573604c01290cd3dd7 100644
+index fe295515b8043d988eb87c2caf516a4ae4169451..4de53bba7b0bf036d2ef76970f01ca5414514ebc 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -232,6 +232,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -46,7 +46,7 @@ index 430e29b61feaf525ffa054469dd098a2c1d760f1..d571b4a56807bcc4206d54573604c012
      public LevelChunk getChunkIfLoaded(int x, int z) {
          return this.chunkSource.getChunkAtIfLoadedImmediately(x, z); // Paper - Use getChunkIfLoadedImmediately
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5bad9af939411e23a84184cdc13004bc5e2e2568..cff9e1877d3abcf92417ff56f4db2d14ad188f97 100644
+index f8787b8a4a267cc7f5e1a81344f0de9cacf43e07..1e0ca760b18e34a4c320439838283b8fcd87075a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1030,6 +1030,15 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -66,10 +66,10 @@ index 5bad9af939411e23a84184cdc13004bc5e2e2568..cff9e1877d3abcf92417ff56f4db2d14
  
      private void updatePlayerAttributes() {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 9646b13ee9fa1824b929eb8b8ce2302d1c461120..e6c4b62daece71edae995a3c3fd21e18b5616bb1 100644
+index dedd8b3644699c4bdb33c9a7046342b620889b87..ddbfd4884daaa4cffdb5e4d8923a8755dab76d91 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2887,6 +2887,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2888,6 +2888,8 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
                                  ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
  
@@ -79,7 +79,7 @@ index 9646b13ee9fa1824b929eb8b8ce2302d1c461120..e6c4b62daece71edae995a3c3fd21e18
                                  if ((entity instanceof Bucketable && entity instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                  entity.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index d337311b36db049b11c768bf16d8e7b5f31436dd..d6b48ad015e118ec9599110f54f462ef3a5debc3 100644
+index 0348a458493c4fe22552ae2404272dd9b989d53e..c11689baa8e917a2163bd550452b7a6694163b72 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -340,7 +340,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -259,7 +259,7 @@ index ee2c88638f058172ef730de9b112ce6506211d3b..1135737e16849417df1cdcd5f3858ebb
          // Paper end - Add EntityMoveEvent
          world = this.level();
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index c68543bd7023e9022660ad9c7cbf72c8dc2a6e27..d2baf9408fd7cc19025d2d6a891acc94e6ec23a7 100644
+index 8ebe26c46db485ee0bdf64a313681d465051f436..b57c362e67d9724fc387d3aa5b8547aef648fe91 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -159,8 +159,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -273,7 +273,7 @@ index c68543bd7023e9022660ad9c7cbf72c8dc2a6e27..d2baf9408fd7cc19025d2d6a891acc94
          this.jumpControl = new JumpControl(this);
          this.bodyRotationControl = this.createBodyControl();
          this.navigation = this.createNavigation(world);
-@@ -1500,7 +1500,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1502,7 +1502,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      protected void onOffspringSpawnedFromEgg(Player player, Mob child) {}
  
      protected InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -282,7 +282,7 @@ index c68543bd7023e9022660ad9c7cbf72c8dc2a6e27..d2baf9408fd7cc19025d2d6a891acc94
      }
  
      public boolean isWithinRestriction() {
-@@ -1820,4 +1820,58 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1822,4 +1822,58 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      public float[] getArmorDropChances() {
          return this.armorDropChances;
      }
@@ -582,7 +582,7 @@ index 9aedc62b1766f6a7db4da7eba55167d21d698791..9708ed3e00059fdf5d1d60e0c607d0ab
                  double d = this.wantedX - this.fish.getX();
                  double e = this.wantedY - this.fish.getY();
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index ca706f1ac5f4248164daa613eef81e46b3e5a210..6ae52fa7c0cb3eda4f0d7f8c7dbbf97078dd2d59 100644
+index 0bafe14342c1acce131ad34717c18aed3718deed..91825f18da8f95d84b9fe6de39e2d519b11b684b 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
 @@ -154,6 +154,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -4747,7 +4747,7 @@ index 03e3cbe73119ca76417d4dd192e1560bdfc373ec..aa4160892b9ba2486806b5a54bc1465a
      public void setPersistentAngerTarget(@Nullable UUID angryAt) {
          this.persistentAngerTarget = angryAt;
 diff --git a/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java b/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
-index bdf2b22f3f57e99ad7bbc24d391c7773663fda41..2afb53a33b612faf6aac6fc8a27dc285cc558b4d 100644
+index 6a7e725edece3043c8523d387e2929d5ba8932cb..d0a4df6775d79dfa5193146a1256a4569607597a 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/creaking/Creaking.java
 @@ -106,6 +106,29 @@ public class Creaking extends Monster {

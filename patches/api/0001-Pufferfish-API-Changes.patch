@@ -20,10 +20,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 8d76f0a8b6b67f0cae0b2fa23f0f79fc9fe97f30..ed46baad9fad925201cf2aeaea884a796af5dd9c 100644
+index 571534b42cd9c33d6a7bb6fe3bf3a28e33f8e5de..5ceaca1bd75335f85b4876a394ea8c2643cda694 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -64,6 +64,7 @@ dependencies {
+@@ -66,6 +66,7 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-logger-slf4j")
      api("org.apache.logging.log4j:log4j-api:$log4jVersion")
      api("org.slf4j:slf4j-api:$slf4jVersion")
@@ -31,7 +31,7 @@ index 8d76f0a8b6b67f0cae0b2fa23f0f79fc9fe97f30..ed46baad9fad925201cf2aeaea884a79
  
      implementation("org.ow2.asm:asm:9.7.1")
      implementation("org.ow2.asm:asm-commons:9.7.1")
-@@ -148,6 +149,13 @@ val generateApiVersioningFile by tasks.registering {
+@@ -150,6 +151,13 @@ val generateApiVersioningFile by tasks.registering {
      }
  }
  

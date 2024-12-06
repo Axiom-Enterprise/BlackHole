@@ -17,8 +17,7 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: 'gradle'
-      - uses: gradle/wrapper-validation-action@v2
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v4
       - name: Configure Git
         run: git config --global user.email "no-reply@github.com" && git config --global user.name "Github Actions"
       - name: Apply Patches

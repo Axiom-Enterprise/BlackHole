@@ -131,10 +131,10 @@ index c21e00812f1aaa1279834a0562d360d6b89e146c..877d2095a066854939f260ca4b0b8c7b
      }
  
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index 4b002e8b75d117b726b0de274a76d3596fce015b..692c962193cf9fcc6801fc93f3220bdc673d527b 100644
+index 8f62879582195d8ae4f64bd23f752fa133b1c973..8433c3ac440faa969069d1929b8b77fcb1080be7 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
-@@ -593,7 +593,7 @@ public class Metrics {
+@@ -592,7 +592,7 @@ public class Metrics {
              boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
              // Only start Metrics, if it's enabled in the config
              if (config.getBoolean("enabled", true)) {
@@ -143,7 +143,7 @@ index 4b002e8b75d117b726b0de274a76d3596fce015b..692c962193cf9fcc6801fc93f3220bdc
  
                  metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
                      String minecraftVersion = Bukkit.getVersion();
-@@ -607,11 +607,11 @@ public class Metrics {
+@@ -606,11 +606,11 @@ public class Metrics {
                  final String implVersion = org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion();
                  if (implVersion != null) {
                      final String buildOrHash = implVersion.substring(implVersion.lastIndexOf('-') + 1);
@@ -1017,13 +1017,13 @@ index 0000000000000000000000000000000000000000..facd55463d44cb7e3d2ca6892982f549
 +	}
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index ab4f1bd1ebf0af54f3fa88ee9e2007d20445e7e9..81591e2b51755b0b76ddceea32ea9f19004bfb13 100644
+index ae4ebf509837e8d44255781c61d02873f8b74be8..312edb4c47a404c1d20e6bdf748a4ccb49a330f4 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -333,6 +333,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
      public static final long SERVER_INIT = System.nanoTime(); // Paper - Lag compensation
-     private final Set<String> pluginsBlockingSleep = new java.util.HashSet<>(); // Paper - API to allow/disallow tick sleeping
 +    public gg.pufferfish.pufferfish.util.AsyncExecutor mobSpawnExecutor = new gg.pufferfish.pufferfish.util.AsyncExecutor("MobSpawning"); // Pufferfish - optimize mob spawning
  
      public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
@@ -1198,7 +1198,7 @@ index 103e2c414780be66324bcb9cd4ea539bbdfe12ad..c563326d3131bc726c7f43311c3eaa82
                          this.wasOnGround = this.entity.onGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 7270a94246df73ee195156fc7b62470d090a337a..430e29b61feaf525ffa054469dd098a2c1d760f1 100644
+index 1f898500d0e9b18a880645ceb0a8ff0fe75f4e48..fe295515b8043d988eb87c2caf516a4ae4169451 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -793,6 +793,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -1241,10 +1241,10 @@ index 7270a94246df73ee195156fc7b62470d090a337a..430e29b61feaf525ffa054469dd098a2
  
              if (this.isRainingAt(blockposition)) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 2fbe3d8722eeacc3b27ce38145aeffa610f9daab..9646b13ee9fa1824b929eb8b8ce2302d1c461120 100644
+index 84fa24880d02dc7ba1ec8bda3575be38447fd4b2..dedd8b3644699c4bdb33c9a7046342b620889b87 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1225,6 +1225,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1226,6 +1226,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
      @Override
      public void handleEditBook(ServerboundEditBookPacket packet) {
@@ -1253,7 +1253,7 @@ index 2fbe3d8722eeacc3b27ce38145aeffa610f9daab..9646b13ee9fa1824b929eb8b8ce2302d
          final io.papermc.paper.configuration.type.number.IntOr.Disabled pageMax = io.papermc.paper.configuration.GlobalConfiguration.get().itemValidation.bookSize.pageMax;
          if (!this.cserver.isPrimaryThread() && pageMax.enabled()) {
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 27618d07d718cb2a5783536e11d56f712303487b..d337311b36db049b11c768bf16d8e7b5f31436dd 100644
+index 1b547be0fe97119edf4f29666cfe0037e0c778e0..0348a458493c4fe22552ae2404272dd9b989d53e 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -389,6 +389,9 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -1333,7 +1333,7 @@ index 96b4fbe4a4655777ff10b32e3257e2fac2aba12a..ee2c88638f058172ef730de9b112ce65
          if (this.isSpectator()) {
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 5a3059cadbc9735b4b48745c6b1b11196596b06d..c68543bd7023e9022660ad9c7cbf72c8dc2a6e27 100644
+index 5a0b51342f4a646101f4588697bcae7d1ca8a010..8ebe26c46db485ee0bdf64a313681d465051f436 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -231,14 +231,16 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -1355,7 +1355,7 @@ index 5a3059cadbc9735b4b48745c6b1b11196596b06d..c68543bd7023e9022660ad9c7cbf72c8
              this.targetSelector.tick();
          }
      }
-@@ -925,16 +927,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -927,16 +929,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
  
          if (i % 2 != 0 && this.tickCount > 1) {
              gameprofilerfiller.push("targetSelector");
@@ -1700,7 +1700,7 @@ index 2d8ba55906c8da16fde850e3412f4a6bda3d56e7..3fd86782134a674f58ef37288c8963a4
          if (this.assignProfessionWhenSpawned) {
              this.assignProfessionWhenSpawned = false;
 diff --git a/src/main/java/net/minecraft/world/entity/player/Inventory.java b/src/main/java/net/minecraft/world/entity/player/Inventory.java
-index 36ba57e95b84f3d598bf4be624d6c88b05a6f9a6..9d467d401147308b9f6e3eb7be2d7606993825c3 100644
+index 110456deaa662bc1c0f6ba7878bb3074869a4350..58c8e8f06f5cf028b158350327bf42984fcb4d38 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Inventory.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Inventory.java
 @@ -636,6 +636,8 @@ public class Inventory implements Container, Nameable {
@@ -1786,7 +1786,7 @@ index b62db8c7c8c57e43869ee239ebf4b02f112355d9..2bee342e59e600426c8681a3ce641a12
                          }
                      }
 diff --git a/src/main/java/net/minecraft/world/item/crafting/ShapelessRecipe.java b/src/main/java/net/minecraft/world/item/crafting/ShapelessRecipe.java
-index 6ec7b234b468755835107be40d0080222c0b9263..ab91d14f263ba2cdb2bbf4a8a2dd66898e709fe6 100644
+index 12f95bee2a69fd5df7c4a165537e01299e60c5f6..4b3769020a92124bd5677cf75e268b8bc5ba2031 100644
 --- a/src/main/java/net/minecraft/world/item/crafting/ShapelessRecipe.java
 +++ b/src/main/java/net/minecraft/world/item/crafting/ShapelessRecipe.java
 @@ -31,8 +31,13 @@ public class ShapelessRecipe implements CraftingRecipe {
@@ -1828,9 +1828,9 @@ index 6ec7b234b468755835107be40d0080222c0b9263..ab91d14f263ba2cdb2bbf4a8a2dd6689
 +            return ingredients.isEmpty();
 +        }
 +        // Pufferfish end
-         return input.ingredientCount() != this.ingredients.size() ? false : (input.size() == 1 && this.ingredients.size() == 1 ? ((Ingredient) this.ingredients.getFirst()).test(input.getItem(0)) : input.stackedContents().canCraft((Recipe) this, (StackedContents.Output) null));
-     }
- 
+         // Paper start - Improve exact choice recipe ingredients & unwrap ternary
+         if (input.ingredientCount() != this.ingredients.size()) {
+             return false;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
 index 27f9d167b5ae9ce5117798ea44324107df59425f..6470f145e2470574a40ddce6ca5bf924c1bb094c 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java

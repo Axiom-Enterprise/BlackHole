@@ -5,10 +5,10 @@ Subject: [PATCH] Changeable Mob Left Handed Chance
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index d845d4a0a2ce99b90d4004146be8db90b9ea64c3..263db57683045e99210a68184de382a6d91e0f71 100644
+index 0c55e69bbdc673a87b5ac5ee740817aca2434bb6..81fb0826a1e4ec3ab36447ec0a4dcbf1196cb441 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1426,7 +1426,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1428,7 +1428,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
              attributemodifiable.addPermanentModifier(new AttributeModifier(Mob.RANDOM_SPAWN_BONUS_ID, randomsource.triangle(0.0D, 0.11485000000000001D), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
          }
  

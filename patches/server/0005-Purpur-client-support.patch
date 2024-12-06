@@ -5,7 +5,7 @@ Subject: [PATCH] Purpur client support
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8aff5b7dd14b835788348b22b1fec4d381df816f..e223a732b8ff485645fa3a4c08c6bf6dff146dd7 100644
+index fc7f7a34babd095a51b5321f600aef65a2a9d123..c067ac7481367afbcdb051b7a215ebf0f28e3c9c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -327,6 +327,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -43,10 +43,10 @@ index b0bc66dc7248aae691dcab68b925b52a1695e63f..b6dd6bde947ac7502f25d31603995961
              try {
                  String channels = payload.toString(com.google.common.base.Charsets.UTF_8);
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 84c494ca81b8f58604b372ac7236147776817a4f..d86bf4f995e8156f594fa90ebbab4165e52c0e09 100644
+index 20f64850cb42d986358f01ffcdb42187e1684bca..0528b90bf718e4b3dc144cc33806126dfbe736e2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3565,4 +3565,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3557,4 +3557,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundEntityEventPacket(((CraftEntity) target).getHandle(), effect.getData()));
      }
      // Paper end - entity effect API

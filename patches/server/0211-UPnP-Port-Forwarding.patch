@@ -5,12 +5,12 @@ Subject: [PATCH] UPnP Port Forwarding
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 36fb238819e529fdecd8dd904c074d7a3a937db2..757cedd57b89a452832f2c9d9e5ed9fb495ca933 100644
+index 53cf0ea7f0b26ce0b69a02a4d10f3027b1d1530f..11a03a0865c52551b1dd95695403caf60d4700c4 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -330,6 +330,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-     public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations; // Paper - add paper configuration files
+@@ -331,6 +331,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
+     private final Set<String> pluginsBlockingSleep = new java.util.HashSet<>(); // Paper - API to allow/disallow tick sleeping
      public boolean lagging = false; // Purpur
 +    protected boolean upnp = false; // Purpur
  

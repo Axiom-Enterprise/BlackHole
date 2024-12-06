@@ -6,10 +6,10 @@ Subject: [PATCH] Dont run with scissors!
 inspired by https://modrinth.com/mod/dont-run-with-scissors
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 7c58f969d86c87555764afcac56961de7f43e114..4049eeb7d448dfe83b758d268ce1ef8612d32542 100644
+index b4cd58ae2c89cb3875cff2bcbe60511d94a926d4..10757591f1318222f79ff4e3df4c59bacfc41dee 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1720,6 +1720,13 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1721,6 +1721,13 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
                                      this.player.tryResetCurrentImpulseContext();
                                  }
  
@@ -23,7 +23,7 @@ index 7c58f969d86c87555764afcac56961de7f43e114..4049eeb7d448dfe83b758d268ce1ef86
                                  this.player.checkMovementStatistics(this.player.getX() - d3, this.player.getY() - d4, this.player.getZ() - d5);
                                  this.lastGoodX = this.player.getX();
                                  this.lastGoodY = this.player.getY();
-@@ -1759,6 +1766,14 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1760,6 +1767,14 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
          }
      }
  

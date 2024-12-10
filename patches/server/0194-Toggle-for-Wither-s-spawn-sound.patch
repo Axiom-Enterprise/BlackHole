@@ -18,10 +18,10 @@ index 54100d5d9ed31fe292750e668f3c2ba9257f5ef3..6a85049919f0cdc7051d1789a951d9e3
                      // worldserver.globalLevelEvent(1023, new BlockPosition(this), 0);
                      int viewDistance = world.getCraftServer().getViewDistance() * 16;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index c5964b249302a386bb878d1aa3f3ce2183e52361..810258f3c9b49e041db0349ecb8e54d589667e02 100644
+index 1385065c45b817c4677010b9a4968f0987818f0a..71531ec956bf1de473bca192988a26a0a33b0458 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -2798,6 +2798,7 @@ public class PurpurWorldConfig {
+@@ -2805,6 +2805,7 @@ public class PurpurWorldConfig {
      public boolean witherTakeDamageFromWater = false;
      public boolean witherCanRideVehicles = false;
      public float witherExplosionRadius = 1.0F;
@@ -29,7 +29,7 @@ index c5964b249302a386bb878d1aa3f3ce2183e52361..810258f3c9b49e041db0349ecb8e54d5
      private void witherSettings() {
          witherRidable = getBoolean("mobs.wither.ridable", witherRidable);
          witherRidableInWater = getBoolean("mobs.wither.ridable-in-water", witherRidableInWater);
-@@ -2820,6 +2821,7 @@ public class PurpurWorldConfig {
+@@ -2827,6 +2828,7 @@ public class PurpurWorldConfig {
          witherTakeDamageFromWater = getBoolean("mobs.wither.takes-damage-from-water", witherTakeDamageFromWater);
          witherCanRideVehicles = getBoolean("mobs.wither.can-ride-vehicles", witherCanRideVehicles);
          witherExplosionRadius = (float) getDouble("mobs.wither.explosion-radius", witherExplosionRadius);

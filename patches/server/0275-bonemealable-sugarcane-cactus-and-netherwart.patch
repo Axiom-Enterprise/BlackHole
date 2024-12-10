@@ -137,10 +137,10 @@ index 547ea09ed84595286c97c128b3b96f6d387ae25f..d0f8a13f27132257ece6dadf736c2dc6
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index e5a855b5dfc0e23a00c9e44c2c0ee5f701fe696e..f6c59ba4c36382c522c009e78a5c96d702a49fe4 100644
+index 7c468d3002a0b6fca37ae5a731c5f0456af35744..280fae97ec04fea5ffe00189880a5de09c69dbc3 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -870,8 +870,20 @@ public class PurpurWorldConfig {
+@@ -877,8 +877,20 @@ public class PurpurWorldConfig {
      }
  
      public boolean cactusBreaksFromSolidNeighbors = true;

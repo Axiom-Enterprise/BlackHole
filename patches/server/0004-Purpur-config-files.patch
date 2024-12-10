@@ -179,7 +179,7 @@ index 1c2439ffc1e407ff69286817d22f127470ce07ba..ae274a56f7cb6200b3c556ed61254bb2
                          .withRequiredArg()
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ceb45f313869ac3a0f650a4ee43ecff782c1be5f
+index 0000000000000000000000000000000000000000..c2991c34fd4306fae79fca2c1349c826b3247c49
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -0,0 +1,178 @@
@@ -263,8 +263,8 @@ index 0000000000000000000000000000000000000000..ceb45f313869ac3a0f650a4ee43ecff7
 +        commands = new HashMap<>();
 +        commands.put("purpur", new PurpurCommand("purpur"));
 +
-+        version = getInt("config-version", 37);
-+        set("config-version", 37);
++        version = getInt("config-version", 38);
++        set("config-version", 38);
 +
 +        readConfig(PurpurConfig.class, null);
 +

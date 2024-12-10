@@ -29,10 +29,10 @@ index a59b23f4062fa896836dec72cbd5097411774ad1..c526ea13a726624adaa654f09ff84c89
          int i = aenumdirection.length;
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 3ad962a28cd4471f2d7593f6053008871a78e50c..ffd131b4ff8d0c49c76829ec202c955509f9ae96 100644
+index 5c0e0613c8e25f77b8ca92af09ef9b535e85995d..d80584a0412b6699c24f5817e8ec26cf9f46d92d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -874,6 +874,11 @@ public class PurpurWorldConfig {
+@@ -881,6 +881,11 @@ public class PurpurWorldConfig {
          composterBulkProcess = getBoolean("blocks.composter.sneak-to-bulk-process", composterBulkProcess);
      }
  

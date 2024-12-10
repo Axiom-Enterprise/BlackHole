@@ -128,7 +128,7 @@ index e3013916952012e69a23ac2efe9fc5e31a2b3d87..763d06265c7d0000e4c641c3aaba785b
              } else if (source.is(DamageTypes.HOT_FLOOR)) {
                  cause = DamageCause.HOT_FLOOR;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 2090ecfebe8bc164239d198c1c50b134c7bc60c5..dba6a69891f50ba057187a8138ff227ad7501eaa 100644
+index 6cd88ca590658adb8f79296fc74af3536e2e1be3..4ad201f8457dca2305224cc74a1f55b90dd60140 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -212,8 +212,10 @@ public class PurpurConfig {
@@ -143,10 +143,10 @@ index 2090ecfebe8bc164239d198c1c50b134c7bc60c5..dba6a69891f50ba057187a8138ff227a
  
      public static boolean advancementOnlyBroadcastToAffectedPlayer = false;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 26f90270a8b6f1eccf0ddf9babfc6d8026f1d509..22ae60309fa0b19ba3d2b58c919a6e262eb1903d 100644
+index f789100866e21cdf7b2891dfcb6913081f597d79..2a53cf6fcab47e49735a31ed9eb1fb668caa2e4c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1046,6 +1046,11 @@ public class PurpurWorldConfig {
+@@ -1053,6 +1053,11 @@ public class PurpurWorldConfig {
          spongeAbsorbsWaterFromMud = getBoolean("blocks.sponge.absorbs-water-from-mud", spongeAbsorbsWaterFromMud);
      }
  

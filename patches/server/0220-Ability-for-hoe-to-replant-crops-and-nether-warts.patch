@@ -74,7 +74,7 @@ index 7bb4994d6474c8ea59c102009253552020691b8f..b571bca4375ca7caf9b75dbf84009cb0
 +    // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index d6f3f21751613038dae7db5ada4aa89444a82546..ef835aa6568bad1a20cc7ebb8775a538234b7915 100644
+index d1a20069971e46a5bd58a31390b54f9216d9cb64..6b579962256be91923531fa4dac21a34b581386b 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -509,6 +509,8 @@ public class PurpurWorldConfig {
@@ -86,7 +86,7 @@ index d6f3f21751613038dae7db5ada4aa89444a82546..ef835aa6568bad1a20cc7ebb8775a538
      private void toolSettings() {
          axeStrippables.clear();
          axeWaxables.clear();
-@@ -776,6 +778,8 @@ public class PurpurWorldConfig {
+@@ -783,6 +785,8 @@ public class PurpurWorldConfig {
              });
              shovelFlattenables.put(block, new Flattenable(into, drops));
          });

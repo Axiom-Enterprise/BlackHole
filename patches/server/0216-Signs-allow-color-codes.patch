@@ -84,10 +84,10 @@ index 7a1d9a718dc57b5f630ca8e5358120cebaeefb9c..b51b0b0f48b1da6187387d6ec025681e
      public ClientboundBlockEntityDataPacket getUpdatePacket() {
          return ClientboundBlockEntityDataPacket.create(this);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index a61c0a67996ae71e2cfde8e8bafaa49bd18cbf22..0f02d924d8b8fd939e268923d234d50c3e406ca9 100644
+index c8260dddc2852ad55bdb0091bfccb252a09a4ff3..1f5b541cd87c4e6fafbd1ee9b75d4a323aeacaa1 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1002,6 +1002,11 @@ public class PurpurWorldConfig {
+@@ -1009,6 +1009,11 @@ public class PurpurWorldConfig {
          }
      }
  

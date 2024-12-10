@@ -17,10 +17,10 @@ index dec6be6b823b00642a0066726e3cad298b7ed6a7..2681153860b37d49eb8b12ae08198e56
                  for (int i = 0; i < 64; ++i) {
                      if (this.teleport()) {
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 1205c517d4c73a2a1718a2e3cc87b348f3026af8..b027f35fc78373d4314a3c7c4d30065f6a2af6ed 100644
+index 363fba258c19fddb45b6bca459007def8c0da981..7463320f50e863b6b8c5ba6127527b2b1fff72f6 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -1457,6 +1457,7 @@ public class PurpurWorldConfig {
+@@ -1464,6 +1464,7 @@ public class PurpurWorldConfig {
      public boolean endermanAggroEndermites = true;
      public boolean endermanAggroEndermitesOnlyIfPlayerSpawned = false;
      public boolean endermanDisableStareAggro = false;
@@ -28,7 +28,7 @@ index 1205c517d4c73a2a1718a2e3cc87b348f3026af8..b027f35fc78373d4314a3c7c4d30065f
      private void endermanSettings() {
          endermanRidable = getBoolean("mobs.enderman.ridable", endermanRidable);
          endermanRidableInWater = getBoolean("mobs.enderman.ridable-in-water", endermanRidableInWater);
-@@ -1479,6 +1480,7 @@ public class PurpurWorldConfig {
+@@ -1486,6 +1487,7 @@ public class PurpurWorldConfig {
          endermanAggroEndermites = getBoolean("mobs.enderman.aggressive-towards-endermites", endermanAggroEndermites);
          endermanAggroEndermitesOnlyIfPlayerSpawned = getBoolean("mobs.enderman.aggressive-towards-endermites-only-spawned-by-player-thrown-ender-pearls", endermanAggroEndermitesOnlyIfPlayerSpawned);
          endermanDisableStareAggro = getBoolean("mobs.enderman.disable-player-stare-aggression", endermanDisableStareAggro);

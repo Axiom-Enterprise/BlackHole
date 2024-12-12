@@ -6222,7 +6222,7 @@ index 0000000000000000000000000000000000000000..dd219518150ca90f89ad238904fd4095
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/controller/MoveControllerWASD.java b/src/main/java/org/purpurmc/purpur/controller/MoveControllerWASD.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ad85c1ff6cd5d5ce2262bdb367ce9c8a5b707170
+index 0000000000000000000000000000000000000000..34f3c43fa16e950326ac5e3d93faee0466ffedc6
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/controller/MoveControllerWASD.java
 @@ -0,0 +1,92 @@
@@ -6297,7 +6297,7 @@ index 0000000000000000000000000000000000000000..ad85c1ff6cd5d5ce2262bdb367ce9c8a
 +
 +        ((LookControllerWASD) entity.getLookControl()).setOffsets(yawOffset, 0);
 +
-+        if (rider.jumping && spacebarEvent(entity) && !entity.onSpacebar() && entity.onGround) {
++        if (lastClientInput.jump() && spacebarEvent(entity) && !entity.onSpacebar() && entity.onGround) {
 +            entity.jumpFromGround();
 +        }
 +

@@ -79,7 +79,7 @@ index dedd8b3644699c4bdb33c9a7046342b620889b87..ddbfd4884daaa4cffdb5e4d8923a8755
                                  if ((entity instanceof Bucketable && entity instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                  entity.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 0348a458493c4fe22552ae2404272dd9b989d53e..c11689baa8e917a2163bd550452b7a6694163b72 100644
+index c156b2197d02d4b2b96f3b918f1c5f817b4fc086..483b18fdc207aaef3092fdd11254e208165cde19 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -340,7 +340,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -5212,7 +5212,7 @@ index e37aaf77f94b97b736cc20ef070cefdff0400188..e3013916952012e69a23ac2efe9fc5e3
              event = new EntityDamageEvent(damagee.getBukkitEntity(), cause, bukkitDamageSource, modifiers, modifierFunctions);
          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index ceb45f313869ac3a0f650a4ee43ecff782c1be5f..09e7a11a241b6e306d5043fe66f14fd4f2aae963 100644
+index c2991c34fd4306fae79fca2c1349c826b3247c49..e8c9393760108f2549b52a61d973ea2b4a64a312 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -175,4 +175,9 @@ public class PurpurConfig {
@@ -5985,14 +5985,16 @@ index 42e502cfcb8d2e775cbf738773caf1a087d2f3f4..5004e86747306cc8d4bbed6f10d3a6e9
  }
 diff --git a/src/main/java/org/purpurmc/purpur/controller/FlyingMoveControllerWASD.java b/src/main/java/org/purpurmc/purpur/controller/FlyingMoveControllerWASD.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ed494e0ad278813a0eb261101447b84cca3ad7aa
+index 0000000000000000000000000000000000000000..940bcc6f79b59cb3cce578912eb789efd394f456
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/controller/FlyingMoveControllerWASD.java
-@@ -0,0 +1,71 @@
+@@ -0,0 +1,74 @@
 +package org.purpurmc.purpur.controller;
 +
++import net.minecraft.server.level.ServerPlayer;
 +import net.minecraft.world.entity.Mob;
 +import net.minecraft.world.entity.ai.attributes.Attributes;
++import net.minecraft.world.entity.player.Input;
 +import net.minecraft.world.entity.player.Player;
 +
 +public class FlyingMoveControllerWASD extends MoveControllerWASD {
@@ -6022,11 +6024,12 @@ index 0000000000000000000000000000000000000000..ed494e0ad278813a0eb261101447b84c
 +
 +    @Override
 +    public void purpurTick(Player rider) {
-+        float forward = Math.max(0.0F, rider.getForwardMot());
++        Input lastClientInput = ((ServerPlayer) rider).getLastClientInput();
++        float forward = lastClientInput.forward() == lastClientInput.backward() ? 0.0F : lastClientInput.forward() ? 1.0F : 0.0F;
 +        float vertical = forward == 0.0F ? 0.0F : -(rider.xRotO / 45.0F);
-+        float strafe = rider.getStrafeMot();
++        float strafe = (lastClientInput.left() == lastClientInput.right() ? 0.0F : lastClientInput.left() ? 1.0F : -1.0F);
 +
-+        if (rider.jumping && spacebarEvent(entity)) {
++        if (lastClientInput.jump() && spacebarEvent(entity)) {
 +            entity.onSpacebar();
 +        }
 +
@@ -6062,14 +6065,16 @@ index 0000000000000000000000000000000000000000..ed494e0ad278813a0eb261101447b84c
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/controller/FlyingWithSpacebarMoveControllerWASD.java b/src/main/java/org/purpurmc/purpur/controller/FlyingWithSpacebarMoveControllerWASD.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..9383c07fa53141127106a1f289366a040960d52e
+index 0000000000000000000000000000000000000000..3601491076ec90c9a20177fca57a1acf366a8dab
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/controller/FlyingWithSpacebarMoveControllerWASD.java
-@@ -0,0 +1,63 @@
+@@ -0,0 +1,66 @@
 +package org.purpurmc.purpur.controller;
 +
++import net.minecraft.server.level.ServerPlayer;
 +import net.minecraft.world.entity.Mob;
 +import net.minecraft.world.entity.ai.attributes.Attributes;
++import net.minecraft.world.entity.player.Input;
 +import net.minecraft.world.entity.player.Player;
 +import net.minecraft.world.phys.Vec3;
 +
@@ -6084,8 +6089,9 @@ index 0000000000000000000000000000000000000000..9383c07fa53141127106a1f289366a04
 +
 +    @Override
 +    public void purpurTick(Player rider) {
-+        float forward = rider.getForwardMot();
-+        float strafe = rider.getStrafeMot() * 0.5F;
++        Input lastClientInput = ((ServerPlayer) rider).getLastClientInput();
++        float forward = (lastClientInput.forward() == lastClientInput.backward() ? 0.0F : lastClientInput.forward() ? 1.0F : -1.0F);
++        float strafe = (lastClientInput.left() == lastClientInput.right() ? 0.0F : lastClientInput.left() ? 1.0F : -1.0F) * 0.5F;
 +        float vertical = 0;
 +
 +        if (forward < 0.0F) {
@@ -6314,14 +6320,16 @@ index 0000000000000000000000000000000000000000..ad85c1ff6cd5d5ce2262bdb367ce9c8a
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/controller/WaterMoveControllerWASD.java b/src/main/java/org/purpurmc/purpur/controller/WaterMoveControllerWASD.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ba2a37dad43e238e54632975abea8ee6fafaa9e0
+index 0000000000000000000000000000000000000000..922e48799c43ca322a8f550c98a26e1e2959439c
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/controller/WaterMoveControllerWASD.java
-@@ -0,0 +1,50 @@
+@@ -0,0 +1,53 @@
 +package org.purpurmc.purpur.controller;
 +
++import net.minecraft.server.level.ServerPlayer;
 +import net.minecraft.world.entity.Mob;
 +import net.minecraft.world.entity.ai.attributes.Attributes;
++import net.minecraft.world.entity.player.Input;
 +import net.minecraft.world.entity.player.Player;
 +
 +public class WaterMoveControllerWASD extends MoveControllerWASD {
@@ -6338,8 +6346,9 @@ index 0000000000000000000000000000000000000000..ba2a37dad43e238e54632975abea8ee6
 +
 +    @Override
 +    public void purpurTick(Player rider) {
-+        float forward = rider.getForwardMot();
-+        float strafe = rider.getStrafeMot() * 0.5F; // strafe slower by default
++        Input lastClientInput = ((ServerPlayer) rider).getLastClientInput();
++        float forward = (lastClientInput.forward() == lastClientInput.backward() ? 0.0F : lastClientInput.forward() ? 1.0F : -1.0F);
++        float strafe = (lastClientInput.left() == lastClientInput.right() ? 0.0F : lastClientInput.left() ? 1.0F : -1.0F) * 0.5F; // strafe slower by default
 +        float vertical = -(rider.xRotO / 90);
 +
 +        if (forward == 0.0F) {

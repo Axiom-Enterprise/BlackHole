@@ -99,10 +99,10 @@ index 4f3da35084d1c69d1b697196a17f932fedee9b88..eb9bb689a52a7e9c95d6f2e07bb16799
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 02ef1446ed3ef1bc15949a2bc9dacc842cf2f02d..2a2f19d9fe756b9e017cb5640343d2a7852e7ece 100644
+index 6590bb419f7480dbe40bb3df5218da9aeebb3f03..ad24a45fc5b99140d6c28bd6f57016eaaecea110 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3606,5 +3606,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3614,5 +3614,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void resetIdleTimer() {
          getHandle().resetLastActionTime();
      }

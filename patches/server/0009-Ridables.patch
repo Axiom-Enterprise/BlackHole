@@ -6065,7 +6065,7 @@ index 0000000000000000000000000000000000000000..940bcc6f79b59cb3cce578912eb789ef
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/controller/FlyingWithSpacebarMoveControllerWASD.java b/src/main/java/org/purpurmc/purpur/controller/FlyingWithSpacebarMoveControllerWASD.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..3601491076ec90c9a20177fca57a1acf366a8dab
+index 0000000000000000000000000000000000000000..e0bbaec05afa0ae67ed486b14ea1fbadbbe90d9b
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/controller/FlyingWithSpacebarMoveControllerWASD.java
 @@ -0,0 +1,66 @@
@@ -6105,7 +6105,7 @@ index 0000000000000000000000000000000000000000..3601491076ec90c9a20177fca57a1acf
 +            speed *= groundSpeedModifier;
 +        }
 +
-+        if (rider.jumping && spacebarEvent(entity) && !entity.onSpacebar()) {
++        if (lastClientInput.jump() && spacebarEvent(entity) && !entity.onSpacebar()) {
 +            entity.setNoGravity(true);
 +            vertical = 1.0F;
 +        } else {

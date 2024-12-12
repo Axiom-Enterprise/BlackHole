@@ -6379,7 +6379,7 @@ index 0000000000000000000000000000000000000000..922e48799c43ca322a8f550c98a26e1e
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java b/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..5a3df169da4a673d07d17f4f0f016721b9e6bf95
+index 0000000000000000000000000000000000000000..e33e54fc31ab7dcff054d0ab245d6c3391d06449
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/entity/DolphinSpit.java
 @@ -0,0 +1,101 @@
@@ -6437,7 +6437,7 @@ index 0000000000000000000000000000000000000000..5a3df169da4a673d07d17f4f0f016721
 +
 +        Vec3 motDouble = mot.scale(2.0);
 +        for (int i = 0; i < 5; i++) {
-+            ((ServerLevel) level()).sendParticles(null, ParticleTypes.BUBBLE,
++            ((ServerLevel) level()).sendParticlesSource(null, ParticleTypes.BUBBLE,
 +                    false, true,
 +                    getX() + random.nextFloat() / 2 - 0.25F,
 +                    getY() + random.nextFloat() / 2 - 0.25F,
@@ -6486,7 +6486,7 @@ index 0000000000000000000000000000000000000000..5a3df169da4a673d07d17f4f0f016721
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..f6358e9afc6758f2b20e97b6037f6db0204a7dd5
+index 0000000000000000000000000000000000000000..3759e45afe16bf1d8a37b78d3526ee446e63cfe5
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 @@ -0,0 +1,123 @@
@@ -6546,7 +6546,7 @@ index 0000000000000000000000000000000000000000..f6358e9afc6758f2b20e97b6037f6db0
 +
 +        Vec3 motDouble = mot.scale(2.0);
 +        for (int i = 0; i < 5; i++) {
-+            ((ServerLevel) level()).sendParticles(null, ParticleTypes.FLAME,
++            ((ServerLevel) level()).sendParticlesSource(null, ParticleTypes.FLAME,
 +                    false, true,
 +                    getX() + random.nextFloat() / 2 - 0.25F,
 +                    getY() + random.nextFloat() / 2 - 0.25F,

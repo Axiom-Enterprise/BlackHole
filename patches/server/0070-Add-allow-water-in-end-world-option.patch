@@ -5,7 +5,7 @@ Subject: [PATCH] Add allow water in end world option
 
 
 diff --git a/src/main/java/net/minecraft/world/item/BucketItem.java b/src/main/java/net/minecraft/world/item/BucketItem.java
-index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..5e64a3243c1d8536a1e86983e4486a58ef6ab9fc 100644
+index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..38f287d97544b8a5b080837e38710dc4e94ae9bf 100644
 --- a/src/main/java/net/minecraft/world/item/BucketItem.java
 +++ b/src/main/java/net/minecraft/world/item/BucketItem.java
 @@ -196,7 +196,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
@@ -22,7 +22,7 @@ index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..5e64a3243c1d8536a1e86983e4486a58
  
                  for (int l = 0; l < 8; ++l) {
 -                    world.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);
-+                    ((ServerLevel) world).sendParticles(null, ParticleTypes.LARGE_SMOKE, false, true, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 1, 0.0D, 0.0D, 0.0D, 0.0D); // Purpur
++                    ((ServerLevel) world).sendParticlesSource(null, ParticleTypes.LARGE_SMOKE, false, true, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 1, 0.0D, 0.0D, 0.0D, 0.0D); // Purpur
                  }
  
                  return true;
@@ -68,7 +68,7 @@ index a94762e65853ccad38cf90b0049ca256106c0c9f..38633e168a9b36e37feea00964d53e65
          } else {
              world.setBlockAndUpdate(pos, IceBlock.meltsInto());
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 6228d23bd84e59a9e1f01414cc9f00c33cc64cd0..9f98b87ccc60db9a531180de1ed649de118db56f 100644
+index df61db286f8b098a16c59a64714554d6d4c60655..5aa172d86f3d36a239147438e8d71c73ec2a3cf0 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -247,6 +247,11 @@ public class PurpurConfig {

@@ -5,16 +5,16 @@ Subject: [PATCH] Add boat fall damage config
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6f769f90038042ac11cdd59f36d7f3fd85cfd490..f63c1eca0c7ecaec70aaae56c479aaae42df3008 100644
+index 0719be3a59219cf381a716da32331c4cd3f3f3a2..93ccb6f984ae6194eeecefb4d1511dbb7e7fc7ae 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1439,7 +1439,16 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          if (this.isInvulnerableTo(world, source)) {
              return false;
          } else {
--            if (source.is(net.minecraft.tags.DamageTypeTags.IS_FALL) && getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) return false; // Purpur
-+            // Purpur start
-+            if (source.is(net.minecraft.tags.DamageTypeTags.IS_FALL)) { // Purpur
+-            if (source.is(net.minecraft.tags.DamageTypeTags.IS_FALL) && getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) return false; // Purpur - Minecart settings and WASD controls
++            // Purpur start - Add boat fall damage config
++            if (source.is(net.minecraft.tags.DamageTypeTags.IS_FALL)) {
 +                if (getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) {
 +                    return false;
 +                }
@@ -22,7 +22,7 @@ index 6f769f90038042ac11cdd59f36d7f3fd85cfd490..f63c1eca0c7ecaec70aaae56c479aaae
 +                    return false;
 +                }
 +            }
-+            // Purpur end
++            // Purpur end - Add boat fall damage config
              Entity entity = source.getEntity();
  
              if (entity instanceof net.minecraft.world.entity.player.Player) {

@@ -5,29 +5,29 @@ Subject: [PATCH] Minecart settings and WASD controls
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index ae4733c402662630a3892aecd01646d2e7613eed..d8a5d37e3b796392d6b0548371d4f0801d4d9bec 100644
+index 0f979af9131678991860765163fcc4b0453ef52a..664b43e4442d3c07995840d756ced8c3c96d3f7d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1439,6 +1439,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
          if (this.isInvulnerableTo(world, source)) {
              return false;
          } else {
-+            if (source.is(net.minecraft.tags.DamageTypeTags.IS_FALL) && getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) return false; // Purpur
++            if (source.is(net.minecraft.tags.DamageTypeTags.IS_FALL) && getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) return false; // Purpur - Minecart settings and WASD controls
              Entity entity = source.getEntity();
  
              if (entity instanceof net.minecraft.world.entity.player.Player) {
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b31940441596079aae1cd2a38b9d22be18358448 100644
+index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..d0c93f87795d7162bbfb3fdadadb6ae1c5fdaeeb 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 @@ -92,6 +92,10 @@ public abstract class AbstractMinecart extends VehicleEntity {
      private double flyingY = 0.95;
      private double flyingZ = 0.95;
      public Double maxSpeed;
-+    // Purpur start
++    // Purpur start - Minecart settings and WASD controls
 +    public double storedMaxSpeed;
 +    public boolean isNewBehavior;
-+    // Purpur end
++    // Purpur end - Minecart settings and WASD controls
      // CraftBukkit end
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
  
@@ -35,13 +35,13 @@ index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b31940441596079aae1cd2a38b9d22be
          this.blocksBuilding = true;
          if (AbstractMinecart.useExperimentalMovement(world)) {
              this.behavior = new NewMinecartBehavior(this);
-+            this.isNewBehavior = true; // Purpur
++            this.isNewBehavior = true; // Purpur - Minecart settings and WASD controls
          } else {
              this.behavior = new OldMinecartBehavior(this);
-+            // Purpur start
++            // Purpur start - Minecart settings and WASD controls
 +            this.isNewBehavior = false;
 +            maxSpeed = storedMaxSpeed = world.purpurConfig.minecartMaxSpeed;
-+            // Purpur end
++            // Purpur end - Minecart settings and WASD controls
          }
  
      }
@@ -49,22 +49,22 @@ index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b31940441596079aae1cd2a38b9d22be
  
      @Override
      public void tick() {
-+        // Purpur start
++        // Purpur start - Minecart settings and WASD controls
 +        if (!this.isNewBehavior) {
 +            if (storedMaxSpeed != level().purpurConfig.minecartMaxSpeed) {
 +                maxSpeed = storedMaxSpeed = level().purpurConfig.minecartMaxSpeed;
 +            }
 +        }
-+        // Purpur end
++        // Purpur end - Minecart settings and WASD controls
 +
          // CraftBukkit start
          double prevX = this.getX();
          double prevY = this.getY();
-@@ -426,16 +443,62 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -426,16 +443,63 @@ public abstract class AbstractMinecart extends VehicleEntity {
          this.behavior.moveAlongTrack(world);
      }
  
-+    // Purpur start
++    // Purpur start - Minecart settings and WASD controls
 +    private Double lastSpeed;
 +
 +    public double getControllableSpeed() {
@@ -81,7 +81,7 @@ index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b31940441596079aae1cd2a38b9d22be
 +        }
 +        return lastSpeed = speed;
 +    }
-+    // Purpur end
++    // Purpur end - Minecart settings and WASD controls
 +
      protected void comeOffTrack(ServerLevel world) {
          double d0 = this.getMaxSpeed(world);
@@ -89,17 +89,18 @@ index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b31940441596079aae1cd2a38b9d22be
  
          this.setDeltaMovement(Mth.clamp(vec3d.x, -d0, d0), vec3d.y, Mth.clamp(vec3d.z, -d0, d0));
 +
-+        // Purpur start
++        // Purpur start - Minecart settings and WASD controls
 +        if (level().purpurConfig.minecartControllable && !isInWater() && !isInLava() && !passengers.isEmpty()) {
 +            Entity passenger = passengers.get(0);
-+            if (passenger instanceof Player) {
-+                Player player = (Player) passenger;
-+                if (player.jumping && this.onGround) {
++            if (passenger instanceof net.minecraft.server.level.ServerPlayer player) {
++                net.minecraft.world.entity.player.Input lastClientInput = player.getLastClientInput();
++                float forward = (lastClientInput.forward() == lastClientInput.backward() ? 0.0F : lastClientInput.forward() ? 1.0F : -1.0F);
++                if (lastClientInput.jump() && this.onGround) {
 +                    setDeltaMovement(new Vec3(getDeltaMovement().x, level().purpurConfig.minecartControllableHopBoost, getDeltaMovement().z));
 +                }
-+                if (player.zza != 0.0F) {
++                if (forward != 0.0F) {
 +                    Vector velocity = player.getBukkitEntity().getEyeLocation().getDirection().normalize().multiply(getControllableSpeed());
-+                    if (player.zza < 0.0) {
++                    if (forward < 0.0) {
 +                        velocity.multiply(-0.5);
 +                    }
 +                    setDeltaMovement(new Vec3(velocity.getX(), getDeltaMovement().y, velocity.getZ()));
@@ -112,19 +113,19 @@ index cdc8606ffe5c75ee19d92e9f86f26b2a502d765e..b31940441596079aae1cd2a38b9d22be
 +        } else {
 +            maxUpStep = 0.0F;
 +        }
-+        // Purpur end
++        // Purpur end - Minecart settings and WASD controls
 +
          if (this.onGround()) {
              // CraftBukkit start - replace magic numbers with our variables
              this.setDeltaMovement(new Vec3(this.getDeltaMovement().x * this.derailedX, this.getDeltaMovement().y * this.derailedY, this.getDeltaMovement().z * this.derailedZ));
              // CraftBukkit end
          }
-+        else if (level().purpurConfig.minecartControllable) setDeltaMovement(new Vec3(getDeltaMovement().x * derailedX, getDeltaMovement().y, getDeltaMovement().z * derailedZ)); // Purpur
++        else if (level().purpurConfig.minecartControllable) setDeltaMovement(new Vec3(getDeltaMovement().x * derailedX, getDeltaMovement().y, getDeltaMovement().z * derailedZ)); // Purpur - Minecart settings and WASD controls
  
          this.move(MoverType.SELF, this.getDeltaMovement());
          if (!this.onGround()) {
 diff --git a/src/main/java/net/minecraft/world/item/MinecartItem.java b/src/main/java/net/minecraft/world/item/MinecartItem.java
-index 7153d9ed12276a0f2d8b8a17c79734aa25ed1fa5..dc49ea6454e04ae8ec68af12c4bf2ff022540671 100644
+index 7153d9ed12276a0f2d8b8a17c79734aa25ed1fa5..a82faf7f07cd71c8748979a726b1e7857d88e195 100644
 --- a/src/main/java/net/minecraft/world/item/MinecartItem.java
 +++ b/src/main/java/net/minecraft/world/item/MinecartItem.java
 @@ -35,8 +35,9 @@ public class MinecartItem extends Item {
@@ -133,9 +134,9 @@ index 7153d9ed12276a0f2d8b8a17c79734aa25ed1fa5..dc49ea6454e04ae8ec68af12c4bf2ff0
          if (!iblockdata.is(BlockTags.RAILS)) {
 -            return InteractionResult.FAIL;
 -        } else {
-+            if (!world.purpurConfig.minecartPlaceAnywhere) return InteractionResult.FAIL; // Purpur
++            if (!world.purpurConfig.minecartPlaceAnywhere) return InteractionResult.FAIL; // Purpur - Minecart settings and WASD controls
 +            if (iblockdata.isSolid()) blockposition = blockposition.relative(context.getClickedFace());
-+        } // else { // Purpur - place minecarts anywhere
++        } // else { // Purpur - Minecart settings and WASD controls
              ItemStack itemstack = context.getItemInHand();
              RailShape blockpropertytrackposition = iblockdata.getBlock() instanceof BaseRailBlock ? (RailShape) iblockdata.getValue(((BaseRailBlock) iblockdata.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
              double d0 = 0.0D;
@@ -144,7 +145,7 @@ index 7153d9ed12276a0f2d8b8a17c79734aa25ed1fa5..dc49ea6454e04ae8ec68af12c4bf2ff0
                  return InteractionResult.SUCCESS;
              }
 -        }
-+        // } // Purpur - place minecarts anywhere
++        // } // Purpur - Minecart settings and WASD controls
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java

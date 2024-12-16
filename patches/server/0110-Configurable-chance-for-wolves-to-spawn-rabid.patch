@@ -7,14 +7,14 @@ Configurable chance to spawn a wolf that is rabid.
 Rabid wolves attack all players, mobs, and animals.
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 71f76046b37705d064dc532ae1244ecc2920393a..e0e8ef7f579c36b082dbcd8c4f330fbc227e0d00 100644
+index 539eba7148be12eb05c907ed86b0cea975424874..966fe4544212cc831ae617bc2eb05189102ff470 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 @@ -103,6 +103,37 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
  
          return entitytypes == EntityType.SHEEP || entitytypes == EntityType.RABBIT || entitytypes == EntityType.FOX;
      };
-+    // Purpur start - rabid wolf spawn chance
++    // Purpur start - Configurable chance for wolves to spawn rabid
 +    private boolean isRabid = false;
 +    private static final TargetingConditions.Selector RABID_PREDICATE = (entity, ignored) -> entity instanceof net.minecraft.server.level.ServerPlayer || entity instanceof net.minecraft.world.entity.Mob;
 +    private final net.minecraft.world.entity.ai.goal.Goal PATHFINDER_VANILLA = new NonTameRandomTargetGoal<>(this, Animal.class, false, PREY_SELECTOR);
@@ -44,14 +44,15 @@ index 71f76046b37705d064dc532ae1244ecc2920393a..e0e8ef7f579c36b082dbcd8c4f330fbc
 +            super.tick();
 +        }
 +    }
-+    // Purpur end
++    // Purpur end - Configurable chance for wolves to spawn rabid
      private static final float START_HEALTH = 8.0F;
      private static final float TAME_HEALTH = 40.0F;
      private static final float ARMOR_REPAIR_UNIT = 0.125F;
-@@ -157,6 +188,30 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -159,6 +190,31 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
          return this.level().purpurConfig.wolfBreedingTicks;
      }
- 
+     // Purpur end - Make entity breeding times configurable
++    // Purpur start - Configurable chance for wolves to spawn rabid
 +    public boolean isRabid() {
 +        return this.isRabid;
 +    }
@@ -75,19 +76,19 @@ index 71f76046b37705d064dc532ae1244ecc2920393a..e0e8ef7f579c36b082dbcd8c4f330fbc
 +            if (modifyEffects) this.removeEffect(net.minecraft.world.effect.MobEffects.CONFUSION);
 +        }
 +    }
-+
++    // Purpur end - Configurable chance for wolves to spawn rabid
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new FloatGoal(this));
-@@ -164,6 +219,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -166,6 +222,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
          this.goalSelector.addGoal(1, new TamableAnimal.TamableAnimalPanicGoal(1.5D, DamageTypeTags.PANIC_ENVIRONMENTAL_CAUSES));
          this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
          this.goalSelector.addGoal(3, new Wolf.WolfAvoidEntityGoal<>(this, Llama.class, 24.0F, 1.5D, 1.5D));
-+        this.goalSelector.addGoal(3, new AvoidRabidWolfGoal(this, 24.0F, 1.5D, 1.5D)); // Purpur
++        this.goalSelector.addGoal(3, new AvoidRabidWolfGoal(this, 24.0F, 1.5D, 1.5D)); // Purpur - Configurable chance for wolves to spawn rabid
          this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
          this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
          this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
-@@ -177,7 +233,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -179,7 +236,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
          this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
          this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers());
          this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
@@ -96,55 +97,53 @@ index 71f76046b37705d064dc532ae1244ecc2920393a..e0e8ef7f579c36b082dbcd8c4f330fbc
          this.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
          this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
          this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
-@@ -226,6 +282,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -228,6 +285,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
      public void addAdditionalSaveData(CompoundTag nbt) {
          super.addAdditionalSaveData(nbt);
          nbt.putByte("CollarColor", (byte) this.getCollarColor().getId());
-+        nbt.putBoolean("Purpur.IsRabid", this.isRabid); // Purpur
++        nbt.putBoolean("Purpur.IsRabid", this.isRabid); // Purpur - Configurable chance for wolves to spawn rabid
          this.getVariant().unwrapKey().ifPresent((resourcekey) -> {
              nbt.putString("variant", resourcekey.location().toString());
          });
-@@ -243,6 +300,10 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -245,6 +303,10 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
          if (nbt.contains("CollarColor", 99)) {
              this.setCollarColor(DyeColor.byId(nbt.getInt("CollarColor")));
          }
-+        // Purpur start
++        // Purpur start - Configurable chance for wolves to spawn rabid
 +        this.isRabid = nbt.getBoolean("Purpur.IsRabid");
 +        this.updatePathfinders(false);
-+        // Purpur end
++        // Purpur end - Configurable chance for wolves to spawn rabid
  
          this.readPersistentAngerSaveData(this.level(), nbt);
      }
-@@ -261,6 +322,12 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -263,6 +325,10 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
          }
  
          this.setVariant(holder1);
-+
-+        // Purpur start
++        // Purpur start - Configurable chance for wolves to spawn rabid
 +        this.isRabid = world.getLevel().purpurConfig.wolfNaturalRabid > 0.0D && random.nextDouble() <= world.getLevel().purpurConfig.wolfNaturalRabid;
 +        this.updatePathfinders(false);
-+        // Purpur end
-+
++        // Purpur end - Configurable chance for wolves to spawn rabid
          return super.finalizeSpawn(world, difficulty, spawnReason, (SpawnGroupData) entityData);
      }
  
-@@ -304,6 +371,11 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -306,6 +372,11 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
      public void tick() {
          super.tick();
          if (this.isAlive()) {
-+            // Purpur start
++            // Purpur start - Configurable chance for wolves to spawn rabid
 +            if (this.age % 300 == 0 && this.isRabid()) {
 +                this.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.CONFUSION, 400));
 +            }
-+            // Purpur end
++            // Purpur end - Configurable chance for wolves to spawn rabid
              this.interestedAngleO = this.interestedAngle;
              if (this.isInterested()) {
                  this.interestedAngle += (1.0F - this.interestedAngle) * 0.4F;
-@@ -534,6 +606,20 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -536,6 +607,20 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
              itemstack.consume(1, player);
              this.tryToTame(player);
              return InteractionResult.SUCCESS_SERVER;
-+        // Purpur start
++        // Purpur start - Configurable chance for wolves to spawn rabid
 +        } else if (this.level().purpurConfig.wolfMilkCuresRabies && itemstack.getItem() == Items.MILK_BUCKET && this.isRabid()) {
 +            if (!player.isCreative()) {
 +                player.setItemInHand(hand, new ItemStack(Items.BUCKET));
@@ -157,20 +156,19 @@ index 71f76046b37705d064dc532ae1244ecc2920393a..e0e8ef7f579c36b082dbcd8c4f330fbc
 +                        random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, random.nextGaussian() * 0.05D, 0);
 +            }
 +            return InteractionResult.SUCCESS_SERVER;
-+        // Purpur end
++        // Purpur end - Configurable chance for wolves to spawn rabid
          } else {
              return super.mobInteract(player, hand);
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
-index ecd33b4add46acbe4e4f8879c0601220423d66ca..1506a8c0fa490726eb4a4ae14f3aa194dc81d9ab 100644
+index ecd33b4add46acbe4e4f8879c0601220423d66ca..001f131117c277e46f4a94f73da36d1b219fe3cd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
-@@ -146,4 +146,16 @@ public class CraftWolf extends CraftTameableAnimal implements Wolf {
+@@ -146,4 +146,15 @@ public class CraftWolf extends CraftTameableAnimal implements Wolf {
              return this.getKey().hashCode();
          }
      }
-+
-+    // Purpur start
++    // Purpur start - Configurable chance for wolves to spawn rabid
 +    @Override
 +    public boolean isRabid() {
 +        return getHandle().isRabid();
@@ -180,7 +178,7 @@ index ecd33b4add46acbe4e4f8879c0601220423d66ca..1506a8c0fa490726eb4a4ae14f3aa194
 +    public void setRabid(boolean isRabid) {
 +        getHandle().setRabid(isRabid);
 +    }
-+    // Purpur end
++    // Purpur end - Configurable chance for wolves to spawn rabid
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index 09bf59c95f57f5beb718e74d99a6399317cf1222..ece3de874b4ad6dd9f17190281dcad2eab6a3097 100644

@@ -5,10 +5,10 @@ Subject: [PATCH] Config for health to impact Creeper explosion radius
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index 0bce10c1cbf9f1788817a2834ec0efa04dd17752..d2de324f024d0a83790e2b86dc765b0115081461 100644
+index 58ef6c538a33199e5a8423223c22c61bf91fccae..d22a36bdabf04da4c4fe6e4699c9d78dc5b4e0c6 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-@@ -373,9 +373,10 @@ public class Creeper extends Monster {
+@@ -377,9 +377,10 @@ public class Creeper extends Monster {
  
          if (world instanceof ServerLevel worldserver) {
              float f = this.isPowered() ? 2.0F : 1.0F;

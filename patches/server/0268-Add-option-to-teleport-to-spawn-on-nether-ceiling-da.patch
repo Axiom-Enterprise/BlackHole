@@ -5,19 +5,19 @@ Subject: [PATCH] Add option to teleport to spawn on nether ceiling damage
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index d19c284986d7fdbb7a2685fcc4a4879db4269403..904805ada13164ec6989e2451583fcc8d290e51f 100644
+index e6d662b9e8d50abd9160aeaea705abc8310eb3b5..305a569f8cd83f3c67a4d4377f2881d36961dacd 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -1004,6 +1004,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
              && this.level.paperConfig().environment.netherCeilingVoidDamageHeight.test(v -> this.getY() >= v)
              && (!(this instanceof Player player) || !player.getAbilities().invulnerable))) {
              // Paper end - Configurable nether ceiling damage
-+            if (this.level().purpurConfig.teleportOnNetherCeilingDamage && this.level.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER && this instanceof ServerPlayer player) player.teleport(io.papermc.paper.util.MCUtil.toLocation(this.level, this.level.getSharedSpawnPos())); else // Purpur
++            if (this.level().purpurConfig.teleportOnNetherCeilingDamage && this.level.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER && this instanceof ServerPlayer player) player.teleport(io.papermc.paper.util.MCUtil.toLocation(this.level, this.level.getSharedSpawnPos())); else // Purpur - Add option to teleport to spawn on nether ceiling damage
              this.onBelowWorld();
          }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 6528d3c3e0d817e8e903ff99f8b71dc78d4f58c8..114d8082fe8d5a0cb8bbf48dbbf8d315e6a039d5 100644
+index a50896fc423c9a1781c5d4b189395afeecb96756..75d088219ab83ae9e6ca6b95f4551c917c2f79cd 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -420,6 +420,7 @@ public class PurpurWorldConfig {

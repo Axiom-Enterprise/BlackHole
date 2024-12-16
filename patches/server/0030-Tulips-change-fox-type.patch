@@ -5,10 +5,10 @@ Subject: [PATCH] Tulips change fox type
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Fox.java b/src/main/java/net/minecraft/world/entity/animal/Fox.java
-index 23ee27f70ae4c02a9add7562f75c6dd5e12028b4..75fd5fb03aec52c76df55ab75ba5d446e094c9c8 100644
+index 584d08bca961f8b8487b844cd2412b773401296d..a0adc29bb09a3eaecdaf564fd992b8aefec69629 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Fox.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Fox.java
-@@ -384,6 +384,11 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
+@@ -385,6 +385,11 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
      }
  
      private void setTargetGoals() {
@@ -20,7 +20,7 @@ index 23ee27f70ae4c02a9add7562f75c6dd5e12028b4..75fd5fb03aec52c76df55ab75ba5d446
          if (this.getVariant() == Fox.Variant.RED) {
              this.targetSelector.addGoal(4, this.landTargetGoal);
              this.targetSelector.addGoal(4, this.turtleEggTargetGoal);
-@@ -413,6 +418,7 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
+@@ -414,6 +419,7 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
  
      public void setVariant(Fox.Variant variant) {
          this.entityData.set(Fox.DATA_TYPE_ID, variant.getId());
@@ -28,7 +28,7 @@ index 23ee27f70ae4c02a9add7562f75c6dd5e12028b4..75fd5fb03aec52c76df55ab75ba5d446
      }
  
      List<UUID> getTrustedUUIDs() {
-@@ -748,6 +754,29 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
+@@ -749,6 +755,29 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
      }
      // Paper end
  

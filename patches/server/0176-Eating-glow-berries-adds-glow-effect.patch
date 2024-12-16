@@ -5,7 +5,7 @@ Subject: [PATCH] Eating glow berries adds glow effect
 
 
 diff --git a/src/main/java/net/minecraft/world/item/Items.java b/src/main/java/net/minecraft/world/item/Items.java
-index 41fbe61268c0a16078b5f846ab12bde172872ff7..317e69eb4e3a4c312d5e856a0bff31a9e3eb5326 100644
+index 41fbe61268c0a16078b5f846ab12bde172872ff7..e2f1d3f349e3f82e7a565363c42818e5cf6c4d61 100644
 --- a/src/main/java/net/minecraft/world/item/Items.java
 +++ b/src/main/java/net/minecraft/world/item/Items.java
 @@ -1987,7 +1987,7 @@ public class Items {
@@ -13,7 +13,7 @@ index 41fbe61268c0a16078b5f846ab12bde172872ff7..317e69eb4e3a4c312d5e856a0bff31a9
      );
      public static final Item GLOW_BERRIES = registerItem(
 -        "glow_berries", createBlockItemWithCustomItemName(Blocks.CAVE_VINES), new Item.Properties().food(Foods.GLOW_BERRIES)
-+        "glow_berries", settings -> new org.purpurmc.purpur.item.GlowBerryItem(Blocks.CAVE_VINES, settings.useItemDescriptionPrefix()), new Item.Properties().food(Foods.GLOW_BERRIES) // Purpur
++        "glow_berries", settings -> new org.purpurmc.purpur.item.GlowBerryItem(Blocks.CAVE_VINES, settings.useItemDescriptionPrefix()), new Item.Properties().food(Foods.GLOW_BERRIES) // Purpur - Eating glow berries adds glow effect
      );
      public static final Item CAMPFIRE = registerBlock(Blocks.CAMPFIRE, settings -> settings.component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
      public static final Item SOUL_CAMPFIRE = registerBlock(

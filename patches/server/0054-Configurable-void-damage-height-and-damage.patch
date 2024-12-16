@@ -41,7 +41,7 @@ index b1c917d65076a3805e5b78cb946753f0c101e214..82210667376fd466d5d4cdcb56b62f61
  
          public class FrostedIce extends ConfigurationPart {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index d94f92730063454a1acaa037d5c5eed7a7a73490..f8fb46648b9b4ec11632ff5b8de5902c259ccaf2 100644
+index 3014da3cb3053cda965fd3f8480dbb4decf71f70..902cacf2172650e693ead22cb42f184145385ad4 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1271,7 +1271,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -62,7 +62,7 @@ index d94f92730063454a1acaa037d5c5eed7a7a73490..f8fb46648b9b4ec11632ff5b8de5902c
                  long i;
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 2a7fd4420467cce0c4ddca749955ba45e034e555..c142f25e520e69d343702fcd83dfbbb117370d69 100644
+index fca644c904fe5f4b2637ed9d3062ae247751b9f1..7ced95af8da7150caf115508f8cb694ad737a27f 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -219,6 +219,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -81,22 +81,6 @@ index 2a7fd4420467cce0c4ddca749955ba45e034e555..c142f25e520e69d343702fcd83dfbbb1
          // Paper start - initialize global and world-defaults configuration
          this.paperConfigurations.initializeGlobalConfiguration(this.registryAccess());
          this.paperConfigurations.initializeWorldDefaultsConfiguration(this.registryAccess());
-@@ -235,15 +244,6 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
-         this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark
-         com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
--        // Purpur start
--        try {
--            org.purpurmc.purpur.PurpurConfig.init((java.io.File) options.valueOf("purpur-settings"));
--        } catch (Exception e) {
--            DedicatedServer.LOGGER.error("Unable to load server configuration", e);
--            return false;
--        }
--        org.purpurmc.purpur.PurpurConfig.registerCommands();
--        // Purpur end
-         com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // Paper - load version history now
-         gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
-         gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
 diff --git a/src/main/java/org/purpurmc/purpur/configuration/transformation/VoidDamageHeightMigration.java b/src/main/java/org/purpurmc/purpur/configuration/transformation/VoidDamageHeightMigration.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..a04d23bd98075cd65a24d4de8d18281d1668480f

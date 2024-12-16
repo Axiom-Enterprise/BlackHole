@@ -19,10 +19,10 @@ index eb0faf58fa1a408f294fc62120b140def97f998d..0f4f546cd0eda4bd82b47446ae23ac32
              List<Entity> list = this.llama.level().getEntities(this.llama, this.llama.getBoundingBox().inflate(9.0, 4.0, 9.0), entity -> {
                  EntityType<?> entityType = entity.getType();
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java b/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
-index 0b81415233df20fe7143c87ee964a6a1f490476f..227638f369a6581f37e892fa457e2d6775ef857d 100644
+index fa1bf3e2e11564b9528e056369a610cb5bbd25d0..ee8d756fed5b6458b28acbd2a62a5693baddd45d 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
-@@ -461,7 +461,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
+@@ -464,7 +464,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
      }
  
      public void joinCaravan(Llama llama) {

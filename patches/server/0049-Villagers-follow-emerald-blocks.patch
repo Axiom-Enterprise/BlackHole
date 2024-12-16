@@ -5,7 +5,7 @@ Subject: [PATCH] Villagers follow emerald blocks
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index b37b82f3313e51d187d76452624b386c8bdbbf58..074d2d4e85d3e3ad546fcb15dfd00b757bf549a8 100644
+index 8ccbf0386aa453e82fc0f82d2aefd1e08b6c3345..8c1ff0b273e25373c6b581613f692265d9569952 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 @@ -162,7 +162,7 @@ public class DefaultAttributes {
@@ -13,12 +13,12 @@ index b37b82f3313e51d187d76452624b386c8bdbbf58..074d2d4e85d3e3ad546fcb15dfd00b75
          .put(EntityType.VINDICATOR, Vindicator.createAttributes().build())
          .put(EntityType.WARDEN, Warden.createAttributes().build())
 -        .put(EntityType.WANDERING_TRADER, Mob.createMobAttributes().build())
-+        .put(EntityType.WANDERING_TRADER, net.minecraft.world.entity.npc.WanderingTrader.createAttributes().build()) // Purpur
++        .put(EntityType.WANDERING_TRADER, net.minecraft.world.entity.npc.WanderingTrader.createAttributes().build()) // Purpur - Villagers follow emerald blocks
          .put(EntityType.WITCH, Witch.createAttributes().build())
          .put(EntityType.WITHER, WitherBoss.createAttributes().build())
          .put(EntityType.WITHER_SKELETON, AbstractSkeleton.createAttributes().build())
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java
-index 84ab90dd1fe693da71732533ccff940c1007e1b6..179fdf7b7f68db610925a9d7b88879289b1b98b8 100644
+index 84ab90dd1fe693da71732533ccff940c1007e1b6..798d1a169ebebfbdc5e0cf71e7a1256cefcbd32b 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java
 @@ -67,7 +67,7 @@ public class TemptGoal extends Goal {
@@ -26,76 +26,75 @@ index 84ab90dd1fe693da71732533ccff940c1007e1b6..179fdf7b7f68db610925a9d7b8887928
  
      private boolean shouldFollow(LivingEntity entity) {
 -        return this.items.test(entity.getMainHandItem()) || this.items.test(entity.getOffhandItem());
-+        return (this.items.test(entity.getMainHandItem()) || this.items.test(entity.getOffhandItem())) && (!(this.mob instanceof net.minecraft.world.entity.npc.Villager villager) || !villager.isSleeping()); // Purpur Fix #512
++        return (this.items.test(entity.getMainHandItem()) || this.items.test(entity.getOffhandItem())) && (!(this.mob instanceof net.minecraft.world.entity.npc.Villager villager) || !villager.isSleeping()); // Purpur - Villagers follow emerald blocks
      }
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/npc/AbstractVillager.java b/src/main/java/net/minecraft/world/entity/npc/AbstractVillager.java
-index 3c037cabd8331eb96a6523b37abab4e73ab79a02..e2b00681e427bc99c3b3660d8f4830379b98c7a0 100644
+index 3c037cabd8331eb96a6523b37abab4e73ab79a02..94ba68e063e63f77f7951d482af7a3586ba4ffdf 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/AbstractVillager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/AbstractVillager.java
 @@ -48,6 +48,7 @@ import org.bukkit.event.entity.VillagerAcquireTradeEvent;
  // CraftBukkit end
  
  public abstract class AbstractVillager extends AgeableMob implements InventoryCarrier, Npc, Merchant {
-+    static final net.minecraft.world.item.crafting.Ingredient TEMPT_ITEMS = net.minecraft.world.item.crafting.Ingredient.of(net.minecraft.world.level.block.Blocks.EMERALD_BLOCK.asItem()); // Purpur
++    static final net.minecraft.world.item.crafting.Ingredient TEMPT_ITEMS = net.minecraft.world.item.crafting.Ingredient.of(net.minecraft.world.level.block.Blocks.EMERALD_BLOCK.asItem()); // Purpur - Villagers follow emerald blocks
  
      // CraftBukkit start
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 24b456dfa4d5383639fb79a45ffceb5c31e8ae53..032e26700322b22f93ff8b35dfdfd077b86c0a07 100644
+index 845af8a8976bd81b3d7221b7b3284c31a6fda136..ca92e0a0ccb31f698fafbd2ad74a5758c6cf5dcc 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -177,6 +177,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
-+        if (level().purpurConfig.villagerFollowEmeraldBlock) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.TemptGoal(this, 1.0D, TEMPT_ITEMS, false));
++        if (level().purpurConfig.villagerFollowEmeraldBlock) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.TemptGoal(this, 1.0D, TEMPT_ITEMS, false)); // Purpur - Villagers follow emerald blocks
      }
-     // Purpur end
+     // Purpur end - Ridables
  
-@@ -184,6 +185,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -185,6 +186,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      public void initAttributes() {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.villagerMaxHealth);
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.villagerScale);
-+        this.getAttribute(Attributes.TEMPT_RANGE).setBaseValue(this.level().purpurConfig.villagerTemptRange); // Purpur
++        this.getAttribute(Attributes.TEMPT_RANGE).setBaseValue(this.level().purpurConfig.villagerTemptRange); // Purpur - Villagers follow emerald blocks
      }
- 
+     // Purpur end - Configurable entity base attributes
      @Override
-@@ -247,7 +249,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -248,7 +250,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
  
      public static AttributeSupplier.Builder createAttributes() {
 -        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5D);
-+        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.TEMPT_RANGE, 10.0D); // Purpur - add TEMPT_RANGE
++        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.TEMPT_RANGE, 10.0D); // Purpur - Villagers follow emerald blocks
      }
  
      public boolean assignProfessionWhenSpawned() {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index f741aca818bc983b034b3ac9864c1d71c714f9b4..a821a7bc7de7458ceb8afdb61bde32f74534f012 100644
+index 8e12ae313c76d742b61aa83a35d41d83b92bded5..c307aa1153d6a17ee8624453fc9303ac5749b6ef 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -92,8 +92,15 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -93,8 +93,14 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
      @Override
      public void initAttributes() {
          this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.wanderingTraderMaxHealth);
-+        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.TEMPT_RANGE).setBaseValue(this.level().purpurConfig.wanderingTraderTemptRange); // Purpur
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.TEMPT_RANGE).setBaseValue(this.level().purpurConfig.wanderingTraderTemptRange); // Purpur - Villagers follow emerald blocks
      }
- 
-+    // Purpur start
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Villagers follow emerald blocks
 +    public static net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder createAttributes() {
 +        return Mob.createMobAttributes().add(net.minecraft.world.entity.ai.attributes.Attributes.TEMPT_RANGE, 10.0D);
 +    }
-+    // Purpur end
-+
++    // Purpur end - Villagers follow emerald blocks
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
-@@ -114,6 +121,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -115,6 +121,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
          this.goalSelector.addGoal(1, new PanicGoal(this, 0.5D));
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
-+        if (level().purpurConfig.wanderingTraderFollowEmeraldBlock) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.TemptGoal(this, 1.0D, TEMPT_ITEMS, false)); // Purpur
++        if (level().purpurConfig.wanderingTraderFollowEmeraldBlock) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.TemptGoal(this, 1.0D, TEMPT_ITEMS, false)); // Purpur - Villagers follow emerald blocks
          this.goalSelector.addGoal(4, new MoveTowardsRestrictionGoal(this, 0.35D));
          this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 0.35D));
          this.goalSelector.addGoal(9, new InteractGoal(this, Player.class, 3.0F, 1.0F));

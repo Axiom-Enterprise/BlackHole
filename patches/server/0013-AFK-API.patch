@@ -5,7 +5,7 @@ Subject: [PATCH] AFK API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 1e0ca760b18e34a4c320439838283b8fcd87075a..0f979af9131678991860765163fcc4b0453ef52a 100644
+index 0c4ccba73aab8a000d9cf1342aca4509383ac96f..c2a136d3f1ced0c42aae800e849ee704ddb6ce87 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2621,8 +2621,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -15,7 +15,7 @@ index 1e0ca760b18e34a4c320439838283b8fcd87075a..0f979af9131678991860765163fcc4b0
 +        this.setAfk(false); // Purpur
      }
  
-+    // Purpur Start
++    // Purpur start - AFK API
 +    private boolean isAfk = false;
 +
 +    @Override
@@ -72,20 +72,20 @@ index 1e0ca760b18e34a4c320439838283b8fcd87075a..0f979af9131678991860765163fcc4b0
 +    public boolean canBeCollidedWith() {
 +        return !this.isAfk() && super.canBeCollidedWith();
 +    }
-+    // Purpur End
++    // Purpur end - AFK API
 +
      public ServerStatsCounter getStats() {
          return this.stats;
      }
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index ddbfd4884daaa4cffdb5e4d8923a8755dab76d91..ea579334ea9f0c1675186af3192f3f7a1c23e859 100644
+index 7f03d81ac3a1cc87f73c5580caa6acbc7ebed8f5..bca70bc3eb38920bd0d6a781c1e49922bdb71cf7 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -344,6 +344,20 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
      private boolean justTeleported = false;
      // CraftBukkit end
  
-+        // Purpur start
++        // Purpur start - AFK API
 +    private final com.google.common.cache.LoadingCache<CraftPlayer, Boolean> kickPermissionCache = com.google.common.cache.CacheBuilder.newBuilder()
 +        .maximumSize(1000)
 +        .expireAfterWrite(1, java.util.concurrent.TimeUnit.MINUTES)
@@ -97,7 +97,7 @@ index ddbfd4884daaa4cffdb5e4d8923a8755dab76d91..ea579334ea9f0c1675186af3192f3f7a
 +                }
 +            }
 +        );
-+    // Purpur end
++    // Purpur end - AFK API
 +
      @Override
      public void tick() {
@@ -106,12 +106,12 @@ index ddbfd4884daaa4cffdb5e4d8923a8755dab76d91..ea579334ea9f0c1675186af3192f3f7a
          this.recipeSpamPackets.tick(); // Paper - auto recipe limit
          this.dropSpamThrottler.tick();
          if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) this.server.getPlayerIdleTimeout() * 1000L * 60L && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits
-+            // Purpur start
++            // Purpur start - AFK API
 +            this.player.setAfk(true);
 +            if (!this.player.level().purpurConfig.idleTimeoutKick || (!Boolean.parseBoolean(System.getenv("PURPUR_FORCE_IDLE_KICK")) && kickPermissionCache.getUnchecked(this.player.getBukkitEntity()))) {
 +                return;
 +            }
-+            // Purpur end
++            // Purpur end - AFK API
              this.player.resetLastActionTime(); // CraftBukkit - SPIGOT-854
              this.disconnect((Component) Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING); // Paper - kick event cause
          }
@@ -119,7 +119,7 @@ index ddbfd4884daaa4cffdb5e4d8923a8755dab76d91..ea579334ea9f0c1675186af3192f3f7a
                      this.lastYaw = to.getYaw();
                      this.lastPitch = to.getPitch();
  
-+                    if (!to.getWorld().getUID().equals(from.getWorld().getUID()) || to.getBlockX() != from.getBlockX() || to.getBlockY() != from.getBlockY() || to.getBlockZ() != from.getBlockZ() || to.getYaw() != from.getYaw() || to.getPitch() != from.getPitch()) this.player.resetLastActionTime(); // Purpur
++                    if (!to.getWorld().getUID().equals(from.getWorld().getUID()) || to.getBlockX() != from.getBlockX() || to.getBlockY() != from.getBlockY() || to.getBlockZ() != from.getBlockZ() || to.getYaw() != from.getYaw() || to.getPitch() != from.getPitch()) this.player.resetLastActionTime(); // Purpur - AFK API
 +
                      Location oldTo = to.clone();
                      PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
@@ -129,7 +129,7 @@ index ddbfd4884daaa4cffdb5e4d8923a8755dab76d91..ea579334ea9f0c1675186af3192f3f7a
                                      if (event.getLogWarning())
                                  // Paper end
 -                                ServerGamePacketListenerImpl.LOGGER.warn("{} moved wrongly!", this.player.getName().getString());
-+                                ServerGamePacketListenerImpl.LOGGER.warn("{} moved wrongly!, ({})", this.player.getName().getString(), d11); // Purpur
++                                ServerGamePacketListenerImpl.LOGGER.warn("{} moved wrongly!, ({})", this.player.getName().getString(), d11); // Purpur - AFK API
                                  } // Paper
                              }
  
@@ -137,13 +137,13 @@ index ddbfd4884daaa4cffdb5e4d8923a8755dab76d91..ea579334ea9f0c1675186af3192f3f7a
                                      this.lastYaw = to.getYaw();
                                      this.lastPitch = to.getPitch();
  
-+                                    if (!to.getWorld().getUID().equals(from.getWorld().getUID()) || to.getBlockX() != from.getBlockX() || to.getBlockY() != from.getBlockY() || to.getBlockZ() != from.getBlockZ() || to.getYaw() != from.getYaw() || to.getPitch() != from.getPitch()) this.player.resetLastActionTime(); // Purpur
++                                    if (!to.getWorld().getUID().equals(from.getWorld().getUID()) || to.getBlockX() != from.getBlockX() || to.getBlockY() != from.getBlockY() || to.getBlockZ() != from.getBlockZ() || to.getYaw() != from.getYaw() || to.getPitch() != from.getPitch()) this.player.resetLastActionTime(); // Purpur - AFK API
 +
                                      Location oldTo = to.clone();
                                      PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
                                      this.cserver.getPluginManager().callEvent(event);
 diff --git a/src/main/java/net/minecraft/server/players/SleepStatus.java b/src/main/java/net/minecraft/server/players/SleepStatus.java
-index 823efad652d8ff9e96b99375b102fef6f017716e..caa8a69bde0c212c36dd990a67836ac2f95548c0 100644
+index 823efad652d8ff9e96b99375b102fef6f017716e..bdf0240840d92bf95f94c6fb1125eeaa105e303b 100644
 --- a/src/main/java/net/minecraft/server/players/SleepStatus.java
 +++ b/src/main/java/net/minecraft/server/players/SleepStatus.java
 @@ -19,7 +19,7 @@ public class SleepStatus {
@@ -151,7 +151,7 @@ index 823efad652d8ff9e96b99375b102fef6f017716e..caa8a69bde0c212c36dd990a67836ac2
      public boolean areEnoughDeepSleeping(int percentage, List<ServerPlayer> players) {
          // CraftBukkit start
 -        int j = (int) players.stream().filter((eh) -> { return eh.isSleepingLongEnough() || eh.fauxSleeping; }).count();
-+        int j = (int) players.stream().filter((eh) -> { return eh.isSleepingLongEnough() || eh.fauxSleeping || (eh.level().purpurConfig.idleTimeoutCountAsSleeping && eh.isAfk()); }).count(); // Purpur
++        int j = (int) players.stream().filter((eh) -> { return eh.isSleepingLongEnough() || eh.fauxSleeping || (eh.level().purpurConfig.idleTimeoutCountAsSleeping && eh.isAfk()); }).count(); // Purpur - AFK API
          boolean anyDeepSleep = players.stream().anyMatch(Player::isSleepingLongEnough);
  
          return anyDeepSleep && j >= this.sleepersNeeded(percentage);
@@ -160,57 +160,57 @@ index 823efad652d8ff9e96b99375b102fef6f017716e..caa8a69bde0c212c36dd990a67836ac2
              if (!entityplayer.isSpectator()) {
                  ++this.activePlayers;
 -                if (entityplayer.isSleeping() || entityplayer.fauxSleeping) { // CraftBukkit
-+                if ((entityplayer.isSleeping() || entityplayer.fauxSleeping) || (entityplayer.level().purpurConfig.idleTimeoutCountAsSleeping && entityplayer.isAfk())) { // CraftBukkit // Purpur
++                if ((entityplayer.isSleeping() || entityplayer.fauxSleeping) || (entityplayer.level().purpurConfig.idleTimeoutCountAsSleeping && entityplayer.isAfk())) { // CraftBukkit // Purpur - AFK API
                      ++this.sleepingPlayers;
                  }
                  // CraftBukkit start
 diff --git a/src/main/java/net/minecraft/world/entity/EntitySelector.java b/src/main/java/net/minecraft/world/entity/EntitySelector.java
-index 6bf691fcc6486bde73bae30eff09142802c29eda..59c4d3753c7084e92402608b7fb3c4adbc6c2f65 100644
+index 6bf691fcc6486bde73bae30eff09142802c29eda..d99b223be90f0c04bb9274228ad323a7c7f218b2 100644
 --- a/src/main/java/net/minecraft/world/entity/EntitySelector.java
 +++ b/src/main/java/net/minecraft/world/entity/EntitySelector.java
 @@ -39,6 +39,7 @@ public final class EntitySelector {
          return net.minecraft.util.Mth.clamp(serverPlayer.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE) >= playerInsomniaTicks;
      };
      // Paper end - Ability to control player's insomnia and phantoms
-+    public static Predicate<Player> notAfk = (player) -> !player.isAfk(); // Purpur
++    public static Predicate<Player> notAfk = (player) -> !player.isAfk(); // Purpur - AFK API
  
      private EntitySelector() {}
      // Paper start - Affects Spawning API
 diff --git a/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java b/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
-index 52982c1e6a4da36392569c791853279f5f9ac31a..b3d4c61b1769b6fcc98b7af854f774d24bf39d98 100644
+index 52982c1e6a4da36392569c791853279f5f9ac31a..ebb827e213a3ba5eeb2fe5b78f5dee99403097b6 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
 @@ -64,6 +64,10 @@ public class TargetingConditions {
              return false;
          } else if (this.selector != null && !this.selector.test(target, world)) {
              return false;
-+        // Purpur start
++        // Purpur start - AFK API
 +        } else if (!world.purpurConfig.idleTimeoutTargetPlayer && target instanceof net.minecraft.server.level.ServerPlayer player && player.isAfk()) {
 +            return false;
-+        // Purpur end
++        // Purpur end - AFK API
          } else {
              if (tester == null) {
                  if (this.isCombat && (!target.canBeSeenAsEnemy() || world.getDifficulty() == Difficulty.PEACEFUL)) {
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index e5c11504f85abdf49cea4ebd2aaaccdaff35a75c..47d2f1af81d64054e30b353b66c0a6ad68583298 100644
+index 87c6378104ff47549c751e09afb6cfcd9b8dcf5d..2f69a511db8d43fbd3a17387cded1d3573579fce 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -206,6 +206,13 @@ public abstract class Player extends LivingEntity {
      public boolean fauxSleeping;
      public int oldLevel = -1;
  
-+    public void setAfk(boolean afk) {
-+    }
++    // Purpur start - AFK API
++    public abstract void setAfk(boolean afk);
 +
 +    public boolean isAfk() {
 +        return false;
 +    }
-+
++    // Purpur end - AFK API
      @Override
      public CraftHumanEntity getBukkitEntity() {
          return (CraftHumanEntity) super.getBukkitEntity();
 diff --git a/src/main/java/net/minecraft/world/level/EntityGetter.java b/src/main/java/net/minecraft/world/level/EntityGetter.java
-index 5d7a6e4b73f032db356e7ec369b150013e940ee6..6b2cda6d578a0983b2401ea20629275431018433 100644
+index 5d7a6e4b73f032db356e7ec369b150013e940ee6..e164833de0c29eed9025dd4af3f2bb74c92d2250 100644
 --- a/src/main/java/net/minecraft/world/level/EntityGetter.java
 +++ b/src/main/java/net/minecraft/world/level/EntityGetter.java
 @@ -184,7 +184,7 @@ public interface EntityGetter extends ca.spottedleaf.moonrise.patches.chunk_syst
@@ -218,28 +218,28 @@ index 5d7a6e4b73f032db356e7ec369b150013e940ee6..6b2cda6d578a0983b2401ea206292754
      default boolean hasNearbyAlivePlayer(double x, double y, double z, double range) {
          for (Player player : this.players()) {
 -            if (EntitySelector.NO_SPECTATORS.test(player) && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(player)) {
-+            if (EntitySelector.NO_SPECTATORS.test(player) && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(player) && EntitySelector.notAfk.test(player)) { // Purpur
++            if (EntitySelector.NO_SPECTATORS.test(player) && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(player) && EntitySelector.notAfk.test(player)) { // Purpur - AFK API
                  double d = player.distanceToSqr(x, y, z);
                  if (range < 0.0 || d < range * range) {
                      return true;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 664a2e9770066c9855c27b0bf2d815f29297cfbd..5ac1f31892849fe507a59480e3383530d1c89db8 100644
+index c5bd2a45b32e8dff83c148379544db125684622a..1016578c06d549683982dccfdce905d84d05eb83 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -584,10 +584,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public void setPlayerListName(String name) {
-+        // Purpur start
++        // Purpur start - AFK API
 +        setPlayerListName(name, false);
 +    }
 +    public void setPlayerListName(String name, boolean useMM) {
-+        // Purpur end
++        // Purpur end - AFK API
          if (name == null) {
              name = this.getName();
          }
 -        this.getHandle().listName = name.equals(this.getName()) ? null : CraftChatMessage.fromStringOrNull(name);
-+        this.getHandle().listName = name.equals(this.getName()) ? null : useMM ? io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(name)) : CraftChatMessage.fromStringOrNull(name); // Purpur
++        this.getHandle().listName = name.equals(this.getName()) ? null : useMM ? io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(name)) : CraftChatMessage.fromStringOrNull(name); // Purpur - AFK API
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
@@ -262,7 +262,7 @@ index 664a2e9770066c9855c27b0bf2d815f29297cfbd..5ac1f31892849fe507a59480e3383530
 +    public void resetIdleTimer() {
 +        getHandle().resetLastActionTime();
 +    }
-     // Purpur end
+     // Purpur end - Purpur client support
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 index 1321955eb23272d96e3028c1c46e75f6c1eaade0..82f0ae89ef3f0dc614edb4ccd3caa66cb387044c 100644

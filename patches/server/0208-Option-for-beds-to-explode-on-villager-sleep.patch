@@ -5,10 +5,10 @@ Subject: [PATCH] Option for beds to explode on villager sleep
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 5a522d73d41f9aa3977807173d7e34c057a37c7a..373d00fce9e8bcb8d9a8d3e8a05987cf243d175a 100644
+index fcc5a794aa6f43f3b9e8bdb5f2c0601bf7004698..3788709dbccd76103ba81d478f7402136637cd95 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -1080,6 +1080,12 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -1083,6 +1083,12 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
  
      @Override
      public void startSleeping(BlockPos pos) {

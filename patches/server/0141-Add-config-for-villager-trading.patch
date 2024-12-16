@@ -5,29 +5,29 @@ Subject: [PATCH] Add config for villager trading
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 43932be4584995bd5f4ca4d712f3d3ec4d0c743a..5a522d73d41f9aa3977807173d7e34c057a37c7a 100644
+index 7f48e7fd14fe9b6c8d3ca5069663d67c250c7364..fcc5a794aa6f43f3b9e8bdb5f2c0601bf7004698 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -377,6 +377,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -380,6 +380,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
                      }
  
-                     if (level().purpurConfig.villagerRidable && itemstack.isEmpty()) return tryRide(player, hand); // Purpur
-+                    if (this.level().purpurConfig.villagerAllowTrading) // Purpur
+                     if (level().purpurConfig.villagerRidable && itemstack.isEmpty()) return tryRide(player, hand); // Purpur - Ridables
++                    if (this.level().purpurConfig.villagerAllowTrading) // Purpur - Add config for villager trading
                      this.startTrading(player);
                  }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index 116f47c7342dade1eaf0fabc62fb0ba2edd4c578..ba7856973d22c031910df4ec2a84d101c540198c 100644
+index 455390bd5350282d1a6c9b25e9cdbd4a620b136c..2cfd9c9194edda92185adecca80c5cd140e26c9f 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -163,8 +163,10 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
-                     return tryRide(player, hand, InteractionResult.CONSUME); // Purpur
+@@ -165,8 +165,10 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+                     return tryRide(player, hand, InteractionResult.CONSUME); // Purpur - Ridables
                  }
-                 if (level().purpurConfig.wanderingTraderRidable && itemstack.isEmpty()) return tryRide(player, hand); // Purpur
-+                if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur
+                 if (level().purpurConfig.wanderingTraderRidable && itemstack.isEmpty()) return tryRide(player, hand); // Purpur - Ridables
++                if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
                  this.setTradingPlayer(player);
                  this.openTradingScreen(player, this.getDisplayName(), 1);
-+                } // Purpur
++                } // Purpur - Add config for villager trading
              }
  
              return InteractionResult.SUCCESS;

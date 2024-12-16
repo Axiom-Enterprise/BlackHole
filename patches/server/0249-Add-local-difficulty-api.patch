@@ -5,18 +5,18 @@ Subject: [PATCH] Add local difficulty api
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 92d9f0ea8f7810ae20d3996f49aefa539b4bcb69..4f3da35084d1c69d1b697196a17f932fedee9b88 100644
+index 92d9f0ea8f7810ae20d3996f49aefa539b4bcb69..f1e85d6c745397fe012f1ae0fd6f64353eac65a7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -2374,6 +2374,12 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          return (this.getHandle().getDragonFight() == null) ? null : new CraftDragonBattle(this.getHandle().getDragonFight());
      }
  
-+    // Purpur start
++    // Purpur start - Add local difficulty api
 +    public float getLocalDifficultyAt(Location location) {
 +        return getHandle().getCurrentDifficultyAt(io.papermc.paper.util.MCUtil.toBlockPosition(location)).getEffectiveDifficulty();
 +    }
-+    // Purpur end
++    // Purpur end - Add local difficulty api
 +
      @Override
      public Collection<GeneratedStructure> getStructures(int x, int z) {

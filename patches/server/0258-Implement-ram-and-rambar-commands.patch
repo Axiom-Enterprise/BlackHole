@@ -5,27 +5,27 @@ Subject: [PATCH] Implement ram and rambar commands
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index eedb3707523b47ab79db326f6d7382cca60c5393..db455a0fc7e1fc004215b718ff470bd2f74eae1b 100644
+index 5873f74df67d59f25682286a5b027963d8a6d382..93c07a4c96e25ed1db5e1f721ab5d53192a0225f 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -261,6 +261,8 @@ public class Commands {
              org.purpurmc.purpur.command.UptimeCommand.register(this.dispatcher); // Purpur
              org.purpurmc.purpur.command.TPSBarCommand.register(this.dispatcher); // Purpur
              org.purpurmc.purpur.command.CompassCommand.register(this.dispatcher); // Purpur
-+            org.purpurmc.purpur.command.RamBarCommand.register(this.dispatcher); // Purpur
-+            org.purpurmc.purpur.command.RamCommand.register(this.dispatcher); // Purpur
++            org.purpurmc.purpur.command.RamBarCommand.register(this.dispatcher); // Purpur - Implement ram and rambar commands
++            org.purpurmc.purpur.command.RamCommand.register(this.dispatcher); // Purpur - Implement ram and rambar commands
          }
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7e785394de3db56e5d0fd8bea5edf5df9fa129fa..8264adc43edfebc2c260c2b915186c20ec3637cc 100644
+index 4e8d7eba351c5f244c29c81555fb88ddb52262e3..dd4ed8f0b71e51ad196f39059149617d16d9a8b7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -330,6 +330,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
-     public boolean purpurClient = false; // Purpur
+     public boolean purpurClient = false; // Purpur - Purpur client support
      private boolean tpsBar = false; // Purpur
      private boolean compassBar = false; // Purpur
-+    private boolean ramBar = false; // Purpur
++    private boolean ramBar = false; // Purpur - Implement ram and rambar commands
  
      // Paper start - rewrite chunk system
      private ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
@@ -33,7 +33,7 @@ index 7e785394de3db56e5d0fd8bea5edf5df9fa129fa..8264adc43edfebc2c260c2b915186c20
  
          if (nbt.contains("Purpur.TPSBar")) { this.tpsBar = nbt.getBoolean("Purpur.TPSBar"); } // Purpur
          if (nbt.contains("Purpur.CompassBar")) { this.compassBar = nbt.getBoolean("Purpur.CompassBar"); } // Purpur
-+        if (nbt.contains("Purpur.RamBar")) { this.ramBar = nbt.getBoolean("Purpur.RamBar"); } // Purpur
++        if (nbt.contains("Purpur.RamBar")) { this.ramBar = nbt.getBoolean("Purpur.RamBar"); } // Purpur - Implement ram and rambar commands
      }
  
      @Override
@@ -41,7 +41,7 @@ index 7e785394de3db56e5d0fd8bea5edf5df9fa129fa..8264adc43edfebc2c260c2b915186c20
          }
  
          this.saveEnderPearls(nbt);
-+        nbt.putBoolean("Purpur.RamBar", this.ramBar); // Purpur
++        nbt.putBoolean("Purpur.RamBar", this.ramBar); // Purpur - Implement ram and rambar commands
          nbt.putBoolean("Purpur.TPSBar", this.tpsBar); // Purpur
          nbt.putBoolean("Purpur.CompassBar", this.compassBar); // Purpur
      }
@@ -60,7 +60,7 @@ index 7e785394de3db56e5d0fd8bea5edf5df9fa129fa..8264adc43edfebc2c260c2b915186c20
      // Purpur end
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 32e44e47cc6b5e6ed6e13f41dd8b4ba29459d7f0..7164788c20483a78a92ccdcf480bd95651d84825 100644
+index 4218aa563ba435a67c8e7af1fa9dc0c0d8d6b377..dca02d697dd0982b006d4d975e7df745ab62dac5 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -185,6 +185,8 @@ public class PurpurConfig {

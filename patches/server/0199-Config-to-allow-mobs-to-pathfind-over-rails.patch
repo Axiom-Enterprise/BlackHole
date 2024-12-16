@@ -5,7 +5,7 @@ Subject: [PATCH] Config to allow mobs to pathfind over rails
 
 
 diff --git a/src/main/java/net/minecraft/world/level/pathfinder/WalkNodeEvaluator.java b/src/main/java/net/minecraft/world/level/pathfinder/WalkNodeEvaluator.java
-index c84fd369d92932903c76bb2012602617d3e2d213..f6291ff377b38cb84692a9fd564b4b1a9780cf4f 100644
+index c84fd369d92932903c76bb2012602617d3e2d213..e295fe4aac742ff8942b23456fdce8d7ff944e90 100644
 --- a/src/main/java/net/minecraft/world/level/pathfinder/WalkNodeEvaluator.java
 +++ b/src/main/java/net/minecraft/world/level/pathfinder/WalkNodeEvaluator.java
 @@ -240,7 +240,7 @@ public class WalkNodeEvaluator extends NodeEvaluator {
@@ -13,12 +13,12 @@ index c84fd369d92932903c76bb2012602617d3e2d213..f6291ff377b38cb84692a9fd564b4b1a
                      && maxYStep > 0
                      && (pathType != PathType.FENCE || this.canWalkOverFences())
 -                    && pathType != PathType.UNPASSABLE_RAIL
-+                    && (this.mob.level().purpurConfig.mobsIgnoreRails || pathType != PathType.UNPASSABLE_RAIL) // Purpur
++                    && (this.mob.level().purpurConfig.mobsIgnoreRails || pathType != PathType.UNPASSABLE_RAIL) // Purpur - Config to allow mobs to pathfind over rails
                      && pathType != PathType.TRAPDOOR
                      && pathType != PathType.POWDER_SNOW) {
                      node = this.tryJumpOn(x, y, z, maxYStep, prevFeetY, direction, nodeType, mutableBlockPos);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 7b9bf48039c457f95f23b4d0b80f095a65c55e22..3cf70e3e79b581d97a0e76e88075600aaa2af7d4 100644
+index 5f97cbbe75ffd6a75cb39db7fc24c61e26068cf8..ff4d9ccbb9801649ad8ea9dac72b0f32f58e06c1 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -139,6 +139,7 @@ public class PurpurWorldConfig {

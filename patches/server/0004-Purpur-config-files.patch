@@ -5,7 +5,7 @@ Subject: [PATCH] Purpur config files
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index 8433c3ac440faa969069d1929b8b77fcb1080be7..4a8f95670e25c81952cccbaf4c6e49514cacd529 100644
+index 8433c3ac440faa969069d1929b8b77fcb1080be7..be1bb14dca9367b9685841985b6198376986c496 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
 @@ -592,7 +592,7 @@ public class Metrics {
@@ -13,7 +13,7 @@ index 8433c3ac440faa969069d1929b8b77fcb1080be7..4a8f95670e25c81952cccbaf4c6e4951
              // Only start Metrics, if it's enabled in the config
              if (config.getBoolean("enabled", true)) {
 -                Metrics metrics = new Metrics("Pufferfish", serverUUID, logFailedRequests, Bukkit.getLogger()); // Pufferfish
-+                Metrics metrics = new Metrics("Purpur", serverUUID, logFailedRequests, Bukkit.getLogger()); // Pufferfish // Purpur
++                Metrics metrics = new Metrics("Purpur", serverUUID, logFailedRequests, Bukkit.getLogger()); // Pufferfish // Purpur - Purpur config files
  
                  metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
                      String minecraftVersion = Bukkit.getVersion();
@@ -31,20 +31,20 @@ index 8433c3ac440faa969069d1929b8b77fcb1080be7..4a8f95670e25c81952cccbaf4c6e4951
 -                    paperVersion = "unknown";
 -                }
 -                metrics.addCustomChart(new Metrics.SimplePie("pufferfish_version", () -> paperVersion)); // Pufferfish
-+                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.isProxyOnlineMode() ? "bungee" : "offline"))); // Purpur
-+                metrics.addCustomChart(new Metrics.SimplePie("purpur_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown")); // Purpur
++                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.isProxyOnlineMode() ? "bungee" : "offline"))); // Purpur - Purpur config files
++                metrics.addCustomChart(new Metrics.SimplePie("purpur_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown")); // Purpur - Purpur config files
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/net/minecraft/commands/CommandSourceStack.java b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-index 13bd145b1e8006a53c22f5dc0c78f29b540c7663..ae2d9c91afe13d07fd0de6d455b90a2a704a2c91 100644
+index 13bd145b1e8006a53c22f5dc0c78f29b540c7663..7b2daf47e411362a462019a1612a99c952170200 100644
 --- a/src/main/java/net/minecraft/commands/CommandSourceStack.java
 +++ b/src/main/java/net/minecraft/commands/CommandSourceStack.java
 @@ -312,6 +312,30 @@ public class CommandSourceStack implements ExecutionCommandSource<CommandSourceS
          }
      }
  
-+    // Purpur start
++    // Purpur start - Purpur config files
 +    public void sendSuccess(@Nullable String message) {
 +        sendSuccess(message, false);
 +    }
@@ -66,20 +66,20 @@ index 13bd145b1e8006a53c22f5dc0c78f29b540c7663..ae2d9c91afe13d07fd0de6d455b90a2a
 +        }
 +        sendSuccess(() -> io.papermc.paper.adventure.PaperAdventure.asVanilla(message), broadcastToOps);
 +    }
-+    // Purpur end
++    // Purpur end - Purpur config files
 +
      public void sendSuccess(Supplier<Component> feedbackSupplier, boolean broadcastToOps) {
          boolean flag1 = this.source.acceptsSuccess() && !this.silent;
          boolean flag2 = broadcastToOps && this.source.shouldInformAdmins() && !this.silent;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index d62f7375394409a278bc565c8263506c598ceeba..2a7fd4420467cce0c4ddca749955ba45e034e555 100644
+index d62f7375394409a278bc565c8263506c598ceeba..fca644c904fe5f4b2637ed9d3062ae247751b9f1 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
          this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark
          com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
-+        // Purpur start
++        // Purpur start - Purpur config files
 +        try {
 +            org.purpurmc.purpur.PurpurConfig.init((java.io.File) options.valueOf("purpur-settings"));
 +        } catch (Exception e) {
@@ -87,19 +87,19 @@ index d62f7375394409a278bc565c8263506c598ceeba..2a7fd4420467cce0c4ddca749955ba45
 +            return false;
 +        }
 +        org.purpurmc.purpur.PurpurConfig.registerCommands();
-+        // Purpur end
++        // Purpur end - Purpur config files
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // Paper - load version history now
          gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
          gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 6470f145e2470574a40ddce6ca5bf924c1bb094c..31ec722cfb102eaea5511aca07a48e4ad36d73af 100644
+index 6470f145e2470574a40ddce6ca5bf924c1bb094c..62d4ccafc005ff00c17db9863db56b9ec77735c7 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -175,6 +175,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
      // Paper end - add paper world config
  
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
-+    public final org.purpurmc.purpur.PurpurWorldConfig purpurConfig; // Purpur
++    public final org.purpurmc.purpur.PurpurWorldConfig purpurConfig; // Purpur - Purpur config files
      public static BlockPos lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
      private org.spigotmc.TickLimiter tileLimiter;
@@ -107,19 +107,19 @@ index 6470f145e2470574a40ddce6ca5bf924c1bb094c..31ec722cfb102eaea5511aca07a48e4a
          // Paper end - getblock optimisations - cache world height/sections
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = paperWorldConfigCreator.apply(this.spigotConfig); // Paper - create paper world config
-+        this.purpurConfig = new org.purpurmc.purpur.PurpurWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), env); // Purpur
++        this.purpurConfig = new org.purpurmc.purpur.PurpurWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), env); // Purpur - Purpur config files
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 97b5d6ba2b19a7c730730c74175a29157aed1840..ac83ec97e5a55d2184c0c0d64b9b340f39c2be9f 100644
+index 97b5d6ba2b19a7c730730c74175a29157aed1840..cc2f23613644126c3f7506b26db8e6a865f78dde 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1086,6 +1086,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
-+        org.purpurmc.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
++        org.purpurmc.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur - Purpur config files
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
@@ -127,7 +127,7 @@ index 97b5d6ba2b19a7c730730c74175a29157aed1840..ac83ec97e5a55d2184c0c0d64b9b340f
                  }
              }
              world.spigotConfig.init(); // Spigot
-+            world.purpurConfig.init(); // Purpur
++            world.purpurConfig.init(); // Purpur - Purpur config files
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
@@ -135,7 +135,7 @@ index 97b5d6ba2b19a7c730730c74175a29157aed1840..ac83ec97e5a55d2184c0c0d64b9b340f
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          io.papermc.paper.command.PaperCommands.registerCommands(this.console); // Paper
          this.spark.registerCommandBeforePlugins(this); // Paper - spark
-+        org.purpurmc.purpur.PurpurConfig.registerCommands(); // Purpur
++        org.purpurmc.purpur.PurpurConfig.registerCommands(); // Purpur - Purpur config files
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
@@ -143,7 +143,7 @@ index 97b5d6ba2b19a7c730730c74175a29157aed1840..ac83ec97e5a55d2184c0c0d64b9b340f
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  
-+        // Purpur start
++        // Purpur start - Purpur config files
 +        @Override
 +        public YamlConfiguration getPurpurConfig() {
 +            return org.purpurmc.purpur.PurpurConfig.config;
@@ -153,26 +153,26 @@ index 97b5d6ba2b19a7c730730c74175a29157aed1840..ac83ec97e5a55d2184c0c0d64b9b340f
 +        public java.util.Properties getServerProperties() {
 +            return getProperties().properties;
 +        }
-+        // Purpur end
++        // Purpur end - Purpur config files
 +
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 1c2439ffc1e407ff69286817d22f127470ce07ba..ae274a56f7cb6200b3c556ed61254bb28146c771 100644
+index 1c2439ffc1e407ff69286817d22f127470ce07ba..c1478bc1d8fc12dcb2e7f3fd4154f1ab762b4d34 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -176,6 +176,14 @@ public class Main {
                          .describedAs("Jar file");
                  // Paper end
  
-+                // Purpur Start
++                // Purpur Start - Purpur config files
 +                acceptsAll(asList("purpur", "purpur-settings"), "File for purpur settings")
 +                    .withRequiredArg()
 +                    .ofType(File.class)
 +                    .defaultsTo(new File("purpur.yml"))
 +                    .describedAs("Yml file");
-+                // Purpur end
++                // Purpur end - Purpur config files
 +
                  // Paper start
                  acceptsAll(asList("server-name"), "Name of the server")

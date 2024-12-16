@@ -5,7 +5,7 @@ Subject: [PATCH] Config to remove explosion radius clamp
 
 
 diff --git a/src/main/java/net/minecraft/world/level/ServerExplosion.java b/src/main/java/net/minecraft/world/level/ServerExplosion.java
-index 685ccfb73bf7125585ef90b6a0f51b2f81daa428..15a3849922664b85fa6bc9101c2af380d57ea0f3 100644
+index 685ccfb73bf7125585ef90b6a0f51b2f81daa428..05fdb02b6f73c24f6985755effecf92c0b365cf0 100644
 --- a/src/main/java/net/minecraft/world/level/ServerExplosion.java
 +++ b/src/main/java/net/minecraft/world/level/ServerExplosion.java
 @@ -311,7 +311,7 @@ public class ServerExplosion implements Explosion {
@@ -13,7 +13,7 @@ index 685ccfb73bf7125585ef90b6a0f51b2f81daa428..15a3849922664b85fa6bc9101c2af380
          this.level = world;
          this.source = entity;
 -        this.radius = (float) Math.max(power, 0.0); // CraftBukkit - clamp bad values
-+        this.radius = (float) (world == null || world.purpurConfig.explosionClampRadius ? Math.max(power, 0.0) : power); // CraftBukkit - clamp bad values // Purpur
++        this.radius = (float) (world == null || world.purpurConfig.explosionClampRadius ? Math.max(power, 0.0) : power); // CraftBukkit - clamp bad values // Purpur - Config to remove explosion radius clamp
          this.center = pos;
          this.fire = createFire;
          this.blockInteraction = destructionType;
@@ -22,12 +22,12 @@ index 685ccfb73bf7125585ef90b6a0f51b2f81daa428..15a3849922664b85fa6bc9101c2af380
      public void explode() {
          // CraftBukkit start
 -        if (this.radius < 0.1F) {
-+        if ((this.level == null || this.level.purpurConfig.explosionClampRadius) && this.radius < 0.1F) { // Purpur
++        if ((this.level == null || this.level.purpurConfig.explosionClampRadius) && this.radius < 0.1F) { // Purpur - Config to remove explosion radius clamp
              return;
          }
          // CraftBukkit end
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index 5fb1b4ca45faaf9d172adb8f3a7879322ae29117..12ccac3893097d428c3c7f9cfdfc67e78dd9d691 100644
+index 0cc3e2a55712a809a3338b06ab23a3172334b1b3..7c468d3002a0b6fca37ae5a731c5f0456af35744 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -225,6 +225,11 @@ public class PurpurWorldConfig {

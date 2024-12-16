@@ -5,10 +5,10 @@ Subject: [PATCH] Add option to disable zombie villagers cure
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java b/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
-index 811c5c4bc98401bc9314894eb5cb64bf31b03f63..624b19d415dab0c864b96edf4a7063470739a221 100644
+index b10a12d9ddec3c064f5c42d6d8783e6608c917e0..40490767e474bc1e954c8f837f25268d2fd38f5b 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
-@@ -224,7 +224,7 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+@@ -227,7 +227,7 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
          ItemStack itemstack = player.getItemInHand(hand);
  
          if (itemstack.is(Items.GOLDEN_APPLE)) {
@@ -16,7 +16,7 @@ index 811c5c4bc98401bc9314894eb5cb64bf31b03f63..624b19d415dab0c864b96edf4a706347
 +            if (this.hasEffect(MobEffects.WEAKNESS) && level().purpurConfig.zombieVillagerCureEnabled) { // Purpur
                  itemstack.consume(1, player);
                  if (!this.level().isClientSide) {
-                     this.startConverting(player.getUUID(), this.random.nextInt(level().purpurConfig.zombieVillagerCuringTimeMax - level().purpurConfig.zombieVillagerCuringTimeMin + 1) + level().purpurConfig.zombieVillagerCuringTimeMin); // Purpur
+                     this.startConverting(player.getUUID(), this.random.nextInt(level().purpurConfig.zombieVillagerCuringTimeMax - level().purpurConfig.zombieVillagerCuringTimeMin + 1) + level().purpurConfig.zombieVillagerCuringTimeMin); // Purpur - Customizeable Zombie Villager curing times
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index d37cc14aa820be534d0afb434cd56a29764f9a6f..12dc84361b78901dfb3725ff3add422678c19ea8 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java

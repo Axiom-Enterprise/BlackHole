@@ -5,49 +5,51 @@ Subject: [PATCH] Allow leashing villagers
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 2e57077a184809e70481c9bba1891e01a9e203f7..f7b6044d99dd01ce1491631ec75920e79d42ce29 100644
+index 14bdc3f61960ec272d6cf83af0635bec839a73bd..91f31af898dd6620e09efa59170c455f35babcfe 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -3118,6 +3118,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          if (this.isAlive() && this instanceof Leashable leashable) {
              if (leashable.getLeashHolder() == player) {
                  if (!this.level().isClientSide()) {
-+                    if (hand == InteractionHand.OFF_HAND && (level().purpurConfig.villagerCanBeLeashed || level().purpurConfig.wanderingTraderCanBeLeashed) && this instanceof net.minecraft.world.entity.npc.AbstractVillager) return InteractionResult.CONSUME; // Purpur
++                    if (hand == InteractionHand.OFF_HAND && (level().purpurConfig.villagerCanBeLeashed || level().purpurConfig.wanderingTraderCanBeLeashed) && this instanceof net.minecraft.world.entity.npc.AbstractVillager) return InteractionResult.CONSUME; // Purpur -  Allow leashing villagers
                      // CraftBukkit start - fire PlayerUnleashEntityEvent
                      // Paper start - Expand EntityUnleashEvent
                      org.bukkit.event.player.PlayerUnleashEntityEvent event = CraftEventFactory.callPlayerUnleashEntityEvent(this, player, hand, !player.hasInfiniteMaterials());
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 032e26700322b22f93ff8b35dfdfd077b86c0a07..0ba9fac5214405c40a151954cbf615caca6d4cb3 100644
+index ca92e0a0ccb31f698fafbd2ad74a5758c6cf5dcc..8020c505c70938d4da4748484def33581bde564d 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -179,6 +179,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
-         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
-         if (level().purpurConfig.villagerFollowEmeraldBlock) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.TemptGoal(this, 1.0D, TEMPT_ITEMS, false));
+@@ -189,6 +189,12 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+         this.getAttribute(Attributes.TEMPT_RANGE).setBaseValue(this.level().purpurConfig.villagerTemptRange); // Purpur - Villagers follow emerald blocks
      }
-+
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Allow leashing villagers
 +    @Override
 +    public boolean canBeLeashed() {
 +        return level().purpurConfig.villagerCanBeLeashed;
 +    }
-     // Purpur end
- 
++    // Purpur end - Allow leashing villagers
      @Override
+     public Brain<Villager> getBrain() {
+         return (Brain<Villager>) super.getBrain(); // CraftBukkit - decompile error
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index a821a7bc7de7458ceb8afdb61bde32f74534f012..738df68a988a8ba428bf2c74a12cb8d9dd525bee 100644
+index c307aa1153d6a17ee8624453fc9303ac5749b6ef..0066e413d1fa92ecd5573c00195aa2f1412e665e 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -87,6 +87,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
-     public boolean isControllable() {
-         return level().purpurConfig.wanderingTraderControllable;
+@@ -101,6 +101,12 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+         return Mob.createMobAttributes().add(net.minecraft.world.entity.ai.attributes.Attributes.TEMPT_RANGE, 10.0D);
      }
-+
+     // Purpur end - Villagers follow emerald blocks
++    // Purpur start - Allow leashing villagers
 +    @Override
 +    public boolean canBeLeashed() {
 +        return level().purpurConfig.wanderingTraderCanBeLeashed;
 +    }
-     // Purpur end
- 
++    // Purpur end - Allow leashing villagers
      @Override
+     protected void registerGoals() {
+         this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index b81790ec5a7e4b73fbef52229844506b072dfa0d..1b96a84a1c81c075aa5f7308b89d396a4578be33 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java

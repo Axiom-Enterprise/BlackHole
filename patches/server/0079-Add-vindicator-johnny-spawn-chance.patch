@@ -5,10 +5,10 @@ Subject: [PATCH] Add vindicator johnny spawn chance
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Vindicator.java b/src/main/java/net/minecraft/world/entity/monster/Vindicator.java
-index 2bfce82bee8f3a16a33bd937eb610d9df1b6ceeb..2f7da09e14787395e95211acadd5c693cf07fba3 100644
+index 065bd31afe948c1ffab4da6f2a236cd931e75259..7f414f74c315db67a8e8a3d3636811abe733f62a 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Vindicator.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Vindicator.java
-@@ -157,6 +157,11 @@ public class Vindicator extends AbstractIllager {
+@@ -158,6 +158,11 @@ public class Vindicator extends AbstractIllager {
          RandomSource randomSource = world.getRandom();
          this.populateDefaultEquipmentSlots(randomSource, difficulty);
          this.populateDefaultEquipmentEnchantments(world, randomSource, difficulty);

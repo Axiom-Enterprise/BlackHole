@@ -5,7 +5,7 @@ Subject: [PATCH] Skeletons eat wither roses
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
-index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..84bd180ce29d4560675b029a1fa01b03ac698249 100644
+index 93b570c0d18f2fc76180c5c6ea292e191cb81be2..f1a9546aaa8499b198228f6a684850f7b20e67c9 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 @@ -17,6 +17,16 @@ import net.minecraft.world.item.Items;
@@ -25,7 +25,7 @@ index 61b5f27c1125ed1b183dd3b86b44a10b7098f91c..84bd180ce29d4560675b029a1fa01b03
  public class Skeleton extends AbstractSkeleton {
  
      private static final int TOTAL_CONVERSION_TIME = 300;
-@@ -181,4 +191,64 @@ public class Skeleton extends AbstractSkeleton {
+@@ -182,4 +192,64 @@ public class Skeleton extends AbstractSkeleton {
          }
  
      }

@@ -5,13 +5,13 @@ Subject: [PATCH] Shulker change color with dye
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Shulker.java b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
-index 8464a8288f7ec7ae14e44b93607ebb0617790c46..837a251afd68b68c5f5f6ab940d62332cb80fe6f 100644
+index 1957e2be5087e7bf85be5dfba53de8385dbeadd6..2052549f2e6b23aff5491bb0cc1af00b7f560227 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Shulker.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
 @@ -126,6 +126,19 @@ public class Shulker extends AbstractGolem implements VariantHolder<Optional<Dye
          return this.level().purpurConfig.shulkerTakeDamageFromWater;
      }
- 
+     // Purpur end - Toggle for water sensitive mob damage
 +    @Override
 +    protected net.minecraft.world.InteractionResult mobInteract(Player player, net.minecraft.world.InteractionHand hand) {
 +        net.minecraft.world.item.ItemStack itemstack = player.getItemInHand(hand);
@@ -27,7 +27,7 @@ index 8464a8288f7ec7ae14e44b93607ebb0617790c46..837a251afd68b68c5f5f6ab940d62332
 +
      @Override
      protected void registerGoals() {
-         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index ff4d9ccbb9801649ad8ea9dac72b0f32f58e06c1..a47ddcb40340c19ce99a8befe8034240e0457acb 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java

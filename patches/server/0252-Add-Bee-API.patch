@@ -5,10 +5,10 @@ Subject: [PATCH] Add Bee API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index 5ca5f128e5614146e76935e6d674e0699c65dfdb..884527c8326c6df3656a4d3a2f5f2847f95b0f63 100644
+index 19d1facb4173c11bb3a1d519603e4ec6906cdaa3..d2ac2c3a2481ee216a491333b173625da3881737 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-@@ -988,6 +988,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -991,6 +991,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
                  if (optional.isPresent()) {
                      Bee.this.savedFlowerPos = (BlockPos) optional.get();
                      Bee.this.navigation.moveTo((double) Bee.this.savedFlowerPos.getX() + 0.5D, (double) Bee.this.savedFlowerPos.getY() + 0.5D, (double) Bee.this.savedFlowerPos.getZ() + 0.5D, 1.2000000476837158D);
@@ -16,7 +16,7 @@ index 5ca5f128e5614146e76935e6d674e0699c65dfdb..884527c8326c6df3656a4d3a2f5f2847
                      return true;
                  } else {
                      Bee.this.remainingCooldownBeforeLocatingNewFlower = Mth.nextInt(Bee.this.random, 20, 60);
-@@ -1031,6 +1032,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1034,6 +1035,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
              this.pollinating = false;
              Bee.this.navigation.stop();
              Bee.this.remainingCooldownBeforeLocatingNewFlower = 200;
@@ -24,7 +24,7 @@ index 5ca5f128e5614146e76935e6d674e0699c65dfdb..884527c8326c6df3656a4d3a2f5f2847
          }
  
          @Override
-@@ -1080,6 +1082,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1083,6 +1085,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
                                  this.setWantedPos();
                              }
  

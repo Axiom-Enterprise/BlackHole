@@ -5,7 +5,7 @@ Subject: [PATCH] Giants AI settings
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Giant.java b/src/main/java/net/minecraft/world/entity/monster/Giant.java
-index 48035556b0743f7641d77ec3a42c860f1e1ee6c3..642342592788226999efcb453542f55af71cf193 100644
+index 4a13274a863345650ca0c3f98d6b2735221c778a..adc90a306fc9023f4a1cdfe9f58c39726086c849 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Giant.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Giant.java
 @@ -30,8 +30,23 @@ public class Giant extends Monster {
@@ -32,8 +32,8 @@ index 48035556b0743f7641d77ec3a42c860f1e1ee6c3..642342592788226999efcb453542f55a
 +            }
 +        }
      }
+     // Purpur end - Ridables
  
-     @Override
 @@ -48,8 +63,34 @@ public class Giant extends Monster {
          return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 100.0).add(Attributes.MOVEMENT_SPEED, 0.5).add(Attributes.ATTACK_DAMAGE, 50.0);
      }

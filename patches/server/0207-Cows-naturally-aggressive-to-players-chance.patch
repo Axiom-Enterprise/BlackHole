@@ -5,7 +5,7 @@ Subject: [PATCH] Cows naturally aggressive to players chance
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cow.java b/src/main/java/net/minecraft/world/entity/animal/Cow.java
-index 2b887a05cbf43a53869c740aa9df7bc75048de05..7ff6425276c7c9004caeee46f1138287ef5e5b64 100644
+index 4d5d4f7bb24aded2933daa003b4c4bc38601e12d..42324d0d22c1f1a233aa6e6a810171b26894f8bc 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cow.java
 @@ -37,6 +37,7 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -16,18 +16,18 @@ index 2b887a05cbf43a53869c740aa9df7bc75048de05..7ff6425276c7c9004caeee46f1138287
  
      private static final EntityDimensions BABY_DIMENSIONS = EntityType.COW.getDimensions().scale(0.5F).withEyeHeight(0.665F);
  
-@@ -64,6 +65,7 @@ public class Cow extends Animal {
+@@ -66,6 +67,7 @@ public class Cow extends Animal {
      public void initAttributes() {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.cowMaxHealth);
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.cowScale);
 +        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(this.level().purpurConfig.cowNaturallyAggressiveToPlayersDamage); // Purpur
      }
-     // Purpur end
- 
-@@ -77,11 +79,18 @@ public class Cow extends Animal {
+     // Purpur end - Configurable entity base attributes
+     // Purpur start - Make entity breeding times configurable
+@@ -80,11 +82,18 @@ public class Cow extends Animal {
          return this.level().purpurConfig.cowTakeDamageFromWater;
      }
- 
+     // Purpur end - Toggle for water sensitive mob damage
 +    @Override
 +    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.EntitySpawnReason spawnReason, net.minecraft.world.entity.SpawnGroupData entityData) {
 +        this.isNaturallyAggressiveToPlayers = world.getLevel().purpurConfig.cowNaturallyAggressiveToPlayersChance > 0.0D && random.nextDouble() <= world.getLevel().purpurConfig.cowNaturallyAggressiveToPlayersChance;
@@ -37,13 +37,13 @@ index 2b887a05cbf43a53869c740aa9df7bc75048de05..7ff6425276c7c9004caeee46f1138287
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
-         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
          this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
 +        this.goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.MeleeAttackGoal(this, 1.2000000476837158D, true)); // Purpur
          this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
          this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, (itemstack) -> {
-             return level().purpurConfig.cowFeedMushrooms > 0 && (itemstack.is(net.minecraft.world.level.block.Blocks.RED_MUSHROOM.asItem()) || itemstack.is(net.minecraft.world.level.block.Blocks.BROWN_MUSHROOM.asItem())) || itemstack.is(ItemTags.COW_FOOD); // Purpur
-@@ -90,6 +99,7 @@ public class Cow extends Animal {
+             return level().purpurConfig.cowFeedMushrooms > 0 && (itemstack.is(net.minecraft.world.level.block.Blocks.RED_MUSHROOM.asItem()) || itemstack.is(net.minecraft.world.level.block.Blocks.BROWN_MUSHROOM.asItem())) || itemstack.is(ItemTags.COW_FOOD); // Purpur - Cows eat mushrooms
+@@ -93,6 +102,7 @@ public class Cow extends Animal {
          this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
          this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
          this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -51,7 +51,7 @@ index 2b887a05cbf43a53869c740aa9df7bc75048de05..7ff6425276c7c9004caeee46f1138287
      }
  
      @Override
-@@ -98,7 +108,7 @@ public class Cow extends Animal {
+@@ -101,7 +111,7 @@ public class Cow extends Animal {
      }
  
      public static AttributeSupplier.Builder createAttributes() {

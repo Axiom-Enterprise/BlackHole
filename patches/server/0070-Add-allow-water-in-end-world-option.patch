@@ -5,7 +5,7 @@ Subject: [PATCH] Add allow water in end world option
 
 
 diff --git a/src/main/java/net/minecraft/world/item/BucketItem.java b/src/main/java/net/minecraft/world/item/BucketItem.java
-index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..38f287d97544b8a5b080837e38710dc4e94ae9bf 100644
+index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..b9190acbcb256a3072f0a5f1c4c731f1222b459f 100644
 --- a/src/main/java/net/minecraft/world/item/BucketItem.java
 +++ b/src/main/java/net/minecraft/world/item/BucketItem.java
 @@ -196,7 +196,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
@@ -13,7 +13,7 @@ index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..38f287d97544b8a5b080837e38710dc4
              if (!flag2) {
                  return movingobjectpositionblock != null && this.emptyContents(entityhuman, world, movingobjectpositionblock.getBlockPos().relative(movingobjectpositionblock.getDirection()), (BlockHitResult) null, enumdirection, clicked, itemstack, enumhand); // CraftBukkit
 -            } else if (world.dimensionType().ultraWarm() && this.content.is(FluidTags.WATER)) {
-+            } else if ((world.dimensionType().ultraWarm() || (world.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) && this.content.is(FluidTags.WATER)) { // Purpur
++            } else if ((world.dimensionType().ultraWarm() || (world.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) && this.content.is(FluidTags.WATER)) { // Purpur - Add allow water in end world option
                  int i = blockposition.getX();
                  int j = blockposition.getY();
                  int k = blockposition.getZ();
@@ -22,12 +22,12 @@ index 3bddfb6f7412ab86e0c090d0cbc6cf254b3f891c..38f287d97544b8a5b080837e38710dc4
  
                  for (int l = 0; l < 8; ++l) {
 -                    world.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);
-+                    ((ServerLevel) world).sendParticlesSource(null, ParticleTypes.LARGE_SMOKE, false, true, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 1, 0.0D, 0.0D, 0.0D, 0.0D); // Purpur
++                    ((ServerLevel) world).sendParticlesSource(null, ParticleTypes.LARGE_SMOKE, false, true, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 1, 0.0D, 0.0D, 0.0D, 0.0D); // Purpur - Add allow water in end world option
                  }
  
                  return true;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 31ec722cfb102eaea5511aca07a48e4ad36d73af..7ff29256c1f898be90f85ab14abf48799a563c75 100644
+index 62d4ccafc005ff00c17db9863db56b9ec77735c7..826f0d0f68623179aec639c16e172b98ca044a9c 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -2047,4 +2047,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
@@ -35,7 +35,7 @@ index 31ec722cfb102eaea5511aca07a48e4ad36d73af..7ff29256c1f898be90f85ab14abf4879
          }
      }
 +
-+    // Purpur start
++    // Purpur start - Add allow water in end world option
 +    public boolean isNether() {
 +        return getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER;
 +    }
@@ -43,10 +43,10 @@ index 31ec722cfb102eaea5511aca07a48e4ad36d73af..7ff29256c1f898be90f85ab14abf4879
 +    public boolean isTheEnd() {
 +        return getWorld().getEnvironment() == org.bukkit.World.Environment.THE_END;
 +    }
-+    // Purpur end
++    // Purpur end - Add allow water in end world option
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/IceBlock.java b/src/main/java/net/minecraft/world/level/block/IceBlock.java
-index a94762e65853ccad38cf90b0049ca256106c0c9f..38633e168a9b36e37feea00964d53e657926639e 100644
+index a94762e65853ccad38cf90b0049ca256106c0c9f..aa93b5041b65dbcdc5bbea65567eaf5d8c433a0d 100644
 --- a/src/main/java/net/minecraft/world/level/block/IceBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/IceBlock.java
 @@ -42,7 +42,7 @@ public class IceBlock extends HalfTransparentBlock {
@@ -54,7 +54,7 @@ index a94762e65853ccad38cf90b0049ca256106c0c9f..38633e168a9b36e37feea00964d53e65
          // Paper end - Improve Block#breakNaturally API
          if (!EnchantmentHelper.hasTag(tool, EnchantmentTags.PREVENTS_ICE_MELTING)) {
 -            if (world.dimensionType().ultraWarm()) {
-+            if (world.isNether() || (world.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) { // Purpur
++            if (world.isNether() || (world.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) { // Purpur - Add allow water in end world option
                  world.removeBlock(pos, false);
                  return;
              }
@@ -63,7 +63,7 @@ index a94762e65853ccad38cf90b0049ca256106c0c9f..38633e168a9b36e37feea00964d53e65
          }
          // CraftBukkit end
 -        if (world.dimensionType().ultraWarm()) {
-+        if (world.isNether() || (world.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) { // Purpur
++        if (world.isNether() || (world.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) { // Purpur - Add allow water in end world option
              world.removeBlock(pos, false);
          } else {
              world.setBlockAndUpdate(pos, IceBlock.meltsInto());

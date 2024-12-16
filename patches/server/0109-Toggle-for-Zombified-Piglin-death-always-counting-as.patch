@@ -13,10 +13,10 @@ to the Piglin being angry, even though the player never hit them.
 This patch adds a toggle to disable this behavior.
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java b/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
-index 650f9e1ca3a5ddec5123133c9604f33140e948a8..cb47b15d197b1167dcbac1b989903bbf84b079b4 100644
+index 953df397ea261d417ada15db8d6ffc539ad07c03..c4bf422557fe6abbe882f575f19a9334c7a94fe5 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
-@@ -148,7 +148,7 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
+@@ -150,7 +150,7 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
              this.maybeAlertOthers();
          }
  
@@ -25,7 +25,7 @@ index 650f9e1ca3a5ddec5123133c9604f33140e948a8..cb47b15d197b1167dcbac1b989903bbf
              this.lastHurtByPlayerTime = this.tickCount;
          }
  
-@@ -203,7 +203,7 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
+@@ -205,7 +205,7 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
              this.ticksUntilNextAlert = ZombifiedPiglin.ALERT_INTERVAL.sample(this.random);
          }
  

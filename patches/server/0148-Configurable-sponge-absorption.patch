@@ -8,7 +8,7 @@ Allows the total area and radius of water blocks the sponge can absorb to be cha
 Co-authored by: granny <granny@purpurmc.org>
 
 diff --git a/src/main/java/net/minecraft/world/level/block/SpongeBlock.java b/src/main/java/net/minecraft/world/level/block/SpongeBlock.java
-index e9a77c1ae09af42d2d444ad6b5f6c8ac395044e1..9201d911cf155aab7735600073426a0d4213f38b 100644
+index e9a77c1ae09af42d2d444ad6b5f6c8ac395044e1..0edb7e821a60fe95fea3cae900e5b88192946fe6 100644
 --- a/src/main/java/net/minecraft/world/level/block/SpongeBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/SpongeBlock.java
 @@ -61,7 +61,7 @@ public class SpongeBlock extends Block {
@@ -16,7 +16,7 @@ index e9a77c1ae09af42d2d444ad6b5f6c8ac395044e1..9201d911cf155aab7735600073426a0d
      private boolean removeWaterBreadthFirstSearch(Level world, BlockPos pos) {
          BlockStateListPopulator blockList = new BlockStateListPopulator(world); // CraftBukkit - Use BlockStateListPopulator
 -        BlockPos.breadthFirstTraversal(pos, 6, 65, (blockposition1, consumer) -> {
-+        BlockPos.breadthFirstTraversal(pos, world.purpurConfig.spongeAbsorptionRadius, world.purpurConfig.spongeAbsorptionArea, (blockposition1, consumer) -> { // Purpur
++        BlockPos.breadthFirstTraversal(pos, world.purpurConfig.spongeAbsorptionRadius, world.purpurConfig.spongeAbsorptionArea, (blockposition1, consumer) -> { // Purpur - Configurable sponge absorption
              Direction[] aenumdirection = SpongeBlock.ALL_DIRECTIONS;
              int i = aenumdirection.length;
  

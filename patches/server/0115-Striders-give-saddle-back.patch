@@ -5,10 +5,10 @@ Subject: [PATCH] Striders give saddle back
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Strider.java b/src/main/java/net/minecraft/world/entity/monster/Strider.java
-index bfafa45575b99f08cbeb234bdb9c287f9f531b16..d99a621a4f7507d216c2793e9d1d9b84ea679acf 100644
+index b2f9e7dec710f9a135074d6b5eb438e127a7aaa9..b5bc19ea93058374ce3a01ed650b0396b5e4176d 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Strider.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Strider.java
-@@ -483,6 +483,19 @@ public class Strider extends Animal implements ItemSteerable, Saddleable {
+@@ -485,6 +485,19 @@ public class Strider extends Animal implements ItemSteerable, Saddleable {
      public InteractionResult mobInteract(Player player, InteractionHand hand) {
          boolean flag = this.isFood(player.getItemInHand(hand));
  

@@ -5,7 +5,7 @@ Subject: [PATCH] Milk Keeps Beneficial Effects
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 239046ab467f499107d1e30ca183d79661a380f0..33fbe0f7a356dd847e546feffb468b2803c6744b 100644
+index 601b74fdf423d66bc9ccee8e522451815a8883e7..e64ff857bf95436033baf38db1e6895f75856f9c 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -1162,6 +1162,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -17,10 +17,10 @@ index 239046ab467f499107d1e30ca183d79661a380f0..33fbe0f7a356dd847e546feffb468b28
                  if (event.isCancelled()) {
                      continue;
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index 37ba31724fb3630c9c7d8040f47be36e037d4e48..42c91e52060fad4a7a598f9e9ef88fd0e0ff8475 100644
+index 89ad300d0ba9088af64fb9fee19399939bb4eff6..2dc7afa79126b52be42fc986926d6a63f9994d12 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -123,7 +123,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -126,7 +126,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
              return this.canDrinkPotion && this.level().isNight() && !entityvillagertrader.isInvisible(); // Paper - Add more WanderingTrader API
          }));
          this.goalSelector.addGoal(0, new UseItemGoal<>(this, new ItemStack(Items.MILK_BUCKET), SoundEvents.WANDERING_TRADER_REAPPEARED, (entityvillagertrader) -> {
@@ -30,7 +30,7 @@ index 37ba31724fb3630c9c7d8040f47be36e037d4e48..42c91e52060fad4a7a598f9e9ef88fd0
          this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 0.5D, 0.5D));
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b38c114e063c3f49cdf19f9c489ee92bcb7006ed..446cdd50d4b5d5ed2e58f4bc4fbb13810399754d 100644
+index 5be4f4aebec0f2e78633d4849bc7ca032c2aef40..464c38139175c51e64b55b615872cfdb235255a6 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -145,6 +145,7 @@ public class PurpurWorldConfig {

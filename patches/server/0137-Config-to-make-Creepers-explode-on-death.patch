@@ -6,20 +6,20 @@ Subject: [PATCH] Config to make Creepers explode on death
 Creepers exploded after being killed in the alpha days. This brings that back.
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index 78da4454fb6eccb1d17d1f0cb19013883437a23e..0bce10c1cbf9f1788817a2834ec0efa04dd17752 100644
+index 76e0dcedc72576c0e0a85e09a762aa5e2b63c7ef..58ef6c538a33199e5a8423223c22c61bf91fccae 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 @@ -65,6 +65,7 @@ public class Creeper extends Monster {
      private int prevSpacebarCharge = 0;
      private int powerToggleDelay = 0;
-     // Purpur end
+     // Purpur end - Ridables
 +    private boolean exploding = false; // Purpur - Config to make Creepers explode on death
  
      public Creeper(EntityType<? extends Creeper> type, Level world) {
          super(type, world);
-@@ -270,6 +271,16 @@ public class Creeper extends Monster {
-         return this.level().purpurConfig.creeperTakeDamageFromWater;
+@@ -274,6 +275,16 @@ public class Creeper extends Monster {
      }
+     // Purpur end - Toggle for water sensitive mob damage
  
 +    // Purpur start - Config to make Creepers explode on death
 +    @Override
@@ -34,7 +34,7 @@ index 78da4454fb6eccb1d17d1f0cb19013883437a23e..0bce10c1cbf9f1788817a2834ec0efa0
      @Override
      protected SoundEvent getHurtSound(DamageSource source) {
          return SoundEvents.CREEPER_HURT;
-@@ -358,6 +369,7 @@ public class Creeper extends Monster {
+@@ -362,6 +373,7 @@ public class Creeper extends Monster {
  
      public void explodeCreeper() {
          Level world = this.level();
@@ -42,7 +42,7 @@ index 78da4454fb6eccb1d17d1f0cb19013883437a23e..0bce10c1cbf9f1788817a2834ec0efa0
  
          if (world instanceof ServerLevel worldserver) {
              float f = this.isPowered() ? 2.0F : 1.0F;
-@@ -379,6 +391,7 @@ public class Creeper extends Monster {
+@@ -383,6 +395,7 @@ public class Creeper extends Monster {
              // CraftBukkit end
          }
  

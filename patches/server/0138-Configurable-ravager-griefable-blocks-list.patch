@@ -5,28 +5,28 @@ Subject: [PATCH] Configurable ravager griefable blocks list
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Ravager.java b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
-index d5faedc263714a200ae2fd12b2f3ae1e3e18ed59..af91726d482156a7687355f0409eb18b3c6242a1 100644
+index 39081629685e3c7cd109626d1d61ce24b6afb860..7fb2af68c101dc12e60f120da1bb5c1efd20d164 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Ravager.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
-@@ -196,7 +196,7 @@ public class Ravager extends Raider {
+@@ -198,7 +198,7 @@ public class Ravager extends Raider {
                          BlockState iblockdata = worldserver.getBlockState(blockposition);
                          Block block = iblockdata.getBlock();
  
 -                        if (block instanceof LeavesBlock) {
-+                        if (this.level().purpurConfig.ravagerGriefableBlocks.contains(block)) { // Purpur
++                        if (this.level().purpurConfig.ravagerGriefableBlocks.contains(block)) { // Purpur - Configurable ravager griefable blocks list
                              // CraftBukkit start
                              if (!CraftEventFactory.callEntityChangeBlockEvent(this, blockposition, iblockdata.getFluidState().createLegacyBlock())) { // Paper - fix wrong block state
                                  continue;
 diff --git a/src/main/java/net/minecraft/world/level/block/CropBlock.java b/src/main/java/net/minecraft/world/level/block/CropBlock.java
-index 8cf8aeb34cba078bc7a554f03054d580d96fe908..c1707b502911d76d0c3a706e44bfdc3a12eb8f97 100644
+index e1cfad4834fdee910bf261a60e2b76678a0fec6d..00a06146e119a47eeaf66d240b8dd84e38498676 100644
 --- a/src/main/java/net/minecraft/world/level/block/CropBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CropBlock.java
 @@ -180,7 +180,7 @@ public class CropBlock extends BushBlock implements BonemealableBlock {
      protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
          if (!new io.papermc.paper.event.entity.EntityInsideBlockEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.block.CraftBlock.at(world, pos)).callEvent()) { return; } // Paper - Add EntityInsideBlockEvent
          if (world instanceof ServerLevel worldserver) {
--            if (entity instanceof Ravager && CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), !world.purpurConfig.ravagerBypassMobGriefing == !worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))) { // CraftBukkit // Purpur
-+            if (entity instanceof Ravager && world.purpurConfig.ravagerGriefableBlocks.contains(world.getBlockState(pos).getBlock()) && CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), !world.purpurConfig.ravagerBypassMobGriefing == !worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))) { // CraftBukkit // Purpur
+-            if (entity instanceof Ravager && CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), !world.purpurConfig.ravagerBypassMobGriefing == !worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))) { // CraftBukkit // Purpur - Add mobGriefing bypass to everything affected
++            if (entity instanceof Ravager && world.purpurConfig.ravagerGriefableBlocks.contains(world.getBlockState(pos).getBlock()) && CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), !world.purpurConfig.ravagerBypassMobGriefing == !worldserver.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))) { // CraftBukkit // Purpur - Add mobGriefing bypass to everything affected // Purpur - Configurable ravager griefable blocks list
                  worldserver.destroyBlock(pos, true, entity);
              }
          }

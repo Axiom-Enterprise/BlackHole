@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable daylight cycle
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0cce9061c49a3556d886381fac3bfc78390b7ec4..6ab178e0541f027791406d547c38f63c1d72ef25 100644
+index 9ffaf5ab0286fa388bb028c4a14ae8341650b120..16ab1d7735789d69f265092151db696d8f23f071 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1859,7 +1859,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -13,20 +13,20 @@ index 0cce9061c49a3556d886381fac3bfc78390b7ec4..6ab178e0541f027791406d547c38f63c
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
 -                if (!(entityhuman instanceof ServerPlayer) || (tickCount + entityhuman.getId()) % 20 != 0) {
-+                if (!(entityhuman instanceof ServerPlayer) || (!level.isForceTime() && (tickCount + entityhuman.getId()) % 20 != 0)) { // Purpur
++                if (!(entityhuman instanceof ServerPlayer) || (!level.isForceTime() && (tickCount + entityhuman.getId()) % 20 != 0)) { // Purpur - Configurable daylight cycle
                      continue;
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index d7edb681c0299f9103e7bc9fa082617f61929c19..34698bf825f4d857bca2b76fb368616731937786 100644
+index 745f7f4aa6d1593f7b49af56d9f81bf42a034157..8df71e9aad9ff3289a6dd12e017550dbc48985ca 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -224,6 +224,8 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
      private final StructureManager structureManager;
      private final StructureCheck structureCheck;
      private final boolean tickTime;
-+    private double preciseTime; // Purpur
-+    private boolean forceTime; // Purpur
++    private double preciseTime; // Purpur - Configurable daylight cycle
++    private boolean forceTime; // Purpur - Configurable daylight cycle
      private final RandomSequences randomSequences;
  
      // CraftBukkit start
@@ -34,7 +34,7 @@ index d7edb681c0299f9103e7bc9fa082617f61929c19..34698bf825f4d857bca2b76fb3686167
          this.chunkDataController = new ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.ChunkDataController((ServerLevel)(Object)this, this.chunkTaskScheduler);
          // Paper end - rewrite chunk system
          this.getCraftServer().addWorld(this.getWorld()); // CraftBukkit
-+        this.preciseTime = this.serverLevelData.getDayTime(); // Purpur
++        this.preciseTime = this.serverLevelData.getDayTime(); // Purpur - Configurable daylight cycle
      }
  
      // Paper start
@@ -42,13 +42,13 @@ index d7edb681c0299f9103e7bc9fa082617f61929c19..34698bf825f4d857bca2b76fb3686167
              this.serverLevelData.getScheduledEvents().tick(this.server, i);
              Profiler.get().pop();
              if (this.serverLevelData.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
-+                // Purpur start
++                // Purpur start - Configurable daylight cycle
 +                int incrementTicks = isDay() ? this.purpurConfig.daytimeTicks : this.purpurConfig.nighttimeTicks;
 +                if (incrementTicks != 12000) {
 +                    this.preciseTime += 12000 / (double) incrementTicks;
 +                    this.setDayTime(this.preciseTime);
 +                } else
-+                // Purpur end
++                // Purpur end - Configurable daylight cycle
                  this.setDayTime(this.levelData.getDayTime() + 1L);
              }
  
@@ -56,21 +56,21 @@ index d7edb681c0299f9103e7bc9fa082617f61929c19..34698bf825f4d857bca2b76fb3686167
  
      public void setDayTime(long timeOfDay) {
          this.serverLevelData.setDayTime(timeOfDay);
-+        // Purpur start
++        // Purpur start - Configurable daylight cycle
 +        this.preciseTime = timeOfDay;
 +        this.forceTime = false;
      }
 +    public void setDayTime(double i) {
 +        this.serverLevelData.setDayTime((long) i);
 +        this.forceTime = true;
-+        // Purpur end
++        // Purpur end - Configurable daylight cycle
 +    }
 +
-+    // Purpur start
++    // Purpur start - Configurable daylight cycle
 +    public boolean isForceTime() {
 +        return this.forceTime;
 +    }
-+    // Purpur end
++    // Purpur end - Configurable daylight cycle
  
      public void tickCustomSpawners(boolean spawnMonsters, boolean spawnAnimals) {
          Iterator iterator = this.customSpawners.iterator();

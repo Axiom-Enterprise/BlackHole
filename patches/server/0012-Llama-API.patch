@@ -25,7 +25,7 @@ index df695b444fa2a993d381e2f197182c3e91a68502..eb0faf58fa1a408f294fc62120b140de
              double d = this.llama.distanceToSqr(this.llama.getCaravanHead());
              if (d > 676.0) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java b/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
-index f9774491bd49bb37d3581cebbcedfc1878cf15b5..4a412a8a582e092a920029791a48c085527cbbd0 100644
+index 83fdbf55384a5c4429d65a88fcb788e449a8862a..cbab482bd44c0a0fa82a80f41fdfd8c124c58c43 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
 @@ -72,6 +72,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
@@ -36,7 +36,7 @@ index f9774491bd49bb37d3581cebbcedfc1878cf15b5..4a412a8a582e092a920029791a48c085
  
      public Llama(EntityType<? extends Llama> type, Level world) {
          super(type, world);
-@@ -166,6 +167,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
+@@ -167,6 +168,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
          super.addAdditionalSaveData(nbt);
          nbt.putInt("Variant", this.getVariant().id);
          nbt.putInt("Strength", this.getStrength());
@@ -44,7 +44,7 @@ index f9774491bd49bb37d3581cebbcedfc1878cf15b5..4a412a8a582e092a920029791a48c085
      }
  
      @Override
-@@ -173,6 +175,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
+@@ -174,6 +176,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
          this.setStrength(nbt.getInt("Strength"));
          super.readAdditionalSaveData(nbt);
          this.setVariant(Llama.Variant.byId(nbt.getInt("Variant")));
@@ -52,7 +52,7 @@ index f9774491bd49bb37d3581cebbcedfc1878cf15b5..4a412a8a582e092a920029791a48c085
      }
  
      @Override
-@@ -440,6 +443,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
+@@ -441,6 +444,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
  
      public void leaveCaravan() {
          if (this.caravanHead != null) {
@@ -60,7 +60,7 @@ index f9774491bd49bb37d3581cebbcedfc1878cf15b5..4a412a8a582e092a920029791a48c085
              this.caravanHead.caravanTail = null;
          }
  
-@@ -447,6 +451,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
+@@ -448,6 +452,7 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
      }
  
      public void joinCaravan(Llama llama) {

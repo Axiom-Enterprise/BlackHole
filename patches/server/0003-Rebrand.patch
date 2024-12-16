@@ -5,7 +5,7 @@ Subject: [PATCH] Rebrand
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index cfa25c0cd7f7e249a4f22dc1d316bbf702b27e37..74d7aaae57e0e9ea9e31c4b2189ba50a0ac83bea 100644
+index 83e2c8784eaa77851e9efc6b889d673c1fd046d0..624588207afdc52adae14e5de3d18fe1c330d832 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -25,7 +25,7 @@ abstract class MockitoAgentProvider : CommandLineArgumentProvider {
@@ -13,7 +13,7 @@ index cfa25c0cd7f7e249a4f22dc1d316bbf702b27e37..74d7aaae57e0e9ea9e31c4b2189ba50a
  
  dependencies {
 -    implementation(project(":pufferfish-api")) // Pufferfish // Paper
-+    implementation(project(":purpur-api")) // Pufferfish // Paper // Purpur
++    implementation(project(":purpur-api")) // Pufferfish // Paper // Purpur - Rebrand
      implementation("ca.spottedleaf:concurrentutil:0.0.2") // Paper - Add ConcurrentUtil dependency
      // Paper start
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
@@ -21,9 +21,9 @@ index cfa25c0cd7f7e249a4f22dc1d316bbf702b27e37..74d7aaae57e0e9ea9e31c4b2189ba50a
      }
      // Pufferfish end
  
-+    implementation("org.mozilla:rhino-runtime:1.7.14") // Purpur
-+    implementation("org.mozilla:rhino-engine:1.7.14") // Purpur
-+    implementation("dev.omega24:upnp4j:1.0") // Purpur
++    implementation("org.mozilla:rhino-runtime:1.7.14") // Purpur - Rebrand
++    implementation("org.mozilla:rhino-engine:1.7.14") // Purpur - Rebrand
++    implementation("dev.omega24:upnp4j:1.0") // Purpur - Rebrand
 +
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
@@ -33,18 +33,18 @@ index cfa25c0cd7f7e249a4f22dc1d316bbf702b27e37..74d7aaae57e0e9ea9e31c4b2189ba50a
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
 -            "Implementation-Title" to "Pufferfish", // Pufferfish
-+            "Implementation-Title" to "Purpur", // Pufferfish // Purpur
++            "Implementation-Title" to "Purpur", // Pufferfish // Purpur - Rebrand
              "Implementation-Version" to implementationVersion,
              "Implementation-Vendor" to date, // Paper
 -            "Specification-Title" to "Pufferfish", // Pufferfish
-+            "Specification-Title" to "Purpur", // Pufferfish // Purpur
++            "Specification-Title" to "Purpur", // Pufferfish // Purpur - Rebrand
              "Specification-Version" to project.version,
 -            "Specification-Vendor" to "Pufferfish Studios LLC", // Pufferfish
 -            "Brand-Id" to "pufferfish:pufferfish", // Pufferfish
 -            "Brand-Name" to "Pufferfish", // Pufferfish
-+            "Specification-Vendor" to "Purpur Team", // Pufferfish // Purpur
-+            "Brand-Id" to "purpurmc:purpur", // Pufferfish // Purpur
-+            "Brand-Name" to "Purpur", // Pufferfish // Purpur
++            "Specification-Vendor" to "Purpur Team", // Pufferfish // Purpur - Rebrand
++            "Brand-Id" to "purpurmc:purpur", // Pufferfish // Purpur - Rebrand
++            "Brand-Name" to "Purpur", // Pufferfish // Purpur - Rebrand
              "Build-Number" to (build ?: ""),
              "Build-Time" to Instant.now().toString(),
              "Git-Branch" to gitBranch, // Paper
@@ -53,12 +53,12 @@ index cfa25c0cd7f7e249a4f22dc1d316bbf702b27e37..74d7aaae57e0e9ea9e31c4b2189ba50a
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
 -    group = "paper"
-+    group = "paperweight" // Purpur
++    group = "paperweight" // Purpur - Rebrand
      mainClass.set("org.bukkit.craftbukkit.Main")
      standardInput = System.`in`
      workingDir = rootProject.layout.projectDirectory
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..6d36fc6d8e22d9b68dea3830f6ecc8763184c343 100644
+index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..fe66e43c27e0798770e102d1385bacbaa90bda07 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -35,7 +35,10 @@ public class PaperVersionFetcher implements VersionFetcher {
@@ -66,10 +66,10 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..6d36fc6d8e22d9b68dea3830f6ecc876
      private static final int DISTANCE_ERROR = -1;
      private static final int DISTANCE_UNKNOWN = -2;
 -    private static final String DOWNLOAD_PAGE = "https://papermc.io/downloads/paper";
-+    // Purpur start
++    // Purpur start - Rebrand
 +    private static final String DOWNLOAD_PAGE = "https://purpurmc.org/downloads";
 +    private static int distance = DISTANCE_UNKNOWN; public int distance() { return distance; }
-+    // Purpur end
++    // Purpur end - Rebrand
  
      @Override
      public long getCacheTime() {
@@ -78,7 +78,7 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..6d36fc6d8e22d9b68dea3830f6ecc876
              updateMessage = text("You are running a development version without access to version information", color(0xFF5300));
          } else {
 -            updateMessage = getUpdateStatusMessage("PaperMC/Paper", build);
-+            updateMessage = getUpdateStatusMessage("PurpurMC/Purpur", build); // Purpur
++            updateMessage = getUpdateStatusMessage("PurpurMC/Purpur", build); // Purpur - Rebrand
          }
          final @Nullable Component history = this.getHistory();
  
@@ -87,7 +87,7 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..6d36fc6d8e22d9b68dea3830f6ecc876
  
      private static Component getUpdateStatusMessage(final String repo, final ServerBuildInfo build) {
 -        int distance = DISTANCE_ERROR;
-+        //int distance = DISTANCE_ERROR; // Purpur - use field
++        //int distance = DISTANCE_ERROR; // Purpur - use field - Rebrand
  
          final OptionalInt buildNumber = build.buildNumber();
          if (buildNumber.isPresent()) {
@@ -99,10 +99,10 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..6d36fc6d8e22d9b68dea3830f6ecc876
 -            case 0 -> text("You are running the latest version", NamedTextColor.GREEN);
 -            case DISTANCE_UNKNOWN -> text("Unknown version", NamedTextColor.YELLOW);
 -            default -> text("You are " + distance + " version(s) behind", NamedTextColor.YELLOW)
-+            case DISTANCE_ERROR -> text("* Error obtaining version information", NamedTextColor.RED); // Purpur
-+            case 0 -> text("* You are running the latest version", NamedTextColor.GREEN); // Purpur
-+            case DISTANCE_UNKNOWN -> text("* Unknown version", NamedTextColor.YELLOW); // Purpur
-+            default -> text("* You are " + distance + " version(s) behind", NamedTextColor.YELLOW) // Purpur
++            case DISTANCE_ERROR -> text("* Error obtaining version information", NamedTextColor.RED); // Purpur - Rebrand
++            case 0 -> text("* You are running the latest version", NamedTextColor.GREEN); // Purpur - Rebrand
++            case DISTANCE_UNKNOWN -> text("* Unknown version", NamedTextColor.YELLOW); // Purpur - Rebrand
++            default -> text("* You are " + distance + " version(s) behind", NamedTextColor.YELLOW) // Purpur - Rebrand
                  .append(Component.newline())
                  .append(text("Download the new version at: ")
                      .append(text(DOWNLOAD_PAGE, NamedTextColor.GOLD)
@@ -111,7 +111,7 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..6d36fc6d8e22d9b68dea3830f6ecc876
          try {
              try (final BufferedReader reader = Resources.asCharSource(
 -                URI.create("https://api.papermc.io/v2/projects/paper/versions/" + build.minecraftVersionId()).toURL(),
-+                URI.create("https://api.purpurmc.org/v2/purpur/" + build.minecraftVersionId()).toURL(), // Purpur
++                URI.create("https://api.purpurmc.org/v2/purpur/" + build.minecraftVersionId()).toURL(), // Purpur - Rebrand
                  Charsets.UTF_8
              ).openBufferedStream()) {
                  final JsonObject json = new Gson().fromJson(reader, JsonObject.class);
@@ -120,12 +120,12 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..6d36fc6d8e22d9b68dea3830f6ecc876
 -                    .mapToInt(JsonElement::getAsInt)
 -                    .max()
 -                    .orElseThrow();
-+                //final JsonArray builds = json.getAsJsonArray("builds"); // Purpur
-+                final int latest = json.getAsJsonObject("builds").getAsJsonPrimitive("latest").getAsInt(); // Purpur
++                //final JsonArray builds = json.getAsJsonArray("builds"); // Purpur - Rebrand
++                final int latest = json.getAsJsonObject("builds").getAsJsonPrimitive("latest").getAsInt(); // Purpur - Rebrand
                  return latest - jenkinsBuild;
              } catch (final JsonSyntaxException ex) {
 -                LOGGER.error("Error parsing json from Paper's downloads API", ex);
-+                LOGGER.error("Error parsing json from Purpur's downloads API", ex); // Purpur
++                LOGGER.error("Error parsing json from Purpur's downloads API", ex); // Purpur - Rebrand
                  return DISTANCE_ERROR;
              }
          } catch (final IOException e) {
@@ -134,11 +134,11 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..6d36fc6d8e22d9b68dea3830f6ecc876
          }
  
 -        return text("Previous version: " + oldVersion, NamedTextColor.GRAY, TextDecoration.ITALIC);
-+        return text("Previous: " + oldVersion, NamedTextColor.GRAY); // Purpur
++        return text("Previous: " + oldVersion, NamedTextColor.GRAY); // Purpur - Rebrand
      }
  }
 diff --git a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
-index 6ee39b534b8d992655bc0cef3c299d12cbae0034..90b3526479320064378f2cde6c2f2b8e48a59ba6 100644
+index 6ee39b534b8d992655bc0cef3c299d12cbae0034..bc7e4e5560708fea89c584b1d8b471f4966f311a 100644
 --- a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
 +++ b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
 @@ -20,7 +20,7 @@ public final class PaperConsole extends SimpleTerminalConsole {
@@ -146,19 +146,19 @@ index 6ee39b534b8d992655bc0cef3c299d12cbae0034..90b3526479320064378f2cde6c2f2b8e
      protected LineReader buildReader(LineReaderBuilder builder) {
          builder
 -                .appName("Paper")
-+                .appName("Purpur") // Purpur
++                .appName("Purpur") // Purpur - Rebrand
                  .variable(LineReader.HISTORY_FILE, java.nio.file.Paths.get(".console_history"))
                  .completer(new ConsoleCommandCompleter(this.server))
                  .option(LineReader.Option.COMPLETE_IN_WORD, true);
 diff --git a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
-index bf1aacdfac2d501c62038a22cb9eac7f9b946619..3099c21ee589acf6edff5903a23673adf489024f 100644
+index 19d602e4e6fa5abf59559eab4132677b09a967a1..0843e7c5c335a58d955a0841f2e02a9e4ac824d9 100644
 --- a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
 +++ b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
 @@ -32,6 +32,7 @@ public record ServerBuildInfoImpl(
  
      private static final String BRAND_PAPER_NAME = "Paper";
-     private static final String BRAND_PUFFERFISH_NAME = "Pufferfish"; // Purpur
-+    private static final String BRAND_PURPUR_NAME = "Purpur"; // Purpur
+     private static final String BRAND_PUFFERFISH_NAME = "Pufferfish"; // Purpur - Fix pufferfish issues
++    private static final String BRAND_PURPUR_NAME = "Purpur"; // Purpur - Rebrand
  
      private static final String BUILD_DEV = "DEV";
  
@@ -166,11 +166,11 @@ index bf1aacdfac2d501c62038a22cb9eac7f9b946619..3099c21ee589acf6edff5903a23673ad
          this(
              getManifestAttribute(manifest, ATTRIBUTE_BRAND_ID)
                  .map(Key::key)
--                .orElse(BRAND_PUFFERFISH_ID), // Purpur
-+                .orElse(BRAND_PURPUR_ID), // Purpur
+-                .orElse(BRAND_PUFFERFISH_ID), // Purpur - Fix pufferfish issues
++                .orElse(BRAND_PURPUR_ID), // Purpur - Fix pufferfish issues // Purpur - Rebrand
              getManifestAttribute(manifest, ATTRIBUTE_BRAND_NAME)
--                .orElse(BRAND_PUFFERFISH_NAME), // Purpur
-+                .orElse(BRAND_PURPUR_NAME), // Purpur
+-                .orElse(BRAND_PUFFERFISH_NAME), // Purpur - Fix pufferfish issues
++                .orElse(BRAND_PURPUR_NAME), // Purpur - Fix pufferfish issues // Purpur - Rebrand
              SharedConstants.getCurrentVersion().getId(),
              SharedConstants.getCurrentVersion().getName(),
              getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
@@ -178,8 +178,8 @@ index bf1aacdfac2d501c62038a22cb9eac7f9b946619..3099c21ee589acf6edff5903a23673ad
  
      @Override
      public boolean isBrandCompatible(final @NotNull Key brandId) {
--        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID); // Purpur
-+        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID) || brandId.equals(BRAND_PUFFERFISH_ID); // Purpur
+-        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID); // Purpur - Fix pufferfish issues
++        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID) || brandId.equals(BRAND_PUFFERFISH_ID); // Purpur - Fix pufferfish issues // Purpur - Rebrand
      }
  
      @Override
@@ -214,7 +214,7 @@ index b24265573fdef5d9a964bcd76146f34542c420cf..710477ae27ebc5afdf0012ef0867d05e
  
      public SystemReport getSystemReport() {
 diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileStorage.java b/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileStorage.java
-index e40665cead218502b44dd49051a53326ed94f061..cf0f3a14584b9280211f88808cb1ddfb10105ec5 100644
+index e40665cead218502b44dd49051a53326ed94f061..a68f27288604b6f6755efe3c8ea612e295cb1656 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileStorage.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileStorage.java
 @@ -289,7 +289,7 @@ public class RegionFileStorage implements AutoCloseable, ca.spottedleaf.moonrise
@@ -222,12 +222,12 @@ index e40665cead218502b44dd49051a53326ed94f061..cf0f3a14584b9280211f88808cb1ddfb
      // Paper start
      private static void printOversizedLog(String msg, Path file, int x, int z) {
 -        org.apache.logging.log4j.LogManager.getLogger().fatal(msg + " (" + file.toString().replaceAll(".+[\\\\/]", "") + " - " + x + "," + z + ") Go clean it up to remove this message. /minecraft:tp " + (x<<4)+" 128 "+(z<<4) + " - DO NOT REPORT THIS TO PAPER - You may ask for help on Discord, but do not file an issue. These error messages can not be removed.");
-+        org.apache.logging.log4j.LogManager.getLogger().fatal(msg + " (" + file.toString().replaceAll(".+[\\\\/]", "") + " - " + x + "," + z + ") Go clean it up to remove this message. /minecraft:tp " + (x<<4)+" 128 "+(z<<4) + " - DO NOT REPORT THIS TO PURPUR - You may ask for help on Discord, but do not file an issue. These error messages can not be removed."); // Purpur
++        org.apache.logging.log4j.LogManager.getLogger().fatal(msg + " (" + file.toString().replaceAll(".+[\\\\/]", "") + " - " + x + "," + z + ") Go clean it up to remove this message. /minecraft:tp " + (x<<4)+" 128 "+(z<<4) + " - DO NOT REPORT THIS TO PURPUR - You may ask for help on Discord, but do not file an issue. These error messages can not be removed."); // Purpur - Rebrand
      }
  
      private static CompoundTag readOversizedChunk(RegionFile regionfile, ChunkPos chunkCoordinate) throws IOException {
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftConsoleCommandSender.java b/src/main/java/org/bukkit/craftbukkit/command/CraftConsoleCommandSender.java
-index 4e56018b64d11f76c8da43fd8f85c6de72204e36..9607675e6c5bff2183c4420d11fc63eeb5747fb6 100644
+index 4e56018b64d11f76c8da43fd8f85c6de72204e36..36cec3ed39807e85013e4e3b98c979d7af37ce58 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/CraftConsoleCommandSender.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/CraftConsoleCommandSender.java
 @@ -21,7 +21,12 @@ public class CraftConsoleCommandSender extends ServerCommandSender implements Co
@@ -235,12 +235,12 @@ index 4e56018b64d11f76c8da43fd8f85c6de72204e36..9607675e6c5bff2183c4420d11fc63ee
      @Override
      public void sendMessage(String message) {
 -        this.sendRawMessage(message);
-+        // Purpur start
++        // Purpur start - Rebrand
 +        String[] parts = message.split("\n");
 +        for (String part : parts) {
 +        this.sendRawMessage(part);
 +        }
-+        // Purpur end
++        // Purpur end - Rebrand
      }
  
      @Override
@@ -249,12 +249,12 @@ index 4e56018b64d11f76c8da43fd8f85c6de72204e36..9607675e6c5bff2183c4420d11fc63ee
      @Override
      public void sendMessage(final net.kyori.adventure.identity.Identity identity, final net.kyori.adventure.text.Component message, final net.kyori.adventure.audience.MessageType type) {
 -        this.sendRawMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().serialize(message));
-+        this.sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().serialize(message)); // Purpur
++        this.sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().serialize(message)); // Purpur - Rebrand
      }
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-index 1354ccfbf525e5e64483ac5f443cc2325ba63850..5e7b833fc9f37bc370c76e5c43e6c9919d6d20af 100644
+index 1354ccfbf525e5e64483ac5f443cc2325ba63850..2e7c3d4befeb6256ce81ecaa9ed4e8fbcb21651e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
 +++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
 @@ -491,7 +491,7 @@ public class CraftScheduler implements BukkitScheduler {
@@ -262,12 +262,12 @@ index 1354ccfbf525e5e64483ac5f443cc2325ba63850..5e7b833fc9f37bc370c76e5c43e6c991
              } else {
                  // this.debugTail = this.debugTail.setNext(new CraftAsyncDebugger(this.currentTick + CraftScheduler.RECENT_TICKS, task.getOwner(), task.getTaskClass())); // Paper
 -                task.getOwner().getLogger().log(Level.SEVERE, "Unexpected Async Task in the Sync Scheduler. Report this to Paper"); // Paper
-+                task.getOwner().getLogger().log(Level.SEVERE, "Unexpected Async Task in the Sync Scheduler. Report this to Purpur"); // Paper // Purpur
++                task.getOwner().getLogger().log(Level.SEVERE, "Unexpected Async Task in the Sync Scheduler. Report this to Purpur"); // Paper // Purpur - Rebrand
                  // We don't need to parse pending
                  // (async tasks must live with race-conditions if they attempt to cancel between these few lines of code)
              }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 6ef651e6dc16bad45aeb76f8e17b97871c506a64..8979956334ad5802d221e45eba91248e7f048d13 100644
+index 6ef651e6dc16bad45aeb76f8e17b97871c506a64..d60e190ce5bfb0f57d282b8471faf61de5977076 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -505,7 +505,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
@@ -275,12 +275,12 @@ index 6ef651e6dc16bad45aeb76f8e17b97871c506a64..8979956334ad5802d221e45eba91248e
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
 -        return new gg.pufferfish.pufferfish.PufferfishVersionFetcher(); // Pufferfish
-+        return new com.destroystokyo.paper.PaperVersionFetcher(); // Pufferfish // Purpur
++        return new com.destroystokyo.paper.PaperVersionFetcher(); // Pufferfish // Purpur - Rebrand
      }
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 80553face9c70c2a3d897681e7761df85b22d464..99597258e8e88cd9e2c901c4ac3ff7faeeabee2b 100644
+index 80553face9c70c2a3d897681e7761df85b22d464..99eb04643fce44c37fd96c99756837ccafe7b559 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
@@ -288,12 +288,12 @@ index 80553face9c70c2a3d897681e7761df85b22d464..99597258e8e88cd9e2c901c4ac3ff7fa
          String result = "Unknown-Version";
  
 -        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/gg.pufferfish.pufferfish/pufferfish-api/pom.properties"); // Pufferfish
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.purpurmc.purpur/purpur-api/pom.properties"); // Pufferfish // Purpur
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.purpurmc.purpur/purpur-api/pom.properties"); // Pufferfish // Purpur - Rebrand
          Properties properties = new Properties();
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index f7a4fee9bb25ff256dc2e5ea26bfbceca6a49167..f51cc3de3ca935ef90f7f0e9dd0506b856fc55f3 100644
+index f7a4fee9bb25ff256dc2e5ea26bfbceca6a49167..47f168b2d62c9a0eebdd8ab678afd857e7622571 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -96,7 +96,7 @@ public class WatchdogThread extends ca.spottedleaf.moonrise.common.util.TickThre
@@ -301,7 +301,7 @@ index f7a4fee9bb25ff256dc2e5ea26bfbceca6a49167..f51cc3de3ca935ef90f7f0e9dd0506b8
      private WatchdogThread(long timeoutTime, boolean restart)
      {
 -        super( "Paper Watchdog Thread" );
-+        super( "Watchdog Thread" ); // Purpur - use a generic name
++        super( "Watchdog Thread" ); // Purpur - use a generic name - Rebrand
          this.timeoutTime = timeoutTime;
          this.restart = restart;
          earlyWarningEvery = Math.min(io.papermc.paper.configuration.GlobalConfiguration.get().watchdog.earlyWarningEvery, timeoutTime); // Paper
@@ -310,16 +310,16 @@ index f7a4fee9bb25ff256dc2e5ea26bfbceca6a49167..f51cc3de3ca935ef90f7f0e9dd0506b8
                  // Paper end
                  log.log( Level.SEVERE, "------------------------------" );
 -                log.log( Level.SEVERE, "The server has stopped responding! This is (probably) not a Paper bug." ); // Paper
-+                log.log( Level.SEVERE, "The server has stopped responding! This is (probably) not a Purpur bug." ); // Paper // Purpur
++                log.log( Level.SEVERE, "The server has stopped responding! This is (probably) not a Purpur bug." ); // Paper // Purpur - Rebrand
                  log.log( Level.SEVERE, "If you see a plugin in the Server thread dump below, then please report it to that author" );
                  log.log( Level.SEVERE, "\t *Especially* if it looks like HTTP or MySQL operations are occurring" );
                  log.log( Level.SEVERE, "If you see a world save or edit, then it means you did far more than your server can handle at once" );
                  log.log( Level.SEVERE, "\t If this is the case, consider increasing timeout-time in spigot.yml but note that this will replace the crash with LARGE lag spikes" );
 -                log.log( Level.SEVERE, "If you are unsure or still think this is a Paper bug, please report this to https://github.com/PaperMC/Paper/issues" );
-+                log.log( Level.SEVERE, "If you are unsure or still think this is a Purpur bug, please report this to https://github.com/PurpurMC/Purpur/issues" ); // Purpur
++                log.log( Level.SEVERE, "If you are unsure or still think this is a Purpur bug, please report this to https://github.com/PurpurMC/Purpur/issues" ); // Purpur - Rebrand
                  log.log( Level.SEVERE, "Be sure to include ALL relevant console errors and Minecraft crash reports" );
 -                log.log( Level.SEVERE, "Paper version: " + Bukkit.getServer().getVersion() );
-+                log.log( Level.SEVERE, "Purpur version: " + Bukkit.getServer().getVersion() ); // Purpur
++                log.log( Level.SEVERE, "Purpur version: " + Bukkit.getServer().getVersion() ); // Purpur - Rebrand
                  //
                  if ( net.minecraft.world.level.Level.lastPhysicsProblem != null )
                  {
@@ -328,13 +328,13 @@ index f7a4fee9bb25ff256dc2e5ea26bfbceca6a49167..f51cc3de3ca935ef90f7f0e9dd0506b8
                  } else
                  {
 -                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO PAPER - THIS IS NOT A BUG OR A CRASH  - " + Bukkit.getServer().getVersion() + " ---");
-+                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO PURPUR - THIS IS NOT A BUG OR A CRASH  - " + Bukkit.getServer().getVersion() + " ---"); // Purpur
++                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO PURPUR - THIS IS NOT A BUG OR A CRASH  - " + Bukkit.getServer().getVersion() + " ---"); // Purpur - Rebrand
                      log.log(Level.SEVERE, "The server has not responded for " + (currentTime - lastTick) / 1000 + " seconds! Creating thread dump");
                  }
                  // Paper end - Different message for short timeout
                  log.log( Level.SEVERE, "------------------------------" );
 -                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Paper!):" ); // Paper
-+                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Purpur!):" ); // Paper // Purpur
++                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Purpur!):" ); // Paper // Purpur - Rebrand
                  ca.spottedleaf.moonrise.patches.chunk_system.scheduling.ChunkTaskScheduler.dumpAllChunkLoadInfo(MinecraftServer.getServer(), isLongTimeout); // Paper - rewrite chunk system
                  this.dumpTickingInfo(); // Paper - log detailed tick information
                  WatchdogThread.dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( MinecraftServer.getServer().serverThread.getId(), Integer.MAX_VALUE ), log );
@@ -343,7 +343,7 @@ index f7a4fee9bb25ff256dc2e5ea26bfbceca6a49167..f51cc3de3ca935ef90f7f0e9dd0506b8
                  }
                  } else {
 -                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO PAPER - THIS IS NOT A BUG OR A CRASH ---");
-+                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO PURPUR - THIS IS NOT A BUG OR A CRASH ---"); // Purpur
++                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO PURPUR - THIS IS NOT A BUG OR A CRASH ---"); // Purpur - Rebrand
                  }
  
                  log.log( Level.SEVERE, "------------------------------" );

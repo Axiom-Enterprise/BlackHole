@@ -5,48 +5,48 @@ Subject: [PATCH] Phantoms burn in light
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Phantom.java b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-index fbac9260a510ad899aebd5a0196d122505dcc5da..604c4b971279699dd3fbef3b9c5f4b92c01b46e9 100644
+index 093c2601ff561c47775f9f99cb5990e6c1b05d8c..7f62544ed66850c9545d8db9897236abd52cbd56 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-@@ -49,6 +49,7 @@ public class Phantom extends FlyingMob implements Enemy {
-     Vec3 moveTargetPoint;
+@@ -50,6 +50,7 @@ public class Phantom extends FlyingMob implements Enemy {
      public BlockPos anchorPoint;
      Phantom.AttackPhase attackPhase;
-+    private static final net.minecraft.world.item.crafting.Ingredient TORCH = net.minecraft.world.item.crafting.Ingredient.of(net.minecraft.world.item.Items.TORCH, net.minecraft.world.item.Items.SOUL_TORCH); // Purpur
-     Vec3 crystalPosition; // Purpur
+     Vec3 crystalPosition; // Purpur - Phantoms attracted to crystals and crystals shoot phantoms
++    private static final net.minecraft.world.item.crafting.Ingredient TORCH = net.minecraft.world.item.crafting.Ingredient.of(net.minecraft.world.item.Items.TORCH, net.minecraft.world.item.Items.SOUL_TORCH); // Purpur - Phantoms burn in light
  
      public Phantom(EntityType<? extends Phantom> type, Level world) {
-@@ -241,7 +242,11 @@ public class Phantom extends FlyingMob implements Enemy {
+         super(type, world);
+@@ -243,7 +244,11 @@ public class Phantom extends FlyingMob implements Enemy {
  
      @Override
      public void aiStep() {
 -        if (this.isAlive() && this.shouldBurnInDay && this.isSunBurnTick()) { // Paper - shouldBurnInDay API
-+        // Purpur start
++        // Purpur start - Phantoms burn in light
 +        boolean burnFromDaylight = this.shouldBurnInDay && this.isSunBurnTick() && this.level().purpurConfig.phantomBurnInDaylight;
 +        boolean burnFromLightSource = this.level().purpurConfig.phantomBurnInLight > 0 && this.level().getMaxLocalRawBrightness(blockPosition()) >= this.level().purpurConfig.phantomBurnInLight;
 +        if (this.isAlive() && (burnFromDaylight || burnFromLightSource)) { // Paper - shouldBurnInDay API
-+        // Purpur end
-             if (getRider() == null || !this.isControllable()) // Purpur
++        // Purpur end - Phantoms burn in light
+             if (getRider() == null || !this.isControllable()) // Purpur - Ridables
              this.igniteForSeconds(8.0F);
          }
-@@ -641,6 +646,12 @@ public class Phantom extends FlyingMob implements Enemy {
+@@ -642,6 +647,12 @@ public class Phantom extends FlyingMob implements Enemy {
                  return false;
              } else if (!entityliving.isAlive()) {
                  return false;
-+            // Purpur start
++            // Purpur start - Phantoms burn in light
 +            } else if (level().purpurConfig.phantomBurnInLight > 0 && level().getLightEmission(new BlockPos(Phantom.this)) >= level().purpurConfig.phantomBurnInLight) {
 +                return false;
 +            } else if (level().purpurConfig.phantomIgnorePlayersWithTorch && (TORCH.test(entityliving.getItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND)) || TORCH.test(entityliving.getItemInHand(net.minecraft.world.InteractionHand.OFF_HAND)))) {
 +                return false;
-+            // Purpur end
++            // Purpur end - Phantoms burn in light
              } else {
                  if (entityliving instanceof Player) {
                      Player entityhuman = (Player) entityliving;
-@@ -787,6 +798,7 @@ public class Phantom extends FlyingMob implements Enemy {
+@@ -788,6 +799,7 @@ public class Phantom extends FlyingMob implements Enemy {
                  ServerLevel worldserver = getServerLevel(Phantom.this.level());
                  List<Player> list = worldserver.getNearbyPlayers(this.attackTargeting, Phantom.this, Phantom.this.getBoundingBox().inflate(16.0D, 64.0D, 16.0D));
  
-+                if (level().purpurConfig.phantomIgnorePlayersWithTorch) list.removeIf(human -> TORCH.test(human.getItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND)) || TORCH.test(human.getItemInHand(net.minecraft.world.InteractionHand.OFF_HAND)));// Purpur
++                if (level().purpurConfig.phantomIgnorePlayersWithTorch) list.removeIf(human -> TORCH.test(human.getItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND)) || TORCH.test(human.getItemInHand(net.minecraft.world.InteractionHand.OFF_HAND)));// Purpur - Phantoms burn in light
                  if (!list.isEmpty()) {
                      list.sort(Comparator.comparing((Entity e) -> { return e.getY(); }).reversed()); // CraftBukkit - decompile error
                      Iterator iterator = list.iterator();

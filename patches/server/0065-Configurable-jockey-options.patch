@@ -5,13 +5,14 @@ Subject: [PATCH] Configurable jockey options
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Drowned.java b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
-index 560743f2e49f71393b107b83881fcfd241fd122a..58908fa7f13eda35104065e6477ee1a1cb42cf00 100644
+index 6675ccfe80cd3c4369ca3f5aec53d0cfa294432b..d471fe99acaf25cb06e36be8a68ab64cfedb4a09 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Drowned.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
-@@ -103,6 +103,21 @@ public class Drowned extends Zombie implements RangedAttackMob {
+@@ -104,6 +104,22 @@ public class Drowned extends Zombie implements RangedAttackMob {
          this.getAttribute(Attributes.SPAWN_REINFORCEMENTS_CHANCE).setBaseValue(this.random.nextDouble() * this.level().purpurConfig.drownedSpawnReinforcements);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Configurable jockey options
 +    @Override
 +    public boolean jockeyOnlyBaby() {
 +        return level().purpurConfig.drownedJockeyOnlyBaby;
@@ -26,18 +27,19 @@ index 560743f2e49f71393b107b83881fcfd241fd122a..58908fa7f13eda35104065e6477ee1a1
 +    public boolean jockeyTryExistingChickens() {
 +        return level().purpurConfig.drownedJockeyTryExistingChickens;
 +    }
-+
++    // Purpur end - Configurable jockey options
      @Override
      protected void addBehaviourGoals() {
          this.goalSelector.addGoal(1, new Drowned.DrownedGoToWaterGoal(this, 1.0));
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Husk.java b/src/main/java/net/minecraft/world/entity/monster/Husk.java
-index d9dbcd15522301344770963a6e3592afe393861a..ed4b1e2df6d7c7dfa45d96b9c08f2aa429ad32c5 100644
+index 5ad22d4041afcbd50bf5a6ebfbdcb232eb6d3fbe..cd155b47369318f58ec55289a345f1bf28e2af14 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Husk.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Husk.java
-@@ -50,6 +50,21 @@ public class Husk extends Zombie {
+@@ -51,6 +51,22 @@ public class Husk extends Zombie {
          this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SPAWN_REINFORCEMENTS_CHANCE).setBaseValue(this.random.nextDouble() * this.level().purpurConfig.huskSpawnReinforcements);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Configurable jockey options
 +    @Override
 +    public boolean jockeyOnlyBaby() {
 +        return level().purpurConfig.huskJockeyOnlyBaby;
@@ -52,18 +54,19 @@ index d9dbcd15522301344770963a6e3592afe393861a..ed4b1e2df6d7c7dfa45d96b9c08f2aa4
 +    public boolean jockeyTryExistingChickens() {
 +        return level().purpurConfig.huskJockeyTryExistingChickens;
 +    }
-+
++    // Purpur end - Configurable jockey options
      public static boolean checkHuskSpawnRules(EntityType<Husk> type, ServerLevelAccessor world, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
          return checkMonsterSpawnRules(type, world, spawnReason, pos, random) && (EntitySpawnReason.isSpawner(spawnReason) || world.canSeeSky(pos));
      }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index 978f610d31312f36093c0111ce623d1157fa943d..cb5cf34781de4e87074a70a447fd463280147bdc 100644
+index 5763d259162750297e08acc51551489150dbc593..2ce812ff9cb702a1fc1784f35efb643a2f9036c2 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-@@ -133,6 +133,18 @@ public class Zombie extends Monster {
+@@ -134,6 +134,19 @@ public class Zombie extends Monster {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.zombieScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start -  Configurable jockey options
 +    public boolean jockeyOnlyBaby() {
 +        return level().purpurConfig.zombieJockeyOnlyBaby;
 +    }
@@ -75,11 +78,11 @@ index 978f610d31312f36093c0111ce623d1157fa943d..cb5cf34781de4e87074a70a447fd4632
 +    public boolean jockeyTryExistingChickens() {
 +        return level().purpurConfig.zombieJockeyTryExistingChickens;
 +    }
-+
++    // Purpur end -  Configurable jockey options
      @Override
      protected void registerGoals() {
-         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
-@@ -553,19 +565,20 @@ public class Zombie extends Monster {
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
+@@ -554,19 +567,20 @@ public class Zombie extends Monster {
          }
  
          if (object instanceof Zombie.ZombieGroupData entityzombie_groupdatazombie) {
@@ -106,7 +109,7 @@ index 978f610d31312f36093c0111ce623d1157fa943d..cb5cf34781de4e87074a70a447fd4632
                          Chicken entitychicken1 = (Chicken) EntityType.CHICKEN.create(this.level(), EntitySpawnReason.JOCKEY);
  
                          if (entitychicken1 != null) {
-@@ -575,6 +588,7 @@ public class Zombie extends Monster {
+@@ -576,6 +590,7 @@ public class Zombie extends Monster {
                              this.startRiding(entitychicken1);
                              world.addFreshEntity(entitychicken1, CreatureSpawnEvent.SpawnReason.MOUNT); // CraftBukkit
                          }
@@ -115,13 +118,14 @@ index 978f610d31312f36093c0111ce623d1157fa943d..cb5cf34781de4e87074a70a447fd4632
                  }
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java b/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
-index 09d44e4965e820b3cfae909040697d717e3c6643..2ee91a1822584fe11b139a747d60b6fa832fa177 100644
+index 35d8cef3c84bfd1bbf8afe2885b4f303a4985cdd..36a074627a95886d38bd5a262dddcebfe32d1ba6 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/ZombieVillager.java
-@@ -112,6 +112,21 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+@@ -113,6 +113,22 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
          this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SPAWN_REINFORCEMENTS_CHANCE).setBaseValue(this.random.nextDouble() * this.level().purpurConfig.zombieVillagerSpawnReinforcements);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Configurable jockey options
 +    @Override
 +    public boolean jockeyOnlyBaby() {
 +        return level().purpurConfig.zombieVillagerJockeyOnlyBaby;
@@ -136,18 +140,19 @@ index 09d44e4965e820b3cfae909040697d717e3c6643..2ee91a1822584fe11b139a747d60b6fa
 +    public boolean jockeyTryExistingChickens() {
 +        return level().purpurConfig.zombieVillagerJockeyTryExistingChickens;
 +    }
-+
++    // Purpur end - Configurable jockey options
      @Override
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java b/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
-index ba1ce7e0ed888bd47312e9d7da5426f5c1015d07..650f9e1ca3a5ddec5123133c9604f33140e948a8 100644
+index ca74450f13198fd7bf0190b4dc1df4288df5729d..953df397ea261d417ada15db8d6ffc539ad07c03 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/ZombifiedPiglin.java
-@@ -86,6 +86,21 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
+@@ -87,6 +87,22 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.zombifiedPiglinScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Configurable jockey options
 +    @Override
 +    public boolean jockeyOnlyBaby() {
 +        return level().purpurConfig.zombifiedPiglinJockeyOnlyBaby;
@@ -162,7 +167,7 @@ index ba1ce7e0ed888bd47312e9d7da5426f5c1015d07..650f9e1ca3a5ddec5123133c9604f331
 +    public boolean jockeyTryExistingChickens() {
 +        return level().purpurConfig.zombifiedPiglinJockeyTryExistingChickens;
 +    }
-+
++    // Purpur end - Configurable jockey options
      @Override
      public void setPersistentAngerTarget(@Nullable UUID angryAt) {
          this.persistentAngerTarget = angryAt;

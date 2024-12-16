@@ -5,14 +5,14 @@ Subject: [PATCH] Debug Marker API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 82c8dc67fc40e253a4765a215864d40c007de3c2..efb81eec2680fc9ae2b92edead07d1d78fbe2b00 100644
+index 9aa6744ab3a19e1ecf32b4aa059b7f4c555f03ff..b9f72ee3201e1d1d7d90df055ef4876f0bd27219 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1643,6 +1643,42 @@ public final class CraftServer implements Server {
-         net.minecraft.world.item.ItemStack itemStack = net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(material));
+@@ -1644,6 +1644,43 @@ public final class CraftServer implements Server {
          MinecraftServer.getServer().fuelValues().values.keySet().removeIf(itemStack::is);
      }
-+
+     // Purpur end - Added the ability to add combustible items
++    // Purpur start - Debug Marker API
 +    @Override
 +    public void sendBlockHighlight(Location location, int duration) {
 +        sendBlockHighlight(location, duration, "", 0x6400FF00);
@@ -48,18 +48,19 @@ index 82c8dc67fc40e253a4765a215864d40c007de3c2..efb81eec2680fc9ae2b92edead07d1d7
 +    public void clearBlockHighlights() {
 +        this.worlds.forEach((name, world) -> clearBlockHighlights());
 +    }
-     // Purpur End
++    // Purpur end - Debug Marker API
  
      @Override
+     public List<Recipe> getRecipesFor(ItemStack result) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 4f3da35084d1c69d1b697196a17f932fedee9b88..eb9bb689a52a7e9c95d6f2e07bb16799286e9057 100644
+index f1e85d6c745397fe012f1ae0fd6f64353eac65a7..5d7af6c1ec557d2a2813b87a64b8c8a99d2f87e0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2378,6 +2378,42 @@ public class CraftWorld extends CraftRegionAccessor implements World {
-     public float getLocalDifficultyAt(Location location) {
+@@ -2379,6 +2379,43 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          return getHandle().getCurrentDifficultyAt(io.papermc.paper.util.MCUtil.toBlockPosition(location)).getEffectiveDifficulty();
      }
-+
+     // Purpur end - Add local difficulty api
++    // Purpur start - Debug Marker API
 +    @Override
 +    public void sendBlockHighlight(Location location, int duration) {
 +        sendBlockHighlight(location, duration, "", 0x6400FF00);
@@ -95,18 +96,19 @@ index 4f3da35084d1c69d1b697196a17f932fedee9b88..eb9bb689a52a7e9c95d6f2e07bb16799
 +    public void clearBlockHighlights() {
 +        net.minecraft.network.protocol.game.DebugPackets.sendGameTestClearPacket(getHandle());
 +    }
-     // Purpur end
++    // Purpur end - Debug Marker API
  
      @Override
+     public Collection<GeneratedStructure> getStructures(int x, int z) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 6590bb419f7480dbe40bb3df5218da9aeebb3f03..ad24a45fc5b99140d6c28bd6f57016eaaecea110 100644
+index 29571c771c18387ee2a9be1fccad5f717f7b4021..84f184f366ac56956f9d290678c5684a9c957eb0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3614,5 +3614,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3614,5 +3614,44 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void resetIdleTimer() {
          getHandle().resetLastActionTime();
      }
-+
++    // Purpur start - Debug Marker API
 +    @Override
 +    public void sendBlockHighlight(Location location, int duration) {
 +        sendBlockHighlight(location, duration, "", 0x6400FF00);
@@ -144,5 +146,6 @@ index 6590bb419f7480dbe40bb3df5218da9aeebb3f03..ad24a45fc5b99140d6c28bd6f57016ea
 +        if (this.getHandle().connection == null) return;
 +        this.getHandle().connection.send(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new net.minecraft.network.protocol.common.custom.GameTestClearMarkersDebugPayload()));
 +    }
-     // Purpur end
++    // Purpur end - Debug Marker API
+     // Purpur end - Purpur client support
  }

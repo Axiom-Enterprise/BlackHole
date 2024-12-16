@@ -5,7 +5,7 @@ Subject: [PATCH] Fix pufferfish issues
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 96d831791edbe6ae07325008b760f70f75c4d713..cfa25c0cd7f7e249a4f22dc1d316bbf702b27e37 100644
+index 96d831791edbe6ae07325008b760f70f75c4d713..83e2c8784eaa77851e9efc6b889d673c1fd046d0 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -63,7 +63,7 @@ dependencies {
@@ -13,12 +13,12 @@ index 96d831791edbe6ae07325008b760f70f75c4d713..cfa25c0cd7f7e249a4f22dc1d316bbf7
      // Pufferfish start
      implementation("org.yaml:snakeyaml:1.32")
 -    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8.4") {
-+    implementation ("com.github.carleslc.Simple-YAML:Simple-Yaml:1.8.4") { // Purpur
++    implementation ("com.github.carleslc.Simple-YAML:Simple-Yaml:1.8.4") { // Purpur - Fix pufferfish issues
          exclude(group="org.yaml", module="snakeyaml")
      }
      // Pufferfish end
 diff --git a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
-index f5a43a1e1a78b3eaabbcadc7af09750ee478eeb6..3175d421e39bf1315cf699f2df7c63a6535bb5b9 100644
+index f5a43a1e1a78b3eaabbcadc7af09750ee478eeb6..68fec1c808a16ecbf2451daa3bb8f02c1bdfe7c4 100644
 --- a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
 +++ b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
 @@ -229,7 +229,7 @@ public class PufferfishConfig {
@@ -26,7 +26,7 @@ index f5a43a1e1a78b3eaabbcadc7af09750ee478eeb6..3175d421e39bf1315cf699f2df7c63a6
  
      private static void dynamicActivationOfBrains() throws IOException {
 -        dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", true);
-+        dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", false); // Purpur
++        dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", false); // Purpur - Fix pufferfish issues
          startDistance = getInt("dab.start-distance", "activation-range.start-distance", 12,
                  "This value determines how far away an entity has to be",
                  "from the player to start being effected by DEAR.");
@@ -35,19 +35,19 @@ index f5a43a1e1a78b3eaabbcadc7af09750ee478eeb6..3175d421e39bf1315cf699f2df7c63a6
      public static boolean throttleInactiveGoalSelectorTick;
  	private static void inactiveGoalSelectorThrottle() {
 -		throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-throttle", "inactive-goal-selector-disable", true,
-+		throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-throttle", "inactive-goal-selector-disable", false, // Purpur
++		throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-throttle", "inactive-goal-selector-disable", false, // Purpur - Fix pufferfish issues
  				"Throttles the AI goal selector in entity inactive ticks.",
  				"This can improve performance by a few percent, but has minor gameplay implications.");
  	}
 diff --git a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
-index 790bad0494454ca12ee152e3de6da3da634d9b20..bf1aacdfac2d501c62038a22cb9eac7f9b946619 100644
+index 790bad0494454ca12ee152e3de6da3da634d9b20..19d602e4e6fa5abf59559eab4132677b09a967a1 100644
 --- a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
 +++ b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
 @@ -31,6 +31,7 @@ public record ServerBuildInfoImpl(
      private static final String ATTRIBUTE_GIT_COMMIT = "Git-Commit";
  
      private static final String BRAND_PAPER_NAME = "Paper";
-+    private static final String BRAND_PUFFERFISH_NAME = "Pufferfish"; // Purpur
++    private static final String BRAND_PUFFERFISH_NAME = "Pufferfish"; // Purpur - Fix pufferfish issues
  
      private static final String BUILD_DEV = "DEV";
  
@@ -56,10 +56,10 @@ index 790bad0494454ca12ee152e3de6da3da634d9b20..bf1aacdfac2d501c62038a22cb9eac7f
              getManifestAttribute(manifest, ATTRIBUTE_BRAND_ID)
                  .map(Key::key)
 -                .orElse(BRAND_PAPER_ID),
-+                .orElse(BRAND_PUFFERFISH_ID), // Purpur
++                .orElse(BRAND_PUFFERFISH_ID), // Purpur - Fix pufferfish issues
              getManifestAttribute(manifest, ATTRIBUTE_BRAND_NAME)
 -                .orElse(BRAND_PAPER_NAME),
-+                .orElse(BRAND_PUFFERFISH_NAME), // Purpur
++                .orElse(BRAND_PUFFERFISH_NAME), // Purpur - Fix pufferfish issues
              SharedConstants.getCurrentVersion().getId(),
              SharedConstants.getCurrentVersion().getName(),
              getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
@@ -68,12 +68,12 @@ index 790bad0494454ca12ee152e3de6da3da634d9b20..bf1aacdfac2d501c62038a22cb9eac7f
      @Override
      public boolean isBrandCompatible(final @NotNull Key brandId) {
 -        return brandId.equals(this.brandId);
-+        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID); // Purpur
++        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID); // Purpur - Fix pufferfish issues
      }
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 593b343b7cd5a24e34ad19a9e93eb9258f862357..0dbfa1e9ae1f0b8b9c4e9de59a7844ae96f63077 100644
+index 593b343b7cd5a24e34ad19a9e93eb9258f862357..80ff364514d071d1862c4b3aa5d01b9c39062946 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -77,7 +77,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
@@ -81,12 +81,12 @@ index 593b343b7cd5a24e34ad19a9e93eb9258f862357..0dbfa1e9ae1f0b8b9c4e9de59a7844ae
                  if (Projectile.loadedThisTick > gg.pufferfish.pufferfish.PufferfishConfig.maxProjectileLoadsPerTick) {
                      if (++this.loadedLifetime > gg.pufferfish.pufferfish.PufferfishConfig.maxProjectileLoadsPerProjectile) {
 -                        this.discard();
-+                        this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD); // Purpur
++                        this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD); // Purpur - Fix pufferfish issues
                      }
                      return;
                  }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 99a95d77f44dddfd7be6c2ebd60e827d9de956b7..090e196cf391dced8adcb8106026d67b2aeac6b0 100644
+index 99a95d77f44dddfd7be6c2ebd60e827d9de956b7..00ea1c2037c7c7780764bfcc3e07b6554e910db2 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -135,7 +135,7 @@ public class LevelChunk extends ChunkAccess implements ca.spottedleaf.moonrise.p
@@ -94,7 +94,7 @@ index 99a95d77f44dddfd7be6c2ebd60e827d9de956b7..090e196cf391dced8adcb8106026d67b
          // Paper end - get block chunk optimisation
  
 -        this.lightningTick = new java.util.Random().nextInt(100000) << 1; // Pufferfish - initialize lightning tick
-+        this.lightningTick = java.util.concurrent.ThreadLocalRandom.current().nextInt(100000) << 1; // Pufferfish - initialize lightning tick // Purpur - any random will do
++        this.lightningTick = java.util.concurrent.ThreadLocalRandom.current().nextInt(100000) << 1; // Pufferfish - initialize lightning tick // Purpur - any random will do - Fix pufferfish issues
      }
  
      // CraftBukkit start

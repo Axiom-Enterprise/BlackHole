@@ -7,10 +7,10 @@ This allows for the server to set a default collar color when a wolf or cat is t
 Resets to RED when the value is invalid.
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-index 4be5d2c0ed8d314e09d43cb00d52f2452f84a426..c8e7eb5af0b7288d5ad3637ad5d1883b0cffc923 100644
+index 06b68fcf750a637e1f41eecacca2969cb55a8fa8..8d20b19b65616d8470542cc7337c8ddd7418be0b 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-@@ -355,6 +355,14 @@ public class Cat extends TamableAnimal implements VariantHolder<Holder<CatVarian
+@@ -357,6 +357,14 @@ public class Cat extends TamableAnimal implements VariantHolder<Holder<CatVarian
          return Mth.lerp(tickDelta, this.relaxStateOneAmountO, this.relaxStateOneAmount);
      }
  
@@ -26,13 +26,13 @@ index 4be5d2c0ed8d314e09d43cb00d52f2452f84a426..c8e7eb5af0b7288d5ad3637ad5d1883b
      @Override
      public Cat getBreedOffspring(ServerLevel world, AgeableMob entity) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 7eeb283d969c93e884791709734abf8b64b730d5..c05dd4e3489ea9c8a25244d2b4ccdb967c19d7db 100644
+index 966fe4544212cc831ae617bc2eb05189102ff470..f1d2e40f55a91810693a5604f3060e284f615fa0 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-@@ -212,6 +212,12 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -215,6 +215,12 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
          }
      }
- 
+     // Purpur end - Configurable chance for wolves to spawn rabid
 +    @Override
 +    public void tame(Player player) {
 +        setCollarColor(level().purpurConfig.wolfDefaultCollarColor);

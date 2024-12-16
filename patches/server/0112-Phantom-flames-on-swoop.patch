@@ -5,10 +5,10 @@ Subject: [PATCH] Phantom flames on swoop
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Phantom.java b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-index 604c4b971279699dd3fbef3b9c5f4b92c01b46e9..f6f96c1d7d43c5dee023152456b243f3590b0b37 100644
+index 7f62544ed66850c9545d8db9897236abd52cbd56..7926c11714b0f50fd02f2da4817c822fd5f60115 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-@@ -238,6 +238,7 @@ public class Phantom extends FlyingMob implements Enemy {
+@@ -240,6 +240,7 @@ public class Phantom extends FlyingMob implements Enemy {
              this.level().addParticle(ParticleTypes.MYCELIUM, this.getX() - (double) f3, this.getY() + (double) f5, this.getZ() - (double) f4, 0.0D, 0.0D, 0.0D);
          }
  

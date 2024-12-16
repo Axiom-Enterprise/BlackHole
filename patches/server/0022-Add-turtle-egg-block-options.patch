@@ -5,7 +5,7 @@ Subject: [PATCH] Add turtle egg block options
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java b/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
-index 953ddb2ea6fd48e57712e30a6addf23e188e5312..bae4931fff0db56aa125248e17b29f7c2557221f 100644
+index 953ddb2ea6fd48e57712e30a6addf23e188e5312..df2028f53fd07551f8aa7eeb49f99ac0676d5fe0 100644
 --- a/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
 @@ -204,6 +204,25 @@ public class TurtleEggBlock extends Block {
@@ -13,7 +13,7 @@ index 953ddb2ea6fd48e57712e30a6addf23e188e5312..bae4931fff0db56aa125248e17b29f7c
  
      private boolean canDestroyEgg(ServerLevel world, Entity entity) {
 -        return !(entity instanceof Turtle) && !(entity instanceof Bat) ? (!(entity instanceof LivingEntity) ? false : entity instanceof Player || world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) : false;
-+        // Purpur start
++        // Purpur start - Add turtle egg block options
 +        if (entity instanceof Turtle || entity instanceof Bat) {
 +            return false;
 +        }
@@ -32,7 +32,7 @@ index 953ddb2ea6fd48e57712e30a6addf23e188e5312..bae4931fff0db56aa125248e17b29f7c
 +        if (entity instanceof Player) return true;
 +
 +        return world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-+        // Purpur end
++        // Purpur end - Add turtle egg block options
      }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java

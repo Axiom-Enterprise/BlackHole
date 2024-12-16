@@ -5,10 +5,10 @@ Subject: [PATCH] Halloween options and optimizations
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/ambient/Bat.java b/src/main/java/net/minecraft/world/entity/ambient/Bat.java
-index 29445156f8660d84bb9840c6ac85e0e2188f443d..7b773edc6fa661e75964a80dcb6820d1b5def54d 100644
+index 2a8aa8d3887c700f465d296c35892b2c405d5f51..89b7ed0ea739775b8baa18b7ba21db222ff85dd4 100644
 --- a/src/main/java/net/minecraft/world/entity/ambient/Bat.java
 +++ b/src/main/java/net/minecraft/world/entity/ambient/Bat.java
-@@ -305,7 +305,7 @@ public class Bat extends AmbientCreature {
+@@ -307,7 +307,7 @@ public class Bat extends AmbientCreature {
              int i = world.getMaxLocalRawBrightness(pos);
              byte b0 = 4;
  
@@ -17,7 +17,7 @@ index 29445156f8660d84bb9840c6ac85e0e2188f443d..7b773edc6fa661e75964a80dcb6820d1
                  b0 = 7;
              } else if (random.nextBoolean()) {
                  return false;
-@@ -319,6 +319,7 @@ public class Bat extends AmbientCreature {
+@@ -321,6 +321,7 @@ public class Bat extends AmbientCreature {
      private static boolean isSpookySeason = false;
      private static final int ONE_HOUR = 20 * 60 * 60;
      private static int lastSpookyCheck = -ONE_HOUR;
@@ -26,7 +26,7 @@ index 29445156f8660d84bb9840c6ac85e0e2188f443d..7b773edc6fa661e75964a80dcb6820d1
          if (net.minecraft.server.MinecraftServer.currentTick - lastSpookyCheck > ONE_HOUR) {
          LocalDate localdate = LocalDate.now();
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index d41ed97feabd5b37f1ffae2a7b12c10895404591..f90f3e3ad7c941e3222a8119d9b01d571eef4c1b 100644
+index 27bdd3c4e0dc3fbb906689e2390c945bf3d40eea..20252b22c88d4cbfe7700052a8c56c9e0d703752 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -140,11 +140,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -43,10 +43,10 @@ index d41ed97feabd5b37f1ffae2a7b12c10895404591..f90f3e3ad7c941e3222a8119d9b01d57
                  this.armorDropChances[EquipmentSlot.HEAD.getIndex()] = 0.0F;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index b34dec421adc3ce56c0720a839a43ce42faeefaf..98e7b57a45ae3cae704c65ec6db5f715f9af99a4 100644
+index d0fcd51e36e7c7e774fcf9b1db42ec7fceb9fc41..37ee837f6e722cd4cb07ae9fcd366a1473dc0b49 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-@@ -595,11 +595,7 @@ public class Zombie extends Monster {
+@@ -598,11 +598,7 @@ public class Zombie extends Monster {
          }
  
          if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {

@@ -5,7 +5,7 @@ Subject: [PATCH] Implement TPSBar
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 02c7b57eef9a4462af413415ff268b9daeea0b93..632fd1b7d3474889b700b153d9cb49676f801b07 100644
+index 719fbce359f8c2c52ee4e9da3dfe9566f58c0346..f01fff591efc92267d96084660f9e9688bd65795 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -258,6 +258,7 @@ public class Commands {
@@ -17,7 +17,7 @@ index 02c7b57eef9a4462af413415ff268b9daeea0b93..632fd1b7d3474889b700b153d9cb4967
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6ab178e0541f027791406d547c38f63c1d72ef25..791fa782d5092e17f332dd6660c42d151182e854 100644
+index 16ab1d7735789d69f265092151db696d8f23f071..5ed363f80c7071995d24c8de1dd7ce7c88cdf6b6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1159,6 +1159,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -29,10 +29,10 @@ index 6ab178e0541f027791406d547c38f63c1d72ef25..791fa782d5092e17f332dd6660c42d15
          this.hasLoggedStop = true; // Paper - Debugging
          if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper - Debugging
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index c142f25e520e69d343702fcd83dfbbb117370d69..3596c659b638eeaeb8e8bd8f0b02e5ccd829accd 100644
+index 7ced95af8da7150caf115508f8cb694ad737a27f..fe4d240ae0a1c83efa968e41284aacefb3f6215e 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -368,6 +368,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -377,6 +377,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              }
  
              if (gg.pufferfish.pufferfish.PufferfishConfig.enableAsyncMobSpawning) mobSpawnExecutor.start(); // Pufferfish
@@ -41,13 +41,13 @@ index c142f25e520e69d343702fcd83dfbbb117370d69..3596c659b638eeaeb8e8bd8f0b02e5cc
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index f63c1eca0c7ecaec70aaae56c479aaae42df3008..01eff7ae375b9289360336ce728155b32b8cf347 100644
+index 06da0a206c3e0bf07875c6dd6e80646053c0ba0c..ce5c62cdd19f2202234d27fa2a9a380cc5b3c004 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -328,6 +328,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
      public @Nullable String clientBrandName = null; // Paper - Brand support
      public org.bukkit.event.player.PlayerQuitEvent.QuitReason quitReason = null; // Paper - Add API for quit reason; there are a lot of changes to do if we change all methods leading to the event
-     public boolean purpurClient = false; // Purpur
+     public boolean purpurClient = false; // Purpur - Purpur client support
 +    private boolean tpsBar = false; // Purpur
  
      // Paper start - rewrite chunk system
@@ -83,7 +83,7 @@ index f63c1eca0c7ecaec70aaae56c479aaae42df3008..01eff7ae375b9289360336ce728155b3
      // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 98992aae7c7724a25fc6f6aaee27b07dccbe2292..db0fe267c1eeb6e2f3ac03a64431d3126d7f5d5a 100644
+index f4b70fdb8efbd4da0cad8cd5fcdb7381ce548201..1ed7348fb2e10160eacee6c24691e7c8e074f428 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -419,6 +419,7 @@ public abstract class PlayerList {
@@ -103,7 +103,7 @@ index 98992aae7c7724a25fc6f6aaee27b07dccbe2292..db0fe267c1eeb6e2f3ac03a64431d312
  
          entityplayer.awardStat(Stats.LEAVE_GAME);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index b1be848bbc617968fbf1d1babbbf1a6e2bee6ec4..64c84cb6cc647ca37a0664b83eb24e7202aeb1e2 100644
+index 5feee7c130e71731051e610aeb0e8c3341bddb2e..6c7b7d6c6aff3dfd4bcc307c004513cf23f44a4d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -185,6 +185,7 @@ public class PurpurConfig {

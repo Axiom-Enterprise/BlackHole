@@ -5,10 +5,10 @@ Subject: [PATCH] Pigs give saddle back
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Pig.java b/src/main/java/net/minecraft/world/entity/animal/Pig.java
-index 8b9318713764f8429221b4f6fb162018408f5e1e..294545914dec0a06eadb6c2f139222b3f1a6f64c 100644
+index b7e4e4bbb85a44e0f2cd49a1419216ca3c526cd7..f9efd4c1fc30f2bbb061d31ded6e45c546b0bfa8 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Pig.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Pig.java
-@@ -180,6 +180,17 @@ public class Pig extends Animal implements ItemSteerable, Saddleable {
+@@ -181,6 +181,17 @@ public class Pig extends Animal implements ItemSteerable, Saddleable {
      public InteractionResult mobInteract(Player player, InteractionHand hand) {
          boolean flag = this.isFood(player.getItemInHand(hand));
  

@@ -8,10 +8,10 @@ This should help to reduce the amount of dirt, gravel, grass, and etc.
 that Endermen like to randomly place all over the world.
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index b6200fdef6d032cbaa3fdc4c2c8494fc0ad8ad65..bc17512c6077777169c9759fa445e21f9e51543b 100644
+index eeb008347f8e58d91030ac8920bfa641210835be..123b8430215840386c85a1c4d819122d7678cdcf 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-@@ -473,7 +473,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -474,7 +474,7 @@ public class EnderMan extends Monster implements NeutralMob {
  
      @Override
      public boolean requiresCustomPersistence() {

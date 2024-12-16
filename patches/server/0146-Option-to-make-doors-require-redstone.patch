@@ -5,7 +5,7 @@ Subject: [PATCH] Option to make doors require redstone
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/InteractWithDoor.java b/src/main/java/net/minecraft/world/entity/ai/behavior/InteractWithDoor.java
-index 3513b15f6622bfc134ecfcd9129f81a8acc2c601..6e70579a58a1bf906b176b81713e55318199cef6 100644
+index 3513b15f6622bfc134ecfcd9129f81a8acc2c601..2768e2a61ab7fbd82c2b8787e715163a7b0450b9 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/behavior/InteractWithDoor.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/behavior/InteractWithDoor.java
 @@ -57,7 +57,7 @@ public class InteractWithDoor {
@@ -13,7 +13,7 @@ index 3513b15f6622bfc134ecfcd9129f81a8acc2c601..6e70579a58a1bf906b176b81713e5531
                          if (iblockdata.is(BlockTags.MOB_INTERACTABLE_DOORS, (blockbase_blockdata) -> {
                              return blockbase_blockdata.getBlock() instanceof DoorBlock;
 -                        })) {
-+        }) && !DoorBlock.requiresRedstone(entityliving.level(), iblockdata, blockposition)) { // Purpur
++                        }) && !DoorBlock.requiresRedstone(entityliving.level(), iblockdata, blockposition)) { // Purpur - Option to make doors require redstone
                              DoorBlock blockdoor = (DoorBlock) iblockdata.getBlock();
  
                              if (!blockdoor.isOpen(iblockdata)) {
@@ -22,7 +22,7 @@ index 3513b15f6622bfc134ecfcd9129f81a8acc2c601..6e70579a58a1bf906b176b81713e5531
                          if (iblockdata1.is(BlockTags.MOB_INTERACTABLE_DOORS, (blockbase_blockdata) -> {
                              return blockbase_blockdata.getBlock() instanceof DoorBlock;
 -                        })) {
-+        }) && !DoorBlock.requiresRedstone(entityliving.level(), iblockdata, blockposition1)) { // Purpur
++                        }) && !DoorBlock.requiresRedstone(entityliving.level(), iblockdata, blockposition1)) { // Purpur - Option to make doors require redstone
                              DoorBlock blockdoor1 = (DoorBlock) iblockdata1.getBlock();
  
                              if (!blockdoor1.isOpen(iblockdata1)) {
@@ -31,34 +31,19 @@ index 3513b15f6622bfc134ecfcd9129f81a8acc2c601..6e70579a58a1bf906b176b81713e5531
                      if (!iblockdata.is(BlockTags.MOB_INTERACTABLE_DOORS, (blockbase_blockdata) -> {
                          return blockbase_blockdata.getBlock() instanceof DoorBlock;
 -                    })) {
-+                        }) || DoorBlock.requiresRedstone(entity.level(), iblockdata, blockposition)) { // Purpur
++                    }) || DoorBlock.requiresRedstone(entity.level(), iblockdata, blockposition)) { // Purpur - Option to make doors require redstone
                          iterator.remove();
                      } else {
                          DoorBlock blockdoor = (DoorBlock) iblockdata.getBlock();
-diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index ba7856973d22c031910df4ec2a84d101c540198c..7d219c1bfdcdc6d06dcb91c33ef09f88dca13aa3 100644
---- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-+++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -164,8 +164,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
-                 }
-                 if (level().purpurConfig.wanderingTraderRidable && itemstack.isEmpty()) return tryRide(player, hand); // Purpur
-                 if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur
--                this.setTradingPlayer(player);
--                this.openTradingScreen(player, this.getDisplayName(), 1);
-+                    this.setTradingPlayer(player);
-+                    this.openTradingScreen(player, this.getDisplayName(), 1);
-                 } // Purpur
-             }
- 
 diff --git a/src/main/java/net/minecraft/world/level/block/DoorBlock.java b/src/main/java/net/minecraft/world/level/block/DoorBlock.java
-index 077b99caf0ec0ee098786d23194d88e1dc4481ce..daf865c20cc193a12db0d98e3c0472eefdf635c2 100644
+index 077b99caf0ec0ee098786d23194d88e1dc4481ce..f8356e468841137dcc92b2fe5db1cafa24619eaf 100644
 --- a/src/main/java/net/minecraft/world/level/block/DoorBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/DoorBlock.java
 @@ -200,6 +200,7 @@ public class DoorBlock extends Block {
      protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
          if (!this.type.canOpenByHand()) {
              return InteractionResult.PASS;
-+        } else if (requiresRedstone(world, state, pos)) { return InteractionResult.CONSUME; // Purpur
++        } else if (requiresRedstone(world, state, pos)) { return InteractionResult.CONSUME; // Purpur - Option to make doors require redstone
          } else {
              state = (BlockState) state.cycle(DoorBlock.OPEN);
              world.setBlock(pos, state, 10);
@@ -67,7 +52,7 @@ index 077b99caf0ec0ee098786d23194d88e1dc4481ce..daf865c20cc193a12db0d98e3c0472ee
          return flag;
      }
 +
-+    // Purpur start
++    // Purpur start - Option to make doors require redstone
 +    public static boolean requiresRedstone(Level level, BlockState state, BlockPos pos) {
 +        if (level.purpurConfig.doorRequiresRedstone.contains(state.getBlock())) {
 +            // force update client
@@ -79,7 +64,7 @@ index 077b99caf0ec0ee098786d23194d88e1dc4481ce..daf865c20cc193a12db0d98e3c0472ee
 +        }
 +        return false;
 +    }
-+    // Purpur end
++    // Purpur end - Option to make doors require redstone
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index 0c3438c1914d6ec828c270fecfc7cf101fcfd211..88f2cf0023540a2fed5be6f7929e46dc7144673c 100644

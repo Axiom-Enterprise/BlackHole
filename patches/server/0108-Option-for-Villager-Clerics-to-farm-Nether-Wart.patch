@@ -136,10 +136,10 @@ index a0e0692d17760f440fe81d52887284c787e562db..ab9bebc07b5228dbc0d3ba4b0f7d1bbe
              brain.setMemory(MemoryModuleType.SECONDARY_JOB_SITE, list);
          } else {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 973dd0cdccb7787bdb36e4c1e8135490ab59c317..0ceeaef16ce0c4abcc3bd7350ed147c91bda8d64 100644
+index 681009327894c04224b9438ae8784b7a283e11a3..afa7b2c100ba1682b1621667901f9ec04f9a72b6 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -227,7 +227,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -229,7 +229,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              brain.addActivity(Activity.PLAY, VillagerGoalPackages.getPlayPackage(0.5F));
          } else {
              brain.setSchedule(Schedule.VILLAGER_DEFAULT);
@@ -148,7 +148,7 @@ index 973dd0cdccb7787bdb36e4c1e8135490ab59c317..0ceeaef16ce0c4abcc3bd7350ed147c9
          }
  
          brain.addActivity(Activity.CORE, VillagerGoalPackages.getCorePackage(villagerprofession, 0.5F));
-@@ -948,6 +948,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -950,6 +950,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
  
      public boolean hasFarmSeeds() {
          return this.getInventory().hasAnyMatching((itemstack) -> {

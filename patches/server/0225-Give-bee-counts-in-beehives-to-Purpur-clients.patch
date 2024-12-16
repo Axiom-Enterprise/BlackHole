@@ -5,7 +5,7 @@ Subject: [PATCH] Give bee counts in beehives to Purpur clients
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 757cedd57b89a452832f2c9d9e5ed9fb495ca933..74d4bb12d70cbfd8365337c8fbcdbdfe6d70e970 100644
+index 7203f7d84987ebdc98b85a733e823e472c53bebc..6cc112b6b79d2a14afed86029453b96a9feab8e9 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1171,6 +1171,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -17,10 +17,10 @@ index 757cedd57b89a452832f2c9d9e5ed9fb495ca933..74d4bb12d70cbfd8365337c8fbcdbdfe
          this.hasLoggedStop = true; // Paper - Debugging
          if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper - Debugging
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index c34c95efadd5e88e47322185c8e3b04e8260cdc5..8eb51119d60979f85bc98a9413d318522c732693 100644
+index 044cd4d2f9ad008a9078f5b20241c484bffb4b15..8bb2f70c448c9cffd9db8e44191ecfe4d4d40332 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -393,6 +393,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -402,6 +402,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
  
              if (gg.pufferfish.pufferfish.PufferfishConfig.enableAsyncMobSpawning) mobSpawnExecutor.start(); // Pufferfish
              org.purpurmc.purpur.task.BossBarTask.startAll(); // Purpur
@@ -29,7 +29,7 @@ index c34c95efadd5e88e47322185c8e3b04e8260cdc5..8eb51119d60979f85bc98a9413d31852
          }
      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index b3eba9f3d15ff94dd9044e135f5b304916e17c72..c677345c6d632aa92c3b6c395d3b5db11f933d8f 100644
+index 00f02ad5f248120ce031048e02fe1bacda5567b7..60bb703fdf582bc3ec1081f31818d696e3b276ed 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -435,6 +435,11 @@ public class PurpurConfig {

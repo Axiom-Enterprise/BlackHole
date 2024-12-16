@@ -5,10 +5,10 @@ Subject: [PATCH] Ender dragon always drop full exp
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index d1134a81cc3ada28790e8fcd4489d64e9650dae3..8cfe0d5f09fa08c3606f29ce243d6ce5f84090a0 100644
+index 1e1cd061203ab3ca2f1feb4a3f9fe2813d3d96aa..14feab288349f0fcd80b89466926b37d1087bf53 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-@@ -732,7 +732,7 @@ public class EnderDragon extends Mob implements Enemy {
+@@ -733,7 +733,7 @@ public class EnderDragon extends Mob implements Enemy {
          boolean flag = worldserver.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT);
          short short0 = 500;
  

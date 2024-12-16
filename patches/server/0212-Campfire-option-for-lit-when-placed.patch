@@ -5,7 +5,7 @@ Subject: [PATCH] Campfire option for lit when placed
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
-index 1b94f26e78db062f80d806b82f714a815b4710ff..299d782c4e84d8548f2faddfb03712bab388de09 100644
+index 1b94f26e78db062f80d806b82f714a815b4710ff..b6ba6ebe6ac15cbcb5d3a6221b47762e37c4a56f 100644
 --- a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 @@ -140,7 +140,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
@@ -13,7 +13,7 @@ index 1b94f26e78db062f80d806b82f714a815b4710ff..299d782c4e84d8548f2faddfb03712ba
          boolean flag = world.getFluidState(blockposition).getType() == Fluids.WATER;
  
 -        return (BlockState) ((BlockState) ((BlockState) ((BlockState) this.defaultBlockState().setValue(CampfireBlock.WATERLOGGED, flag)).setValue(CampfireBlock.SIGNAL_FIRE, this.isSmokeSource(world.getBlockState(blockposition.below())))).setValue(CampfireBlock.LIT, !flag)).setValue(CampfireBlock.FACING, ctx.getHorizontalDirection());
-+        return (BlockState) ((BlockState) ((BlockState) ((BlockState) this.defaultBlockState().setValue(CampfireBlock.WATERLOGGED, flag)).setValue(CampfireBlock.SIGNAL_FIRE, this.isSmokeSource(world.getBlockState(blockposition.below())))).setValue(CampfireBlock.LIT, world.purpurConfig.campFireLitWhenPlaced ? !flag : world.purpurConfig.campFireLitWhenPlaced)).setValue(CampfireBlock.FACING, ctx.getHorizontalDirection()); // Purpur
++        return (BlockState) ((BlockState) ((BlockState) ((BlockState) this.defaultBlockState().setValue(CampfireBlock.WATERLOGGED, flag)).setValue(CampfireBlock.SIGNAL_FIRE, this.isSmokeSource(world.getBlockState(blockposition.below())))).setValue(CampfireBlock.LIT, world.purpurConfig.campFireLitWhenPlaced ? !flag : world.purpurConfig.campFireLitWhenPlaced)).setValue(CampfireBlock.FACING, ctx.getHorizontalDirection()); // Purpur - Campfire option for lit when placed
      }
  
      @Override

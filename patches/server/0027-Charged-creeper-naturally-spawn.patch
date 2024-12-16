@@ -5,13 +5,14 @@ Subject: [PATCH] Charged creeper naturally spawn
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index 3ea4763a34447761e73d8643dce8c386fa7501c3..e95afb70fa13f7f2617cbd42b7f5d17b9bc1ec4f 100644
+index a93b9bf974fdee49cf9fe814bfb86467971f2f53..d67136ccf5e23accb656f2532e2ced93669f2a8d 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-@@ -257,6 +257,14 @@ public class Creeper extends Monster {
-         this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.creeperScale);
+@@ -258,6 +258,16 @@ public class Creeper extends Monster {
+         }
      }
  
++    // Purpur start - Charged creeper naturally spawn
 +    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.EntitySpawnReason spawnReason, @Nullable net.minecraft.world.entity.SpawnGroupData entityData) {
 +        double chance = world.getLevel().purpurConfig.creeperChargedChance;
 +        if (chance > 0D && random.nextDouble() <= chance) {
@@ -19,6 +20,7 @@ index 3ea4763a34447761e73d8643dce8c386fa7501c3..e95afb70fa13f7f2617cbd42b7f5d17b
 +        }
 +        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 +    }
++    // Purpur end - Charged creeper naturally spawn
 +
      @Override
      protected SoundEvent getHurtSound(DamageSource source) {

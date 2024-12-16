@@ -10,15 +10,15 @@ If min-shoot-interval-ticks and max-shoot-interval-ticks are both set to
 0, snow golems won't shoot any snowballs.
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-index bfdb0c52db44e7cc4f37fd42a22c8dae2cc28fac..3f97118c8ce4f4e9a5f2a2fc3acdc68a6828baed 100644
+index aaa581c5fa7a14958b2a7c20996cf70ad4efff04..d13d8d251af99289a66934ef04c7dfb9bf0611a2 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-@@ -81,7 +81,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
+@@ -82,7 +82,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
      @Override
      protected void registerGoals() {
-         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
 -        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25D, 20, 10.0F));
-+        this.goalSelector.addGoal(1, new RangedAttackGoal(this, level().purpurConfig.snowGolemAttackDistance, level().purpurConfig.snowGolemSnowBallMin, level().purpurConfig.snowGolemSnowBallMax, level().purpurConfig.snowGolemSnowBallModifier)); // Purpur
++        this.goalSelector.addGoal(1, new RangedAttackGoal(this, level().purpurConfig.snowGolemAttackDistance, level().purpurConfig.snowGolemSnowBallMin, level().purpurConfig.snowGolemSnowBallMax, level().purpurConfig.snowGolemSnowBallModifier)); // Purpur - Snow Golem rate of fire config
          this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D, 1.0000001E-5F));
          this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
          this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));

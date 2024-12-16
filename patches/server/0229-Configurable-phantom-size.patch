@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable phantom size
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Phantom.java b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-index 3104b76d98a2b3870535ea5e776fb8fb6e5d3680..23ca324c5379f9735232a9f74071117da23c2290 100644
+index 0682479b37064d7690c8da1569de8f7452a0439d..860162797972263283737e8f30d8b784955206be 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Phantom.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Phantom.java
-@@ -261,7 +261,11 @@ public class Phantom extends FlyingMob implements Enemy {
+@@ -274,7 +274,11 @@ public class Phantom extends FlyingMob implements Enemy {
      @Override
      public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
          this.anchorPoint = this.blockPosition().above(5);

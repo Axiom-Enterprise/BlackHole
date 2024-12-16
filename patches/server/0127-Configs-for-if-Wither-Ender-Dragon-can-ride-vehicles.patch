@@ -5,10 +5,10 @@ Subject: [PATCH] Configs for if Wither/Ender Dragon can ride vehicles
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index 6f7a74c9d98c880ee529d1edc0f711d0d3ae1399..eff4424fa9cbea4358c8d8cd4d20c53182f5179e 100644
+index 587b477305addbd1e5c71f34dc9df07be7f60384..d3721fcd9a537ad1e3c5712cd78bd436ac3e1a8b 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-@@ -1169,6 +1169,7 @@ public class EnderDragon extends Mob implements Enemy {
+@@ -1171,6 +1171,7 @@ public class EnderDragon extends Mob implements Enemy {
  
      @Override
      protected boolean canRide(Entity entity) {
@@ -17,10 +17,10 @@ index 6f7a74c9d98c880ee529d1edc0f711d0d3ae1399..eff4424fa9cbea4358c8d8cd4d20c531
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java b/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
-index b58d90fd6173e14daab31a2dcbbfbb5e59eca0cc..8b89c5e88a14b31a807080d54f38148d5901d579 100644
+index 2b0dea5e04b9fdcc15842c5a54e30d1fcd035ae1..7f37cb7ec2e31ab66b08f2605c83a7cb696c0d63 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
-@@ -735,6 +735,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
+@@ -736,6 +736,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
  
      @Override
      protected boolean canRide(Entity entity) {

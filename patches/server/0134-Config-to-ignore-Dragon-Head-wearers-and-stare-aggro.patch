@@ -7,10 +7,10 @@ Prevents Enderman from becoming aggresive towards players that are wearing a Dra
 Adds functionality to a useless item!
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index a5a13d9e56306f6fc53736d0c4af81fa3d972a45..dec6be6b823b00642a0066726e3cad298b7ed6a7 100644
+index 68847ab748e295b27d64d1a0addd374f57c14646..3fa5d2f2c8759f7777e3391e820bd6b7ade57b00 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-@@ -259,7 +259,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -260,7 +260,7 @@ public class EnderMan extends Monster implements NeutralMob {
  
      boolean isBeingStaredBy(Player player) {
          // Paper start - EndermanAttackPlayerEvent

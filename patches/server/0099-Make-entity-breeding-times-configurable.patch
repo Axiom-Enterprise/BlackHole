@@ -22,14 +22,14 @@ index 0a608418f87b71d5d71706712e1f82da0d7e4d34..03e7ca83e4c28dfaa5b52bcb100bd542
              // CraftBukkit end
              world.broadcastEntityEvent(entityvillager2, (byte) 12);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 4637d062b6a4c4d6de2ef54ec3cfdeb4344ff38e..9987d28ea145f6d0126cb4ea22001e0922fb51bd 100644
+index 4637d062b6a4c4d6de2ef54ec3cfdeb4344ff38e..8df1682dca61b0f771a1c08f5bcd797506badf19 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -49,6 +49,7 @@ public abstract class Animal extends AgeableMob {
      @Nullable
      public UUID loveCause;
      public ItemStack breedItem; // CraftBukkit - Add breedItem variable
-+    public abstract int getPurpurBreedTime(); // Purpur
++    public abstract int getPurpurBreedTime(); // Purpur - Make entity breeding times configurable
  
      protected Animal(EntityType<? extends Animal> type, Level world) {
          super(type, world);
@@ -39,501 +39,533 @@ index 4637d062b6a4c4d6de2ef54ec3cfdeb4344ff38e..9987d28ea145f6d0126cb4ea22001e09
          } // Paper
 -        this.setAge(6000);
 -        entityanimal.setAge(6000);
-+        // Purpur start
++        // Purpur start - Make entity breeding times configurable
 +        this.setAge(this.getPurpurBreedTime());
 +        entityanimal.setAge(entityanimal.getPurpurBreedTime());
-+        // Purpur end
++        // Purpur end - Make entity breeding times configurable
          this.resetLove();
          entityanimal.resetLove();
          worldserver.broadcastEntityEvent(this, (byte) 18);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index 5ad7612788c4ef5cc3a6cf5f706999aa6eed4718..235a2b732fd62bf7e8c34c14333c41a49a2418e0 100644
+index 8751cc882f2dcbf6dfc10cebab9d9a4f95ebfb10..121a4c58d4052eb0880f540e87beaf12a74eecd7 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-@@ -495,6 +495,11 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -496,6 +496,12 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.beeScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.beeBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      public int getRemainingPersistentAngerTime() {
          return (Integer) this.entityData.get(Bee.DATA_REMAINING_ANGER_TIME);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-index 821499778e2b97e39f5d439c4a8c55a283610750..4be5d2c0ed8d314e09d43cb00d52f2452f84a426 100644
+index b4f022093a52c1fe13ad67ad70d57fd0278a9d55..06b68fcf750a637e1f41eecacca2969cb55a8fa8 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-@@ -129,6 +129,11 @@ public class Cat extends TamableAnimal implements VariantHolder<Holder<CatVarian
-         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.catMaxHealth);
+@@ -132,6 +132,12 @@ public class Cat extends TamableAnimal implements VariantHolder<Holder<CatVarian
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.catScale);
      }
-+
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.catBreedingTicks;
 +    }
-     // Purpur end
- 
++    // Purpur end - Make entity breeding times configurable
      @Override
+     protected void registerGoals() {
+         this.temptGoal = new Cat.CatTemptGoal(this, 0.6D, (itemstack) -> {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Chicken.java b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
-index 798a59046c3ac9a3838f7bcaf7bb21e738b76e44..16cc3fdf412bfb46e766b56d25a92bdf93cffeed 100644
+index f6f7afc6a421022738f77e5eece193ad15de78ba..d06fb7d714efc88af13e6357536d4c58a7ec3bb5 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Chicken.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
-@@ -79,6 +79,11 @@ public class Chicken extends Animal {
+@@ -82,6 +82,12 @@ public class Chicken extends Animal {
+         // Purpur end - Chickens can retaliate
      }
-     // Purpur end
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.chickenBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cow.java b/src/main/java/net/minecraft/world/entity/animal/Cow.java
-index e6fa66a8c88d4f20a7383e8fd5b3df44718478fa..826927ec3d3ace50fb353333a666e35502a96171 100644
+index 88dd147317e200a11eb6a7e496bfffee9079fd6f..4b27440624deda151f63f7ce4670fd805d24eaba 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cow.java
-@@ -67,6 +67,11 @@ public class Cow extends Animal {
+@@ -68,6 +68,12 @@ public class Cow extends Animal {
+         this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.cowScale);
      }
-     // Purpur end
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.cowBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Fox.java b/src/main/java/net/minecraft/world/entity/animal/Fox.java
-index 75fd5fb03aec52c76df55ab75ba5d446e094c9c8..fe7c99a3f1450bb86a7949b9450e63c5b8f66d8f 100644
+index a0adc29bb09a3eaecdaf564fd992b8aefec69629..ce597675e973eb0d7ce580a2b4dfd76e7bb586b1 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Fox.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Fox.java
-@@ -188,6 +188,11 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
+@@ -189,6 +189,12 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.foxScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.foxBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
-@@ -976,8 +981,10 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
+@@ -977,8 +983,10 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
                      CriteriaTriggers.BRED_ANIMALS.trigger(entityplayer2, this.animal, this.partner, entityfox);
                  }
  
 -                this.animal.setAge(6000);
 -                this.partner.setAge(6000);
-+                // Purpur start
++                // Purpur start - Make entity breeding times configurable
 +                this.animal.setAge(this.animal.getPurpurBreedTime());
 +                this.partner.setAge(this.partner.getPurpurBreedTime());
-+                // Purpur end
++                // Purpur end - Make entity breeding times configurable
                  this.animal.resetLove();
                  this.partner.resetLove();
                  worldserver.addFreshEntityWithPassengers(entityfox, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.BREEDING); // CraftBukkit - added SpawnReason
 diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-index e5d8f23032244c77b4e2bcb8ead0b20a27acadf7..f17c30c55a75eba58fcda2407d8039f64e646e7f 100644
+index 96078cf11f13c85a3f019f70fa02668c43dbc559..28b544f4f2e0f30d831b57167fc3ea3ce28e2191 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-@@ -86,6 +86,11 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
+@@ -87,6 +87,12 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
          this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.mooshroomMaxHealth);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.mooshroomBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      public float getWalkTargetValue(BlockPos pos, LevelReader world) {
          return world.getBlockState(pos.below()).is(Blocks.MYCELIUM) ? 10.0F : world.getPathfindingCostFromLightLevels(pos);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Ocelot.java b/src/main/java/net/minecraft/world/entity/animal/Ocelot.java
-index 33384f84cb2b9fe7f702040a1d7669e956bb90f4..b86dfe9a4545189a1ab37fab2f0ed1e63b98a8ca 100644
+index c7acefca654c7a833da7c122634df5626cf208e5..9412acb55bccfb0e5f3f77ce9df09f33807de57c 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Ocelot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Ocelot.java
-@@ -88,6 +88,11 @@ public class Ocelot extends Animal {
+@@ -89,6 +89,12 @@ public class Ocelot extends Animal {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.ocelotScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.ocelotBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      public boolean isTrusting() {
          return (Boolean) this.entityData.get(Ocelot.DATA_TRUSTING);
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Panda.java b/src/main/java/net/minecraft/world/entity/animal/Panda.java
-index cf62e808687b81985073baa1be5773a2fe1cca69..3da181a7baa04e7852f7cdf7f12728ec448d707b 100644
+index 08114535138918dce26c6881194617028a5a258c..9c91207391f20adaf8f777c1db9502ee7aeda597 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Panda.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Panda.java
-@@ -145,6 +145,11 @@ public class Panda extends Animal {
+@@ -146,6 +146,12 @@ public class Panda extends Animal {
          setAttributes();
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.pandaBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected boolean canDispenserEquipIntoSlot(EquipmentSlot slot) {
          return slot == EquipmentSlot.MAINHAND && this.canPickUpLoot();
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index 8aea01dada4eb55f63a112d1a198e54c629afd2a..993d535e7b6d61b2b3583758b3bf5d1113348a7a 100644
+index cad1d66326837d88166eb3a7b5d871c3132b8b98..2311595018175d2786e34a3dd68ded7a7fe0838c 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-@@ -193,6 +193,11 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+@@ -194,6 +194,12 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.parrotScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return 6000;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Nullable
      @Override
      public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Pig.java b/src/main/java/net/minecraft/world/entity/animal/Pig.java
-index 294545914dec0a06eadb6c2f139222b3f1a6f64c..73e288133ee12561053f9225121e55955a963127 100644
+index f9efd4c1fc30f2bbb061d31ded6e45c546b0bfa8..aea1462503e41b09a4581651a8fa0d72e2d9b3cb 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Pig.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Pig.java
-@@ -88,6 +88,11 @@ public class Pig extends Animal implements ItemSteerable, Saddleable {
+@@ -89,6 +89,12 @@ public class Pig extends Animal implements ItemSteerable, Saddleable {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.pigScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.pigBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/PolarBear.java b/src/main/java/net/minecraft/world/entity/animal/PolarBear.java
-index 511d0559743655ed7b43a948fccc2621c906be02..472487c3cb8bdfb28625ffdf25f14d990737f8e4 100644
+index 09039a5a69ea582223d6ad06b1d99776742ec2e2..1fccc501f581dfd0c27c116a2e01a97abc023959 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/PolarBear.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/PolarBear.java
-@@ -120,6 +120,11 @@ public class PolarBear extends Animal implements NeutralMob {
+@@ -122,6 +122,12 @@ public class PolarBear extends Animal implements NeutralMob {
          }
      }
- 
+     // Purpur end - Breedable Polar Bears
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.polarBearBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Nullable
      @Override
      public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Rabbit.java b/src/main/java/net/minecraft/world/entity/animal/Rabbit.java
-index d851f25ca886f0e0939e397c4562b88db59f6885..b92965674200836e367a0632487226ed124fbe2d 100644
+index 6448d4f44f948f08121302784e966bf58abd9be1..0b4a1a8b0a41aaa083995c2059a9ce8757d44144 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Rabbit.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Rabbit.java
-@@ -145,6 +145,11 @@ public class Rabbit extends Animal implements VariantHolder<Rabbit.Variant> {
-         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.rabbitMaxHealth);
+@@ -148,6 +148,12 @@ public class Rabbit extends Animal implements VariantHolder<Rabbit.Variant> {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.rabbitScale);
      }
-+
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.rabbitBreedingTicks;
 +    }
-     // Purpur end
- 
++    // Purpur end - Make entity breeding times configurable
      @Override
+     public void registerGoals() {
+         this.goalSelector.addGoal(1, new FloatGoal(this));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Sheep.java b/src/main/java/net/minecraft/world/entity/animal/Sheep.java
-index d7aa0f0408f1778907106ff65fda55f36580c6fd..59fe849d3b7a41b2a606031b7bf494affc0d148d 100644
+index 3fd84abe0889b224c7c8d5af06b384d2fb431eb4..761ff22d66a191ab4c38d872e65afc2ee70f233d 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Sheep.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Sheep.java
-@@ -107,6 +107,11 @@ public class Sheep extends Animal implements Shearable {
+@@ -108,6 +108,12 @@ public class Sheep extends Animal implements Shearable {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.sheepScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.sheepBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected void registerGoals() {
          this.eatBlockGoal = new EatBlockGoal(this);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Turtle.java b/src/main/java/net/minecraft/world/entity/animal/Turtle.java
-index 500676a78aedc525aca989ccd0380cd2cc1a711b..6b2e27e2f8aeccfc4d84c73be0fa5a04f5a962e2 100644
+index 2133b8a2615be6502bf9d7b4d4c1bc75929b5022..0a29ce3a783a5bcadfd386927f176457596882ce 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Turtle.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Turtle.java
-@@ -109,6 +109,11 @@ public class Turtle extends Animal {
+@@ -110,6 +110,12 @@ public class Turtle extends Animal {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.turtleScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.turtleBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      public void setHomePos(BlockPos pos) {
          this.entityData.set(Turtle.HOME_POS, pos);
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 975f1a20ceb9f98c9922278640bf0ba1d7b606a4..71f76046b37705d064dc532ae1244ecc2920393a 100644
+index d86bad821e781d698cc2bf0b3179eb4d2ed065b1..539eba7148be12eb05c907ed86b0cea975424874 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-@@ -152,6 +152,11 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
+@@ -153,6 +153,12 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.wolfScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.wolfBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new FloatGoal(this));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/armadillo/Armadillo.java b/src/main/java/net/minecraft/world/entity/animal/armadillo/Armadillo.java
-index a7fdb54b1bda83e7a365447f2cb5701238ba6847..9ef53608f1608e88de7a7b3e96b43d8d2b4230ae 100644
+index 1a6c88558a11066ec2a78d40e6a1b0f2fa546b88..30779f8a00d438972ad59372ce92e23193f99820 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/armadillo/Armadillo.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/armadillo/Armadillo.java
-@@ -103,6 +103,11 @@ public class Armadillo extends Animal {
-         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.armadilloMaxHealth);
+@@ -106,6 +106,12 @@ public class Armadillo extends Animal {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.armadilloScale);
      }
-+
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.armadilloBreedingTicks;
 +    }
-     // Purpur end
- 
++    // Purpur end - Make entity breeding times configurable
      @Override
+     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+         super.defineSynchedData(builder);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
-index 79102c8819ce3d49538306db3ce4a723ea5d765d..f6b3bb53a0f6ad596322d6270bf27c5749d13c7b 100644
+index 63a51c0be69298f23f2e0e995ec6ed0a3bac06a4..41b0a0b2d430a4a8eba461caf3ad8ae418210ae0 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
-@@ -121,6 +121,11 @@ public class Axolotl extends Animal implements VariantHolder<Axolotl.Variant>, B
-         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.axolotlMaxHealth);
+@@ -124,6 +124,12 @@ public class Axolotl extends Animal implements VariantHolder<Axolotl.Variant>, B
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.axolotlScale);
      }
-+
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.axolotlBreedingTicks;
 +    }
-     // Purpur end
- 
++    // Purpur end - Make entity breeding times configurable
      @Override
+     public float getWalkTargetValue(BlockPos pos, LevelReader world) {
+         return 0.0F;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/camel/Camel.java b/src/main/java/net/minecraft/world/entity/animal/camel/Camel.java
-index 9b9e7c9048f453d01ccf13ffdc7ee0f2151155a9..dbce71f45c008da883b6d244a06343d83ae25e7e 100644
+index ab0b90c300d0610e423abe7ac9e5b93305a21c5a..d0023e3734bb3c625fa53077f47039dcb82d9606 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/camel/Camel.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/camel/Camel.java
-@@ -92,6 +92,10 @@ public class Camel extends AbstractHorse {
-     public boolean dismountsUnderwater() {
-         return level().purpurConfig.useDismountsUnderwaterTag ? super.dismountsUnderwater() : !level().purpurConfig.camelRidableInWater;
+@@ -94,6 +94,12 @@ public class Camel extends AbstractHorse {
      }
-+
+     // Purpur end - Ridables
+ 
++    // Purpur start - Make entity breeding times configurable
++    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.camelBreedingTicks;
 +    }
-     // Purpur end
- 
++    // Purpur end - Make entity breeding times configurable
      @Override
+     public void addAdditionalSaveData(CompoundTag nbt) {
+         super.addAdditionalSaveData(nbt);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java b/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
-index 4d246f463acac6ec92915792ddcecb69fa79a8d9..267f49bf00f5bbd5541e25c938f727a5bafd8eb2 100644
+index f4a133546dd54cd84a3c1dfefc0fad92ed92c040..d09aa48e20c9a6e0d465b93e3759556638041394 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
-@@ -165,6 +165,10 @@ public class Frog extends Animal implements VariantHolder<Holder<FrogVariant>> {
+@@ -165,6 +165,12 @@ public class Frog extends Animal implements VariantHolder<Holder<FrogVariant>> {
      }
-     // Purpur end
+     // Purpur end - Ridables
  
++    // Purpur start - Make entity breeding times configurable
++    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.frogBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected Brain.Provider<Frog> brainProvider() {
          return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
-index 2e9fb07b2974209cce5bd31aca095def474c51c2..3d862b7a0acc75b4f5ac502e5ef756fde8fe183e 100644
+index e8185de995af8749356f05b28f69d33db367e749..78b3e463518df396f03c5e00fdef75ee86b101cd 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
-@@ -110,6 +110,11 @@ public class Goat extends Animal {
+@@ -110,6 +110,12 @@ public class Goat extends Animal {
      }
-     // Purpur end
+     // Purpur end - Ridables
  
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.goatBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected Brain.Provider<Goat> brainProvider() {
          return Brain.provider(Goat.MEMORY_TYPES, Goat.SENSOR_TYPES);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/Donkey.java b/src/main/java/net/minecraft/world/entity/animal/horse/Donkey.java
-index 7362597d2ca9ea5375118d280e17b6c2719352a7..ba0b6c0154d72dd13acf9e1c0966e394d59943c7 100644
+index 8fd709bcd4c7a5a875bdc65fd4dd1420ea618e3a..4cff4fcedc75a99ca71ae6a7c34d6f407665bf1b 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/Donkey.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/Donkey.java
-@@ -38,6 +38,11 @@ public class Donkey extends AbstractChestedHorse {
+@@ -39,6 +39,12 @@ public class Donkey extends AbstractChestedHorse {
          return generateSpeed(this.level().purpurConfig.donkeyMovementSpeedMin, this.level().purpurConfig.donkeyMovementSpeedMax);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.donkeyBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected SoundEvent getAmbientSound() {
          return SoundEvents.DONKEY_AMBIENT;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/Horse.java b/src/main/java/net/minecraft/world/entity/animal/horse/Horse.java
-index b0392780b35866bf1903f49cb16c4ab79335882d..b9a406cd4e317c663a12d897b8cf1f4f6eeca662 100644
+index 13056a0a13eeb3dcc164344b973e6ff656c0793d..cbeb7d1e834a4f0f120248bec619e34ca46f8069 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/Horse.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/Horse.java
-@@ -65,6 +65,11 @@ public class Horse extends AbstractHorse implements VariantHolder<Variant> {
+@@ -66,6 +66,12 @@ public class Horse extends AbstractHorse implements VariantHolder<Variant> {
          return generateSpeed(this.level().purpurConfig.horseMovementSpeedMin, this.level().purpurConfig.horseMovementSpeedMax);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.horseBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected void randomizeAttributes(RandomSource random) {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((double)generateMaxHealth(random::nextInt));
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java b/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
-index 4a412a8a582e092a920029791a48c085527cbbd0..7ad4285f820360cf5ccff1ea564afac81eb24e35 100644
+index cbab482bd44c0a0fa82a80f41fdfd8c124c58c43..ea396b5740ae1e7b2cf5356607835467b412d379 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/Llama.java
-@@ -139,6 +139,11 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
+@@ -140,6 +140,12 @@ public class Llama extends AbstractChestedHorse implements VariantHolder<Llama.V
          return generateSpeed(this.level().purpurConfig.llamaMovementSpeedMin, this.level().purpurConfig.llamaMovementSpeedMax);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.llamaBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      public boolean isTraderLlama() {
          return false;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/Mule.java b/src/main/java/net/minecraft/world/entity/animal/horse/Mule.java
-index 7ec14013c9200f0fe4a565b2c923f92712aabc3c..9fbcc46ef7bc02ce5b265704545870d245e9b1f2 100644
+index f54df53412186a67efc8ef33b82e8756109059c3..02f075b6aadbd3b263235be761653c7d16ba3b1e 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/Mule.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/Mule.java
-@@ -37,6 +37,11 @@ public class Mule extends AbstractChestedHorse {
+@@ -38,6 +38,12 @@ public class Mule extends AbstractChestedHorse {
          return generateSpeed(this.level().purpurConfig.muleMovementSpeedMin, this.level().purpurConfig.muleMovementSpeedMax);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.muleBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      protected SoundEvent getAmbientSound() {
          return SoundEvents.MULE_AMBIENT;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/SkeletonHorse.java b/src/main/java/net/minecraft/world/entity/animal/horse/SkeletonHorse.java
-index d3b9763aa745154fd796f725c2d5babfaaf22050..069783ed1bb4bbb7dece4b7883fe4d306a1b92bd 100644
+index 133b1fdba0129ccbff146af6d44d8990f7598158..064f33e8c1768b20cf1ef61d20a7bda93b6e2855 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/SkeletonHorse.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/SkeletonHorse.java
-@@ -64,6 +64,11 @@ public class SkeletonHorse extends AbstractHorse {
+@@ -65,6 +65,12 @@ public class SkeletonHorse extends AbstractHorse {
          return generateSpeed(this.level().purpurConfig.skeletonHorseMovementSpeedMin, this.level().purpurConfig.skeletonHorseMovementSpeedMax);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return 6000;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      public static AttributeSupplier.Builder createAttributes() {
          return createBaseHorseAttributes().add(Attributes.MAX_HEALTH, 15.0D).add(Attributes.MOVEMENT_SPEED, 0.20000000298023224D);
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
-index 2f0b7ebb8bc9245e940bea76b6563b01722ce961..ec7b3fc6dbc78b226d33b517cbe2eed8eaa35d89 100644
+index 39ee4b850072ff27dc86857c5ce7ef66842a214d..e9d03e3063a5afe296720314f74a25e9cfb5dabf 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
-@@ -70,6 +70,11 @@ public class TraderLlama extends Llama {
+@@ -71,6 +71,12 @@ public class TraderLlama extends Llama {
          return generateSpeed(this.level().purpurConfig.traderLlamaMovementSpeedMin, this.level().purpurConfig.traderLlamaMovementSpeedMax);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.traderLlamaBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      public boolean isTraderLlama() {
          return true;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/ZombieHorse.java b/src/main/java/net/minecraft/world/entity/animal/horse/ZombieHorse.java
-index f2cb87234d8e60b9737c6dfbe3297857a9efc3a1..b7eda8855bc7162566975849f9bae7f182ad801c 100644
+index 6f910056aeed1b2fdf23c97ea706d062ae10bbfe..455c0e32931ef1fae41278ed360e2af535ccbaad 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/ZombieHorse.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/ZombieHorse.java
-@@ -60,6 +60,11 @@ public class ZombieHorse extends AbstractHorse {
+@@ -61,6 +61,12 @@ public class ZombieHorse extends AbstractHorse {
          return generateSpeed(this.level().purpurConfig.zombieHorseMovementSpeedMin, this.level().purpurConfig.zombieHorseMovementSpeedMax);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return 6000;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      public static AttributeSupplier.Builder createAttributes() {
          return createBaseHorseAttributes().add(Attributes.MAX_HEALTH, 15.0).add(Attributes.MOVEMENT_SPEED, 0.2F);
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/sniffer/Sniffer.java b/src/main/java/net/minecraft/world/entity/animal/sniffer/Sniffer.java
-index d08ff3f70ed3024dba7cf4405ba08d547ed5bf2d..464a16df15d8759d66f94ad080d1ea28b3f6474c 100644
+index e1354ffd4fc3a9b5bf6b43ff5c17d2416918520b..489854333e71ad4e7635870eedbdd07a84297a13 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/sniffer/Sniffer.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/sniffer/Sniffer.java
-@@ -111,6 +111,11 @@ public class Sniffer extends Animal {
-         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.snifferMaxHealth);
+@@ -114,6 +114,12 @@ public class Sniffer extends Animal {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.snifferScale);
      }
-+
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.snifferBreedingTicks;
 +    }
-     // Purpur end
- 
++    // Purpur end - Make entity breeding times configurable
      @Override
+     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+         super.defineSynchedData(builder);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Strider.java b/src/main/java/net/minecraft/world/entity/monster/Strider.java
-index 1ea797619359cca106aafa0b1e14a5cb00af582a..bfafa45575b99f08cbeb234bdb9c287f9f531b16 100644
+index c66126f3a43e6e011e5f9a977ad481c96529d1d5..b2f9e7dec710f9a135074d6b5eb438e127a7aaa9 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Strider.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Strider.java
-@@ -120,6 +120,11 @@ public class Strider extends Animal implements ItemSteerable, Saddleable {
+@@ -121,6 +121,12 @@ public class Strider extends Animal implements ItemSteerable, Saddleable {
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.striderScale);
      }
- 
+     // Purpur end - Configurable entity base attributes
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.striderBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      public static boolean checkStriderSpawnRules(EntityType<Strider> type, LevelAccessor world, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
          BlockPos.MutableBlockPos blockposition_mutableblockposition = pos.mutable();
  
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index fc78df484bf747d4a00acd85a3f9f3775dcdd8b1..0ee5bdae0d8e42b3d6475bfe49bfa41ee3192769 100644
+index 718f671b2db46638fbbeb0624d375ad17b7e9c60..a58fc9a974b04085816d1940c195a1f0fdc9ddb5 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -99,6 +99,11 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+@@ -100,6 +100,12 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
          this.timeInOverworld = timeInOverworld;
      }
  
++    // Purpur start - Make entity breeding times configurable
 +    @Override
 +    public int getPurpurBreedTime() {
 +        return this.level().purpurConfig.hoglinBreedingTicks;
 +    }
-+
++    // Purpur end - Make entity breeding times configurable
      @Override
      public boolean canBeLeashed() {
          return true;

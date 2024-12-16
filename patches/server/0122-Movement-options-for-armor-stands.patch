@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 692b4afe8616dac52f687baee86cbbd2af6763ec..7d7b1e21ad22831630cb825abcb75b1d69da5e14 100644
+index c7eed040e9cce78bc2dbb5258acadc73db38b7dc..9075321407518a2fe1fab469362a37b5a4dc3388 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -2040,7 +2040,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -25,24 +25,24 @@ index 692b4afe8616dac52f687baee86cbbd2af6763ec..7d7b1e21ad22831630cb825abcb75b1d
      }
  
 -    void updateInWaterStateAndDoWaterCurrentPushing() {
-+    public void updateInWaterStateAndDoWaterCurrentPushing() { // Purpur - package-private -> public
++    public void updateInWaterStateAndDoWaterCurrentPushing() { // Purpur - package-private -> public - Movement options for armor stands
          Entity entity = this.getVehicle();
  
          if (entity instanceof AbstractBoat abstractboat) {
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/ArmorStand.java b/src/main/java/net/minecraft/world/entity/decoration/ArmorStand.java
-index 12ff824ffa81ea45f76337ec2b6d80b01047b698..c954cb3255145e18e8ab1e5a1b0267b879bbd1f3 100644
+index 12ff824ffa81ea45f76337ec2b6d80b01047b698..e1c7a644dc922ca726cebf71ec2f0b159d6db289 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/ArmorStand.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/ArmorStand.java
 @@ -114,10 +114,12 @@ public class ArmorStand extends LivingEntity {
      private boolean noTickPoseDirty = false;
      private boolean noTickEquipmentDirty = false;
      // Paper end - Allow ArmorStands not to tick
-+    public boolean canMovementTick = true; // Purpur
++    public boolean canMovementTick = true; // Purpur - Movement options for armor stands
  
      public ArmorStand(EntityType<? extends ArmorStand> type, Level world) {
          super(type, world);
          if (world != null) this.canTick = world.paperConfig().entities.armorStands.tick; // Paper - Allow ArmorStands not to tick
-+        if (world != null) this.canMovementTick = world.purpurConfig.armorstandMovement; // Purpur
++        if (world != null) this.canMovementTick = world.purpurConfig.armorstandMovement; // Purpur - Movement options for armor stands
          this.handItems = NonNullList.withSize(2, ItemStack.EMPTY);
          this.armorItems = NonNullList.withSize(4, ItemStack.EMPTY);
          this.headPose = ArmorStand.DEFAULT_HEAD_POSE;
@@ -51,7 +51,7 @@ index 12ff824ffa81ea45f76337ec2b6d80b01047b698..c954cb3255145e18e8ab1e5a1b0267b8
      }
      // Paper end
 +
-+    // Purpur start
++    // Purpur start - Movement options for armor stands
 +    @Override
 +    public void updateInWaterStateAndDoWaterCurrentPushing() {
 +        if (this.level().purpurConfig.armorstandWaterMovement &&
@@ -63,7 +63,7 @@ index 12ff824ffa81ea45f76337ec2b6d80b01047b698..c954cb3255145e18e8ab1e5a1b0267b8
 +    public void aiStep() {
 +        if (this.canMovementTick && this.canMove) super.aiStep();
 +    }
-+    // Purpur end
++    // Purpur end - Movement options for armor stands
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index 3739561c633627ba3fe80f89bce84a243705f4bc..86b27b11f178be0cc05842ccb3ffe4ef14196855 100644

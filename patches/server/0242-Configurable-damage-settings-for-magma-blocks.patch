@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable damage settings for magma blocks
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/MagmaBlock.java b/src/main/java/net/minecraft/world/level/block/MagmaBlock.java
-index 7ffdcf18bf4bd8b5325c76945b2d80ca3fe52958..dfa931316fde0b2e80068a0edd1427ffd096b15b 100644
+index 7ffdcf18bf4bd8b5325c76945b2d80ca3fe52958..4adbbd27c5b2e4cef630c6c8aae38d3f2b94c11e 100644
 --- a/src/main/java/net/minecraft/world/level/block/MagmaBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/MagmaBlock.java
 @@ -29,7 +29,7 @@ public class MagmaBlock extends Block {
@@ -13,7 +13,7 @@ index 7ffdcf18bf4bd8b5325c76945b2d80ca3fe52958..dfa931316fde0b2e80068a0edd1427ff
      @Override
      public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
 -        if (!entity.isSteppingCarefully() && entity instanceof LivingEntity) {
-+        if ((!entity.isSteppingCarefully() || world.purpurConfig.magmaBlockDamageWhenSneaking) && entity instanceof LivingEntity) { // Purpur
++        if ((!entity.isSteppingCarefully() || world.purpurConfig.magmaBlockDamageWhenSneaking) && entity instanceof LivingEntity) { // Purpur - Configurable damage settings for magma blocks
              entity.hurt(world.damageSources().hotFloor().directBlock(world, pos), 1.0F); // CraftBukkit
          }
  

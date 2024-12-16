@@ -5,47 +5,47 @@ Subject: [PATCH] Breedable parrots
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index f951905a9b985cfeb3a960898724651e395b42e8..4a6137b3984a6a7c4bc0472ada4b61f948840b59 100644
+index 3305a49fed395c134cf099253ea0558b6bd27bd4..eb7d6c1367ad9e4b8292987a69531cd627580167 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-@@ -223,6 +223,7 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+@@ -226,6 +226,7 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
      protected void registerGoals() {
          //this.goalSelector.addGoal(0, new TamableAnimal.TamableAnimalPanicGoal(1.25D)); // Purpur - move down
          this.goalSelector.addGoal(0, new FloatGoal(this));
-+        if (this.level().purpurConfig.parrotBreedable) this.goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.BreedGoal(this, 1.0D)); // Purpur
-         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
-         this.goalSelector.addGoal(1, new TamableAnimal.TamableAnimalPanicGoal(1.25D)); // Purpur
++        if (this.level().purpurConfig.parrotBreedable) this.goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.BreedGoal(this, 1.0D)); // Purpur - Breedable parrots
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
+         this.goalSelector.addGoal(1, new TamableAnimal.TamableAnimalPanicGoal(1.25D)); // Purpur - Ridables
          this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
-@@ -330,6 +331,7 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+@@ -333,6 +334,7 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
                  }
              }
  
-+            if (this.level().purpurConfig.parrotBreedable) return super.mobInteract(player, hand); // Purpur
++            if (this.level().purpurConfig.parrotBreedable) return super.mobInteract(player, hand); // Purpur - Breedable parrots
              return InteractionResult.SUCCESS;
          } else if (!itemstack.is(ItemTags.PARROT_POISONOUS_FOOD)) {
              if (!this.isFlying() && this.isTame() && this.isOwnedBy(player)) {
-@@ -354,7 +356,7 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+@@ -357,7 +359,7 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
  
      @Override
      public boolean isFood(ItemStack stack) {
 -        return false;
-+        return this.level().purpurConfig.parrotBreedable && stack.is(ItemTags.PARROT_FOOD); // Purpur
++        return this.level().purpurConfig.parrotBreedable && stack.is(ItemTags.PARROT_FOOD); // Purpur - Breedable parrots
      }
  
      public static boolean checkParrotSpawnRules(EntityType<Parrot> type, LevelAccessor world, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
-@@ -366,13 +368,13 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+@@ -369,13 +371,13 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
  
      @Override
      public boolean canMate(Animal other) {
 -        return false;
-+        return super.canMate(other); // Purpur
++        return super.canMate(other); // Purpur - Breedable parrots
      }
  
      @Nullable
      @Override
      public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
 -        return null;
-+        return world.purpurConfig.parrotBreedable ? EntityType.PARROT.create(world, EntitySpawnReason.BREEDING) : null; // Purpur
++        return world.purpurConfig.parrotBreedable ? EntityType.PARROT.create(world, EntitySpawnReason.BREEDING) : null; // Purpur - Breedable parrots
      }
  
      @Nullable

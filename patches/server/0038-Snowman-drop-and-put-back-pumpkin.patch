@@ -5,10 +5,10 @@ Subject: [PATCH] Snowman drop and put back pumpkin
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-index 607c6c5fa38892d8c1d1f9fffc9ccc8617d2140d..bfdb0c52db44e7cc4f37fd42a22c8dae2cc28fac 100644
+index 0149071cc901beffd583c1ba7617e1355473fc77..aaa581c5fa7a14958b2a7c20996cf70ad4efff04 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-@@ -204,6 +204,14 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
+@@ -205,6 +205,14 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
              }
  
              return InteractionResult.SUCCESS;
@@ -21,7 +21,7 @@ index 607c6c5fa38892d8c1d1f9fffc9ccc8617d2140d..bfdb0c52db44e7cc4f37fd42a22c8dae
 +            return InteractionResult.SUCCESS;
 +        // Purpur end
          } else {
-             return tryRide(player, hand); // Purpur
+             return tryRide(player, hand); // Purpur - Ridables
          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index 419ebb012056d131d6d1b10c8bd72511a1c4df74..1fa34a6517b4b834354234471f9ed3bcaaf1ee03 100644

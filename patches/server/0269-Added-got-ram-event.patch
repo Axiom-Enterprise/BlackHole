@@ -5,10 +5,10 @@ Subject: [PATCH] Added got ram event
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
-index 752f44048ed4f61ce8e2cce67d0680b7837cdd29..d508cb2a61866c8fd7f381f8deb558ed86f7c845 100644
+index e2223f0f5e8704841e78bea6b3db40052fdb2bcf..9cd08bb4e9069bb2f701ef3825ba4c5af6f56790 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
-@@ -433,6 +433,7 @@ public class Goat extends Animal {
+@@ -436,6 +436,7 @@ public class Goat extends Animal {
  
      // Paper start - Goat ram API
      public void ram(net.minecraft.world.entity.LivingEntity entity) {

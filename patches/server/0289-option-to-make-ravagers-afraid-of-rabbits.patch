@@ -6,14 +6,14 @@ Subject: [PATCH] option to make ravagers afraid of rabbits
 https://github.com/PurpurMC/Purpur/discussions/713
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Ravager.java b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
-index 5688f6ff0c1d9d1fbca548dcff8d8dfa5b42b8fd..17aaa3f376ce6183911739536206f9f701e452b5 100644
+index 95562e3614880702655df4578119e6cf3702e566..a5134a80a707bc69ae5826eae89e79be5ec3fa41 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Ravager.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Ravager.java
-@@ -119,6 +119,7 @@ public class Ravager extends Raider {
+@@ -122,6 +122,7 @@ public class Ravager extends Raider {
          super.registerGoals();
          this.goalSelector.addGoal(0, new FloatGoal(this));
-         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
-+        if (level().purpurConfig.ravagerAvoidRabbits) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.AvoidEntityGoal<>(this, net.minecraft.world.entity.animal.Rabbit.class, 6.0F, 1.0D, 1.2D)); // Purpur
+         this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
++        if (level().purpurConfig.ravagerAvoidRabbits) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.AvoidEntityGoal<>(this, net.minecraft.world.entity.animal.Rabbit.class, 6.0F, 1.0D, 1.2D)); // Purpur - option to make ravagers afraid of rabbits
          this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
          this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.4D));
          this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));

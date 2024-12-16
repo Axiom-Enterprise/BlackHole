@@ -5,7 +5,7 @@ Subject: [PATCH] Item entity immunities
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
-index c563326d3131bc726c7f43311c3eaa82131c6745..b0675953a75ff01f714cf5f35ad3907281648724 100644
+index c563326d3131bc726c7f43311c3eaa82131c6745..2bec5ed591e658765602379f9065b8089f5df6ea 100644
 --- a/src/main/java/net/minecraft/server/level/ServerEntity.java
 +++ b/src/main/java/net/minecraft/server/level/ServerEntity.java
 @@ -81,7 +81,7 @@ public class ServerEntity {
@@ -13,24 +13,24 @@ index c563326d3131bc726c7f43311c3eaa82131c6745..b0675953a75ff01f714cf5f35ad39072
      private List<SynchedEntityData.DataValue<?>> trackedDataValues;
      // CraftBukkit start
 -    private final Set<ServerPlayerConnection> trackedPlayers;
-+    public final Set<ServerPlayerConnection> trackedPlayers; // Purpur - private -> public
++    public final Set<ServerPlayerConnection> trackedPlayers; // Purpur - private -> public - Item entity immunities
  
      public ServerEntity(ServerLevel worldserver, Entity entity, int i, boolean flag, Consumer<Packet<?>> consumer, Set<ServerPlayerConnection> trackedPlayers) {
          this.trackedPlayers = trackedPlayers;
 diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-index 0f086af57a5ff08c264dcbf89a8c3931ec73a609..c63cf322e0d00b5ec9929db8c22d4a392049160f 100644
+index 0f086af57a5ff08c264dcbf89a8c3931ec73a609..09403344ad63c538a2a221c6b726ebab1aab5642 100644
 --- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 @@ -64,6 +64,12 @@ public class ItemEntity extends Entity implements TraceableEntity {
      public boolean canMobPickup = true; // Paper - Item#canEntityPickup
      private int despawnRate = -1; // Paper - Alternative item-despawn-rate
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
-+    // Purpur start
++    // Purpur start - Item entity immunities
 +    public boolean immuneToCactus = false;
 +    public boolean immuneToExplosion = false;
 +    public boolean immuneToFire = false;
 +    public boolean immuneToLightning = false;
-+    // Purpur end
++    // Purpur end - Item entity immunities
  
      public ItemEntity(EntityType<? extends ItemEntity> type, Level world) {
          super(type, world);
@@ -39,7 +39,7 @@ index 0f086af57a5ff08c264dcbf89a8c3931ec73a609..c63cf322e0d00b5ec9929db8c22d4a39
      @Override
      public final boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
 -        if (this.isInvulnerableToBase(source)) {
-+        // Purpur start
++        // Purpur start - Item entity immunities
 +        if (
 +            (immuneToCactus && source.is(net.minecraft.world.damagesource.DamageTypes.CACTUS)) ||
 +            (immuneToFire && (source.is(net.minecraft.tags.DamageTypeTags.IS_FIRE) || source.is(net.minecraft.world.damagesource.DamageTypes.ON_FIRE) || source.is(net.minecraft.world.damagesource.DamageTypes.IN_FIRE))) ||
@@ -48,7 +48,7 @@ index 0f086af57a5ff08c264dcbf89a8c3931ec73a609..c63cf322e0d00b5ec9929db8c22d4a39
 +        ) {
 +            return false;
 +        } else if (this.isInvulnerableToBase(source)) {
-+        // Purpur end
++        // Purpur end - Item entity immunities
              return false;
          } else if (!world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) && source.getEntity() instanceof Mob) {
              return false;
@@ -56,17 +56,17 @@ index 0f086af57a5ff08c264dcbf89a8c3931ec73a609..c63cf322e0d00b5ec9929db8c22d4a39
      public void setItem(ItemStack stack) {
          this.getEntityData().set(ItemEntity.DATA_ITEM, stack);
          this.despawnRate = this.level().paperConfig().entities.spawning.altItemDespawnRate.enabled ? this.level().paperConfig().entities.spawning.altItemDespawnRate.items.getOrDefault(stack.getItem(), this.level().spigotConfig.itemDespawnRate) : this.level().spigotConfig.itemDespawnRate; // Paper - Alternative item-despawn-rate
-+        // Purpur start
++        // Purpur start - Item entity immunities
 +        if (level().purpurConfig.itemImmuneToCactus.contains(stack.getItem())) immuneToCactus = true;
 +        if (level().purpurConfig.itemImmuneToExplosion.contains(stack.getItem())) immuneToExplosion = true;
 +        if (level().purpurConfig.itemImmuneToFire.contains(stack.getItem())) immuneToFire = true;
 +        if (level().purpurConfig.itemImmuneToLightning.contains(stack.getItem())) immuneToLightning = true;
-+        // level end
++        // level end - Item entity immunities
      }
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
-index 30d62ee4d5cd2ddacb8783b5bbbf475d592b3e02..01e4395f1669d21c30465aa1366bd2f1ae17678f 100644
+index 30d62ee4d5cd2ddacb8783b5bbbf475d592b3e02..74f5b702b9602e4c8acbad4fb09c641e2c7844b2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
 @@ -151,4 +151,46 @@ public class CraftItem extends CraftEntity implements Item {
@@ -74,7 +74,7 @@ index 30d62ee4d5cd2ddacb8783b5bbbf475d592b3e02..01e4395f1669d21c30465aa1366bd2f1
          return "CraftItem";
      }
 +
-+    // Purpur start
++    // Purpur start - Item entity immunities
 +    @Override
 +    public void setImmuneToCactus(boolean immuneToCactus) {
 +        this.getHandle().immuneToCactus = immuneToCactus;
@@ -114,7 +114,7 @@ index 30d62ee4d5cd2ddacb8783b5bbbf475d592b3e02..01e4395f1669d21c30465aa1366bd2f1
 +    public boolean isImmuneToLightning() {
 +        return this.getHandle().immuneToLightning;
 +    }
-+    // Purpur end
++    // Purpur end - Item entity immunities
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 index bc355a6b03877ca5e74688df13a089b487cde86c..a750c73519b43f28b0fea69e6056e2752d2eed35 100644

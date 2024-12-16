@@ -5,10 +5,10 @@ Subject: [PATCH] Toggle for Wither's spawn sound
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java b/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
-index 54100d5d9ed31fe292750e668f3c2ba9257f5ef3..6a85049919f0cdc7051d1789a951d9e36162dfb9 100644
+index cf1450d891d096e073360e9a4c930510b5fd0535..a7e9b536d6c1eb5c811c15b7033f513543a4b519 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/wither/WitherBoss.java
-@@ -430,7 +430,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
+@@ -432,7 +432,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
                  }
                  // CraftBukkit end
  

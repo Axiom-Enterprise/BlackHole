@@ -5,10 +5,10 @@ Subject: [PATCH] Add death screen API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 84f184f366ac56956f9d290678c5684a9c957eb0..be78f020bb5dc57366d5eee84805a3fa75ae27db 100644
+index 95d011d48c312f247d766650b33d2366a774e5bf..df6fc6e6f4d1587dad704f609a854c5d996cf358 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3653,5 +3653,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3655,4 +3655,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          this.getHandle().connection.send(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new net.minecraft.network.protocol.common.custom.GameTestClearMarkersDebugPayload()));
      }
      // Purpur end - Debug Marker API
@@ -19,5 +19,4 @@ index 84f184f366ac56956f9d290678c5684a9c957eb0..be78f020bb5dc57366d5eee84805a3fa
 +        this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket(getEntityId(), io.papermc.paper.adventure.PaperAdventure.asVanilla(message)));
 +    }
 +    // Purpur end - Add death screen API
-     // Purpur end - Purpur client support
  }

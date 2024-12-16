@@ -5,7 +5,7 @@ Subject: [PATCH] AFK API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 0c4ccba73aab8a000d9cf1342aca4509383ac96f..c2a136d3f1ced0c42aae800e849ee704ddb6ce87 100644
+index 8207208d6fb3f982e9909add9e74a0dda69e8120..5e8a5e8e4120420a170c4733ae217e7948cef46c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2621,8 +2621,68 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -223,7 +223,7 @@ index 5d7a6e4b73f032db356e7ec369b150013e940ee6..e164833de0c29eed9025dd4af3f2bb74
                  if (range < 0.0 || d < range * range) {
                      return true;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index c5bd2a45b32e8dff83c148379544db125684622a..1016578c06d549683982dccfdce905d84d05eb83 100644
+index c5bd2a45b32e8dff83c148379544db125684622a..16671636da1b6da62a0bdf0daab745fcd89143b7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -584,10 +584,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -243,11 +243,11 @@ index c5bd2a45b32e8dff83c148379544db125684622a..1016578c06d549683982dccfdce905d8
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -3571,5 +3576,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-     public boolean usesPurpurClient() {
+@@ -3572,4 +3577,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return getHandle().purpurClient;
      }
-+
+     // Purpur end - Purpur client support
++    // Purpur start - AFK API
 +    @Override
 +    public boolean isAfk() {
 +        return getHandle().isAfk();
@@ -262,7 +262,7 @@ index c5bd2a45b32e8dff83c148379544db125684622a..1016578c06d549683982dccfdce905d8
 +    public void resetIdleTimer() {
 +        getHandle().resetLastActionTime();
 +    }
-     // Purpur end - Purpur client support
++    // Purpur end - AFK API
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 index 1321955eb23272d96e3028c1c46e75f6c1eaade0..82f0ae89ef3f0dc614edb4ccd3caa66cb387044c 100644

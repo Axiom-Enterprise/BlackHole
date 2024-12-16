@@ -101,13 +101,13 @@ index f1e85d6c745397fe012f1ae0fd6f64353eac65a7..5d7af6c1ec557d2a2813b87a64b8c8a9
      @Override
      public Collection<GeneratedStructure> getStructures(int x, int z) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 29571c771c18387ee2a9be1fccad5f717f7b4021..84f184f366ac56956f9d290678c5684a9c957eb0 100644
+index da20ebe8858b4ab5bf8ac62aeac1942320bfa91c..95d011d48c312f247d766650b33d2366a774e5bf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3614,5 +3614,44 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-     public void resetIdleTimer() {
+@@ -3616,4 +3616,43 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          getHandle().resetLastActionTime();
      }
+     // Purpur end - AFK API
 +    // Purpur start - Debug Marker API
 +    @Override
 +    public void sendBlockHighlight(Location location, int duration) {
@@ -147,5 +147,4 @@ index 29571c771c18387ee2a9be1fccad5f717f7b4021..84f184f366ac56956f9d290678c5684a
 +        this.getHandle().connection.send(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new net.minecraft.network.protocol.common.custom.GameTestClearMarkersDebugPayload()));
 +    }
 +    // Purpur end - Debug Marker API
-     // Purpur end - Purpur client support
  }

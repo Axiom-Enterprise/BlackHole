@@ -5,7 +5,7 @@ Subject: [PATCH] Component related conveniences
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index be20eed6e3bfab7a78228dfb42b50f80ad3d817c..a8c89328222f84dd69ee5dc69b07ddd5705d3259 100644
+index be20eed6e3bfab7a78228dfb42b50f80ad3d817c..09a7809b89a4f302a1149850d4daeb471365d189 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2236,6 +2236,26 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -39,7 +39,7 @@ index be20eed6e3bfab7a78228dfb42b50f80ad3d817c..a8c89328222f84dd69ee5dc69b07ddd5
          return new CommandSourceStack(this.commandSource(), this.position(), this.getRotationVector(), this.serverLevel(), this.getPermissionLevel(), this.getName().getString(), this.getDisplayName(), this.server, this);
      }
  
-+    // Purpur Start - Component related conveniences
++    // Purpur start - Component related conveniences
 +    public void sendMiniMessage(@Nullable String message) {
 +        if (message != null && !message.isEmpty()) {
 +            this.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(message));
@@ -57,14 +57,14 @@ index be20eed6e3bfab7a78228dfb42b50f80ad3d817c..a8c89328222f84dd69ee5dc69b07ddd5
          this.sendSystemMessage(message, false);
      }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 9b71655a425356132afb786eff623f558e1e3498..211cb78d2f80a027d8efe49954cc7aa9de3cb321 100644
+index 9b71655a425356132afb786eff623f558e1e3498..98e803eaf5ce4c773f35fd752c21c7176707427c 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -991,6 +991,20 @@ public abstract class PlayerList {
      }
      // CraftBukkit end
  
-+    // Purpur Start - Component related conveniences
++    // Purpur start - Component related conveniences
 +    public void broadcastMiniMessage(@Nullable String message, boolean overlay) {
 +        if (message != null && !message.isEmpty()) {
 +            this.broadcastMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(message), overlay);

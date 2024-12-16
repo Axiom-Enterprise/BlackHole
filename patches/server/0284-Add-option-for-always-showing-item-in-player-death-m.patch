@@ -5,7 +5,7 @@ Subject: [PATCH] Add option for always showing item in player death messages
 
 
 diff --git a/src/main/java/net/minecraft/world/damagesource/CombatTracker.java b/src/main/java/net/minecraft/world/damagesource/CombatTracker.java
-index 357a79d72a2de02a019595e457fe432bf409e516..4fb025a63628eb60509d90b680922a0220104bcb 100644
+index 10afc08930d7fe27ffa396ec5a10afb7769a3f0b..6853b91e047b92ae4042a26d6aad84874be11709 100644
 --- a/src/main/java/net/minecraft/world/damagesource/CombatTracker.java
 +++ b/src/main/java/net/minecraft/world/damagesource/CombatTracker.java
 @@ -54,7 +54,7 @@ public class CombatTracker {
@@ -18,10 +18,10 @@ index 357a79d72a2de02a019595e457fe432bf409e516..4fb025a63628eb60509d90b680922a02
              : Component.translatable(deathTranslationKey, this.mob.getDisplayName(), attackerDisplayName);
      }
 diff --git a/src/main/java/net/minecraft/world/damagesource/DamageSource.java b/src/main/java/net/minecraft/world/damagesource/DamageSource.java
-index d95d122601dd47a27e8d82a13b071919c360fe68..4a96d914f8aa6f0c5f13fc85369a311f25835ac2 100644
+index ccdf9d40b767115e0e6db2c29af42f5ec4c40f85..3781bca61379516d537650c79c614933454fdcd8 100644
 --- a/src/main/java/net/minecraft/world/damagesource/DamageSource.java
 +++ b/src/main/java/net/minecraft/world/damagesource/DamageSource.java
-@@ -218,7 +218,7 @@ public class DamageSource {
+@@ -219,7 +219,7 @@ public class DamageSource {
  
              ItemStack itemstack1 = itemstack;
  
@@ -31,7 +31,7 @@ index d95d122601dd47a27e8d82a13b071919c360fe68..4a96d914f8aa6f0c5f13fc85369a311f
      }
  
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 334bcf9f24c6b658664424fd960dad6fb9e28c7d..e2b2eb66907f3a35792a59d68509abda1dd34ccb 100644
+index 535c7d6298ca62ea1bf808ac8deec1d2381b3831..ab672b9041ae40ba3e78bc5f9f465ee70e420993 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -577,4 +577,9 @@ public class PurpurConfig {

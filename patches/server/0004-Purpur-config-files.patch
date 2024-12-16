@@ -159,14 +159,14 @@ index 97b5d6ba2b19a7c730730c74175a29157aed1840..cc2f23613644126c3f7506b26db8e6a8
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 1c2439ffc1e407ff69286817d22f127470ce07ba..c1478bc1d8fc12dcb2e7f3fd4154f1ab762b4d34 100644
+index 1c2439ffc1e407ff69286817d22f127470ce07ba..4257352ca30c2bf6de2c2cc700f9799263ae7c7e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -176,6 +176,14 @@ public class Main {
                          .describedAs("Jar file");
                  // Paper end
  
-+                // Purpur Start - Purpur config files
++                // Purpur start - Purpur config files
 +                acceptsAll(asList("purpur", "purpur-settings"), "File for purpur settings")
 +                    .withRequiredArg()
 +                    .ofType(File.class)

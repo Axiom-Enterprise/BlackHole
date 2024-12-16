@@ -5,14 +5,14 @@ Subject: [PATCH] Beacon Activation Range Configurable
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
-index 0e0d178f2793ab014358f534c8dc53218b89f083..fbc6b0099af34b0247f6144a9cef020f9ccddeef 100644
+index 0e0d178f2793ab014358f534c8dc53218b89f083..15a24cad5700cc1fe7430e425909869be84fe928 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
 @@ -92,6 +92,16 @@ public class BeaconBlockEntity extends BlockEntity implements MenuProvider, Name
  
      public double getEffectRange() {
          if (this.effectRange < 0) {
-+            // Purpur Start
++            // Purpur start - Beacon Activation Range Configurable
 +            if (this.level != null) {
 +                switch (this.levels) {
 +                    case 1: return this.level.purpurConfig.beaconLevelOne;
@@ -21,7 +21,7 @@ index 0e0d178f2793ab014358f534c8dc53218b89f083..fbc6b0099af34b0247f6144a9cef020f
 +                    case 4: return this.level.purpurConfig.beaconLevelFour;
 +                }
 +            }
-+            // Purpur End
++            // Purpur end - Beacon Activation Range Configurable
              return this.levels * 10 + 10;
          } else {
              return effectRange;

@@ -5,7 +5,7 @@ Subject: [PATCH] Add log suppression for LibraryLoader
 
 
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 1d4fb426bfba5f572785c5a904d01be8edf23f24..4e47c24adb808feee415ee3e1c159955a7be5c71 100644
+index d32eaca6dbb258187086d11038f8c78c00b1778d..99cccf7c0e4928b47c2a43239475208003781d49 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -471,11 +471,14 @@ public class PurpurConfig {

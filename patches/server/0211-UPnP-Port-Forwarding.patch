@@ -5,7 +5,7 @@ Subject: [PATCH] UPnP Port Forwarding
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 474f700049b6a84b890fa759e8655562786e9b64..7203f7d84987ebdc98b85a733e823e472c53bebc 100644
+index f83e41b3550fba692378bf7a6f8a12bba4249f0e..260df0edd90d6b27f9525683a84887a1cf94542a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -331,6 +331,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -33,10 +33,10 @@ index 474f700049b6a84b890fa759e8655562786e9b64..7203f7d84987ebdc98b85a733e823e47
          if (this.server != null) {
              this.server.spark.disable(); // Paper - spark
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index fe4d240ae0a1c83efa968e41284aacefb3f6215e..044cd4d2f9ad008a9078f5b20241c484bffb4b15 100644
+index 62edb3d26b4b05bebf6f281225e27fdc4ab081e4..a73bf35ac75bb3c9f82f8300d65af839fb97a77f 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -303,6 +303,30 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -304,6 +304,30 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              if (true) throw new IllegalStateException("Failed to bind to port", ioexception); // Paper - Propagate failed to bind to port error
              return false;
          }

@@ -72,7 +72,7 @@ index 13bd145b1e8006a53c22f5dc0c78f29b540c7663..7b2daf47e411362a462019a1612a99c9
          boolean flag1 = this.source.acceptsSuccess() && !this.silent;
          boolean flag2 = broadcastToOps && this.source.shouldInformAdmins() && !this.silent;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index d62f7375394409a278bc565c8263506c598ceeba..fca644c904fe5f4b2637ed9d3062ae247751b9f1 100644
+index 8ccf355a2541c8fb725c312c6955bb6cf624ff0f..135dd18f143e2cfe21ac35019aee61f6cdc80ef7 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -89,8 +89,8 @@ index d62f7375394409a278bc565c8263506c598ceeba..fca644c904fe5f4b2637ed9d3062ae24
 +        org.purpurmc.purpur.PurpurConfig.registerCommands();
 +        // Purpur end - Purpur config files
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // Paper - load version history now
+         gg.pufferfish.pufferfish.PufferfishConfig.pufferfishFile = (java.io.File) options.valueOf("pufferfish-settings"); // Purpur - Fix pufferfish issues
          gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
-         gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
 index 6470f145e2470574a40ddce6ca5bf924c1bb094c..62d4ccafc005ff00c17db9863db56b9ec77735c7 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
@@ -159,13 +159,13 @@ index 97b5d6ba2b19a7c730730c74175a29157aed1840..cc2f23613644126c3f7506b26db8e6a8
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 1c2439ffc1e407ff69286817d22f127470ce07ba..4257352ca30c2bf6de2c2cc700f9799263ae7c7e 100644
+index d74f885fcdf686359f761aa7356fe03cf293ee59..31b08d0c879ca7af6e186bf93095cd01e2565fcf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -176,6 +176,14 @@ public class Main {
-                         .describedAs("Jar file");
-                 // Paper end
- 
+@@ -183,6 +183,13 @@ public class Main {
+                     .defaultsTo(new File("pufferfish.yml"))
+                     .describedAs("Yml file");
+                 // Purpur end - Fix pufferfish issues
 +                // Purpur start - Purpur config files
 +                acceptsAll(asList("purpur", "purpur-settings"), "File for purpur settings")
 +                    .withRequiredArg()
@@ -173,7 +173,6 @@ index 1c2439ffc1e407ff69286817d22f127470ce07ba..4257352ca30c2bf6de2c2cc700f97992
 +                    .defaultsTo(new File("purpur.yml"))
 +                    .describedAs("Yml file");
 +                // Purpur end - Purpur config files
-+
                  // Paper start
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()

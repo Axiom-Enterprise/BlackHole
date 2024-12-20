@@ -17,7 +17,7 @@ index 719fbce359f8c2c52ee4e9da3dfe9566f58c0346..f01fff591efc92267d96084660f9e968
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 16ab1d7735789d69f265092151db696d8f23f071..5ed363f80c7071995d24c8de1dd7ce7c88cdf6b6 100644
+index 0b89eeab47d143b260aa5f8bb10197a95f4045e2..95350ac6f92c52918f4b760bb4f63f1720151db1 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1159,6 +1159,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -29,10 +29,10 @@ index 16ab1d7735789d69f265092151db696d8f23f071..5ed363f80c7071995d24c8de1dd7ce7c
          this.hasLoggedStop = true; // Paper - Debugging
          if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper - Debugging
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 7ced95af8da7150caf115508f8cb694ad737a27f..fe4d240ae0a1c83efa968e41284aacefb3f6215e 100644
+index ba318228ce89493b95d96375bd3e2ffb500db7a6..62edb3d26b4b05bebf6f281225e27fdc4ab081e4 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -377,6 +377,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -378,6 +378,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              }
  
              if (gg.pufferfish.pufferfish.PufferfishConfig.enableAsyncMobSpawning) mobSpawnExecutor.start(); // Pufferfish
@@ -41,7 +41,7 @@ index 7ced95af8da7150caf115508f8cb694ad737a27f..fe4d240ae0a1c83efa968e41284aacef
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 06da0a206c3e0bf07875c6dd6e80646053c0ba0c..ce5c62cdd19f2202234d27fa2a9a380cc5b3c004 100644
+index 51e58f447cc07224b2d9bbeff3719a719931a40c..303c9b2c6f1a62e40c5657248b727c14bb9c613a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -328,6 +328,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -83,7 +83,7 @@ index 06da0a206c3e0bf07875c6dd6e80646053c0ba0c..ce5c62cdd19f2202234d27fa2a9a380c
      // Purpur end
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index f4b70fdb8efbd4da0cad8cd5fcdb7381ce548201..1ed7348fb2e10160eacee6c24691e7c8e074f428 100644
+index 8596e1c016c51a840b8c0c6a8d5c8e0893c4f1c7..0969a713df3150b0b2d2dd2d595e5f49e491f8af 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -419,6 +419,7 @@ public abstract class PlayerList {

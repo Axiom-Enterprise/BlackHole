@@ -5,7 +5,7 @@ Subject: [PATCH] Add an option to fix MC-3304 (projectile looting)
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
-index f4f2581faba3f8686592f3f8ebbcdba3e5d30f7b..2f56d25fe4dce613f078455bd0150c6140df7fff 100644
+index d2a8e0fb1e673cec5701fd184cedfd8e49212acd..e136738ed53a488ad0aa67a04237ac6243fe712c 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 @@ -82,6 +82,7 @@ public abstract class AbstractArrow extends Projectile {
@@ -73,7 +73,7 @@ index 5f27e1ce23f2ed68e4c8af1986fafce940dbf826..d8cf49cbd82ed12d23fa10a81a88cc4b
                  return stack;
              }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 4e47c24adb808feee415ee3e1c159955a7be5c71..b5724a0646f2194591d0c8539b87a850ad1bb5db 100644
+index 99cccf7c0e4928b47c2a43239475208003781d49..8cbce0cb8fa811edf01af3dbdf69c8abd795b348 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -502,6 +502,11 @@ public class PurpurConfig {

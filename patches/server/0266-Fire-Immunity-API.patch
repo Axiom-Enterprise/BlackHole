@@ -5,7 +5,7 @@ Subject: [PATCH] Fire Immunity API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 7435ff1996e0a6db2f98f1218bf7d2b73a3e2b1d..1832f7ef8a14fb60e004cb7b99a0cd0155332349 100644
+index 766301a14033fcc6b9270e556b9c08e019996530..e6d662b9e8d50abd9160aeaea705abc8310eb3b5 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -393,6 +393,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -50,7 +50,7 @@ index 7435ff1996e0a6db2f98f1218bf7d2b73a3e2b1d..1832f7ef8a14fb60e004cb7b99a0cd01
          } catch (Throwable throwable) {
              CrashReport crashreport = CrashReport.forThrowable(throwable, "Loading entity NBT");
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index d4396ece618c0fec437ed915ce07be3fb5f7dca9..1290c1587fe9e39d9350c1079ab27f3be0c6084f 100644
+index f9d7f1d317a9534d471a481db8c26f9d3b15bfda..0e1b3f64d1a828b9c69efe45c511582880bdcb92 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 @@ -88,6 +88,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
@@ -71,7 +71,7 @@ index d4396ece618c0fec437ed915ce07be3fb5f7dca9..1290c1587fe9e39d9350c1079ab27f3b
      public boolean isInDaylight() {
          return getHandle().isSunBurnTick();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
-index 01e4395f1669d21c30465aa1366bd2f1ae17678f..5c1cda88080850314dac196dbe71ff12e48a8aca 100644
+index 74f5b702b9602e4c8acbad4fb09c641e2c7844b2..762be3721419bfe33ea6577d3c6961204fdb0037 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
 @@ -173,9 +173,14 @@ public class CraftItem extends CraftEntity implements Item {

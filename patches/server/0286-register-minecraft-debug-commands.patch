@@ -5,7 +5,7 @@ Subject: [PATCH] register minecraft debug commands
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index db455a0fc7e1fc004215b718ff470bd2f74eae1b..8d82425ccbc30b3f4a59767ca72bf37311ddeda0 100644
+index 93c07a4c96e25ed1db5e1f721ab5d53192a0225f..fe9a01e19ef182fb8e9c653fc1232ec7f13037e4 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -226,8 +226,8 @@ public class Commands {
@@ -32,7 +32,7 @@ index 978c0d7296f400fe2ebda89e4f61386e6e87fe0c..a880f4e5cf712654649ad043e58e073e
  
              io.papermc.paper.plugin.PluginInitializerManager.load(optionset); // Paper
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index e2b2eb66907f3a35792a59d68509abda1dd34ccb..8ceec24eeb4b441bcc37e75d4b6a778cc6184f31 100644
+index ab672b9041ae40ba3e78bc5f9f465ee70e420993..2d76827f83638c7f6bfa0d45bf950e18df22063e 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -582,4 +582,9 @@ public class PurpurConfig {

@@ -96,7 +96,7 @@ index 0000000000000000000000000000000000000000..15a226e3854d731f7724025ea3459c8a
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 08a81a45371fd273fb35956bef3bb7947bb4c5b6..7a442fb4cf78bcb1268359ee41a6de138edb76b6 100644
+index 07ec10fe4c96d0fd2a5f8a3df11c37cda7fff76a..0a579af1f1ecd6e73a8440e6821c41338dd28829 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -111,6 +111,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface

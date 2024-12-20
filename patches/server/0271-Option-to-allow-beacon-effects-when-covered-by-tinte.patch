@@ -5,7 +5,7 @@ Subject: [PATCH] Option to allow beacon effects when covered by tinted glass
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
-index fbc6b0099af34b0247f6144a9cef020f9ccddeef..2d190b3a6378b8cbadfa65510df1ccfbd5882ef8 100644
+index 15a24cad5700cc1fe7430e425909869be84fe928..98e3d0a6f1be8cef8678b4048a3a484012092f08 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
 @@ -178,6 +178,7 @@ public class BeaconBlockEntity extends BlockEntity implements MenuProvider, Name

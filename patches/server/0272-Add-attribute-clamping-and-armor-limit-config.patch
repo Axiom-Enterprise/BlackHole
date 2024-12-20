@@ -39,7 +39,7 @@ index f0703302e7dbbda88de8c648d20d87c55ed9b1e0..a913ebabaa5f443afa987b972355a8f8
      }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index b5724a0646f2194591d0c8539b87a850ad1bb5db..334bcf9f24c6b658664424fd960dad6fb9e28c7d 100644
+index 8cbce0cb8fa811edf01af3dbdf69c8abd795b348..535c7d6298ca62ea1bf808ac8deec1d2381b3831 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -507,6 +507,16 @@ public class PurpurConfig {

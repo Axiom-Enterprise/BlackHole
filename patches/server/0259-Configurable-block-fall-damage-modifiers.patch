@@ -18,7 +18,7 @@ index db79ef24ea01db5f619ab29700d3d391438fb742..54836f2a1e4cc9046ba29fb71ea237b3
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index b0fbadd0d6ec3e34e36c9f33ed89a3c315dc4289..91e68335d7007e3c1fe13eec0060db01c5f659ac 100644
+index 7531381e2e4d87ceeaa6478e13b23f6c072bef07..f00526753a83f95689fad2a132bef79f4479eec6 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
 @@ -88,6 +88,10 @@ public class Block extends BlockBehaviour implements ItemLike {
@@ -54,7 +54,7 @@ index ef364aa171a48482a45bc18cfe730ec20c3f7be6..74971d90506aa253d5ee821b5390fb25
      }
  }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index a282e1a0c832174a70c7b317f547c5d250fe37ad..1d4fb426bfba5f572785c5a904d01be8edf23f24 100644
+index 87ae04dff2645ba058325077cae4bcb20c7eab40..d32eaca6dbb258187086d11038f8c78c00b1778d 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -513,4 +513,50 @@ public class PurpurConfig {

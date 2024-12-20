@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable TPS Catchup
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 93aa1dce5c9bfdfff9372b0a84bfa2d5bf5c1169..d94f92730063454a1acaa037d5c5eed7a7a73490 100644
+index 00808ffd5b9afd16fb0c7353ef834d0479598ac8..07752c1348ef11f91bd0ba57d2ec97b10b446b5a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1346,7 +1346,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -13,12 +13,12 @@ index 93aa1dce5c9bfdfff9372b0a84bfa2d5bf5c1169..d94f92730063454a1acaa037d5c5eed7
                          this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + i, this.nextTickTimeNanos);
                          // Pufferfish start - tps catchup
 -                        if (!gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup) {
-+                        if (!gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup || !gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup) { // Purpur
++                        if (!org.purpurmc.purpur.PurpurConfig.tpsCatchup || !gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup) { // Purpur
                              this.nextTickTimeNanos = currentTime + i;
                              this.delayedTasksMaxNextTickTimeNanos = nextTickTimeNanos;
                          }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 1103935e49081c560b024b87f872e9b8c788bad2..c8e7e6333d20ca976ed74d839ccfaebdc02e5167 100644
+index 59b257051ed3040891f0a32b9c732f8bfabd6f7d..46d06b6887eac6b2e7b3fd9834fdd9284a773f39 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -251,4 +251,9 @@ public class PurpurConfig {

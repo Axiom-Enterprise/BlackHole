@@ -308,7 +308,7 @@ will be replaced later.
 ## Access Transformers
 Sometimes, Vanilla code already contains a field, method, or type you want to access
 but the visibility is too low (e.g. a private field in an entity class). Purpur can use access transformers
-to change the visibility or remove the final modifier from fields, methods, and classes. Inside the `build-data/paper.at`
+to change the visibility or remove the final modifier from fields, methods, and classes. Inside the `build-data/purpur.at`
 file, you can add ATs that are applied when you `./gradlew applyPatches`. You can read about the format of ATs
 [here](https://mcforge.readthedocs.io/en/latest/advanced/accesstransformers/#access-modifiers).
 

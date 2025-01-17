@@ -28,7 +28,7 @@
          this.saveEnderPearls(compound);
 +        compound.putBoolean("Purpur.TPSBar", this.tpsBar); // Purpur - Implement TPSBar
 +        compound.putBoolean("Purpur.CompassBar", this.compassBar); // Purpur - Add compass command
-+        compound.putBoolean("Purpur.CompassBar", this.compassBar); // Purpur - Add rambar command
++        compound.putBoolean("Purpur.RamBar", this.ramBar); // Purpur - Add rambar command
      }
  
      private void saveParentVehicle(CompoundTag tag) {

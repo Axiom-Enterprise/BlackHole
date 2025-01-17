@@ -30,7 +30,7 @@ index 121b57c7f5345f5d8884eaa1d36dac79fb7d42ef..9afbfe9bf493e09ca1963e8956ab7573
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 345e5c7aff07544e24f2e91d71585b06392d9927..fd84a5aac26bbf2de2c2fa8bb5bc76bcbd09c3e4 100644
+index 5cf2c7f8fb05a91ed17f1d9c07f7d3e748738058..3770dc90d9412c6378c0bd57a651b9c3e62b9a72 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -217,6 +217,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -42,7 +42,7 @@ index 345e5c7aff07544e24f2e91d71585b06392d9927..fd84a5aac26bbf2de2c2fa8bb5bc76bc
      public LevelChunk getChunkIfLoaded(int x, int z) {
          return this.chunkSource.getChunkAtIfLoadedImmediately(x, z); // Paper - Use getChunkIfLoadedImmediately
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index bb8f89d9a5f0bb69baea6ba241cc391b43f2314e..e4a27ef7c201b2f8c9fbb12a7dbcf704b9a92f2f 100644
+index 11b6149380ea6ca514a607801d499d740ce3d6dd..362e1bd5d19888535eb40f7ca7a9a5ef508f3c4a 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -848,6 +848,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
@@ -4631,7 +4631,7 @@ index 9b94e74f6317f835500225b087fe93487a7a0b22..b279e33bb14dfea4813bba770daf950f
          profilerFiller.pop();
          this.updateActivity();
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index 844add05c2a51825d410da428fd3e5a2ae71652c..9f476680247f50ca9381a4919dadc15f210a543c 100644
+index a60c7b828332fc214caea10be9bc1505e2b5d0a9..6c6806fd7204e3610142f0365d158aee33ef8b2c 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
 @@ -100,11 +100,30 @@ public class Zombie extends Monster {
@@ -4944,7 +4944,7 @@ index 9f476e587d7df797129e49738f101cccca7e10b7..f968e5c99bdb23b268bc34ea1ba5d54a
              && this.level() == entity.level()
              && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index e6a2190e784cc3ebed528fb301d5263e3e821358..ffcb621de492461d33b748a6e27eec8ffc9e2c38 100644
+index 7eb291323dfc71189ac4a160d3cb43506957aa9e..a7424ad414b72d2adaf0863bf1055f3eff5e2989 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -246,6 +246,28 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -4984,8 +4984,8 @@ index e6a2190e784cc3ebed528fb301d5263e3e821358..ffcb621de492461d33b748a6e27eec8f
 +        if (!inactive && (getRider() == null || !this.isControllable()) /*&& this.behaviorTick++ % this.activatedPriority == 0*/) { // Purpur - Ridables
              this.getBrain().tick(level, this); // Paper - EAR 2
          }
-         // Pufferfish end
-@@ -414,7 +436,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+         else if (this.isLobotomized && shouldRestock()) restock(); // Purpur - Lobotomize stuck villagers
+@@ -415,7 +437,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              return super.mobInteract(player, hand);
          } else if (this.isBaby()) {
              this.setUnhappy();
@@ -4994,7 +4994,7 @@ index e6a2190e784cc3ebed528fb301d5263e3e821358..ffcb621de492461d33b748a6e27eec8f
          } else {
              if (!this.level().isClientSide) {
                  boolean isEmpty = this.getOffers().isEmpty();
-@@ -427,9 +449,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -428,9 +450,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
                  }
  
                  if (isEmpty) {

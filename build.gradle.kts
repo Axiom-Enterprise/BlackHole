@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     java // TODO java launcher tasks
-    id("io.papermc.paperweight.patcher") version "2.0.0-beta.13"
+    id("io.papermc.paperweight.patcher") version "2.0.0-beta.14"
 }
 
 val paperMavenPublicUrl = "https://repo.papermc.io/repository/maven-public/"
@@ -27,11 +27,6 @@ paperweight {
             excludes = setOf("build.gradle.kts")
             patchesDir = file("purpur-api/paper-patches")
             outputDir = file("paper-api")
-        }
-        patchDir("paperApiGenerator") {
-            upstreamPath = "paper-api-generator"
-            patchesDir = file("purpur-api-generator/paper-patches")
-            outputDir = file("paper-api-generator")
         }
     }
 }

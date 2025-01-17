@@ -46,14 +46,8 @@ javac 21.0.5
 ## Understanding Patches
 
 Unlike the Purpur API and its implementation, modifications to Paper and Minecraft source files
-are done through patches. These patches/extensions are split into different
-three different sets of two categories, which are formatted like so:
-
-Under `purpur-api-generator`:
-
-- `paper-patches` (applies to the `paper-api/` git repo)
-    - `sources`: Per-file patches to Paper API Generator classes;
-    - `features`: Larger feature patches that modify multiple Paper API Generator classes.
+are done through patches. These patches/extensions are split into three different sets of two
+categories, which are formatted like so:
 
 Under `purpur-api`:
 
@@ -81,13 +75,12 @@ Assuming you have already forked the repository:
 2. Type `./gradlew applyAllPatches` in a terminal to apply the patches to both paper and minecraft classes.
    On Windows, remove `./` from the beginning of `gradlew` commands;
 3. cd into `purpur-server` for server changes, `purpur-api` for API changes,
-   `paper-api` for Paper API changes, `paper-api-generator` for Paper API Generator changes,
-   and `paper-server` for Paper Server changes.
+   `paper-api` for Paper API changes, and `paper-server` for Paper Server changes.
 
 `purpur-server/src/minecraft/java` and `purpur-server/src/minecraft/java/resources` are not git repositories in the traditional sense.
 Its initial commits are the decompiled and deobfuscated Minecraft source and resource files. The per-file
 patches are applied on top of these files as a single, large commit, which is then followed
-by the individual feature-patch commits. `paper-api/`, `paper-api-generator/`, and `paper-server/`
+by the individual feature-patch commits. `paper-api/` and `paper-server/`
 follow the same concept; each paper "project" has its own git repository that also includes it's own feature and per-file patches.
 
 ## Understanding the Gradle Tasks

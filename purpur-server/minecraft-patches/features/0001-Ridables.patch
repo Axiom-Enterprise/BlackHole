@@ -62,10 +62,10 @@ index 11b6149380ea6ca514a607801d499d740ce3d6dd..362e1bd5d19888535eb40f7ca7a9a5ef
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index d0dc5d6f25b7514bc3c65bbef5b40703f6d0eed7..f524f1de2093e0a3bd2f3cf8806232b2211d0583 100644
+index d681e14d33a8de6ca2c7f0a2e1ff9bb9d55adbbb..ee002c2cef9d4810fdacac71de77e948f5b0e89d 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2828,6 +2828,8 @@ public class ServerGamePacketListenerImpl
+@@ -2835,6 +2835,8 @@ public class ServerGamePacketListenerImpl
  
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
  
@@ -2308,7 +2308,7 @@ index 97adf8142cdd322c4873c420ed760e9dee34da23..e888e606b4b14fa6485de7426bc146b6
          profilerFiller.pop();
          profilerFiller.push("tadpoleActivityUpdate");
 diff --git a/net/minecraft/world/entity/animal/goat/Goat.java b/net/minecraft/world/entity/animal/goat/Goat.java
-index 30fd6bfad846c7a268ab87254974bad2ee0e0422..c4c78885373347ee052be9575b9f3b8dd9f2b781 100644
+index 7b73d4134d30ba8edb69785a2e2eb2d89b2341a7..302208b566038a3a352ca867dd70a61887bac104 100644
 --- a/net/minecraft/world/entity/animal/goat/Goat.java
 +++ b/net/minecraft/world/entity/animal/goat/Goat.java
 @@ -111,6 +111,23 @@ public class Goat extends Animal {
@@ -5047,7 +5047,7 @@ index fab309dc34eb88f2b9c844078f167885121675c1..0f8ec3abead11c46205cd21290c65ec2
                  if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
                  this.setTradingPlayer(player);
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index 7ce6d81b1b1dff25e8986d2c7a0c90afd2855f42..d0321875d2a2b612b438cc7973a7e9f172a61778 100644
+index 3ca4dd7fdb3b8205d72593c13a0fe76e86f76095..ca998a8a480af63d4a5f58a1f4490528a7b33c69 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -220,6 +220,19 @@ public abstract class Player extends LivingEntity {

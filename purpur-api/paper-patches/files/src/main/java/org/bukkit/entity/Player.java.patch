@@ -1,9 +1,9 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -3892,4 +_,123 @@
+@@ -3928,4 +_,123 @@
+      * @return the result of this method, holding leftovers and spawned items.
       */
-     void sendEntityEffect(org.bukkit.@NotNull EntityEffect effect, @NotNull Entity target);
-     // Paper end - entity effect API
+     @NotNull PlayerGiveResult give(@NotNull Collection<@NotNull ItemStack> items, boolean dropIfFull);
 +
 +    // Purpur start
 +    /**

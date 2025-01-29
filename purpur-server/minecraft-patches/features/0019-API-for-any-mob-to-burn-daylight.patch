@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index e4ee886f33ee63ae740cd89067c8ec81c12f2a62..f61c29abf75443b206f37b90950d6c0e14ea59ff 100644
+index 62a38ecedbd579b32a8fd9cff5a433bfe635fc62..8473a7d9af9d83e97387ddf4cc50f6ad22730def 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -534,6 +534,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -530,6 +530,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
      // Purpur end - Add canSaveToDisk to Entity
  
@@ -268,7 +268,7 @@ index 32b7c34d3c68dcfa936b628b2d038524204129a3..0ee817699fffbb929011465029182cc5
      }
  
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index 5d12bc139c81ca342074c7c745635669020d0300..f8d41ce860c5f48ab9b5e4b79a554dab85d2ba9b 100644
+index bb8c37c8348172947efe14d48ed9ae203409affa..b1da45df27f02395d793e7eafe576f5f92aa3a7b 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
 @@ -89,11 +89,12 @@ public class Zombie extends Monster {

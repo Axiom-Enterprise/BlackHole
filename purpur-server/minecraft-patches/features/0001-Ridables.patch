@@ -42,7 +42,7 @@ index 5cf2c7f8fb05a91ed17f1d9c07f7d3e748738058..3770dc90d9412c6378c0bd57a651b9c3
      public LevelChunk getChunkIfLoaded(int x, int z) {
          return this.chunkSource.getChunkAtIfLoadedImmediately(x, z); // Paper - Use getChunkIfLoadedImmediately
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 11b6149380ea6ca514a607801d499d740ce3d6dd..362e1bd5d19888535eb40f7ca7a9a5ef508f3c4a 100644
+index a6f771cbee878eb383b67c61fa2469f2916413b5..d77381237f8a7d1b2f280a5032f5e1c8f0ab8f94 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -848,6 +848,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
@@ -75,10 +75,10 @@ index d681e14d33a8de6ca2c7f0a2e1ff9bb9d55adbbb..ee002c2cef9d4810fdacac71de77e948
                                      if ((target instanceof Bucketable && target instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 474e5b8163e82a76aea8c4402d6acfcd366acaef..e4ee886f33ee63ae740cd89067c8ec81c12f2a62 100644
+index 43a4427a8f327fbb224cb25e63a5c6b244eb9b09..62a38ecedbd579b32a8fd9cff5a433bfe635fc62 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -3155,6 +3155,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3151,6 +3151,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -92,7 +92,7 @@ index 474e5b8163e82a76aea8c4402d6acfcd366acaef..e4ee886f33ee63ae740cd89067c8ec81
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -3196,6 +3203,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3192,6 +3199,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index 474e5b8163e82a76aea8c4402d6acfcd366acaef..e4ee886f33ee63ae740cd89067c8ec81
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5119,4 +5134,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5115,4 +5130,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((ServerLevel) this.level).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter

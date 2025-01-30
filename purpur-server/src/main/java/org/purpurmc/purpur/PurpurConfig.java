@@ -74,8 +74,8 @@ public class PurpurConfig {
         commands = new HashMap<>();
         commands.put("purpur", new PurpurCommand("purpur"));
 
-        version = getInt("config-version", 38);
-        set("config-version", 38);
+        version = getInt("config-version", 39);
+        set("config-version", 39);
 
         readConfig(PurpurConfig.class, null);
 

@@ -14,7 +14,7 @@
  
                  for (int i = 0; i < 8; i++) {
 -                    level.addParticle(ParticleTypes.LARGE_SMOKE, x + Math.random(), y + Math.random(), z + Math.random(), 0.0, 0.0, 0.0);
-+                    ((net.minecraft.server.level.ServerLevel) level).sendParticlesSource(null, ParticleTypes.LARGE_SMOKE, false, true, x + Math.random(), y + Math.random(), z + Math.random(), 1, 0.0D, 0.0D, 0.0D, 0.0D); // Purpur - Add allow water in end world option
++                    ((net.minecraft.server.level.ServerLevel) level).sendParticlesSource(null, ParticleTypes.LARGE_SMOKE, true, false, x + Math.random(), y + Math.random(), z + Math.random(), 1, 0.0D, 0.0D, 0.0D, 0.0D); // Purpur - Add allow water in end world option
                  }
  
                  return true;

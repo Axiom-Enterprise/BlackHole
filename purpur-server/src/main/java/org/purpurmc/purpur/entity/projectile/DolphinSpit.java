@@ -57,7 +57,7 @@ public class DolphinSpit extends LlamaSpit {
         Vec3 motDouble = mot.scale(2.0);
         for (int i = 0; i < 5; i++) {
             ((ServerLevel) level()).sendParticlesSource(null, ParticleTypes.BUBBLE,
-                    false, true,
+                    true, false,
                     getX() + random.nextFloat() / 2 - 0.25F,
                     getY() + random.nextFloat() / 2 - 0.25F,
                     getZ() + random.nextFloat() / 2 - 0.25F,

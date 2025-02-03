@@ -2,6 +2,8 @@ package org.purpurmc.purpur;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -2513,18 +2515,39 @@ public class PurpurWorldConfig {
         ravagerScale = Mth.clamp(getDouble("mobs.ravager.attributes.scale", ravagerScale), 0.0625D, 16.0D);
         ravagerBypassMobGriefing = getBoolean("mobs.ravager.bypass-mob-griefing", ravagerBypassMobGriefing);
         ravagerTakeDamageFromWater = getBoolean("mobs.ravager.takes-damage-from-water", ravagerTakeDamageFromWater);
-        getList("mobs.ravager.griefable-blocks", new ArrayList<String>(){{
-            add("minecraft:oak_leaves");
-            add("minecraft:spruce_leaves");
-            add("minecraft:birch_leaves");
-            add("minecraft:jungle_leaves");
-            add("minecraft:acacia_leaves");
-            add("minecraft:dark_oak_leaves");
-            add("minecraft:beetroots");
-            add("minecraft:carrots");
-            add("minecraft:potatoes");
-            add("minecraft:wheat");
-        }}).forEach(key -> {
+        List<String> defaultRavagerGriefableBlocks = List.of(
+            "minecraft:oak_leaves",
+            "minecraft:spruce_leaves",
+            "minecraft:birch_leaves",
+            "minecraft:jungle_leaves",
+            "minecraft:acacia_leaves",
+            "minecraft:cherry_leaves",
+            "minecraft:dark_oak_leaves",
+            "minecraft:pale_oak_leaves",
+            "minecraft:mangrove_leaves",
+            "minecraft:azalea_leaves",
+            "minecraft:flowering_azalea_leaves",
+            "minecraft:wheat",
+            "minecraft:carrots",
+            "minecraft:potatoes",
+            "minecraft:torchflower_crop",
+            "minecraft:pitcher_crop",
+            "minecraft:beetroots"
+        );
+        if (PurpurConfig.version < 41) {
+            Set<String> set = new HashSet<>();
+            getList("mobs.ravager.griefable-blocks", defaultRavagerGriefableBlocks)
+                .forEach(key -> set.add(key.toString()));
+            set.add("minecraft:cherry_leaves");
+            set.add("minecraft:pale_oak_leaves");
+            set.add("minecraft:mangrove_leaves");
+            set.add("minecraft:azalea_leaves");
+            set.add("minecraft:flowering_azalea_leaves");
+            set.add("minecraft:torchflower_crop");
+            set.add("minecraft:pitcher_crop");
+            set("mobs.ravager.griefable-blocks", new ArrayList<>(set));
+        }
+        getList("mobs.ravager.griefable-blocks", defaultRavagerGriefableBlocks).forEach(key -> {
             Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(key.toString()));
             if (!block.defaultBlockState().isAir()) {
                 ravagerGriefableBlocks.add(block);

@@ -1229,7 +1229,7 @@ public class PurpurWorldConfig {
     public double beeMaxHealth = 10.0D;
     public double beeScale = 1.0D;
     public int beeBreedingTicks = 6000;
-    public boolean beeTakeDamageFromWater = true;
+    public boolean beeTakeDamageFromWater = false;
     public boolean beeCanWorkAtNight = false;
     public boolean beeCanWorkInRain = false;
     public boolean beeAlwaysDropExp = false;
@@ -1247,6 +1247,9 @@ public class PurpurWorldConfig {
         beeMaxHealth = getDouble("mobs.bee.attributes.max_health", beeMaxHealth);
         beeScale = Mth.clamp(getDouble("mobs.bee.attributes.scale", beeScale), 0.0625D, 16.0D);
         beeBreedingTicks = getInt("mobs.bee.breeding-delay-ticks", beeBreedingTicks);
+        if (PurpurConfig.version < 40) {
+            set("mobs.bee.takes-damage-from-water", false);
+        }
         beeTakeDamageFromWater = getBoolean("mobs.bee.takes-damage-from-water", beeTakeDamageFromWater);
         beeCanWorkAtNight = getBoolean("mobs.bee.can-work-at-night", beeCanWorkAtNight);
         beeCanWorkInRain = getBoolean("mobs.bee.can-work-in-rain", beeCanWorkInRain);

@@ -41,26 +41,28 @@ index ecbec552e5cd1935f57872d2fb502d3e9743e3d8..4fa526496265a85b637136f0fd0692ef
      public boolean isFlapping() {
          return !this.isResting() && this.tickCount % 10.0F == 0.0F;
 diff --git a/net/minecraft/world/entity/animal/Bee.java b/net/minecraft/world/entity/animal/Bee.java
-index 6f0b927101f9b5a07a0b6749557f6b0ebf35ae64..d4025093d82cca0c5923058dc0e35c91ae7b40e3 100644
+index 31854506641874bed3306b9688d71e5c47fd9e35..950988bf89f36e8555605d370bb039fe89c66fc7 100644
 --- a/net/minecraft/world/entity/animal/Bee.java
 +++ b/net/minecraft/world/entity/animal/Bee.java
 @@ -177,7 +177,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
          // Paper end - Fix MC-167279
          this.lookControl = new Bee.BeeLookControl(this);
          this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
--        this.setPathfindingMalus(PathType.WATER, -1.0F);
-+        if (isSensitiveToWater()) this.setPathfindingMalus(PathType.WATER, -1.0F); // Purpur - Toggle for water sensitive mob damage
+-        if (this.level().purpurConfig.beeCanInstantlyStartDrowning) this.setPathfindingMalus(PathType.WATER, -1.0F); // Purpur - bee can instantly start drowning in water option
++        if (this.level().purpurConfig.beeCanInstantlyStartDrowning || isSensitiveToWater()) this.setPathfindingMalus(PathType.WATER, -1.0F); // Purpur - bee can instantly start drowning in water option // Purpur - Toggle for water sensitive mob damage
          this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
          this.setPathfindingMalus(PathType.COCOA, -1.0F);
          this.setPathfindingMalus(PathType.FENCE, -1.0F);
-@@ -487,6 +487,11 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -487,6 +487,13 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
      }
      // Purpur end - Make entity breeding times configurable
  
++    // Purpur start - Toggle for water sensitive mob damage
 +    @Override
 +    public boolean isSensitiveToWater() {
 +        return this.level().purpurConfig.beeTakeDamageFromWater;
 +    }
++    // Purpur end - Toggle for water sensitive mob damage
 +
      @Override
      public int getRemainingPersistentAngerTime() {
@@ -210,7 +212,7 @@ index a64b609bf5ce38a252bfa1bcff869f88e14389b5..5e9795f447e88a42909730d383eaa36a
      public float getWalkTargetValue(BlockPos pos, LevelReader level) {
          return level.getBlockState(pos.below()).is(Blocks.MYCELIUM) ? 10.0F : level.getPathfindingCostFromLightLevels(pos);
 diff --git a/net/minecraft/world/entity/animal/Ocelot.java b/net/minecraft/world/entity/animal/Ocelot.java
-index c76dff55f28f63be407c438f0c6ed634185d7b6b..4a95ec11da4399282f69630ac933b7e22b4ca550 100644
+index b06697fd64a8962133f0324b2c03b9e9b4f32086..91677415ba66c8de448a26ac4e6afe6bbbad4fa8 100644
 --- a/net/minecraft/world/entity/animal/Ocelot.java
 +++ b/net/minecraft/world/entity/animal/Ocelot.java
 @@ -94,6 +94,13 @@ public class Ocelot extends Animal {
@@ -385,7 +387,7 @@ index 6ee73b798ab306f7c828c9f06ca5b1a96bd96139..dbf3e4db27477afada86e02063a486f7
  
      @Override
 diff --git a/net/minecraft/world/entity/animal/Squid.java b/net/minecraft/world/entity/animal/Squid.java
-index 739b9df3c1c39a3207caa42d6aed7f4ff1741d42..a43cf8ba7a4d5afb23401ccd07d451b35ed80d58 100644
+index 0391ff403391bfe13b907a8b1aae9057474f695b..e9ba9d84177e9c27b9c7c5e6274dfb031f6643c7 100644
 --- a/net/minecraft/world/entity/animal/Squid.java
 +++ b/net/minecraft/world/entity/animal/Squid.java
 @@ -99,6 +99,13 @@ public class Squid extends AgeableWaterCreature {
@@ -439,7 +441,7 @@ index edbccb7ca27aa8a1917eb8b35b3ba8600c91111a..cf297f766340b4ff8ecaf80a9a13b289
          this.entityData.set(HOME_POS, homePos);
      }
 diff --git a/net/minecraft/world/entity/animal/Wolf.java b/net/minecraft/world/entity/animal/Wolf.java
-index 136f2c43272e5a45e473b66656818ed88de1cff3..f2e2cee3fd4a8bdec0c8922170930f81c14dfb32 100644
+index 9d79946497cfc92ff11160b86d5064d86916af36..8b5eaabe77dcf8851b874b82a2d7f64180ac613b 100644
 --- a/net/minecraft/world/entity/animal/Wolf.java
 +++ b/net/minecraft/world/entity/animal/Wolf.java
 @@ -217,6 +217,13 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
@@ -475,7 +477,7 @@ index 07eee1f82331a2172aede02219a7eae8e82c7b59..ee426f8a52c9ff5519641ace0f36a38a
      public float getWalkTargetValue(BlockPos pos, LevelReader level) {
          return 0.0F;
 diff --git a/net/minecraft/world/entity/animal/goat/Goat.java b/net/minecraft/world/entity/animal/goat/Goat.java
-index 16fe9367466372eb7cd0ecf24ba5b7cbc64a820c..b95570519301bb9e260ce3c20f3231c79ff22fac 100644
+index 0a018dbfe3750cf91892d8cfb5c0eac18e83d587..0c357ffacfe4dd982a58e6cf2338c7e6b24610f5 100644
 --- a/net/minecraft/world/entity/animal/goat/Goat.java
 +++ b/net/minecraft/world/entity/animal/goat/Goat.java
 @@ -135,6 +135,13 @@ public class Goat extends Animal {
@@ -951,7 +953,7 @@ index 9586aa3f3eb61fb0c1224df9d0104da69d7fa6bb..869a1007de13f3f5d757968d0f84cbf4
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Ravager.java b/net/minecraft/world/entity/monster/Ravager.java
-index b83886f2533026550759c823e1e11930665fc5bd..2844846811398350832a0f88a72772831e3e43d5 100644
+index 3449628fb87fd760abd730d84699c3a09c6ec761..3d9eae0403875a99c25ccb47888dc591f051e744 100644
 --- a/net/minecraft/world/entity/monster/Ravager.java
 +++ b/net/minecraft/world/entity/monster/Ravager.java
 @@ -97,6 +97,13 @@ public class Ravager extends Raider {
@@ -1005,7 +1007,7 @@ index 0d3b8b64a23a19d67a1a4a01faaf6649a59f54ad..52f18edfe4525b2626f86a5b5847c74f
      protected void registerGoals() {
          this.friendsGoal = new Silverfish.SilverfishWakeUpFriendsGoal(this);
 diff --git a/net/minecraft/world/entity/monster/Skeleton.java b/net/minecraft/world/entity/monster/Skeleton.java
-index e33c998233dbe366dfab3d7571e6ae879cd30ed0..429649d9173a79e1a69599426c63ce67c3a77009 100644
+index ccd8a9867acd76e5a00d43e55e1fe64d8259de10..29ef7a09c42590df7a8cd7f0874a8eb995b77cc8 100644
 --- a/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/net/minecraft/world/entity/monster/Skeleton.java
 @@ -49,6 +49,13 @@ public class Skeleton extends AbstractSkeleton {
@@ -1189,7 +1191,7 @@ index 132b38d717ac3c5acc64a5ec519f345ac57021d8..79a4a3f4e10e1f9c1a6100060a956360
      protected Brain.Provider<Zoglin> brainProvider() {
          return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index 98732a5014a1c8a91dbe79d070ce0b58daf1ba1c..5d12bc139c81ca342074c7c745635669020d0300 100644
+index 63446c874e7153dcfb99133145c8b5311d7d86cd..bb8c37c8348172947efe14d48ed9ae203409affa 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
 @@ -139,6 +139,13 @@ public class Zombie extends Monster {
@@ -1297,7 +1299,7 @@ index eb82252cd87797927e153974b9280b5eaa251080..2237681f298113bda0556699e19e880f
          return Monster.createMonsterAttributes()
              .add(Attributes.MAX_HEALTH, 50.0)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index c301a89f032746487a4e993d920060450433f238..af6ae76248a9894efbecf9e94160f8d215f6ad85 100644
+index 017b54e0b8dec8996c90a3c6651867277dd516df..97e5bb0cc335b23211e78044919282bfabad26a5 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -278,6 +278,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -1315,7 +1317,7 @@ index c301a89f032746487a4e993d920060450433f238..af6ae76248a9894efbecf9e94160f8d2
      public Brain<Villager> getBrain() {
          return (Brain<Villager>)super.getBrain();
 diff --git a/net/minecraft/world/entity/npc/WanderingTrader.java b/net/minecraft/world/entity/npc/WanderingTrader.java
-index f9755f36f7863b9742fe5b840a8130891ddff7c7..5a87c3c7aca38f3fe4a003b2075f43b0ae1cddea 100644
+index 4ba2921dd99f674344fe3371332c9b23365d3aa2..8046a2d640e7c4d59cb5b9c6dff3bf5f026c7153 100644
 --- a/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/net/minecraft/world/entity/npc/WanderingTrader.java
 @@ -107,6 +107,13 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill

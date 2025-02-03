@@ -1230,6 +1230,7 @@ public class PurpurWorldConfig {
     public double beeScale = 1.0D;
     public int beeBreedingTicks = 6000;
     public boolean beeTakeDamageFromWater = false;
+    public boolean beeCanInstantlyStartDrowning = true;
     public boolean beeCanWorkAtNight = false;
     public boolean beeCanWorkInRain = false;
     public boolean beeAlwaysDropExp = false;
@@ -1253,6 +1254,7 @@ public class PurpurWorldConfig {
         beeTakeDamageFromWater = getBoolean("mobs.bee.takes-damage-from-water", beeTakeDamageFromWater);
         beeCanWorkAtNight = getBoolean("mobs.bee.can-work-at-night", beeCanWorkAtNight);
         beeCanWorkInRain = getBoolean("mobs.bee.can-work-in-rain", beeCanWorkInRain);
+        beeCanInstantlyStartDrowning = getBoolean("mobs.bee.can-instantly-start-drowning", beeCanInstantlyStartDrowning);
         beeAlwaysDropExp = getBoolean("mobs.bee.always-drop-exp", beeAlwaysDropExp);
         beeDiesAfterSting = getBoolean("mobs.bee.dies-after-sting", beeDiesAfterSting);
     }

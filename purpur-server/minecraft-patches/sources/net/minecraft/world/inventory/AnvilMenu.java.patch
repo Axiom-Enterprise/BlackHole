@@ -64,7 +64,7 @@
              ItemStack itemStack = item.copy();
              ItemStack item1 = this.inputSlots.getItem(1);
              ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(itemStack));
-@@ -191,23 +_,36 @@
+@@ -191,23 +_,34 @@
                          int intValue = entry.getIntValue();
                          intValue = level == intValue ? intValue + 1 : Math.max(intValue, level);
                          Enchantment enchantment = holder.value();
@@ -77,25 +77,21 @@
                              canEnchant = true;
                          }
  
--                        for (Holder<Enchantment> holder1 : mutable.keySet()) {
-+                        // Purpur start - Config to allow unsafe enchants
-+                        java.util.Iterator<Holder<Enchantment>> mutableIterator = mutable.keySet().iterator();
-+                        while (mutableIterator.hasNext()) {
-+                            Holder<Enchantment> holder1 = mutableIterator.next();
-+                        // Purpur end - Config to allow unsafe enchants
++                        java.util.Set<Holder<Enchantment>> removedEnchantments = new java.util.HashSet<>(); // Purpur - Config to allow unsafe enchants
+                         for (Holder<Enchantment> holder1 : mutable.keySet()) {
                              if (!holder1.equals(holder) && !Enchantment.areCompatible(holder, holder1)) {
 -                                canEnchant = false;
--                                i++;
-+                                canEnchant1 = this.canDoUnsafeEnchants || org.purpurmc.purpur.PurpurConfig.allowIncompatibleEnchants; // Purpur - Anvil API // Purpur - flag3 -> canEnchant1 - Config to allow unsafe enchants
++                                canEnchant1 = this.canDoUnsafeEnchants || org.purpurmc.purpur.PurpurConfig.allowIncompatibleEnchants; // Purpur - Anvil API // Purpur - canEnchant -> canEnchant1 - Config to allow unsafe enchants
 +                                // Purpur start - Config to allow unsafe enchants
 +                                if (!canEnchant1 && org.purpurmc.purpur.PurpurConfig.replaceIncompatibleEnchants) {
-+                                    mutableIterator.remove(); // replace current enchant with the incompatible one trying to be applied // TODO: is this needed?
++                                    removedEnchantments.add(holder1);
 +                                    canEnchant1 = true;
 +                                }
 +                                // Purpur end - Config to allow unsafe enchants
-+                                ++i;
+                                 i++;
                              }
                          }
++                        mutable.removeIf(removedEnchantments::contains); // Purpur - Config to allow unsafe enchants
  
 -                        if (!canEnchant) {
 +                        if (!canEnchant || !canEnchant1) { // Purpur - Config to allow unsafe enchants

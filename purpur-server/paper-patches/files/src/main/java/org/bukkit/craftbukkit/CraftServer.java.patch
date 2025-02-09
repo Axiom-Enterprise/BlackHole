@@ -106,7 +106,7 @@
      @Override
      public List<Recipe> getRecipesFor(ItemStack result) {
          Preconditions.checkArgument(result != null, "ItemStack cannot be null");
-@@ -3055,6 +_,18 @@
+@@ -3045,6 +_,18 @@
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  
@@ -125,7 +125,7 @@
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -3084,6 +_,7 @@
+@@ -3074,6 +_,7 @@
      @Override
      public double[] getTPS() {
          return new double[] {
@@ -133,7 +133,7 @@
              net.minecraft.server.MinecraftServer.getServer().tps1.getAverage(),
              net.minecraft.server.MinecraftServer.getServer().tps5.getAverage(),
              net.minecraft.server.MinecraftServer.getServer().tps15.getAverage()
-@@ -3294,4 +_,18 @@
+@@ -3284,4 +_,18 @@
          this.console.addPluginAllowingSleep(plugin.getName(), value);
      }
      // Paper end - API to check if the server is sleeping

@@ -158,7 +158,7 @@ index 5b764c686e8759a7b04a7b50708c69629be02c04..e104058b3c01bea4cc8a77de2ad43784
      @Override
      public SpawnGroupData finalizeSpawn(
 diff --git a/net/minecraft/world/entity/animal/Fox.java b/net/minecraft/world/entity/animal/Fox.java
-index 3d94d5c9ecab0fe7332daf4cdac879385159eaa1..22a70c6af965114e272bb56cb217f975a3cd1bd4 100644
+index 950bf1c834111e00a3f3eda1390da7ede177ae15..59695ebc6758cbbc444f23ffdf2f7d66cff54430 100644
 --- a/net/minecraft/world/entity/animal/Fox.java
 +++ b/net/minecraft/world/entity/animal/Fox.java
 @@ -182,6 +182,13 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
@@ -1101,7 +1101,7 @@ index f36e94437b4e21961532ac9ab91767617f9c3c32..d01bc46d77340b10b23d0c0d50bddc37
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/Vex.java b/net/minecraft/world/entity/monster/Vex.java
-index 8356906b2c0707e21021bb05f9ca01a95682880a..ffdb200d9716104f8df91dbeef590b2264e587b8 100644
+index f0fe810d4ee2387b6b37c391e0c2feaa52b05c05..20f78e3a37f4c7257b32f2279a6404415aa00e2c 100644
 --- a/net/minecraft/world/entity/monster/Vex.java
 +++ b/net/minecraft/world/entity/monster/Vex.java
 @@ -110,6 +110,13 @@ public class Vex extends Monster implements TraceableEntity {
@@ -1245,10 +1245,10 @@ index 9603589e0501feee900cd21b04eb84b02bb45de2..09c991d8e344f11bc84dea453042ee35
      public void setPersistentAngerTarget(@Nullable UUID target) {
          this.persistentAngerTarget = target;
 diff --git a/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index 266d1838e6602ef6322c15732f2693a865911f2e..896bd531a5333d6dc8996bbdfc5c878b1a7d2da0 100644
+index 5af04c4d58d59b795c3f43eeb30232ab07a4e8c7..9b82be9ec52fd4bc3b85e8289e7e8f9b79b74b9a 100644
 --- a/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -129,6 +129,13 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+@@ -124,6 +124,13 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
      }
      // Purpur end - Make entity breeding times configurable
  
@@ -1259,9 +1259,9 @@ index 266d1838e6602ef6322c15732f2693a865911f2e..896bd531a5333d6dc8996bbdfc5c878b
 +    }
 +    // Purpur end - Toggle for water sensitive mob damage
 +
-     @Override
-     public boolean canBeLeashed() {
-         return true;
+     @VisibleForTesting
+     public void setTimeInOverworld(int timeInOverworld) {
+         this.timeInOverworld = timeInOverworld;
 diff --git a/net/minecraft/world/entity/monster/piglin/Piglin.java b/net/minecraft/world/entity/monster/piglin/Piglin.java
 index d923a424e2b33b7d4e9e4ecdce8e0a8c825038de..55ebfa5df06a59203248514d10dced9660ebf215 100644
 --- a/net/minecraft/world/entity/monster/piglin/Piglin.java

@@ -149,7 +149,7 @@ index e104058b3c01bea4cc8a77de2ad4378465903b34..7003b532182737a745491e397a967b72
      @Override
      public SpawnGroupData finalizeSpawn(
 diff --git a/net/minecraft/world/entity/animal/Fox.java b/net/minecraft/world/entity/animal/Fox.java
-index 22a70c6af965114e272bb56cb217f975a3cd1bd4..aa610af9db105081fcabc1f299e5f2dd1f4d907e 100644
+index 59695ebc6758cbbc444f23ffdf2f7d66cff54430..90452f0945e761077608692877677f522d38bccd 100644
 --- a/net/minecraft/world/entity/animal/Fox.java
 +++ b/net/minecraft/world/entity/animal/Fox.java
 @@ -189,6 +189,13 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
@@ -887,7 +887,7 @@ index bf26f5f6017c60d5991d5f6c87da2acbd95ef5bb..312d4a3d312b5c326d6ca13ccfc48171
          return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.2F);
      }
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 0ee817699fffbb929011465029182cc56befc30c..39f94cee78e8fc14d892cb64fb5234bf88d964ad 100644
+index 41ae39349c6f7e6c5d0187257a72782c5dc4c8eb..3c105d164acd9e45de2335ef28ddecf3fa48d267 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -157,6 +157,13 @@ public class Phantom extends FlyingMob implements Enemy {
@@ -1067,7 +1067,7 @@ index d01bc46d77340b10b23d0c0d50bddc37657028c8..241526239bdbd5d9276f85e7fca46a70
          EntityType<Strider> entityType, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Vex.java b/net/minecraft/world/entity/monster/Vex.java
-index ffdb200d9716104f8df91dbeef590b2264e587b8..0ce9eb1f4108b6afab6df84d5e709be0882e515a 100644
+index 20f78e3a37f4c7257b32f2279a6404415aa00e2c..0d9dd9919b2b9902137df861bcac8057e4b741de 100644
 --- a/net/minecraft/world/entity/monster/Vex.java
 +++ b/net/minecraft/world/entity/monster/Vex.java
 @@ -117,6 +117,13 @@ public class Vex extends Monster implements TraceableEntity {
@@ -1211,10 +1211,10 @@ index 09c991d8e344f11bc84dea453042ee35c39e580e..fddbbffafea275dad187b7908386cf4c
      public void setPersistentAngerTarget(@Nullable UUID target) {
          this.persistentAngerTarget = target;
 diff --git a/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index 896bd531a5333d6dc8996bbdfc5c878b1a7d2da0..cf0a15ff4a49bcc17dc6dd58e91eadec0c519455 100644
+index 9b82be9ec52fd4bc3b85e8289e7e8f9b79b74b9a..28f3bc31b4c093e426ae141edeee61a12a444ba1 100644
 --- a/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -136,6 +136,13 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+@@ -131,6 +131,13 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
      }
      // Purpur end - Toggle for water sensitive mob damage
  
@@ -1225,9 +1225,9 @@ index 896bd531a5333d6dc8996bbdfc5c878b1a7d2da0..cf0a15ff4a49bcc17dc6dd58e91eadec
 +    }
 +    // Purpur end - Mobs always drop experience
 +
-     @Override
-     public boolean canBeLeashed() {
-         return true;
+     @VisibleForTesting
+     public void setTimeInOverworld(int timeInOverworld) {
+         this.timeInOverworld = timeInOverworld;
 diff --git a/net/minecraft/world/entity/monster/piglin/Piglin.java b/net/minecraft/world/entity/monster/piglin/Piglin.java
 index 55ebfa5df06a59203248514d10dced9660ebf215..f0d78cf5fe2c39add9a673471103c352cce72a45 100644
 --- a/net/minecraft/world/entity/monster/piglin/Piglin.java

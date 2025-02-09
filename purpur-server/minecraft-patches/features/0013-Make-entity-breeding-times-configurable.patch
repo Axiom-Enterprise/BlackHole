@@ -5,7 +5,7 @@ Subject: [PATCH] Make entity breeding times configurable
 
 
 diff --git a/net/minecraft/world/entity/ai/behavior/VillagerMakeLove.java b/net/minecraft/world/entity/ai/behavior/VillagerMakeLove.java
-index 4fb63e58eac5d67fcd31c3233dca1dae72b98bc4..dd8d315eba203db121e24e3402f2117fc0f3043f 100644
+index 8fe5bd54b5a4848da1f08ea65fe2bc3514bed8c8..54eeb72b638127b180470887a3b59d55773f3bc9 100644
 --- a/net/minecraft/world/entity/ai/behavior/VillagerMakeLove.java
 +++ b/net/minecraft/world/entity/ai/behavior/VillagerMakeLove.java
 @@ -118,8 +118,10 @@ public class VillagerMakeLove extends Behavior<Villager> {
@@ -19,10 +19,10 @@ index 4fb63e58eac5d67fcd31c3233dca1dae72b98bc4..dd8d315eba203db121e24e3402f2117f
 +            partner.setAge(level.purpurConfig.villagerBreedingTicks);
 +            // Purpur end - Make entity breeding times configurable
              level.addFreshEntityWithPassengers(breedOffspring, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.BREEDING);
-             // CraftBukkit end
+             // CraftBukkit end - call EntityBreedEvent
              level.broadcastEntityEvent(breedOffspring, (byte)12);
 diff --git a/net/minecraft/world/entity/animal/Animal.java b/net/minecraft/world/entity/animal/Animal.java
-index 33c3752be451508343cad83766da7c3be1822d02..fa34e7f1c20dfd569b52a9c8e0a8d4d5e659ce20 100644
+index da1f5dcc213b9a5f8d26a546e7575b063fb0473c..452270f7f1c54ca98c34dcf9a9d29acae77737c8 100644
 --- a/net/minecraft/world/entity/animal/Animal.java
 +++ b/net/minecraft/world/entity/animal/Animal.java
 @@ -40,6 +40,7 @@ public abstract class Animal extends AgeableMob {
@@ -33,10 +33,10 @@ index 33c3752be451508343cad83766da7c3be1822d02..fa34e7f1c20dfd569b52a9c8e0a8d4d5
  
      protected Animal(EntityType<? extends Animal> entityType, Level level) {
          super(entityType, level);
-@@ -279,8 +280,10 @@ public abstract class Animal extends AgeableMob {
+@@ -282,8 +283,10 @@ public abstract class Animal extends AgeableMob {
              player.awardStat(Stats.ANIMALS_BRED);
              CriteriaTriggers.BRED_ANIMALS.trigger(player, this, animal, baby);
-         } // Paper
+         } // Paper - call EntityBreedEvent
 -        this.setAge(6000);
 -        animal.setAge(6000);
 +        // Purpur start - Make entity breeding times configurable
@@ -47,7 +47,7 @@ index 33c3752be451508343cad83766da7c3be1822d02..fa34e7f1c20dfd569b52a9c8e0a8d4d5
          animal.resetLove();
          level.broadcastEntityEvent(this, (byte)18);
 diff --git a/net/minecraft/world/entity/animal/Bee.java b/net/minecraft/world/entity/animal/Bee.java
-index c150ba5f706b3dd51925533300c0432ccf5e2b81..6f0b927101f9b5a07a0b6749557f6b0ebf35ae64 100644
+index a6dfd2013312d7542cb597a6e3976c68e9971148..31854506641874bed3306b9688d71e5c47fd9e35 100644
 --- a/net/minecraft/world/entity/animal/Bee.java
 +++ b/net/minecraft/world/entity/animal/Bee.java
 @@ -480,6 +480,13 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -119,7 +119,7 @@ index d2a4bfa5334f7361067e4adac36ba5a4a4fa6ad8..e4965300eb41512d03a0b111422c9862
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
 diff --git a/net/minecraft/world/entity/animal/Fox.java b/net/minecraft/world/entity/animal/Fox.java
-index 8bf893837586ae2a9b4ef7564d242e16e4863b5d..1acf9b8c9e6a5915b3f095e83d3f209708947093 100644
+index 9b8f5049b7a73b6b51ea76ed92228ff0d53b1cfb..7bc31391b0bd696ce73223d639a96278994010ca 100644
 --- a/net/minecraft/world/entity/animal/Fox.java
 +++ b/net/minecraft/world/entity/animal/Fox.java
 @@ -175,6 +175,13 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
@@ -136,7 +136,7 @@ index 8bf893837586ae2a9b4ef7564d242e16e4863b5d..1acf9b8c9e6a5915b3f095e83d3f2097
      @Override
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
-@@ -969,8 +976,10 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
+@@ -973,8 +980,10 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
                      CriteriaTriggers.BRED_ANIMALS.trigger(serverPlayer, this.animal, this.partner, fox);
                  }
  
@@ -168,7 +168,7 @@ index 990723c31aa1040a4e45b9857a18d86287ef91b4..a64b609bf5ce38a252bfa1bcff869f88
      public float getWalkTargetValue(BlockPos pos, LevelReader level) {
          return level.getBlockState(pos.below()).is(Blocks.MYCELIUM) ? 10.0F : level.getPathfindingCostFromLightLevels(pos);
 diff --git a/net/minecraft/world/entity/animal/Ocelot.java b/net/minecraft/world/entity/animal/Ocelot.java
-index 1346556aa3a704930f1d278b65c6a2a904e41488..c76dff55f28f63be407c438f0c6ed634185d7b6b 100644
+index 41c42ecbf6aa233bd82000a4bbba3b186cca6a9d..b06697fd64a8962133f0324b2c03b9e9b4f32086 100644
 --- a/net/minecraft/world/entity/animal/Ocelot.java
 +++ b/net/minecraft/world/entity/animal/Ocelot.java
 @@ -87,6 +87,13 @@ public class Ocelot extends Animal {
@@ -312,7 +312,7 @@ index 4f0fbbb2caeda6d1477d3297fd68f802e4f3a9ca..edbccb7ca27aa8a1917eb8b35b3ba860
          this.entityData.set(HOME_POS, homePos);
      }
 diff --git a/net/minecraft/world/entity/animal/Wolf.java b/net/minecraft/world/entity/animal/Wolf.java
-index 93a0fda3a2f3598c9f5606e4f379b60a2129a07b..136f2c43272e5a45e473b66656818ed88de1cff3 100644
+index afc12968313a408e8a71a20c2c0defde52605c4e..9d79946497cfc92ff11160b86d5064d86916af36 100644
 --- a/net/minecraft/world/entity/animal/Wolf.java
 +++ b/net/minecraft/world/entity/animal/Wolf.java
 @@ -210,6 +210,13 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
@@ -384,10 +384,10 @@ index 1d7e2358bac193af48dc4b7f5b0295e3bffa152b..1d7ae2a08968860636918e7c66b60139
      public void addAdditionalSaveData(CompoundTag compound) {
          super.addAdditionalSaveData(compound);
 diff --git a/net/minecraft/world/entity/animal/frog/Frog.java b/net/minecraft/world/entity/animal/frog/Frog.java
-index 9a400c8bf2b54aa5fbcbe65b61670cac5fbebf05..c4ea9485294b7dec2582c638802f003ad70659b6 100644
+index 9a400c8bf2b54aa5fbcbe65b61670cac5fbebf05..143a740ce2e7f9d384b71b4d64e8b8218f60cba7 100644
 --- a/net/minecraft/world/entity/animal/frog/Frog.java
 +++ b/net/minecraft/world/entity/animal/frog/Frog.java
-@@ -165,6 +165,12 @@ public class Frog extends Animal implements VariantHolder<Holder<FrogVariant>> {
+@@ -165,6 +165,13 @@ public class Frog extends Animal implements VariantHolder<Holder<FrogVariant>> {
      }
      // Purpur end - Ridables
  
@@ -397,11 +397,12 @@ index 9a400c8bf2b54aa5fbcbe65b61670cac5fbebf05..c4ea9485294b7dec2582c638802f003a
 +        return this.level().purpurConfig.frogBreedingTicks;
 +    }
 +    // Purpur end - Make entity breeding times configurable
++
      @Override
      protected Brain.Provider<Frog> brainProvider() {
          return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
 diff --git a/net/minecraft/world/entity/animal/goat/Goat.java b/net/minecraft/world/entity/animal/goat/Goat.java
-index 9924a39953fb49954d02c771ae1a51411226ceac..16fe9367466372eb7cd0ecf24ba5b7cbc64a820c 100644
+index 302208b566038a3a352ca867dd70a61887bac104..0a018dbfe3750cf91892d8cfb5c0eac18e83d587 100644
 --- a/net/minecraft/world/entity/animal/goat/Goat.java
 +++ b/net/minecraft/world/entity/animal/goat/Goat.java
 @@ -128,6 +128,13 @@ public class Goat extends Animal {
@@ -581,12 +582,12 @@ index be0dc92bf5ae3da1368a649e9c4e7ff5dbb1c67c..f36e94437b4e21961532ac9ab9176761
          EntityType<Strider> entityType, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index 54924cd7c84cbcd22ffc0bd37fc24f24e73c18bc..266d1838e6602ef6322c15732f2693a865911f2e 100644
+index 54924cd7c84cbcd22ffc0bd37fc24f24e73c18bc..5af04c4d58d59b795c3f43eeb30232ab07a4e8c7 100644
 --- a/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-@@ -122,6 +122,13 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
-         this.timeInOverworld = timeInOverworld;
+@@ -117,6 +117,13 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
      }
+     // Purpur end - Configurable entity base attributes
  
 +    // Purpur start - Make entity breeding times configurable
 +    @Override
@@ -595,6 +596,6 @@ index 54924cd7c84cbcd22ffc0bd37fc24f24e73c18bc..266d1838e6602ef6322c15732f2693a8
 +    }
 +    // Purpur end - Make entity breeding times configurable
 +
-     @Override
-     public boolean canBeLeashed() {
-         return true;
+     @VisibleForTesting
+     public void setTimeInOverworld(int timeInOverworld) {
+         this.timeInOverworld = timeInOverworld;

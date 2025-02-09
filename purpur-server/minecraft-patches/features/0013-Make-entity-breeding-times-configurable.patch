@@ -294,7 +294,7 @@ index b66440f5cfbd714c6d2f5b7f66b4e755602b4521..882c799cb66a2acada33ff24f3adb7eb
      protected void registerGoals() {
          this.eatBlockGoal = new EatBlockGoal(this);
 diff --git a/net/minecraft/world/entity/animal/Turtle.java b/net/minecraft/world/entity/animal/Turtle.java
-index 4f0fbbb2caeda6d1477d3297fd68f802e4f3a9ca..edbccb7ca27aa8a1917eb8b35b3ba8600c91111a 100644
+index 4f0fbbb2caeda6d1477d3297fd68f802e4f3a9ca..030414049c6af6f6a6324d56aa7b2f1cf7afdc61 100644
 --- a/net/minecraft/world/entity/animal/Turtle.java
 +++ b/net/minecraft/world/entity/animal/Turtle.java
 @@ -109,6 +109,13 @@ public class Turtle extends Animal {
@@ -311,6 +311,19 @@ index 4f0fbbb2caeda6d1477d3297fd68f802e4f3a9ca..edbccb7ca27aa8a1917eb8b35b3ba860
      public void setHomePos(BlockPos homePos) {
          this.entityData.set(HOME_POS, homePos);
      }
+@@ -394,8 +401,10 @@ public class Turtle extends Animal {
+             }
+ 
+             this.turtle.setHasEgg(true);
+-            this.animal.setAge(6000);
+-            this.partner.setAge(6000);
++            // Purpur start - Make entity breeding times configurable
++            this.animal.setAge(this.animal.getPurpurBreedTime());
++            this.partner.setAge(this.partner.getPurpurBreedTime());
++            // Purpur end - Make entity breeding times configurable
+             this.animal.resetLove();
+             this.partner.resetLove();
+             RandomSource random = this.animal.getRandom();
 diff --git a/net/minecraft/world/entity/animal/Wolf.java b/net/minecraft/world/entity/animal/Wolf.java
 index afc12968313a408e8a71a20c2c0defde52605c4e..9d79946497cfc92ff11160b86d5064d86916af36 100644
 --- a/net/minecraft/world/entity/animal/Wolf.java

@@ -9,12 +9,13 @@
  
      public DamageSource knownCause(final org.bukkit.event.entity.EntityDamageEvent.DamageCause cause) {
          final DamageSource damageSource = this.copy();
-@@ -42,6 +_,29 @@
+@@ -42,6 +_,30 @@
          return this.knownCause;
      }
  
 +    // Purpur start - Dont run with scissors!
 +    public DamageSource scissors() {
++        this.knownCause(org.bukkit.event.entity.EntityDamageEvent.DamageCause.SUICIDE);
 +        this.scissors = true;
 +        return this;
 +    }

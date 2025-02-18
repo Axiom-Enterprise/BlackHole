@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing bypass to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 6de5f527c018201d874e06a45c9509fa12125766..2dc588e2d503c16ccd2589ce18abd2ecebbc8e74 100644
+index 4388a1e3d409a55cffd66fc32cae8753c39dd064..611732d56e5bb71973cb33a41507f61195c4cd2d 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1818,7 +1818,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -92,7 +92,7 @@ index 579ca031d461ed4327fe4fb45c5289565322e64e..95fa516910a3834bbd4db6d11279e13a
          } else if (this.nextStartTick > 0) {
              this.nextStartTick--;
 diff --git a/net/minecraft/world/entity/animal/Fox.java b/net/minecraft/world/entity/animal/Fox.java
-index 1acf9b8c9e6a5915b3f095e83d3f209708947093..3d94d5c9ecab0fe7332daf4cdac879385159eaa1 100644
+index 7bc31391b0bd696ce73223d639a96278994010ca..950bf1c834111e00a3f3eda1390da7ede177ae15 100644
 --- a/net/minecraft/world/entity/animal/Fox.java
 +++ b/net/minecraft/world/entity/animal/Fox.java
 @@ -1038,7 +1038,7 @@ public class Fox extends Animal implements VariantHolder<Fox.Variant> {
@@ -118,11 +118,11 @@ index bbdd06002b07699fffebdf6ed8148abdb69c24cc..7379def14f3f700fb8a746dc89d89e24
                  }
  
 diff --git a/net/minecraft/world/entity/animal/SnowGolem.java b/net/minecraft/world/entity/animal/SnowGolem.java
-index d97a297db3bec0c86c6a82ef1c353015df2115f7..6ee73b798ab306f7c828c9f06ca5b1a96bd96139 100644
+index 495284016f0141d34fcda3c1a1799233a5f708cf..0faa2d786a1162f125c531d93a5d1f215f310dfe 100644
 --- a/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/net/minecraft/world/entity/animal/SnowGolem.java
 @@ -136,7 +136,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
-                 this.hurtServer(serverLevel, this.damageSources().melting(), 1.0F); // CraftBukkit - DamageSources.ON_FIRE -> CraftEventFactory.MELTING
+                 this.hurtServer(serverLevel, this.damageSources().onFire().knownCause(org.bukkit.event.entity.EntityDamageEvent.DamageCause.MELTING), 1.0F); // CraftBukkit
              }
  
 -            if (!serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {

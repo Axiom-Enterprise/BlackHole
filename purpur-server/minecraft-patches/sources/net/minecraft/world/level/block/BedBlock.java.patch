@@ -13,8 +13,8 @@
          }
  
          Vec3 center = pos.getCenter();
--        level.explode(null, level.damageSources().badRespawnPointExplosion(center, blockState), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK); // CraftBukkit - add state
-+        if (level.purpurConfig.bedExplode) level.explode(null, level.damageSources().badRespawnPointExplosion(center, blockState), null, center, (float) level.purpurConfig.bedExplosionPower, level.purpurConfig.bedExplosionFire, level.purpurConfig.bedExplosionEffect); // CraftBukkit - add state // Purpur - Implement bed explosion options
+-        level.explode(null, level.damageSources().badRespawnPointExplosion(center).causingBlockSnapshot(blockState), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK); // CraftBukkit - add state
++        if (level.purpurConfig.bedExplode) level.explode(null, level.damageSources().badRespawnPointExplosion(center).causingBlockSnapshot(blockState), null, center, (float) level.purpurConfig.bedExplosionPower, level.purpurConfig.bedExplosionFire, level.purpurConfig.bedExplosionEffect); // CraftBukkit - add state // Purpur - Implement bed explosion options
          return InteractionResult.SUCCESS_SERVER;
       }
      // CraftBukkit end

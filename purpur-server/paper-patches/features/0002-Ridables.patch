@@ -5,10 +5,10 @@ Subject: [PATCH] Ridables
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 6394e0a4bfd2c8a0e137e60eefe9585befdeda49..22edc6faa929d8110fb0c08154eb47155db8fd1f 100644
+index d7cf58309b3f455a18de7672fe6ee913f86bac5b..71cc3b64ee27118badcdd6214cb1c6a120202f44 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1344,4 +1344,27 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1345,4 +1345,27 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          }
      }
      // Paper end - broadcast hurt animation
@@ -37,7 +37,7 @@ index 6394e0a4bfd2c8a0e137e60eefe9585befdeda49..22edc6faa929d8110fb0c08154eb4715
 +    // Purpur end - Ridables
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 4ca09a593283935f7a58a31a903a6c0d990296b5..0131eaade61bc30a094a3166e8cd58cd7cfd7921 100644
+index 57c3f8531bf85b53af3a4aad6e9e369d5cff0ce3..56afb317cef0e049aacdd36a1be5f9b7af4d0c77 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -602,6 +602,15 @@ public class CraftEventFactory {
@@ -56,7 +56,7 @@ index 4ca09a593283935f7a58a31a903a6c0d990296b5..0131eaade61bc30a094a3166e8cd58cd
          return event;
      }
  
-@@ -1191,6 +1200,7 @@ public class CraftEventFactory {
+@@ -1193,6 +1202,7 @@ public class CraftEventFactory {
          EntityDamageEvent event;
          if (damager != null) {
              event = new EntityDamageByEntityEvent(damager.getBukkitEntity(), damagee.getBukkitEntity(), cause, bukkitDamageSource, modifiers, modifierFunctions, critical);

@@ -28,7 +28,7 @@
 +        } else {
 +            Location location = new Location(this.level.getWorld(), this.center.x, this.center.y, this.center.z);
 +            org.bukkit.block.Block block = location.getBlock();
-+            org.bukkit.block.BlockState blockState = (this.damageSource.getDirectBlockState() != null) ? this.damageSource.getDirectBlockState() : block.getState();
++            org.bukkit.block.BlockState blockState = (this.damageSource.causingBlockSnapshot() != null) ? this.damageSource.causingBlockSnapshot() : block.getState();
 +            if(!new org.purpurmc.purpur.event.PreBlockExplodeEvent(location.getBlock(), this.blockInteraction == Explosion.BlockInteraction.DESTROY_WITH_DECAY ? 1.0F / this.radius : 1.0F, blockState, org.bukkit.craftbukkit.CraftExplosionResult.toBukkit(getBlockInteraction())).callEvent()) {
 +                this.wasCanceled = true;
 +                return;

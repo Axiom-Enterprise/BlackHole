@@ -42,8 +42,8 @@
          }
  
          if (damageTarget && blockEntity.destroyTarget != null) { // CraftBukkit
--            if (blockEntity.destroyTarget.hurtServer((net.minecraft.server.level.ServerLevel) level, level.damageSources().magic().directBlock(level, pos), 4.0F)) // CraftBukkit
-+            if (blockEntity.destroyTarget.hurtServer((net.minecraft.server.level.ServerLevel) level, level.damageSources().magic().directBlock(level, pos), level.purpurConfig.conduitDamageAmount)) // CraftBukkit // Purpur - Conduit behavior configuration
+-            if (blockEntity.destroyTarget.hurtServer((net.minecraft.server.level.ServerLevel) level, level.damageSources().magic().eventBlockDamager(level, pos), 4.0F)) // CraftBukkit
++            if (blockEntity.destroyTarget.hurtServer((net.minecraft.server.level.ServerLevel) level, level.damageSources().magic().eventBlockDamager(level, pos), level.purpurConfig.conduitDamageAmount)) // CraftBukkit // Purpur - Conduit behavior configuration
              level.playSound(
                  null,
                  blockEntity.destroyTarget.getX(),

@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 4037d6445216bd16c778e4080e8c836400a35d96..95178c3a1de870709ea9d15a7d00c870d2edebff 100644
+index f02723a017d2c21c425fb11d2814052185960b97..80f2d38449f1db1d9b6926e4552d3061cb88b4af 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -530,6 +530,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -531,6 +531,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
      // Purpur end - Add canSaveToDisk to Entity
  
@@ -35,7 +35,7 @@ index 4037d6445216bd16c778e4080e8c836400a35d96..95178c3a1de870709ea9d15a7d00c870
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 2dc588e2d503c16ccd2589ce18abd2ecebbc8e74..db5a2227009bc4d655fc781d5850221f36f2d112 100644
+index 611732d56e5bb71973cb33a41507f61195c4cd2d..b38bd29e9c3c1565abb3452ffbbaa54cd924961d 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -301,6 +301,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -67,7 +67,7 @@ index 2dc588e2d503c16ccd2589ce18abd2ecebbc8e74..db5a2227009bc4d655fc781d5850221f
      }
  
      // CraftBukkit start
-@@ -3574,6 +3582,32 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3592,6 +3600,32 @@ public abstract class LivingEntity extends Entity implements Attackable {
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterRainOrBubble()) {
              this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
          }

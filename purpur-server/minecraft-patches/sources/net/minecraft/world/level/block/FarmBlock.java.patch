@@ -37,7 +37,7 @@
                  if (!org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.DIRT.defaultBlockState())) {
                      return;
                  }
-@@ -174,7 +_,7 @@
+@@ -177,7 +_,7 @@
              }
          }
  

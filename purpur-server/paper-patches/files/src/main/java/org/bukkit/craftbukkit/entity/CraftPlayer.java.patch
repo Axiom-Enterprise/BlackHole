@@ -46,9 +46,9 @@
      private void validateSpeed(float value) {
          Preconditions.checkArgument(value <= 1f && value >= -1f, "Speed value (%s) need to be between -1f and 1f", value);
      }
-@@ -3583,4 +_,76 @@
-         handle.containerMenu.broadcastChanges();
-         return new PaperPlayerGiveResult(leftovers.build(), drops.build());
+@@ -3599,4 +_,76 @@
+ 
+         return forwardMovement == backwardMovement ? 0 : forwardMovement ? 1 : -1;
      }
 +
 +    // Purpur start - Purpur client support

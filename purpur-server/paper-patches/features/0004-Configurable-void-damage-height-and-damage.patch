@@ -19,10 +19,10 @@ index e48fa405d92fab221fa8331b65c8f324e801d439..e319d6337811051de478d584a37015c4
  
          final ConfigurationTransformation.VersionedBuilder versionedBuilder = Transformations.versionedBuilder();
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index d7c9acaffdcff5e35e026ae90a3e521bab13b074..a426ba82af695426952bb5e04fa721e6ccff2f89 100644
+index d193330bfd97767705c878e359969378d43b99d0..4bc6a6572f18b333a3c48b2a96f3079998e7d77f 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -398,6 +398,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -401,6 +401,7 @@ public class WorldConfiguration extends ConfigurationPart {
          public boolean useVanillaWorldScoreboardNameColoring = false;
      }
  
@@ -30,7 +30,7 @@ index d7c9acaffdcff5e35e026ae90a3e521bab13b074..a426ba82af695426952bb5e04fa721e6
      public Environment environment;
  
      public class Environment extends ConfigurationPart {
-@@ -407,7 +408,9 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -410,7 +411,9 @@ public class WorldConfiguration extends ConfigurationPart {
          public boolean disableExplosionKnockback = false;
          public boolean generateFlatBedrock = false;
          public FrostedIce frostedIce;

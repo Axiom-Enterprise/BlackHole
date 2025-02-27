@@ -89,20 +89,20 @@
  
      public void tickCustomSpawners(boolean spawnEnemies, boolean spawnFriendlies) {
          for (CustomSpawner customSpawner : this.customSpawners) {
-@@ -934,9 +_,18 @@
+@@ -934,9 +_,17 @@
                      && this.random.nextDouble() < currentDifficultyAt.getEffectiveDifficulty() * this.paperConfig().entities.spawning.skeletonHorseThunderSpawnChance.or(0.01) // Paper - Configurable spawn chances for skeleton horses
                      && !this.getBlockState(blockPos.below()).is(Blocks.LIGHTNING_ROD);
                  if (flag) {
+-                    SkeletonHorse skeletonHorse = EntityType.SKELETON_HORSE.create(this, EntitySpawnReason.EVENT);
 +                    // Purpur start - Special mobs naturally spawn
-+                    net.minecraft.world.entity.animal.horse.AbstractHorse entityhorseskeleton;
++                    net.minecraft.world.entity.animal.horse.AbstractHorse skeletonHorse;
 +                    if (purpurConfig.zombieHorseSpawnChance > 0D && random.nextDouble() <= purpurConfig.zombieHorseSpawnChance) {
-+                        entityhorseskeleton = EntityType.ZOMBIE_HORSE.create(this, EntitySpawnReason.EVENT);
++                        skeletonHorse = EntityType.ZOMBIE_HORSE.create(this, EntitySpawnReason.EVENT);
 +                    } else {
-+                        entityhorseskeleton = EntityType.SKELETON_HORSE.create(this, EntitySpawnReason.EVENT);
-+                        if (entityhorseskeleton != null) ((SkeletonHorse) entityhorseskeleton).setTrap(true);
++                        skeletonHorse = EntityType.SKELETON_HORSE.create(this, EntitySpawnReason.EVENT);
++                        if (skeletonHorse != null) ((SkeletonHorse) skeletonHorse).setTrap(true);
 +                    }
 +                    // Purpur end - Special mobs naturally spawn
-                     SkeletonHorse skeletonHorse = EntityType.SKELETON_HORSE.create(this, EntitySpawnReason.EVENT);
                      if (skeletonHorse != null) {
 -                        skeletonHorse.setTrap(true);
 +                        //skeletonHorse.setTrap(true); // Purpur - Special mobs naturally spawn - moved up

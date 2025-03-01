@@ -35,7 +35,7 @@ index f02723a017d2c21c425fb11d2814052185960b97..80f2d38449f1db1d9b6926e4552d3061
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 611732d56e5bb71973cb33a41507f61195c4cd2d..b38bd29e9c3c1565abb3452ffbbaa54cd924961d 100644
+index cef0c2bd5c010e9ca6a8f42f2def832c244eae31..c5a5bd367478c32672fbf5ec237bef432814e553 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -301,6 +301,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -67,7 +67,7 @@ index 611732d56e5bb71973cb33a41507f61195c4cd2d..b38bd29e9c3c1565abb3452ffbbaa54c
      }
  
      // CraftBukkit start
-@@ -3592,6 +3600,32 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3599,6 +3607,32 @@ public abstract class LivingEntity extends Entity implements Attackable {
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterRainOrBubble()) {
              this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
          }

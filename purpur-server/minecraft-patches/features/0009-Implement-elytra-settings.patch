@@ -5,10 +5,10 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 893a1448bca5e06a7ebb42eed20899dbe0732006..4388a1e3d409a55cffd66fc32cae8753c39dd064 100644
+index 631ac66e7bad8c0b789cf762b54db3b8ffe4b44a..ea8ef5c1b2ad9be827ea35a2858cbe8de6dacac7 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -3613,7 +3613,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3620,7 +3620,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
                  if (i1 % 2 == 0) {
                      List<EquipmentSlot> list = EquipmentSlot.VALUES.stream().filter(slot -> canGlideUsing(this.getItemBySlot(slot), slot)).toList();
                      EquipmentSlot equipmentSlot = Util.getRandom(list, this.random);

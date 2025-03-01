@@ -30,7 +30,7 @@ index 121b57c7f5345f5d8884eaa1d36dac79fb7d42ef..9afbfe9bf493e09ca1963e8956ab7573
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 412472b3f6d27ca65759f8422e17b536912e3a99..59d03ddc42d53e2b825abe0cf2ab24e85d586a19 100644
+index c9eef7221254f3661959a4898485c97b87ec1b8d..b801e2d595383e12120abe3b1b95cbc364515be9 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -217,6 +217,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -62,7 +62,7 @@ index a6f771cbee878eb383b67c61fa2469f2916413b5..d77381237f8a7d1b2f280a5032f5e1c8
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index e5ffb15ac5faa0e863af624091dcd35ffa4ffe94..b45b37fcdfe0d3877b368444f8f6a376d6373f59 100644
+index 77e7665b56810762f58096e2482f019bbc3918cb..aa982f27e80f6023cadb2d2e5d0f84e472ee863c 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2835,6 +2835,8 @@ public class ServerGamePacketListenerImpl
@@ -177,7 +177,7 @@ index 95d78dcdb6777df73898694367ee17b1cb76d7a2..d0313fd5368baa53ec511c8c07fc78a1
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index c370bc7fa01e13bcd4a0be83dc5387367d2bf28d..98abba1edeb43f026795db6da10517f9561137db 100644
+index 73e4cfc0c92ab47dd299ca98c03c69d11f75d36a..5f5f031c9d5b738a29cbabf5bed9452907c97df1 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -250,9 +250,9 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -210,7 +210,7 @@ index c370bc7fa01e13bcd4a0be83dc5387367d2bf28d..98abba1edeb43f026795db6da10517f9
  
      @Override
      protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-@@ -3555,8 +3556,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3562,8 +3563,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.pushEntities();
          profilerFiller.pop();
          // Paper start - Add EntityMoveEvent
@@ -223,7 +223,7 @@ index c370bc7fa01e13bcd4a0be83dc5387367d2bf28d..98abba1edeb43f026795db6da10517f9
                  Location from = new Location(this.level().getWorld(), this.xo, this.yo, this.zo, this.yRotO, this.xRotO);
                  Location to = new Location(this.level().getWorld(), this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                  io.papermc.paper.event.entity.EntityMoveEvent event = new io.papermc.paper.event.entity.EntityMoveEvent(this.getBukkitLivingEntity(), from, to.clone());
-@@ -3566,6 +3569,21 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3573,6 +3576,21 @@ public abstract class LivingEntity extends Entity implements Attackable {
                      this.absMoveTo(event.getTo().getX(), event.getTo().getY(), event.getTo().getZ(), event.getTo().getYaw(), event.getTo().getPitch());
                  }
              }
@@ -681,7 +681,7 @@ index 646bdd1c5d5a8b6459ee8b94e887d3d19442ea05..1c27e44ca6744150e8a107a00bb00fb4
          }
  
 diff --git a/net/minecraft/world/entity/animal/Cat.java b/net/minecraft/world/entity/animal/Cat.java
-index 618f184ce9fed4d9b01f2df4d9a4476d20a55546..f066b0acfa0e954f6d71e62962c76afa1f05a4a5 100644
+index de97fb5a70a3a966db3f1136ac60fbb5fe63e2e1..2723f04de1156f8e396f5bee2afdc044626f4dcb 100644
 --- a/net/minecraft/world/entity/animal/Cat.java
 +++ b/net/minecraft/world/entity/animal/Cat.java
 @@ -93,10 +93,36 @@ public class Cat extends TamableAnimal implements VariantHolder<Holder<CatVarian
@@ -1297,7 +1297,7 @@ index 283ddf7d13a17c0a6df5a52b7fd26ed7b7a4826b..19aa39af6685a03eb584820853239a3f
          }
      }
 diff --git a/net/minecraft/world/entity/animal/Parrot.java b/net/minecraft/world/entity/animal/Parrot.java
-index 1d840fe1c718ea4431c471e3cbbdee074ed53179..445614d09d2364daee5245c217baeb31e186c168 100644
+index 2a1f4dd963f7c2d5b34eb6ab67142347c5eae0e7..907cb50c58f067f1e0ca15583d39924fd76f1ed0 100644
 --- a/net/minecraft/world/entity/animal/Parrot.java
 +++ b/net/minecraft/world/entity/animal/Parrot.java
 @@ -124,12 +124,68 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
@@ -1931,7 +1931,7 @@ index 0e2d2dd3f2ef2783f3773a9a05c4f718991f7784..cf8daa9897b978ffb89e01d63257a9ea
                      this.turtle.setDeltaMovement(this.turtle.getDeltaMovement().add(0.0, this.turtle.getSpeed() * d1 * 0.1, 0.0));
                  }
 diff --git a/net/minecraft/world/entity/animal/Wolf.java b/net/minecraft/world/entity/animal/Wolf.java
-index 6cc3893742b443ec84942252910cf444cdbf0c96..90609ff3060322110ece27630de0abae1a6370a8 100644
+index 3b09dd88f843843be62a75776c4d8ebdf9195ae7..75f592f6d7d2cf2faf8989de4c4f4b0fd125d53a 100644
 --- a/net/minecraft/world/entity/animal/Wolf.java
 +++ b/net/minecraft/world/entity/animal/Wolf.java
 @@ -180,9 +180,32 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol

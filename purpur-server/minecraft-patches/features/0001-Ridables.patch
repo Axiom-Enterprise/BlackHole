@@ -75,7 +75,7 @@ index 77e7665b56810762f58096e2482f019bbc3918cb..aa982f27e80f6023cadb2d2e5d0f84e4
                                      if ((target instanceof Bucketable && target instanceof LivingEntity && origItem != null && origItem.asItem() == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelected() == null || ServerGamePacketListenerImpl.this.player.getInventory().getSelected().getItem() != origItem)) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index ff2e8a40035c8e268733f87c17566b28d5baa22a..f02723a017d2c21c425fb11d2814052185960b97 100644
+index 56448eeb61f71dce04524e5f9dfe9dd3740154a7..680a7b609db5de96742a8042d0f9ab5e0a8a8e7f 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3152,6 +3152,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -246,7 +246,7 @@ index 73e4cfc0c92ab47dd299ca98c03c69d11f75d36a..5f5f031c9d5b738a29cbabf5bed94529
          // Paper end - Add EntityMoveEvent
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterRainOrBubble()) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 26f7cd5ddacf5f908702adbf55b56dcc6fcbe162..c431f28c3f4f6cec946048f5752c364429af5ba1 100644
+index def2c797b9c0f3f97c37fcfa0fc44a351dfe3422..487a436e3d9a5a7a4551ea808c8ace306ce6c2fc 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -151,8 +151,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -260,7 +260,7 @@ index 26f7cd5ddacf5f908702adbf55b56dcc6fcbe162..c431f28c3f4f6cec946048f5752c3644
          this.jumpControl = new JumpControl(this);
          this.bodyRotationControl = this.createBodyControl();
          this.navigation = this.createNavigation(level);
-@@ -1405,7 +1405,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1407,7 +1407,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      }
  
      protected InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -269,7 +269,7 @@ index 26f7cd5ddacf5f908702adbf55b56dcc6fcbe162..c431f28c3f4f6cec946048f5752c3644
      }
  
      public boolean isWithinRestriction() {
-@@ -1723,4 +1723,58 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1725,4 +1725,58 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      public float[] getArmorDropChances() {
          return this.armorDropChances;
      }
@@ -4666,7 +4666,7 @@ index a60c7b828332fc214caea10be9bc1505e2b5d0a9..6c6806fd7204e3610142f0365d158aee
      }
  
 diff --git a/net/minecraft/world/entity/monster/ZombieVillager.java b/net/minecraft/world/entity/monster/ZombieVillager.java
-index 3608fbcd1998ddcdec8ec501dd5f6b80911104ee..33bb29bc03bce90750b3b9376a6ed848208a569d 100644
+index 9d428724f3564289f262d8c1ca11692d133a61c5..26eebc3a37890e7e79d9cf737f2853623a14015c 100644
 --- a/net/minecraft/world/entity/monster/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/ZombieVillager.java
 @@ -78,6 +78,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {

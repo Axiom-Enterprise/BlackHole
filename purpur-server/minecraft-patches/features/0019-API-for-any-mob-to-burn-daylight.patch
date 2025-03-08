@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index f02723a017d2c21c425fb11d2814052185960b97..80f2d38449f1db1d9b6926e4552d3061cb88b4af 100644
+index 680a7b609db5de96742a8042d0f9ab5e0a8a8e7f..3709efe15b30e4140ba677ffdcd4634b06e34d7d 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -531,6 +531,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -101,10 +101,10 @@ index cef0c2bd5c010e9ca6a8f42f2def832c244eae31..c5a5bd367478c32672fbf5ec237bef43
  
      public boolean isSensitiveToWater() {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index d93584c6793818463e8883ffe399bf16b03263a9..70ee86993d381445855ac7e7290da384d6675987 100644
+index 0b14919c8d7c153d2715abb286e1b466945e86fc..bc22d67bba9b1ebb6bef84f5326375100d24461d 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -1655,19 +1655,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1657,19 +1657,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      }
  
      public boolean isSunBurnTick() {

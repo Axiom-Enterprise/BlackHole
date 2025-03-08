@@ -65,7 +65,7 @@
      }
  
      @Override
-@@ -1280,7 +_,7 @@
+@@ -1282,7 +_,7 @@
              );
          }
  
@@ -74,7 +74,7 @@
          return spawnGroupData;
      }
  
-@@ -1619,6 +_,7 @@
+@@ -1621,6 +_,7 @@
              this.playAttackSound();
          }
  

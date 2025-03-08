@@ -1,9 +1,9 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -3902,4 +_,123 @@
-      * @return the result of this method, holding leftovers and spawned items.
+@@ -3918,4 +_,123 @@
+      * @param score New death screen score of player
       */
-     PlayerGiveResult give(Collection<ItemStack> items, boolean dropIfFull);
+     void setDeathScreenScore(int score);
 +
 +    // Purpur start
 +    /**

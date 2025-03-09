@@ -30,7 +30,7 @@ index 121b57c7f5345f5d8884eaa1d36dac79fb7d42ef..9afbfe9bf493e09ca1963e8956ab7573
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index c9eef7221254f3661959a4898485c97b87ec1b8d..b801e2d595383e12120abe3b1b95cbc364515be9 100644
+index 63b1b2f920d5f2beb23433a373233aa2f1f95dbb..3c3e8e58cd2761ab2f0652e63f944a5c9a95dca8 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -217,6 +217,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -62,10 +62,10 @@ index a6f771cbee878eb383b67c61fa2469f2916413b5..d77381237f8a7d1b2f280a5032f5e1c8
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 77e7665b56810762f58096e2482f019bbc3918cb..aa982f27e80f6023cadb2d2e5d0f84e472ee863c 100644
+index 82fb27ea7d3a21b4eb588c2b6c9f9da213db6a88..032d298dadb64ceb5f110a62402a08f78fc99c34 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2835,6 +2835,8 @@ public class ServerGamePacketListenerImpl
+@@ -2845,6 +2845,8 @@ public class ServerGamePacketListenerImpl
  
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
  

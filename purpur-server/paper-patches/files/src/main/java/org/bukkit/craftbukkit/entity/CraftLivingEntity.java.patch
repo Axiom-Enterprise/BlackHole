@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
+index 4f98d138a275a6c34528b7a5148ef265bc38d6b5..459366331971d09e4cd00fb2035be01b4257477a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-@@ -523,7 +_,7 @@
+@@ -523,7 +523,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
          net.minecraft.server.level.ServerPlayer entityPlayer = killer == null ? null : ((CraftPlayer) killer).getHandle();
          getHandle().lastHurtByPlayer = entityPlayer;
          getHandle().lastHurtByMob = entityPlayer;

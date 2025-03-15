@@ -1,9 +1,12 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -21,6 +_,16 @@
+@@ -19,7 +_,17 @@
+ paperweight {
+     minecraftVersion = providers.gradleProperty("mcVersion")
      // macheOldPath = file("F:\\Projects\\PaperTooling\\mache\\versions\\1.21.4\\src\\main\\java")
-     // gitFilePatches = true
- 
+-    // gitFilePatches = true
++    gitFilePatches = true
++
 +    val purpur = forks.register("purpur") {
 +        upstream.patchDir("paperServer") {
 +            upstreamPath = "paper-server"
@@ -13,10 +16,9 @@
 +        }
 +    }
 +    activeFork = purpur
-+
+ 
      spigot {
          buildDataRef = "3edaf46ec1eed4115ce1b18d2846cded42577e42"
-         packageVersion = "v1_21_R3" // also needs to be updated in MappingEnvironment
 @@ -101,7 +_,20 @@
      }
  }

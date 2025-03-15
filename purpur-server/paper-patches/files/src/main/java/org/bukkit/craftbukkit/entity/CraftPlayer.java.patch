@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 5050f446e75f0ec17daf994ed74cbcd3155664c1..4dd2c2c824ffc7c6da02a3e740b4025459073295 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -594,10 +_,15 @@
+@@ -594,10 +594,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public void setPlayerListName(String name) {
@@ -17,7 +25,7 @@
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -2755,6 +_,28 @@
+@@ -2755,6 +2760,28 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return this.getHandle().getAbilities().walkingSpeed * 2f;
      }
  
@@ -46,7 +54,7 @@
      private void validateSpeed(float value) {
          Preconditions.checkArgument(value <= 1f && value >= -1f, "Speed value (%s) need to be between -1f and 1f", value);
      }
-@@ -3624,4 +_,76 @@
+@@ -3624,4 +3651,76 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void setSimplifyContainerDesyncCheck(final boolean simplifyContainerDesyncCheck) {
          this.simplifyContainerDesyncCheck = simplifyContainerDesyncCheck;
      }

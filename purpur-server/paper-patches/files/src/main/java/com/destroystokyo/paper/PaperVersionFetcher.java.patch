@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
+index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..fe66e43c27e0798770e102d1385bacbaa90bda07 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -35,7 +_,10 @@
+@@ -35,7 +35,10 @@ public class PaperVersionFetcher implements VersionFetcher {
      private static final Logger LOGGER = LogUtils.getClassLogger();
      private static final int DISTANCE_ERROR = -1;
      private static final int DISTANCE_UNKNOWN = -2;
@@ -12,7 +20,7 @@
  
      @Override
      public long getCacheTime() {
-@@ -49,7 +_,7 @@
+@@ -49,7 +52,7 @@ public class PaperVersionFetcher implements VersionFetcher {
          if (build.buildNumber().isEmpty() && build.gitCommit().isEmpty()) {
              updateMessage = text("You are running a development version without access to version information", color(0xFF5300));
          } else {
@@ -21,7 +29,7 @@
          }
          final @Nullable Component history = this.getHistory();
  
-@@ -57,7 +_,7 @@
+@@ -57,7 +60,7 @@ public class PaperVersionFetcher implements VersionFetcher {
      }
  
      private static Component getUpdateStatusMessage(final String repo, final ServerBuildInfo build) {
@@ -30,7 +38,7 @@
  
          final OptionalInt buildNumber = build.buildNumber();
          if (buildNumber.isPresent()) {
-@@ -71,10 +_,10 @@
+@@ -71,10 +74,10 @@ public class PaperVersionFetcher implements VersionFetcher {
          }
  
          return switch (distance) {
@@ -45,7 +53,7 @@
                  .append(Component.newline())
                  .append(text("Download the new version at: ")
                      .append(text(DOWNLOAD_PAGE, NamedTextColor.GOLD)
-@@ -86,18 +_,15 @@
+@@ -86,18 +89,15 @@ public class PaperVersionFetcher implements VersionFetcher {
      private static int fetchDistanceFromSiteApi(final ServerBuildInfo build, final int jenkinsBuild) {
          try {
              try (final BufferedReader reader = Resources.asCharSource(
@@ -68,7 +76,7 @@
                  return DISTANCE_ERROR;
              }
          } catch (final IOException e) {
-@@ -141,6 +_,6 @@
+@@ -141,6 +141,6 @@ public class PaperVersionFetcher implements VersionFetcher {
              return null;
          }
  

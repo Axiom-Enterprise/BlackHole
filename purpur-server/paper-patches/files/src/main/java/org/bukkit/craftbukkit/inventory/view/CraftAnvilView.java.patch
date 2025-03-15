@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/view/CraftAnvilView.java b/src/main/java/org/bukkit/craftbukkit/inventory/view/CraftAnvilView.java
+index f86c95a13dff012de5db3e41ac261e9e8d44d9f3..1db0b790d824e419bb5fb6ab1f3003e120f9763b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/view/CraftAnvilView.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/view/CraftAnvilView.java
-@@ -75,4 +_,26 @@
+@@ -75,4 +75,26 @@ public class CraftAnvilView extends CraftInventoryView<AnvilMenu, AnvilInventory
              this.setMaximumRepairCost(legacy.getMaximumRepairCost());
          }
      }

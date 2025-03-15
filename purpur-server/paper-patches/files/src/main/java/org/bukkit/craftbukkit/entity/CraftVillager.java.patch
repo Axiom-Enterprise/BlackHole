@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftVillager.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftVillager.java
+index aaddce10e1d41531939d1e7f3d717b458ec1b7ab..d65a3bee4671e9e21769ba03f5e65c7312b23580 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftVillager.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftVillager.java
-@@ -373,4 +_,11 @@
+@@ -373,4 +373,11 @@ public class CraftVillager extends CraftAbstractVillager implements Villager {
          getHandle().getGossips().gossips.clear();
      }
      // Paper end

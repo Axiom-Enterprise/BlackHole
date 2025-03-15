@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
+index d2a75850af9c6ad2aca66a5f994f1b587d73eac4..a056aa167887abef9e6d531a9edd2cda433567d2 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
-@@ -2,7 +_,16 @@
+@@ -2,7 +2,16 @@
  <Configuration status="WARN" shutdownHook="disable">
      <Appenders>
          <Queue name="ServerGuiConsole">

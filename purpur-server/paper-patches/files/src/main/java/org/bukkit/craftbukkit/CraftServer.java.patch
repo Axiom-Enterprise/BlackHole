@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 99beb7ec6e1864426492f4e27e650ab97ce6d4b5..32e5dd24ac682fcbcc684b86835b8955f904a347 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -428,6 +_,20 @@
+@@ -428,6 +428,20 @@ public final class CraftServer implements Server {
          this.paperPluginManager = new io.papermc.paper.plugin.manager.PaperPluginManagerImpl(this, this.commandMap, pluginManager);
          this.pluginManager.paperPluginManager = this.paperPluginManager;
           // Paper end
@@ -21,7 +29,7 @@
  
          CraftRegistry.setMinecraftRegistry(console.registryAccess());
  
-@@ -1088,6 +_,7 @@
+@@ -1088,6 +1102,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
@@ -29,7 +37,7 @@
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -1103,6 +_,7 @@
+@@ -1103,6 +1118,7 @@ public final class CraftServer implements Server {
                  }
              }
              world.spigotConfig.init(); // Spigot
@@ -37,7 +45,7 @@
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -1120,6 +_,7 @@
+@@ -1120,6 +1136,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          io.papermc.paper.command.PaperCommands.registerCommands(this.console); // Paper
          this.spark.registerCommandBeforePlugins(this); // Paper - spark
@@ -45,7 +53,7 @@
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -1647,6 +_,60 @@
+@@ -1647,6 +1664,60 @@ public final class CraftServer implements Server {
          return true;
      }
  
@@ -106,7 +114,7 @@
      @Override
      public List<Recipe> getRecipesFor(ItemStack result) {
          Preconditions.checkArgument(result != null, "ItemStack cannot be null");
-@@ -3052,6 +_,18 @@
+@@ -3052,6 +3123,18 @@ public final class CraftServer implements Server {
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  
@@ -125,7 +133,7 @@
          @Override
          public void restart() {
              CraftServer.this.restart();
-@@ -3086,6 +_,7 @@
+@@ -3086,6 +3169,7 @@ public final class CraftServer implements Server {
      @Override
      public double[] getTPS() {
          return new double[] {
@@ -133,7 +141,7 @@
              net.minecraft.server.MinecraftServer.getServer().tps1.getAverage(),
              net.minecraft.server.MinecraftServer.getServer().tps5.getAverage(),
              net.minecraft.server.MinecraftServer.getServer().tps15.getAverage()
-@@ -3296,4 +_,18 @@
+@@ -3296,4 +3380,18 @@ public final class CraftServer implements Server {
          this.console.addPluginAllowingSleep(plugin.getName(), value);
      }
      // Paper end - API to check if the server is sleeping

@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/spigotmc/TicksPerSecondCommand.java b/src/main/java/org/spigotmc/TicksPerSecondCommand.java
+index 6d4851aa8c53793bfaf650f399fc5e2a98dbbb24..4f3bd0628c224bb2567ddb0d40d16d44b9a6e14d 100644
 --- a/src/main/java/org/spigotmc/TicksPerSecondCommand.java
 +++ b/src/main/java/org/spigotmc/TicksPerSecondCommand.java
-@@ -43,7 +_,7 @@
+@@ -43,7 +43,7 @@ public class TicksPerSecondCommand extends Command {
          }
  
          TextComponent.Builder builder = text();

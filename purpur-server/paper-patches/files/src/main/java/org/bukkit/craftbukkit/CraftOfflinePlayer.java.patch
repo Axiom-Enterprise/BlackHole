@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java b/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
+index 94ca0407303c4493ab4928b12ec6ecc75aaca549..f2d87c12dd19210ce7e2147fada5c10191008632 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
-@@ -363,14 +_,26 @@
+@@ -363,14 +363,26 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
  
      @Override
      public Location getLocation() {
@@ -30,7 +38,7 @@
  
              UUID uuid = new UUID(data.getLong("WorldUUIDMost"), data.getLong("WorldUUIDLeast"));
  
-@@ -381,9 +_,9 @@
+@@ -381,9 +393,9 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
                  rotation.getFloat(0),
                  rotation.getFloat(1)
              );
@@ -42,7 +50,7 @@
      }
  
      @Override
-@@ -626,4 +_,191 @@
+@@ -626,4 +638,191 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
              manager.save();
          }
      }

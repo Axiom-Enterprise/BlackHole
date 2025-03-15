@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
+index 7a3d982b133f8cdaeb936cf40f92565f0f7f6dd0..8b0faa08411ee1f336641b161acd3412c886dc2b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
-@@ -151,4 +_,53 @@
+@@ -151,4 +151,53 @@ public class CraftItem extends CraftEntity implements Item {
      public String toString() {
          return "CraftItem";
      }

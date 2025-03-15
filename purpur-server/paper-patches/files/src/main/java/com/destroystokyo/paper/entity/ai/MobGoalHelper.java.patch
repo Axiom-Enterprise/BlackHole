@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/entity/ai/MobGoalHelper.java b/src/main/java/com/destroystokyo/paper/entity/ai/MobGoalHelper.java
+index 6bdc683b5ade408ee27f1d6636b4d60c8c89cb7c..bc6d3898d8784e50a0e2264bbb5bde63add61f4e 100644
 --- a/src/main/java/com/destroystokyo/paper/entity/ai/MobGoalHelper.java
 +++ b/src/main/java/com/destroystokyo/paper/entity/ai/MobGoalHelper.java
-@@ -136,6 +_,10 @@
+@@ -136,6 +136,10 @@ public class MobGoalHelper {
      static {
          // TODO these kinda should be checked on each release, in case obfuscation changes
          deobfuscationMap.put("abstract_skeleton_1", "abstract_skeleton_melee");

@@ -1,6 +1,14 @@
+From 589723787ec9d0b9fc55ea9d0d69ad4b7d7b1437 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/io/papermc/paper/command/PaperPluginsCommand.java b/src/main/java/io/papermc/paper/command/PaperPluginsCommand.java
+index 41c95f00b4b2bea6d31f85e268c33d7f6184823e..2eaf27ddf0bddb23b8850310c332b202b1d7e69c 100644
 --- a/src/main/java/io/papermc/paper/command/PaperPluginsCommand.java
 +++ b/src/main/java/io/papermc/paper/command/PaperPluginsCommand.java
-@@ -70,10 +_,10 @@
+@@ -70,10 +70,10 @@ public class PaperPluginsCommand extends BukkitCommand {
          this.setAliases(List.of("pl"));
      }
  
@@ -13,7 +21,7 @@
          }
  
          boolean isFirst = true;
-@@ -100,15 +_,49 @@
+@@ -100,15 +100,49 @@ public class PaperPluginsCommand extends BukkitCommand {
          return formattedSubLists;
      }
  
@@ -66,7 +74,7 @@
  
          builder.append(pluginName);
  
-@@ -126,6 +_,23 @@
+@@ -126,6 +160,23 @@ public class PaperPluginsCommand extends BukkitCommand {
          return componentHeader.append(Component.text(":")).build();
      }
  
@@ -90,7 +98,7 @@
      private static Component asPlainComponents(final String strings) {
          final net.kyori.adventure.text.TextComponent.Builder builder = Component.text();
          for (final String string : strings.split("\n")) {
-@@ -186,25 +_,25 @@
+@@ -186,25 +237,25 @@ public class PaperPluginsCommand extends BukkitCommand {
          final int sizePaperPlugins = paperPlugins.size();
          final int sizeSpigotPlugins = spigotPlugins.size();
          final int sizePlugins = sizePaperPlugins + sizeSpigotPlugins;

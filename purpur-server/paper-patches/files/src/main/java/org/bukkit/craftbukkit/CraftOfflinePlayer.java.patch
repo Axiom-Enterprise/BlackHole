@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
-@@ -366,14 +_,26 @@
+@@ -339,6 +_,12 @@
  
      @Override
      public Location getLocation() {
@@ -13,36 +13,7 @@
          CompoundTag data = this.getData();
          if (data == null) {
              return null;
-         }
- 
--        if (data.contains("Pos") && data.contains("Rotation")) {
--            ListTag position = (ListTag) data.get("Pos");
--            ListTag rotation = (ListTag) data.get("Rotation");
-+        // Purpur start - OfflinePlayer API
-+        //if (data.contains("Pos") && data.contains("Rotation")) {
-+            ListTag position = data.getList("Pos", net.minecraft.nbt.Tag.TAG_DOUBLE);
-+            ListTag rotation = data.getList("Rotation", net.minecraft.nbt.Tag.TAG_FLOAT);
-+
-+            if (position.isEmpty() && rotation.isEmpty()) {
-+                return null;
-+            }
-+        // Purpur end - OfflinePlayer API
- 
-             UUID uuid = new UUID(data.getLong("WorldUUIDMost"), data.getLong("WorldUUIDLeast"));
- 
-@@ -384,9 +_,9 @@
-                 rotation.getFloat(0),
-                 rotation.getFloat(1)
-             );
--        }
-+        //} // Purpur - OfflinePlayer API
- 
--        return null;
-+        //return null; // Purpur - OfflinePlayer API
-     }
- 
-     @Override
-@@ -620,4 +_,191 @@
+@@ -571,4 +_,191 @@
              manager.save();
          }
      }

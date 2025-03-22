@@ -24,10 +24,10 @@ index 549f6fcf5ded0563e665673a797fa92496786c3b..852938bc4007c4f4ef5b51330d13b0fb
          Preconditions.checkArgument(entity != null, "Unknown entity");
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index b1cc7d90912b0ee1e2b57bb85c595a4f5d49e9aa..74e1e1751a2c3a25d44dec59c104f27980a057ae 100644
+index f4425a0e16573200be1951d073e4d0998585ec47..03dbdb8c32a2ed81987fa855567ee192f5c92e41 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-@@ -1176,4 +1176,16 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+@@ -1173,4 +1173,16 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
      public boolean canUseEquipmentSlot(org.bukkit.inventory.EquipmentSlot slot) {
          return this.getHandle().canUseSlot(org.bukkit.craftbukkit.CraftEquipmentSlot.getNMS(slot));
      }

@@ -62,10 +62,10 @@ index 6275078467313fe95ae2ae22740135a4b4f39511..7ebecee1de098c218304868b1223b914
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 7b938c0d28af3f15106666e13642e88aa398db4d..9e8fdd28a2b2031e4db011663b67582fce5b3b0f 100644
+index 76487a610e149558b021a6a3f7c6cfccb5e6c674..f9af724c579b9931015d460019cca9ff860750c5 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2845,6 +2845,8 @@ public class ServerGamePacketListenerImpl
+@@ -2847,6 +2847,8 @@ public class ServerGamePacketListenerImpl
  
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
  

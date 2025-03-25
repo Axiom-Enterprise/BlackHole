@@ -1,0 +1,42 @@
+--- a/net/minecraft/world/entity/animal/horse/Llama.java
++++ b/net/minecraft/world/entity/animal/horse/Llama.java
+@@ -77,6 +_,7 @@
+     private Llama caravanHead;
+     @Nullable
+     public Llama caravanTail; // Paper
++    public boolean shouldJoinCaravan = true; // Purpur - Llama API
+ 
+     public Llama(EntityType<? extends Llama> entityType, Level level) {
+         super(entityType, level);
+@@ -111,6 +_,7 @@
+         super.addAdditionalSaveData(compound);
+         compound.store("Variant", Llama.Variant.LEGACY_CODEC, this.getVariant());
+         compound.putInt("Strength", this.getStrength());
++        compound.putBoolean("Purpur.ShouldJoinCaravan", shouldJoinCaravan); // Purpur - Llama API
+     }
+ 
+     @Override
+@@ -118,6 +_,7 @@
+         this.setStrength(compound.getIntOr("Strength", 0));
+         super.readAdditionalSaveData(compound);
+         this.setVariant(compound.read("Variant", Llama.Variant.LEGACY_CODEC).orElse(Llama.Variant.DEFAULT));
++        this.shouldJoinCaravan = compound.getBooleanOr("Purpur.ShouldJoinCaravan", true); // Purpur - Llama API
+     }
+ 
+     @Override
+@@ -399,6 +_,7 @@
+ 
+     public void leaveCaravan() {
+         if (this.caravanHead != null) {
++            new org.purpurmc.purpur.event.entity.LlamaLeaveCaravanEvent((org.bukkit.entity.Llama) getBukkitEntity()).callEvent(); // Purpur - Llama API
+             this.caravanHead.caravanTail = null;
+         }
+ 
+@@ -406,6 +_,7 @@
+     }
+ 
+     public void joinCaravan(Llama caravanHead) {
++        if (!this.level().purpurConfig.llamaJoinCaravans || !shouldJoinCaravan || !new org.purpurmc.purpur.event.entity.LlamaJoinCaravanEvent((org.bukkit.entity.Llama) getBukkitEntity(), (org.bukkit.entity.Llama) caravanHead.getBukkitEntity()).callEvent()) return; // Purpur - Llama API // Purpur - Config to disable Llama caravans
+         this.caravanHead = caravanHead;
+         this.caravanHead.caravanTail = this;
+     }

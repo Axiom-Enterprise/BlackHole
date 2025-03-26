@@ -62,7 +62,7 @@ index 6dc490bf9d032b5ed2d7bd458bffd3471f54ff06..cf26a10e4ccf0f28817ce53b3c5bf1df
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index ab2e6655e07a667d8ac413c85aaf3743a38db2e0..96b61192d9ab70857427cea65d4ddd0a4fe9b4aa 100644
+index 63e01ec7e4ab04bb7d389bff485dfedca344bfa2..84b1570d0d88f57f33ff8179f0a78d37b495a217 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2766,6 +2766,8 @@ public class ServerGamePacketListenerImpl
@@ -75,10 +75,10 @@ index ab2e6655e07a667d8ac413c85aaf3743a38db2e0..96b61192d9ab70857427cea65d4ddd0a
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 4dd9ab13f97e14425d792ed23a81477016ddc56c..d4e989889ed21e3900062eed142f26a9bdaaa8d9 100644
+index 9f6326da63fc8e0c284d565314f0b448b622c910..488dc3e2e6d6095d416bd81078b3bcbcf92f7ab9 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -2861,6 +2861,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2855,6 +2855,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -92,7 +92,7 @@ index 4dd9ab13f97e14425d792ed23a81477016ddc56c..d4e989889ed21e3900062eed142f26a9
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -2902,6 +2909,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2896,6 +2903,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index 4dd9ab13f97e14425d792ed23a81477016ddc56c..d4e989889ed21e3900062eed142f26a9
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -4828,4 +4843,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4822,4 +4837,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
@@ -177,7 +177,7 @@ index bda521cca91f070139f5e9bdef6a50e1497f53ff..351f92e1627f465a9a292d4a5e5c256a
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 0caf3cc4c38426dd08d4ec78c00b51a3a880718a..a6739650bfee639925a63f345ac39c6e0c5c3209 100644
+index a186784d6b5bae844604a0ca7a2b81857c074a3c..7e2258f0232beae3461ad3ef75b70e9bf1f8b772 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -226,9 +226,9 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -2585,7 +2585,7 @@ index d34dcbbdeae41d23d6fb497e0e8da038580b6d01..6c252b8021dbeb2a9ffee8a3744ac016
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/animal/wolf/Wolf.java b/net/minecraft/world/entity/animal/wolf/Wolf.java
-index e94f7b29befd2176fbbc784cd9d08c2d1cd4a94d..cff9bc3d8c9ef1935c25c4001dfd638855062573 100644
+index d25bd49c17478e73561e78bc66171d6e7bc187ba..127a57a477755101283ba7bbb4161a574692c252 100644
 --- a/net/minecraft/world/entity/animal/wolf/Wolf.java
 +++ b/net/minecraft/world/entity/animal/wolf/Wolf.java
 @@ -187,9 +187,32 @@ public class Wolf extends TamableAnimal implements NeutralMob {

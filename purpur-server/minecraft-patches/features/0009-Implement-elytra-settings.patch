@@ -5,12 +5,12 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 631ac66e7bad8c0b789cf762b54db3b8ffe4b44a..ea8ef5c1b2ad9be827ea35a2858cbe8de6dacac7 100644
+index 5208518ad9fe86e25b07aeffa9633407aa6f2f1c..7b635a3f047a7f645322bdd8ce5bfa8350d7a739 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -3620,7 +3620,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
-                 if (i1 % 2 == 0) {
-                     List<EquipmentSlot> list = EquipmentSlot.VALUES.stream().filter(slot -> canGlideUsing(this.getItemBySlot(slot), slot)).toList();
+@@ -3644,7 +3644,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
+                         .filter(equipmentSlot1 -> canGlideUsing(this.getItemBySlot(equipmentSlot1), equipmentSlot1))
+                         .toList();
                      EquipmentSlot equipmentSlot = Util.getRandom(list, this.random);
 -                    this.getItemBySlot(equipmentSlot).hurtAndBreak(1, this, equipmentSlot);
 +
@@ -29,10 +29,10 @@ index 631ac66e7bad8c0b789cf762b54db3b8ffe4b44a..ea8ef5c1b2ad9be827ea35a2858cbe8d
  
                  this.gameEvent(GameEvent.ELYTRA_GLIDE);
 diff --git a/net/minecraft/world/item/FireworkRocketItem.java b/net/minecraft/world/item/FireworkRocketItem.java
-index 75a9bd205f32b77c5d242cb9fac0f571ce36045a..b03f182c62c699cc222e67c1ae6eadf99c45d48d 100644
+index 18d63d2da49451a2d5e1da7bf0c00e05e2f192bc..ab35b0db023f48854476497d0dbdb0dffbeddb43 100644
 --- a/net/minecraft/world/item/FireworkRocketItem.java
 +++ b/net/minecraft/world/item/FireworkRocketItem.java
-@@ -66,6 +66,19 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
+@@ -62,6 +62,19 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
                  com.destroystokyo.paper.event.player.PlayerElytraBoostEvent event = new com.destroystokyo.paper.event.player.PlayerElytraBoostEvent((org.bukkit.entity.Player) player.getBukkitEntity(), org.bukkit.craftbukkit.inventory.CraftItemStack.asCraftMirror(itemInHand), (org.bukkit.entity.Firework) delayed.projectile().getBukkitEntity(), org.bukkit.craftbukkit.CraftEquipmentSlot.getHand(hand));
                  if (event.callEvent() && delayed.attemptSpawn()) {
                      player.awardStat(Stats.ITEM_USED.get(this)); // Moved up from below
@@ -53,10 +53,10 @@ index 75a9bd205f32b77c5d242cb9fac0f571ce36045a..b03f182c62c699cc222e67c1ae6eadf9
                          itemInHand.shrink(1); // Moved up from below
                      } else {
 diff --git a/net/minecraft/world/item/ItemStack.java b/net/minecraft/world/item/ItemStack.java
-index c5426585f53a3139dc9d188a73e3a7ff4cb2e492..264b713e8b7c3d5f7d8e1facc90a60349f2cf414 100644
+index 8c9f64140f016edfadeeb75463655cc2f3fafc0c..84e7f1b119ccfdabf48ccac51278e19743840da7 100644
 --- a/net/minecraft/world/item/ItemStack.java
 +++ b/net/minecraft/world/item/ItemStack.java
-@@ -733,6 +733,14 @@ public final class ItemStack implements DataComponentHolder {
+@@ -725,6 +725,14 @@ public final class ItemStack implements DataComponentHolder {
                  org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerItemBreakEvent(serverPlayer, this); // Paper - Add EntityDamageItemEvent
              }
              // CraftBukkit end
@@ -72,10 +72,10 @@ index c5426585f53a3139dc9d188a73e3a7ff4cb2e492..264b713e8b7c3d5f7d8e1facc90a6034
              onBreak.accept(item);
          }
 diff --git a/net/minecraft/world/item/TridentItem.java b/net/minecraft/world/item/TridentItem.java
-index 07f8c7644a112bb1ba283d1eadd8661010e888a4..7ea7db834e7b627a1d7d37ca87cd43eb61408565 100644
+index 5ed862c4eeb9995b25f6a0ee1b57b2fdafb92551..59b1a455895d2842e45d916dcf53dead32e1c72a 100644
 --- a/net/minecraft/world/item/TridentItem.java
 +++ b/net/minecraft/world/item/TridentItem.java
-@@ -133,6 +133,18 @@ public class TridentItem extends Item implements ProjectileItem {
+@@ -127,6 +127,18 @@ public class TridentItem extends Item implements ProjectileItem {
                          f1 *= tridentSpinAttackStrength / squareRoot;
                          f2 *= tridentSpinAttackStrength / squareRoot;
                          org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerRiptideEvent(player, stack, f, f1, f2); // CraftBukkit

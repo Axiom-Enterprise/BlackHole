@@ -41,7 +41,7 @@ index 4d44b35ee34eb256b9aff9d74b1cb9ae1ac9503f..46aaba94e7b6bde26ad3b61fcf5e0aa0
      public boolean isFlapping() {
          return !this.isResting() && this.tickCount % 10.0F == 0.0F;
 diff --git a/net/minecraft/world/entity/animal/Bee.java b/net/minecraft/world/entity/animal/Bee.java
-index 8da974e98f2207d76e8962eda54c75d0356ecc6f..531d18c5a47eb4676c3dd9b5353f8f9d49b17b54 100644
+index 9a9b0d1ca7b30916e1ac3938924ced8d77dafdaf..e9dfff7e3726cd2229f89bb39fa1ca4815d99a6d 100644
 --- a/net/minecraft/world/entity/animal/Bee.java
 +++ b/net/minecraft/world/entity/animal/Bee.java
 @@ -494,6 +494,13 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -113,12 +113,12 @@ index 6128ed595cb97cc11c1a0e1e1673b3af8e428fb8..7e08573cba6efcd78fcce37bccc2923f
      public ItemStack getBucketItemStack() {
          return new ItemStack(Items.COD_BUCKET);
 diff --git a/net/minecraft/world/entity/animal/Cow.java b/net/minecraft/world/entity/animal/Cow.java
-index 34700b4e599efa6fb9ea8c1d0da26bd7fe8fb9eb..4a68181d200c26485f290216f9e52b79965215eb 100644
+index 731f27cf8687ffa95c0df5601a4465b5174fe248..6b504c2fdde020e086b0d01139cb56d65b7f9ad1 100644
 --- a/net/minecraft/world/entity/animal/Cow.java
 +++ b/net/minecraft/world/entity/animal/Cow.java
-@@ -78,6 +78,13 @@ public class Cow extends AbstractCow {
+@@ -70,6 +70,13 @@ public class Cow extends AbstractCow {
      }
-     // Purpur end - Cows naturally aggressive to players chance
+     // Purpur end - Toggle for water sensitive mob damage
  
 +    // Purpur start - Mobs always drop experience
 +    @Override
@@ -257,7 +257,7 @@ index c1d4bcbc3bad5f2fcaecd4007db7318a07a63324..1b8350a09a9f2a708c8cd1b066982891
      @Override
      public SpawnGroupData finalizeSpawn(
 diff --git a/net/minecraft/world/entity/animal/Pig.java b/net/minecraft/world/entity/animal/Pig.java
-index 4618ea2c4d815c07cd94b7bd279167836a116aa7..ca1657a468469c51cf8dc75bf295b78ac9ce6518 100644
+index c2718006f6a47dda0655818181881bcdcfef34dc..5bc370d45fc6e0a37cc77ac1b36e0caad959741c 100644
 --- a/net/minecraft/world/entity/animal/Pig.java
 +++ b/net/minecraft/world/entity/animal/Pig.java
 @@ -104,6 +104,13 @@ public class Pig extends Animal implements ItemSteerable {
@@ -599,7 +599,7 @@ index 1ecfda9a5222d7c175108edbbff552ea036e0321..c53ab665a0c87d342adbe395c87e15a3
      protected void registerGoals() {
          this.eatBlockGoal = new EatBlockGoal(this);
 diff --git a/net/minecraft/world/entity/animal/wolf/Wolf.java b/net/minecraft/world/entity/animal/wolf/Wolf.java
-index 50fe10588a5cd7b263993db9a52309f332d47a3b..31a08b898cc5ea7d38ddbc045dd911ff18d8c56f 100644
+index 243e848a6f4eaa2a72f02a1f056f20d9de23058f..936ee9e80239ad965be75ceeb38d5248243e9c4e 100644
 --- a/net/minecraft/world/entity/animal/wolf/Wolf.java
 +++ b/net/minecraft/world/entity/animal/wolf/Wolf.java
 @@ -231,6 +231,13 @@ public class Wolf extends TamableAnimal implements NeutralMob {
@@ -977,7 +977,7 @@ index af33bd8c472f7e7bfdab52558bac379166ff2253..a6d6cb3e122488328ff980ed5902caff
      protected void registerGoals() {
          this.friendsGoal = new Silverfish.SilverfishWakeUpFriendsGoal(this);
 diff --git a/net/minecraft/world/entity/monster/Skeleton.java b/net/minecraft/world/entity/monster/Skeleton.java
-index 4b0a27dc94313b021e56bef61671f95a31074dc7..724432786e280d41479b06d30d4be4fa91dabb49 100644
+index fbf8818e0fd80705648f038647b718ec2a2cd1b6..48cbc3cb983da08cfec78828b15f148459a22b44 100644
 --- a/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/net/minecraft/world/entity/monster/Skeleton.java
 @@ -57,6 +57,13 @@ public class Skeleton extends AbstractSkeleton {
@@ -1049,7 +1049,7 @@ index e4ae604d4d0756edc9418634d9958338997c8203..e69a5c552d2f57bc373cb2b89690a7dd
          EntityType<Stray> entityType, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Strider.java b/net/minecraft/world/entity/monster/Strider.java
-index 7b19d64d6b1d61922a2368e38f2b31a42ea29a1a..69b3cd61d49e41ab5fdb861043b012b1f60f8995 100644
+index 533801988cb4f8a916ef002a179990ca913b2f32..fe31c4a45afd61be8b74efe9d0858ccd0aced075 100644
 --- a/net/minecraft/world/entity/monster/Strider.java
 +++ b/net/minecraft/world/entity/monster/Strider.java
 @@ -124,6 +124,13 @@ public class Strider extends Animal implements ItemSteerable {
@@ -1067,7 +1067,7 @@ index 7b19d64d6b1d61922a2368e38f2b31a42ea29a1a..69b3cd61d49e41ab5fdb861043b012b1
          EntityType<Strider> entityType, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Vex.java b/net/minecraft/world/entity/monster/Vex.java
-index bc8727a4ae3f1f30f4de5ab81a79c15a8153e34a..96069c066f6f8fd822e05b264741205ce1077b03 100644
+index 0808520f39d5ce96baad25180ead7a69922950f5..488e0605e9769d52faffecbc86c28c779d0ff25b 100644
 --- a/net/minecraft/world/entity/monster/Vex.java
 +++ b/net/minecraft/world/entity/monster/Vex.java
 @@ -117,6 +117,13 @@ public class Vex extends Monster implements TraceableEntity {

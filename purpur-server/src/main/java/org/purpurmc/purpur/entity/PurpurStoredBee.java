@@ -3,9 +3,9 @@ package org.purpurmc.purpur.entity;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import org.bukkit.block.EntityBlockStorage;
 import org.bukkit.craftbukkit.persistence.CraftPersistentDataContainer;
@@ -32,12 +32,11 @@ public class PurpurStoredBee implements StoredEntity<Bee> {
         this.blockStorage = blockStorage;
 
         CompoundTag customData = handle.occupant.entityData().copyTag();
-        this.customName = customData.contains("CustomName")
-                ? PaperAdventure.asAdventure(net.minecraft.network.chat.Component.Serializer.fromJson(customData.getString("CustomName"), MinecraftServer.getDefaultRegistryAccess()))
-                : null;
+        net.minecraft.network.chat.Component customNameMinecraft = customData.read("CustomName", ComponentSerialization.CODEC, MinecraftServer.getDefaultRegistryAccess().createSerializationContext(NbtOps.INSTANCE)).orElse(null);
+        this.customName = customNameMinecraft == null ? null : PaperAdventure.asAdventure(customNameMinecraft);
 
-        if(customData.contains("BukkitValues", Tag.TAG_COMPOUND)) {
-            this.persistentDataContainer.putAll(customData.getCompound("BukkitValues"));
+        if (customData.get("BukkitValues") instanceof CompoundTag compoundTag) {
+            this.persistentDataContainer.putAll(compoundTag);
         }
     }
 

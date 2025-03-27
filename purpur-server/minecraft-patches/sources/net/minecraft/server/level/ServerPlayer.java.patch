@@ -58,7 +58,7 @@
                  serverLevel.removePlayerImmediately(this, Entity.RemovalReason.CHANGED_DIMENSION);
                  this.unsetRemoved();
                  // CraftBukkit end
-+                this.portalPos = io.papermc.paper.util.MCUtil.toBlockPosition(exit); // Purpur - Fix stuck in portals
++                this.portalPos = org.bukkit.craftbukkit.util.CraftLocation.toBlockPosition(exit); // Purpur - Fix stuck in portals
                  this.setServerLevel(level);
                  this.connection.internalTeleport(PositionMoveRotation.of(teleportTransition), teleportTransition.relatives()); // CraftBukkit - use internal teleport without event
                  this.connection.resetPosition();

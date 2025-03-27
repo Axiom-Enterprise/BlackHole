@@ -1,8 +1,8 @@
---- a/net/minecraft/world/level/block/BushBlock.java
-+++ b/net/minecraft/world/level/block/BushBlock.java
-@@ -44,4 +_,24 @@
-     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-         BonemealableBlock.findSpreadableNeighbourPos(level, pos, state).ifPresent(blockPos -> level.setBlockAndUpdate(blockPos, this.defaultBlockState()));
+--- a/net/minecraft/world/level/block/VegetationBlock.java
++++ b/net/minecraft/world/level/block/VegetationBlock.java
+@@ -61,4 +_,24 @@
+     protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+         return pathComputationType == PathComputationType.AIR && !this.hasCollision || super.isPathfindable(state, pathComputationType);
      }
 +
 +    // Purpur start - Ability for hoe to replant crops

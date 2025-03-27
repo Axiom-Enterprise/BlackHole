@@ -37,7 +37,7 @@ index 1a4f42c9e6012a6a074c9d5451d8dc11530a5c5b..67b9963afd91af84459d439697f6230f
 +    // Purpur end - Ridables
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index a7e3afe04ffbb0fd5fa5fcf7cd15efd7cea1c4e0..9c88a5b6b054636a9f326d0253f65496cf3babc3 100644
+index a7e3afe04ffbb0fd5fa5fcf7cd15efd7cea1c4e0..f32316b0357f1cb0501a052361a0221f8e9d1438 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -514,6 +514,15 @@ public class CraftEventFactory {
@@ -45,10 +45,10 @@ index a7e3afe04ffbb0fd5fa5fcf7cd15efd7cea1c4e0..9c88a5b6b054636a9f326d0253f65496
          craftServer.getPluginManager().callEvent(event);
  
 +        // Purpur start - Ridables
-+        if (who != null) {
++        if (player != null) {
 +            switch (action) {
-+                case LEFT_CLICK_BLOCK, LEFT_CLICK_AIR -> who.processClick(InteractionHand.MAIN_HAND);
-+                case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> who.processClick(InteractionHand.OFF_HAND);
++                case LEFT_CLICK_BLOCK, LEFT_CLICK_AIR -> player.processClick(InteractionHand.MAIN_HAND);
++                case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> player.processClick(InteractionHand.OFF_HAND);
 +            }
 +        }
 +        // Purpur end - Ridables

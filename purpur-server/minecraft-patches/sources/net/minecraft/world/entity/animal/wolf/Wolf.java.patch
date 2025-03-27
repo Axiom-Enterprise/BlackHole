@@ -56,14 +56,14 @@
 +        this.targetSelector.removeGoal(PATHFINDER_VANILLA);
 +        this.targetSelector.removeGoal(PATHFINDER_RABID);
 +        if (this.isRabid) {
-+            setOwnerUUID(null);
++            this.setOwnerReference(null);
 +            setTame(false, true);
 +            this.targetSelector.addGoal(5, PATHFINDER_RABID);
-+            if (modifyEffects) this.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.CONFUSION, 1200));
++            if (modifyEffects) this.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.NAUSEA, 1200));
 +        } else {
 +            this.targetSelector.addGoal(5, PATHFINDER_VANILLA);
 +            this.stopBeingAngry();
-+            if (modifyEffects) this.removeEffect(net.minecraft.world.effect.MobEffects.CONFUSION);
++            if (modifyEffects) this.removeEffect(net.minecraft.world.effect.MobEffects.NAUSEA);
 +        }
 +    }
 +    // Purpur end - Configurable chance for wolves to spawn rabid
@@ -131,7 +131,7 @@
          if (this.isAlive()) {
 +            // Purpur start - Configurable chance for wolves to spawn rabid
 +            if (this.age % 300 == 0 && this.isRabid()) {
-+                this.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.CONFUSION, 400));
++                this.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.NAUSEA, 400));
 +            }
 +            // Purpur end - Configurable chance for wolves to spawn rabid
              this.interestedAngleO = this.interestedAngle;

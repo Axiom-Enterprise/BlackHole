@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing bypass to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 7b635a3f047a7f645322bdd8ce5bfa8350d7a739..2a7434872472b950fe09bfe8f5f334d9964b51d6 100644
+index 3ec3e89b0b53ebde5e1eaa49e28b6bacfe781085..36636e35cfb3751d448ee330b51e5ab7c44c6014 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1905,7 +1905,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -320,7 +320,7 @@ index b370b955ac8636275dfada4f38a7ca10297f7dac..275eabf64977cdf262de55124c3e5f88
          }
  
 diff --git a/net/minecraft/world/level/block/FarmBlock.java b/net/minecraft/world/level/block/FarmBlock.java
-index ba3b8b1e0c646c09e0b3566d632f2735c1ed9051..35c9a20116b971d184181d0dcb1e52c84f480383 100644
+index 9883e6d1a1b76155c8ba1817fda6615b4742e18e..c816bd47577cbc898b10d0cfd9c40404429ef929 100644
 --- a/net/minecraft/world/level/block/FarmBlock.java
 +++ b/net/minecraft/world/level/block/FarmBlock.java
 @@ -114,7 +114,7 @@ public class FarmBlock extends Block {
@@ -346,10 +346,10 @@ index 248ac9bc820a96fc7653471308b18834fc735a77..5c6ebde129289f2f7feb44dc1083aa03
                      }
                      // CraftBukkit end
 diff --git a/net/minecraft/world/level/block/TurtleEggBlock.java b/net/minecraft/world/level/block/TurtleEggBlock.java
-index 31851c5404ba3e60c8e8063c6bd0fa94acac6375..4cafcf185dcc0f6c1a380c40d3b654055b492a9a 100644
+index a23626dbfacf98ef1bc7918ca35406fa71307bed..bb3bba0d0bf89e82b929fe95247f50ccba964c02 100644
 --- a/net/minecraft/world/level/block/TurtleEggBlock.java
 +++ b/net/minecraft/world/level/block/TurtleEggBlock.java
-@@ -213,7 +213,7 @@ public class TurtleEggBlock extends Block {
+@@ -214,7 +214,7 @@ public class TurtleEggBlock extends Block {
          // Purpur end - Option to disable turtle egg trampling with feather falling
          if (entity instanceof Player) return true;
  

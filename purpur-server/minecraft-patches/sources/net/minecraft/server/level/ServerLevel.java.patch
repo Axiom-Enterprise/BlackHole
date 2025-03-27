@@ -57,7 +57,7 @@
              Profiler.get().pop();
              if (this.serverLevelData.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
 +                // Purpur start - Configurable daylight cycle
-+                int incrementTicks = isDay() ? this.purpurConfig.daytimeTicks : this.purpurConfig.nighttimeTicks;
++                int incrementTicks = isBrightOutside() ? this.purpurConfig.daytimeTicks : this.purpurConfig.nighttimeTicks;
 +                if (incrementTicks != 12000) {
 +                    this.preciseTime += 12000 / (double) incrementTicks;
 +                    this.setDayTime(this.preciseTime);

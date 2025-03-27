@@ -64,7 +64,7 @@
              && this.level.paperConfig().environment.netherCeilingVoidDamageHeight.test(v -> this.getY() >= v)
              && (!(this instanceof Player player) || !player.getAbilities().invulnerable))) {
              // Paper end - Configurable nether ceiling damage
-+            if (this.level.purpurConfig.teleportOnNetherCeilingDamage && this.level.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER && this instanceof ServerPlayer player) player.teleport(io.papermc.paper.util.MCUtil.toLocation(this.level, this.level.getSharedSpawnPos())); else // Purpur - Add option to teleport to spawn on nether ceiling damage
++            if (this.level.purpurConfig.teleportOnNetherCeilingDamage && this.level.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER && this instanceof ServerPlayer player) player.teleport(org.bukkit.craftbukkit.util.CraftLocation.toBukkit(this.level.getSharedSpawnPos(), this.level)); else // Purpur - Add option to teleport to spawn on nether ceiling damage
              this.onBelowWorld();
          }
      }
@@ -107,7 +107,7 @@
 +
 +            // Purpur start - Fire immune API
 +            if (compound.contains("Purpur.FireImmune")) {
-+                immuneToFire = compound.getBoolean("Purpur.FireImmune");
++                immuneToFire = compound.getBoolean("Purpur.FireImmune").orElse(null);
 +            }
 +            // Purpur end - Fire immune API
 +

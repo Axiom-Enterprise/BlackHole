@@ -30,7 +30,7 @@ index f34bc75f324454bf48f0ebf79111706bb027a54b..6ad266592c16bdeccfb689fb2ef2ee37
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 1ee82020ba335946a54db380d2c3f8d71ce2371b..200c33de28100e42b91dee40e7a531e38d459c7d 100644
+index fae2e1af2ea59b82b552bfc33c853e0e33ec90bc..f681d0766a3fec9e05396fe82111e9e99f751823 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -212,6 +212,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -42,7 +42,7 @@ index 1ee82020ba335946a54db380d2c3f8d71ce2371b..200c33de28100e42b91dee40e7a531e3
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 6dc490bf9d032b5ed2d7bd458bffd3471f54ff06..cf26a10e4ccf0f28817ce53b3c5bf1df02259273 100644
+index 839975cf328268e1f476f5c59e3323a395929395..bba6b5234b668827f90991e4885b5e19c2f97728 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -764,6 +764,15 @@ public class ServerPlayer extends Player {
@@ -75,7 +75,7 @@ index 63e01ec7e4ab04bb7d389bff485dfedca344bfa2..84b1570d0d88f57f33ff8179f0a78d37
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 9f6326da63fc8e0c284d565314f0b448b622c910..488dc3e2e6d6095d416bd81078b3bcbcf92f7ab9 100644
+index 7b48f633223cc5e760c5c80d40424e04d791c43a..fc8fbfa5709895456f5aa0c480acedb8707b2ff5 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -2855,6 +2855,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -130,7 +130,7 @@ index 9f6326da63fc8e0c284d565314f0b448b622c910..488dc3e2e6d6095d416bd81078b3bcbc
 +
 +    public void onMount(Player rider) {
 +        if (this instanceof Mob) {
-+            ((Mob) this).setTarget(null, null, false);
++            ((Mob) this).setTarget(null, null);
 +            ((Mob) this).getNavigation().stop();
 +        }
 +        rider.setJumping(false); // fixes jump on mount
@@ -177,7 +177,7 @@ index bda521cca91f070139f5e9bdef6a50e1497f53ff..351f92e1627f465a9a292d4a5e5c256a
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index a186784d6b5bae844604a0ca7a2b81857c074a3c..7e2258f0232beae3461ad3ef75b70e9bf1f8b772 100644
+index 4d65d88c59a8536d27ec61c65373ab21fa534b3b..e5f296bf3671afd82ab76493646938783b53eef6 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -226,9 +226,9 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -235,9 +235,9 @@ index a186784d6b5bae844604a0ca7a2b81857c074a3c..7e2258f0232beae3461ad3ef75b70e9b
 +                    Location to = new Location(level().getWorld(), getX(), getY(), getZ(), this.getYRot(), this.getXRot());
 +                    org.purpurmc.purpur.event.entity.RidableMoveEvent event = new org.purpurmc.purpur.event.entity.RidableMoveEvent((org.bukkit.entity.Mob) getBukkitLivingEntity(), (org.bukkit.entity.Player) getRider().getBukkitEntity(), from, to.clone());
 +                    if (!event.callEvent()) {
-+                        absMoveTo(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch());
++                        this.absSnapTo(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch());
 +                    } else if (!to.equals(event.getTo())) {
-+                        absMoveTo(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
++                        this.absSnapTo(event.getTo().getX(), event.getTo().getY(), event.getTo().getZ(), event.getTo().getYaw(), event.getTo().getPitch());
 +                    }
 +                }
 +            }
@@ -596,7 +596,7 @@ index 363582056339f64dbe7e686b61451c095c538c00..2cf95769ec3a1662443ea31e1bc2ba01
                  double d = this.wantedX - this.fish.getX();
                  double d1 = this.wantedY - this.fish.getY();
 diff --git a/net/minecraft/world/entity/animal/Bee.java b/net/minecraft/world/entity/animal/Bee.java
-index a6fd3a16e7a9e34ad582601f9ef22d98346fc31c..e55507fa09001b431519ef9c76bf444d7df3f7ea 100644
+index 585131365c40136cf8a8a715b077982091ee38d5..65ee07e09bb9bafb60abeec4916fdbb065fc26eb 100644
 --- a/net/minecraft/world/entity/animal/Bee.java
 +++ b/net/minecraft/world/entity/animal/Bee.java
 @@ -149,6 +149,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -1392,7 +1392,7 @@ index ca661c215d2eb719392a30c7b917bd622524c4dc..573efbc5f5f4ad0be30868c7faa058e6
          this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
          this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0, 5.0F, 1.0F));
 diff --git a/net/minecraft/world/entity/animal/Pig.java b/net/minecraft/world/entity/animal/Pig.java
-index 4a1eee02daf8d4161d21d28baf97b0d16a9b52ae..9e15bf55aa3986a227452fb1a5ebc4315f6f4d6c 100644
+index 027d47b89d306bf6bc3d5457a163041f6aa7ab49..74d4be1761b9c9b45bf454f187d4454d9ee6a37f 100644
 --- a/net/minecraft/world/entity/animal/Pig.java
 +++ b/net/minecraft/world/entity/animal/Pig.java
 @@ -65,9 +65,27 @@ public class Pig extends Animal implements ItemSteerable {
@@ -2585,7 +2585,7 @@ index d34dcbbdeae41d23d6fb497e0e8da038580b6d01..6c252b8021dbeb2a9ffee8a3744ac016
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/animal/wolf/Wolf.java b/net/minecraft/world/entity/animal/wolf/Wolf.java
-index d25bd49c17478e73561e78bc66171d6e7bc187ba..127a57a477755101283ba7bbb4161a574692c252 100644
+index 0487c463806509b1dd93dcfee3b518c95b0bdb19..7cac99a33a398528bbc55f90cc57a9848e56ff01 100644
 --- a/net/minecraft/world/entity/animal/wolf/Wolf.java
 +++ b/net/minecraft/world/entity/animal/wolf/Wolf.java
 @@ -187,9 +187,32 @@ public class Wolf extends TamableAnimal implements NeutralMob {
@@ -4121,7 +4121,7 @@ index 4e34833ea5c71b817c9f42a58320fe100981ec93..19dcc657fd2a995638d5e23c2b043d01
          this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
      }
 diff --git a/net/minecraft/world/entity/monster/Skeleton.java b/net/minecraft/world/entity/monster/Skeleton.java
-index d1853db754065a79a04e1c4cfa2b54c10b041157..9a197c2be40e0a69f4a68ff045c2395802f0a5f3 100644
+index 1f35105f6ddd33fc9558d19590a5696479d2de83..5394a5c302c4bd9417dfb304848747fcd2180f07 100644
 --- a/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/net/minecraft/world/entity/monster/Skeleton.java
 @@ -26,6 +26,23 @@ public class Skeleton extends AbstractSkeleton {
@@ -4340,7 +4340,7 @@ index f3de370ee4bafc2cca033293d0d8e5c9c2a6737b..4a7dbd1e4d927240433882a95822e9ed
          EntityType<Stray> entityType, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Strider.java b/net/minecraft/world/entity/monster/Strider.java
-index 9d27f55b1a3aa3b51a3b5079d5dd199eefa7d759..bb46a6ec3ad6a7d0943bf61028d5f9abf76bbeb7 100644
+index 4b9e60d930bc3a4bfe9aad2e81391e57cfc45d40..ddd3a0d629f720b7acacf01bf2a7db53ee28724e 100644
 --- a/net/minecraft/world/entity/monster/Strider.java
 +++ b/net/minecraft/world/entity/monster/Strider.java
 @@ -92,6 +92,23 @@ public class Strider extends Animal implements ItemSteerable {
@@ -4385,7 +4385,7 @@ index 9d27f55b1a3aa3b51a3b5079d5dd199eefa7d759..bb46a6ec3ad6a7d0943bf61028d5f9ab
                  if (isFood && !this.isSilent()) {
                      this.level()
 diff --git a/net/minecraft/world/entity/monster/Vex.java b/net/minecraft/world/entity/monster/Vex.java
-index bc74bdc3e13f1d51ed6d31470f3ac6f9855778c9..129c712f767fbbdcc7d0df83f838194102efcd15 100644
+index bc74bdc3e13f1d51ed6d31470f3ac6f9855778c9..720060d422a6b77020da478b514e9581d8d7e4eb 100644
 --- a/net/minecraft/world/entity/monster/Vex.java
 +++ b/net/minecraft/world/entity/monster/Vex.java
 @@ -58,6 +58,50 @@ public class Vex extends Monster implements TraceableEntity {
@@ -4431,7 +4431,7 @@ index bc74bdc3e13f1d51ed6d31470f3ac6f9855778c9..129c712f767fbbdcc7d0df83f8381941
 +    }
 +
 +    @Override
-+    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
++    public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
 +        return false; //  no fall damage please
 +    }
 +    // Purpur end - Ridables

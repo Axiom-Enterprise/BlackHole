@@ -29,10 +29,10 @@
 +                    item.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, io.papermc.paper.adventure.PaperAdventure.asVanilla(displayName));
 +                }
 +
-+                List<String> lore = level.purpurConfig.silkTouchSpawnerLore;
++                java.util.List<String> lore = level.purpurConfig.silkTouchSpawnerLore;
 +                if (lore != null && !lore.isEmpty()) {
 +
-+                    List<Component> loreComponentList = new java.util.ArrayList<>();
++                    java.util.List<net.minecraft.network.chat.Component> loreComponentList = new java.util.ArrayList<>();
 +                    for (String line : lore) {
 +                        net.kyori.adventure.text.Component lineComponent = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(line, net.kyori.adventure.text.minimessage.tag.resolver.Placeholder.component("mob", mobName));
 +                        if (line.startsWith("<reset>")) {
@@ -43,7 +43,7 @@
 +
 +                    item.set(net.minecraft.core.component.DataComponents.LORE, new net.minecraft.world.item.component.ItemLore(loreComponentList, loreComponentList));
 +                }
-+                item.set(net.minecraft.core.component.DataComponents.HIDE_ADDITIONAL_TOOLTIP, net.minecraft.util.Unit.INSTANCE);
++                item.set(net.minecraft.core.component.DataComponents.TOOLTIP_DISPLAY, net.minecraft.world.item.component.TooltipDisplay.DEFAULT.withHidden(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA, true));
 +            }
 +            popResource(level, pos, item);
 +        }

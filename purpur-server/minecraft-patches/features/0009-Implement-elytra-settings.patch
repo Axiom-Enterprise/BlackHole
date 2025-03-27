@@ -5,7 +5,7 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 5208518ad9fe86e25b07aeffa9633407aa6f2f1c..7b635a3f047a7f645322bdd8ce5bfa8350d7a739 100644
+index af03e75f445bff6dfe56f89fb422b5662a21c962..3ec3e89b0b53ebde5e1eaa49e28b6bacfe781085 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -3644,7 +3644,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -29,7 +29,7 @@ index 5208518ad9fe86e25b07aeffa9633407aa6f2f1c..7b635a3f047a7f645322bdd8ce5bfa83
  
                  this.gameEvent(GameEvent.ELYTRA_GLIDE);
 diff --git a/net/minecraft/world/item/FireworkRocketItem.java b/net/minecraft/world/item/FireworkRocketItem.java
-index 18d63d2da49451a2d5e1da7bf0c00e05e2f192bc..ab35b0db023f48854476497d0dbdb0dffbeddb43 100644
+index 18d63d2da49451a2d5e1da7bf0c00e05e2f192bc..1f081e098ce3bec61b7f374e9b737838783657bb 100644
 --- a/net/minecraft/world/item/FireworkRocketItem.java
 +++ b/net/minecraft/world/item/FireworkRocketItem.java
 @@ -62,6 +62,19 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
@@ -39,7 +39,7 @@ index 18d63d2da49451a2d5e1da7bf0c00e05e2f192bc..ab35b0db023f48854476497d0dbdb0df
 +
 +                    // Purpur start - Implement elytra settings
 +                    if (level.purpurConfig.elytraDamagePerFireworkBoost > 0) {
-+                        List<net.minecraft.world.entity.EquipmentSlot> list = net.minecraft.world.entity.EquipmentSlot.VALUES.stream().filter((enumitemslot) -> net.minecraft.world.entity.LivingEntity.canGlideUsing(player.getItemBySlot(enumitemslot), enumitemslot)).toList();
++                        java.util.List<net.minecraft.world.entity.EquipmentSlot> list = net.minecraft.world.entity.EquipmentSlot.VALUES.stream().filter((enumitemslot) -> net.minecraft.world.entity.LivingEntity.canGlideUsing(player.getItemBySlot(enumitemslot), enumitemslot)).toList();
 +                        net.minecraft.world.entity.EquipmentSlot enumitemslot = net.minecraft.Util.getRandom(list, player.random);
 +
 +                        ItemStack glideItem = player.getItemBySlot(enumitemslot);
@@ -72,7 +72,7 @@ index 8c9f64140f016edfadeeb75463655cc2f3fafc0c..84e7f1b119ccfdabf48ccac51278e197
              onBreak.accept(item);
          }
 diff --git a/net/minecraft/world/item/TridentItem.java b/net/minecraft/world/item/TridentItem.java
-index 5ed862c4eeb9995b25f6a0ee1b57b2fdafb92551..59b1a455895d2842e45d916dcf53dead32e1c72a 100644
+index 5ed862c4eeb9995b25f6a0ee1b57b2fdafb92551..34bacb05324fd82cbf8b8836998e2619ede3bcb2 100644
 --- a/net/minecraft/world/item/TridentItem.java
 +++ b/net/minecraft/world/item/TridentItem.java
 @@ -127,6 +127,18 @@ public class TridentItem extends Item implements ProjectileItem {
@@ -81,9 +81,9 @@ index 5ed862c4eeb9995b25f6a0ee1b57b2fdafb92551..59b1a455895d2842e45d916dcf53dead
                          org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerRiptideEvent(player, stack, f, f1, f2); // CraftBukkit
 +
 +                        // Purpur start - Implement elytra settings
-+                        List<EquipmentSlot> list = EquipmentSlot.VALUES.stream().filter((enumitemslot) -> LivingEntity.canGlideUsing(entity.getItemBySlot(enumitemslot), enumitemslot)).toList();
++                        List<net.minecraft.world.entity.EquipmentSlot> list = net.minecraft.world.entity.EquipmentSlot.VALUES.stream().filter((enumitemslot) -> LivingEntity.canGlideUsing(entity.getItemBySlot(enumitemslot), enumitemslot)).toList();
 +                        if (!list.isEmpty()) {
-+                            EquipmentSlot enumitemslot = net.minecraft.Util.getRandom(list, entity.random);
++                            net.minecraft.world.entity.EquipmentSlot enumitemslot = net.minecraft.Util.getRandom(list, entity.random);
 +                            ItemStack glideItem = entity.getItemBySlot(enumitemslot);
 +                            if (glideItem.has(net.minecraft.core.component.DataComponents.GLIDER) && level.purpurConfig.elytraDamagePerTridentBoost > 0) {
 +                                glideItem.hurtAndBreak(level.purpurConfig.elytraDamagePerTridentBoost, entity, enumitemslot);

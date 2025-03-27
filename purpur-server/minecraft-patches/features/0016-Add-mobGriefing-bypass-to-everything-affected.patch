@@ -5,10 +5,10 @@ Subject: [PATCH] Add mobGriefing bypass to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 3ec3e89b0b53ebde5e1eaa49e28b6bacfe781085..36636e35cfb3751d448ee330b51e5ab7c44c6014 100644
+index bdae20191d2e5765761442eb06924968e710b189..476b570ffe9d2df173bd57b57fe65372cb35fa1d 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -1905,7 +1905,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1904,7 +1904,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
          if (this.level() instanceof ServerLevel serverLevel) {
              boolean var6 = false;
              if (this.dead && entitySource instanceof WitherBoss) { // Paper

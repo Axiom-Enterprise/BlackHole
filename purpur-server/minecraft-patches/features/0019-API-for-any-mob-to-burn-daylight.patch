@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index d4e989889ed21e3900062eed142f26a9bdaaa8d9..66c4047a35be22803b38a9249b74ae32dcb98748 100644
+index 1335a04edd053c06e290c070e3c03d02598d97e7..7148e8c6deeb1e5f99eb6d2fe6c0fc9583e44934 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -414,6 +414,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -415,6 +415,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
      // Purpur end - Add canSaveToDisk to Entity
  
@@ -35,7 +35,7 @@ index d4e989889ed21e3900062eed142f26a9bdaaa8d9..66c4047a35be22803b38a9249b74ae32
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 2a7434872472b950fe09bfe8f5f334d9964b51d6..a92ef9269b59305334ed1a8f1b253493e2223306 100644
+index 476b570ffe9d2df173bd57b57fe65372cb35fa1d..4586d7afb4f0a27c7d61abb80af24205d46cb83f 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -273,6 +273,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -62,7 +62,7 @@ index 2a7434872472b950fe09bfe8f5f334d9964b51d6..a92ef9269b59305334ed1a8f1b253493
          this.lastHurtByPlayer = EntityReference.read(compound, "last_hurt_by_player");
          this.lastHurtByPlayerMemoryTime = compound.getIntOr("last_hurt_by_player_memory_time", 0);
          this.lastHurtByMob = EntityReference.read(compound, "last_hurt_by_mob");
-@@ -3615,6 +3618,32 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3614,6 +3617,32 @@ public abstract class LivingEntity extends Entity implements Attackable {
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
              this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
          }

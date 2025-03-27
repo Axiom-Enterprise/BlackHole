@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/entity/Villager.java
 +++ b/src/main/java/org/bukkit/entity/Villager.java
-@@ -365,4 +_,13 @@
+@@ -391,4 +_,13 @@
       * reputation regardless of its impact and the player associated.
       */
      public void clearReputations();

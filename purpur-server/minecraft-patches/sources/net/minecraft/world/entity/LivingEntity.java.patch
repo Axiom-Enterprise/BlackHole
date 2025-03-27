@@ -100,7 +100,7 @@
              this.noActionTime = 0;
              if (amount < 0.0F) {
                  amount = 0.0F;
-@@ -1647,10 +_,10 @@
+@@ -1646,10 +_,10 @@
      protected Player resolvePlayerResponsibleForDamage(DamageSource damageSource) {
          Entity entity = damageSource.getEntity();
          if (entity instanceof Player player) {
@@ -113,7 +113,7 @@
              } else {
                  this.lastHurtByPlayer = null;
                  this.lastHurtByPlayerMemoryTime = 0;
-@@ -1701,6 +_,18 @@
+@@ -1700,6 +_,18 @@
                  }
              }
  
@@ -132,7 +132,7 @@
              final org.bukkit.inventory.EquipmentSlot handSlot = (hand != null) ? org.bukkit.craftbukkit.CraftEquipmentSlot.getHand(hand) : null;
              final EntityResurrectEvent event = new EntityResurrectEvent((org.bukkit.entity.LivingEntity) this.getBukkitEntity(), handSlot);
              event.setCancelled(itemStack == null);
-@@ -1876,6 +_,7 @@
+@@ -1875,6 +_,7 @@
          boolean flag = this.lastHurtByPlayerMemoryTime > 0;
          this.dropEquipment(level); // CraftBukkit - from below
          if (this.shouldDropLoot() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
@@ -140,7 +140,7 @@
              this.dropFromLootTable(level, damageSource, flag);
              // Paper start
              final boolean prev = this.clearEquipmentSlots;
-@@ -1884,6 +_,7 @@
+@@ -1883,6 +_,7 @@
              // Paper end
              this.dropCustomDeathLoot(level, damageSource, flag);
              this.clearEquipmentSlots = prev; // Paper
@@ -148,7 +148,7 @@
          }
  
          // CraftBukkit start - Call death event // Paper start - call advancement triggers with correct entity equipment
-@@ -3058,6 +_,7 @@
+@@ -3057,6 +_,7 @@
              float f = (float)(d * 10.0 - 3.0);
              if (f > 0.0F) {
                  this.playSound(this.getFallDamageSound((int)f), 1.0F, 1.0F);
@@ -156,7 +156,7 @@
                  this.hurt(this.damageSources().flyIntoWall(), f);
              }
          }
-@@ -4452,6 +_,12 @@
+@@ -4451,6 +_,12 @@
              ? slot == EquipmentSlot.MAINHAND && this.canUseSlot(EquipmentSlot.MAINHAND)
              : slot == equippable.slot() && this.canUseSlot(equippable.slot()) && equippable.canBeEquippedBy(this.getType());
      }

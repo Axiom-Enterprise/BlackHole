@@ -33,21 +33,25 @@
          if (this.keepAlivePending && packet.getId() == this.keepAliveChallenge) {
              int i = (int)(Util.getMillis() - this.keepAliveTime);
              this.latency = (this.latency * 3 + i) / 4;
-@@ -159,6 +_,13 @@
-                 ServerGamePacketListenerImpl.LOGGER.error("Couldn't register custom payload", ex);
-                 this.disconnect(Component.literal("Invalid payload REGISTER!"), org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
+@@ -169,10 +_,17 @@
+                 return;
              }
-+        // Purpur start - Purpur client support
-+        } else if (identifier.equals(PURPUR_CLIENT)) {
-+            try {
-+                player.purpurClient = true;
-+            } catch (Exception ignore) {
+ 
++            // Purpur start - Purpur client support
++            if (identifier.equals(PURPUR_CLIENT)) {
++                this.player.purpurClient = true;
 +            }
-+        // Purpur end - Purpur client support
-         } else if (identifier.equals(ServerCommonPacketListenerImpl.CUSTOM_UNREGISTER)) {
-             try {
-                 String channels = payload.toString(com.google.common.base.Charsets.UTF_8);
-@@ -238,6 +_,22 @@
++            // Purpur end - Purpur client support
++
+             if (identifier.equals(MINECRAFT_BRAND)) {
+                 this.player.clientBrandName = new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.wrappedBuffer(data)).readUtf(256);
+             }
+ 
++
+             this.cserver.getMessenger().dispatchIncomingMessage(this.player.getBukkitEntity(), identifier.toString(), data);
+         } catch (final Exception e) {
+             ServerGamePacketListenerImpl.LOGGER.error("Couldn't handle custom payload on channel {}", identifier, e);
+@@ -242,6 +_,22 @@
          // Paper start - give clients a longer time to respond to pings as per pre 1.12.2 timings
          // This should effectively place the keepalive handling back to "as it was" before 1.12.2
          final long elapsedTime = millis - this.keepAliveTime;

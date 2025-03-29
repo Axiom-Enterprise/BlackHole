@@ -32,7 +32,7 @@
      }
  
      private void saveParentVehicle(CompoundTag tag) {
-@@ -1029,6 +_,7 @@
+@@ -1024,6 +_,7 @@
                      )
                  );
              Team team = this.getTeam();
@@ -40,7 +40,7 @@
              if (team == null || team.getDeathMessageVisibility() == Team.Visibility.ALWAYS) {
                  this.server.getPlayerList().broadcastSystemMessage(deathMessage, false);
              } else if (team.getDeathMessageVisibility() == Team.Visibility.HIDE_FOR_OTHER_TEAMS) {
-@@ -1126,6 +_,13 @@
+@@ -1130,6 +_,13 @@
          if (this.isInvulnerableTo(level, damageSource)) {
              return false;
          } else {
@@ -54,7 +54,7 @@
              Entity entity = damageSource.getEntity();
              if (!( // Paper - split the if statement. If below statement is false, hurtServer would not have been evaluated. Return false.
               !(entity instanceof Player player && !this.canHarmPlayer(player))
-@@ -1356,6 +_,7 @@
+@@ -1360,6 +_,7 @@
                  serverLevel.removePlayerImmediately(this, Entity.RemovalReason.CHANGED_DIMENSION);
                  this.unsetRemoved();
                  // CraftBukkit end
@@ -62,7 +62,7 @@
                  this.setServerLevel(level);
                  this.connection.internalTeleport(PositionMoveRotation.of(teleportTransition), teleportTransition.relatives()); // CraftBukkit - use internal teleport without event
                  this.connection.resetPosition();
-@@ -1473,7 +_,7 @@
+@@ -1477,7 +_,7 @@
                              new AABB(vec3.x() - 8.0, vec3.y() - 5.0, vec3.z() - 8.0, vec3.x() + 8.0, vec3.y() + 5.0, vec3.z() + 8.0),
                              monster -> monster.isPreventingPlayerRest(this.serverLevel(), this)
                          );
@@ -71,7 +71,7 @@
                          return Either.left(Player.BedSleepingProblem.NOT_SAFE);
                      }
                  }
-@@ -1510,7 +_,19 @@
+@@ -1514,7 +_,19 @@
                      CriteriaTriggers.SLEPT_IN_BED.trigger(this);
                  });
                  if (!this.serverLevel().canSleepThroughNights()) {
@@ -92,7 +92,7 @@
                  }
  
                  ((ServerLevel)this.level()).updateSleepingPlayerList();
-@@ -1602,6 +_,7 @@
+@@ -1606,6 +_,7 @@
  
      @Override
      public void openTextEdit(SignBlockEntity signEntity, boolean isFrontText) {
@@ -100,7 +100,7 @@
          this.connection.send(new ClientboundBlockUpdatePacket(this.level(), signEntity.getBlockPos()));
          this.connection.send(new ClientboundOpenSignEditorPacket(signEntity.getBlockPos(), isFrontText));
      }
-@@ -1904,6 +_,26 @@
+@@ -1908,6 +_,26 @@
          this.lastSentExp = -1; // CraftBukkit - Added to reset
      }
  
@@ -127,7 +127,7 @@
      @Override
      public void displayClientMessage(Component chatComponent, boolean actionBar) {
          this.sendSystemMessage(chatComponent, actionBar);
-@@ -2121,6 +_,20 @@
+@@ -2125,6 +_,20 @@
          );
      }
  
@@ -148,7 +148,7 @@
      public void sendSystemMessage(Component mesage) {
          this.sendSystemMessage(mesage, false);
      }
-@@ -2259,7 +_,67 @@
+@@ -2263,7 +_,67 @@
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -217,7 +217,7 @@
  
      public ServerStatsCounter getStats() {
          return this.stats;
-@@ -2887,4 +_,56 @@
+@@ -2891,4 +_,56 @@
          return (org.bukkit.craftbukkit.entity.CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end

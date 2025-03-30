@@ -3,7 +3,7 @@
 @@ -458,6 +_,7 @@
                      // revert back all captured blocks
                      for (org.bukkit.block.BlockState blockstate : blocks) {
-                         ((org.bukkit.craftbukkit.block.CraftBlockState) blockstate).revertPlace();
+                         ((org.bukkit.craftbukkit.block.state.CraftBlockState) blockstate).revertPlace();
 +                        ((org.bukkit.craftbukkit.block.CraftBlock) blockstate.getBlock()).getNMS().getBlock().forgetPlacer(); // Purpur - Store placer on Block when placed
                      }
  

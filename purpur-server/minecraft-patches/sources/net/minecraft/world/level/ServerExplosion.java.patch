@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/ServerExplosion.java
 +++ b/net/minecraft/world/level/ServerExplosion.java
-@@ -73,7 +_,7 @@
+@@ -316,7 +_,7 @@
      ) {
          this.level = level;
          this.source = source;
@@ -9,7 +9,7 @@
          this.center = center;
          this.fire = fire;
          this.blockInteraction = blockInteraction;
-@@ -356,10 +_,27 @@
+@@ -638,10 +_,27 @@
  
      public void explode() {
          // CraftBukkit start
@@ -35,6 +35,6 @@
 +            }
 +        }
 +        // Purpur end - Add PreExplodeEvents
-         this.level.gameEvent(this.source, GameEvent.EXPLODE, this.center);
-         List<BlockPos> list = this.calculateExplodedPositions();
-         this.hurtEntities();
+         // Paper start - collision optimisations
+         this.blockCache = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>();
+         this.chunkPosCache = new long[CHUNK_CACHE_WIDTH * CHUNK_CACHE_WIDTH];

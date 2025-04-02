@@ -7,10 +7,10 @@ temporarily migrate to paper's config
 drop patch on the next minecraft release
 
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 6ad266592c16bdeccfb689fb2ef2ee37e79a7b41..e950e74d7c14d2e180e5ca879eb1048866d85051 100644
+index be8be8e3da80823917633de22985f7f4ef26dfe6..195dd839c50f5a86dffcbd3b6b82b5fb30a54e16 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1140,6 +1140,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1220,6 +1220,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              }
              // Purpur end - config for startup commands
  
@@ -28,7 +28,7 @@ index 6ad266592c16bdeccfb689fb2ef2ee37e79a7b41..e950e74d7c14d2e180e5ca879eb10488
                  long l;
                  if (!this.isPaused() && this.tickRateManager.isSprinting() && this.tickRateManager.checkShouldSprintThisTick()) {
 diff --git a/net/minecraft/server/dedicated/DedicatedServer.java b/net/minecraft/server/dedicated/DedicatedServer.java
-index 19bb96242fed268c23381a6f3eaef21e723666c5..127935326dbfa0aa454dc12d52dcef328fcf2771 100644
+index d02f2bb68b46678bf5033e2d310fcc6b22bd038f..8bb2c4266a543c4b6a3d9686d6010241a0f40c86 100644
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -168,6 +168,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface

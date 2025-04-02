@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/Level.java
 +++ b/net/minecraft/world/level/Level.java
-@@ -158,11 +_,55 @@
+@@ -159,11 +_,55 @@
      }
      // Paper end - add paper world config
  
@@ -56,8 +56,8 @@
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -206,6 +_,8 @@
-     ) {
+@@ -839,6 +_,8 @@
+         // Paper end - getblock optimisations - cache world height/sections
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) levelData).getLevelName()); // Spigot
          this.paperConfig = paperWorldConfigCreator.apply(this.spigotConfig); // Paper - create paper world config
 +        this.purpurConfig = new org.purpurmc.purpur.PurpurWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) levelData).getLevelName(), env); // Purpur - Purpur config files
@@ -65,7 +65,7 @@
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
  
-@@ -1412,4 +_,14 @@
+@@ -2115,4 +_,14 @@
              return this.id;
          }
      }

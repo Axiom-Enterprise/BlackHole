@@ -9,7 +9,7 @@
      private final RandomSequences randomSequences;
  
      // CraftBukkit start
-@@ -586,7 +_,24 @@
+@@ -587,7 +_,24 @@
          // CraftBukkit end
          this.tickTime = tickTime;
          this.server = server;
@@ -35,7 +35,7 @@
          this.serverLevelData = serverLevelData;
          ChunkGenerator chunkGenerator = levelStem.generator();
          // CraftBukkit start
-@@ -670,6 +_,7 @@
+@@ -671,6 +_,7 @@
          this.chunkDataController = new ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.ChunkDataController((ServerLevel)(Object)this, this.chunkTaskScheduler);
          // Paper end - rewrite chunk system
          this.getCraftServer().addWorld(this.getWorld()); // CraftBukkit
@@ -43,7 +43,7 @@
      }
  
      // Paper start
-@@ -716,7 +_,7 @@
+@@ -717,7 +_,7 @@
          }
  
          int _int = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
@@ -52,7 +52,7 @@
              // Paper start - create time skip event - move up calculations
              final long newDayTime = this.levelData.getDayTime() + 24000L;
              org.bukkit.event.world.TimeSkipEvent event = new org.bukkit.event.world.TimeSkipEvent(
-@@ -835,6 +_,13 @@
+@@ -836,6 +_,13 @@
              this.serverLevelData.getScheduledEvents().tick(this.server, l);
              Profiler.get().pop();
              if (this.serverLevelData.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
@@ -66,7 +66,7 @@
                  this.setDayTime(this.levelData.getDayTime() + 1L);
              }
          }
-@@ -842,7 +_,21 @@
+@@ -843,7 +_,21 @@
  
      public void setDayTime(long time) {
          this.serverLevelData.setDayTime(time);
@@ -89,7 +89,7 @@
  
      public void tickCustomSpawners(boolean spawnEnemies, boolean spawnFriendlies) {
          for (CustomSpawner customSpawner : this.customSpawners) {
-@@ -946,9 +_,17 @@
+@@ -947,9 +_,17 @@
                      && this.random.nextDouble() < currentDifficultyAt.getEffectiveDifficulty() * this.paperConfig().entities.spawning.skeletonHorseThunderSpawnChance.or(0.01) // Paper - Configurable spawn chances for skeleton horses
                      && !this.getBlockState(blockPos.below()).is(Blocks.LIGHTNING_ROD);
                  if (flag) {
@@ -109,7 +109,7 @@
                          skeletonHorse.setAge(0);
                          skeletonHorse.setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                          this.addFreshEntity(skeletonHorse, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.LIGHTNING); // CraftBukkit
-@@ -1006,7 +_,7 @@
+@@ -1007,7 +_,7 @@
                  pointOfInterestType -> pointOfInterestType.is(PoiTypes.LIGHTNING_ROD),
                  blockPos -> blockPos.getY() == this.getHeight(Heightmap.Types.WORLD_SURFACE, blockPos.getX(), blockPos.getZ()) - 1,
                  pos,
@@ -118,7 +118,7 @@
                  PoiManager.Occupancy.ANY
              );
          return optional.map(blockPos -> blockPos.above(1));
-@@ -1055,8 +_,26 @@
+@@ -1056,8 +_,26 @@
                  int _int = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
                  Component component;
                  if (this.sleepStatus.areEnoughSleeping(_int)) {
@@ -145,7 +145,7 @@
                      component = Component.translatable("sleep.players_sleeping", this.sleepStatus.amountSleeping(), this.sleepStatus.sleepersNeeded(_int));
                  }
  
-@@ -1189,6 +_,7 @@
+@@ -1190,6 +_,7 @@
      @VisibleForTesting
      public void resetWeatherCycle() {
          // CraftBukkit start
@@ -153,7 +153,7 @@
          this.serverLevelData.setRaining(false, org.bukkit.event.weather.WeatherChangeEvent.Cause.SLEEP); // Paper - Add cause to Weather/ThunderChangeEvents
          // If we stop due to everyone sleeping we should reset the weather duration to some other random value.
          // Not that everyone ever manages to get the whole server to sleep at the same time....
-@@ -1196,6 +_,7 @@
+@@ -1197,6 +_,7 @@
              this.serverLevelData.setRainTime(0);
          }
          // CraftBukkit end
@@ -161,7 +161,7 @@
          this.serverLevelData.setThundering(false, org.bukkit.event.weather.ThunderChangeEvent.Cause.SLEEP); // Paper - Add cause to Weather/ThunderChangeEvents
          // CraftBukkit start
          // If we stop due to everyone sleeping we should reset the weather duration to some other random value.
-@@ -2644,7 +_,7 @@
+@@ -2674,7 +_,7 @@
              // Spigot start
              if (entity.getBukkitEntity() instanceof org.bukkit.inventory.InventoryHolder && (!(entity instanceof ServerPlayer) || entity.getRemovalReason() != Entity.RemovalReason.KILLED)) { // SPIGOT-6876: closeInventory clears death message
                  // Paper start - Fix merchant inventory not closing on entity removal

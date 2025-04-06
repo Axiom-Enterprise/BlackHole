@@ -1,5 +1,5 @@
---- a/src/main/java/org/bukkit/craftbukkit/block/state/CraftBeehive.java
-+++ b/src/main/java/org/bukkit/craftbukkit/block/state/CraftBeehive.java
+--- a/src/main/java/org/bukkit/craftbukkit/block/CraftBeehive.java
++++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBeehive.java
 @@ -16,8 +_,15 @@
  
  public class CraftBeehive extends CraftBlockEntityState<BeehiveBlockEntity> implements Beehive {

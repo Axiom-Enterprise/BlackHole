@@ -112,7 +112,7 @@
                      this.startMeasuringTaskExecutionTime();
                      this.waitUntilNextTick();
                      this.finishMeasuringTaskExecutionTime();
-@@ -1668,7 +_,7 @@
+@@ -1688,7 +_,7 @@
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -121,7 +121,7 @@
                      continue;
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
-@@ -1832,7 +_,7 @@
+@@ -1853,7 +_,7 @@
  
      @DontObfuscate
      public String getServerModName() {

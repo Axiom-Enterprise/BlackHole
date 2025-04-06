@@ -5,14 +5,13 @@ Subject: [PATCH] Ridables
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 1a4f42c9e6012a6a074c9d5451d8dc11530a5c5b..67b9963afd91af84459d439697f6230fd67722b4 100644
+index c626533738099d3d31fe7eacb262204763b920f4..483062dbf8706dcf736ddb9393ccb696972be943 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1275,4 +1275,27 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
-             ((CraftPlayer) player).sendHurtAnimation(0, this);
-         }
+@@ -1293,4 +1293,26 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+         return this.entity.get(io.papermc.paper.datacomponent.PaperDataComponentType.bukkitToMinecraft(type)) != null;
      }
-+
+ 
 +    // Purpur start - Ridables
 +    @Override
 +    public org.bukkit.entity.Player getRider() {

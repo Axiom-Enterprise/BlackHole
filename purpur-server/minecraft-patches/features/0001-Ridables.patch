@@ -18,34 +18,34 @@ index fa7a2a85adf7758a753c54a7cf75cc667922d3d7..b0a86aac9603e72062f59dbe67c88ed8
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index f9aa990f0efa7abb681dd82fd5c8be9f8fcf917a..be8be8e3da80823917633de22985f7f4ef26dfe6 100644
+index 924dc9a32cd78f37078ff47cde54e61844572f47..d1e33c3ed23f4c68694ec3628c64e87dcbc916d9 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1722,6 +1722,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-             serverLevel.hasPhysicsEvent = org.bukkit.event.block.BlockPhysicsEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - BlockPhysicsEvent
+@@ -1743,6 +1743,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              serverLevel.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              serverLevel.updateLagCompensationTick(); // Paper - lag compensation
+             net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = serverLevel.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
 +            serverLevel.hasRidableMoveEvent = org.purpurmc.purpur.event.entity.RidableMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Purpur - Ridables
              profilerFiller.push(() -> serverLevel + " " + serverLevel.dimension().location());
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 6e314abd57045693fd6016bce2b791eb68e40bb5..9b35652ed35c0b7ddb200239d932c83945ea4575 100644
+index 17d021c341fb382768a0e8971bd559a11804151f..9de064829001199d6cd1bbeac05b6ee7c3000e4b 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
-@@ -212,6 +212,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
-     public final java.util.UUID uuid;
+@@ -213,6 +213,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
      public boolean hasPhysicsEvent = true; // Paper - BlockPhysicsEvent
      public boolean hasEntityMoveEvent; // Paper - Add EntityMoveEvent
+     private final alternate.current.wire.WireHandler wireHandler = new alternate.current.wire.WireHandler(this); // Paper - optimize redstone (Alternate Current)
 +    public boolean hasRidableMoveEvent = false; // Purpur - Ridables
  
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 6f2640c7d7df73fc4ef5ad3f0b232bb3c4c4da47..86964fd2231bca608c2cb3155f70086e893dc1f7 100644
+index 77f4d37866b74bb3865afe80b516af724cacd0be..efea20895bc45d63621dd130fc05922ba1e10f87 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -794,6 +794,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -800,6 +800,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          this.trackEnteredOrExitedLavaOnVehicle();
          this.updatePlayerAttributes();
          this.advancements.flushDirty(this, true);
@@ -62,10 +62,10 @@ index 6f2640c7d7df73fc4ef5ad3f0b232bb3c4c4da47..86964fd2231bca608c2cb3155f70086e
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 63e01ec7e4ab04bb7d389bff485dfedca344bfa2..84b1570d0d88f57f33ff8179f0a78d37b495a217 100644
+index db53f813d4b433f9a07a4d3169cd4fba94951c1b..6ba184b5314356214e9ff9508fba57150d92d87a 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2766,6 +2766,8 @@ public class ServerGamePacketListenerImpl
+@@ -2836,6 +2836,8 @@ public class ServerGamePacketListenerImpl
  
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
  
@@ -75,7 +75,7 @@ index 63e01ec7e4ab04bb7d389bff485dfedca344bfa2..84b1570d0d88f57f33ff8179f0a78d37
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index f6edaef36f55ef971386972b8c80d70aa4883ec7..6d18921bf283dac5279c82ae0562927db0f7f14f 100644
+index 500e542fa81de7b14cd86c23ce039951d8dc0f95..1edca56b4bf880460148d00b98225fc34bd15f17 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3093,6 +3093,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess

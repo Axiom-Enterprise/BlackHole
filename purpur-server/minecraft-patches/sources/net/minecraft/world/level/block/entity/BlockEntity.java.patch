@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/entity/BlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/BlockEntity.java
-@@ -104,6 +_,10 @@
+@@ -105,6 +_,10 @@
              this.persistentDataContainer.putAll((CompoundTag) persistentDataTag);
          }
          // Paper end - read persistent data container
@@ -11,7 +11,7 @@
      }
  
      public final void loadWithComponents(CompoundTag tag, HolderLookup.Provider registries) {
-@@ -117,6 +_,12 @@
+@@ -118,6 +_,12 @@
      }
  
      protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
@@ -24,7 +24,7 @@
      }
  
      public final CompoundTag saveWithFullMetadata(HolderLookup.Provider registries) {
-@@ -377,4 +_,17 @@
+@@ -379,4 +_,17 @@
          private ComponentHelper() {
          }
      }

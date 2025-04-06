@@ -3,7 +3,7 @@
 @@ -458,6 +_,7 @@
                      // revert back all captured blocks
                      for (org.bukkit.block.BlockState blockstate : blocks) {
-                         ((org.bukkit.craftbukkit.block.state.CraftBlockState) blockstate).revertPlace();
+                         ((org.bukkit.craftbukkit.block.CraftBlockState) blockstate).revertPlace();
 +                        ((org.bukkit.craftbukkit.block.CraftBlock) blockstate.getBlock()).getNMS().getBlock().forgetPlacer(); // Purpur - Store placer on Block when placed
                      }
  
@@ -43,7 +43,7 @@
      public int getDamageValue() {
          return Mth.clamp(this.getOrDefault(DataComponents.DAMAGE, 0), 0, this.getMaxDamage());
      }
-@@ -1274,6 +_,12 @@
+@@ -1280,6 +_,12 @@
      public boolean isEnchanted() {
          return !this.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty();
      }

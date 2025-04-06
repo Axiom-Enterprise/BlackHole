@@ -1,6 +1,6 @@
---- a/src/main/java/org/bukkit/craftbukkit/block/state/CraftConduit.java
-+++ b/src/main/java/org/bukkit/craftbukkit/block/state/CraftConduit.java
-@@ -74,7 +_,7 @@
+--- a/src/main/java/org/bukkit/craftbukkit/block/CraftConduit.java
++++ b/src/main/java/org/bukkit/craftbukkit/block/CraftConduit.java
+@@ -73,7 +_,7 @@
      public int getRange() {
          this.ensureNoWorldGeneration();
          ConduitBlockEntity conduit = (ConduitBlockEntity) this.getBlockEntityFromWorld();

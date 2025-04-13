@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/SpawnerBlock.java
 +++ b/net/minecraft/world/level/block/SpawnerBlock.java
-@@ -38,6 +_,57 @@
+@@ -38,6 +_,59 @@
          );
      }
  
@@ -14,7 +14,9 @@
 +            java.util.Optional<net.minecraft.world.entity.EntityType<?>> type = java.util.Optional.empty();
 +            if (nextSpawnData != null) {
 +                type = net.minecraft.world.entity.EntityType.by(nextSpawnData.getEntityToSpawn());
-+                net.minecraft.world.level.SpawnData.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, nextSpawnData).result().ifPresent(tag -> item.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY.update(compoundTag -> compoundTag.put("Purpur.SpawnData", tag))));
++                net.minecraft.nbt.CompoundTag spawnDataTag = new net.minecraft.nbt.CompoundTag();
++                spawnDataTag.storeNullable("SpawnData", net.minecraft.world.level.SpawnData.CODEC, nextSpawnData);
++                item.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY.update(compoundTag -> compoundTag.put("Purpur.SpawnData", spawnDataTag)));
 +            }
 +
 +            if (type.isPresent()) {

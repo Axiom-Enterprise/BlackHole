@@ -32,7 +32,9 @@ public class SpawnerItem extends BlockItem {
                 if (mobTypeStringOptional.isPresent()) {
                     EntityType.byString(mobTypeStringOptional.get()).ifPresent(type -> spawner.getSpawner().setEntityId(type, level, level.random, pos));
                 } else if (customData.contains("Purpur.SpawnData")) {
-                    customData.read("SpawnData", net.minecraft.world.level.SpawnData.CODEC).ifPresent(spawnData -> spawner.getSpawner().nextSpawnData = spawnData);
+                    customData.getCompound("Purpur.SpawnData")
+                        .flatMap(spawnerData -> spawnerData.read("SpawnData", net.minecraft.world.level.SpawnData.CODEC))
+                        .ifPresent(spawnData -> spawner.getSpawner().nextSpawnData = spawnData);
                 }
             }
         }

@@ -35,7 +35,7 @@
                  );
              }
          }
-@@ -297,6 +_,26 @@
+@@ -297,6 +_,24 @@
          // CraftBukkit - this
          return new CommandSourceStack(commandSource, Vec3.atCenterOf(pos), Vec2.ZERO, (ServerLevel)level, 2, string, component, level.getServer(), player); // Paper - Fix commands from signs not firing command events
      }
@@ -49,11 +49,9 @@
 +        for (int i = 0; i < 4; i++) {
 +            final var component = io.papermc.paper.adventure.PaperAdventure.asAdventure(lines[i]);
 +            final String line = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().serialize(component);
-+            final var text = net.kyori.adventure.text.Component.text(line);
-+            final String json = net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson().serialize(text);
 +            final CompoundTag sideNbt = nbt.getCompoundOrEmpty(side);
 +            final net.minecraft.nbt.ListTag messagesNbt = sideNbt.getListOrEmpty("messages");
-+            messagesNbt.set(i, net.minecraft.nbt.StringTag.valueOf(json));
++            messagesNbt.set(i, net.minecraft.nbt.StringTag.valueOf(line));
 +        }
 +        nbt.putString("PurpurEditor", "true");
 +        return ClientboundBlockEntityDataPacket.create(this, (blockEntity, registryAccess) -> nbt);

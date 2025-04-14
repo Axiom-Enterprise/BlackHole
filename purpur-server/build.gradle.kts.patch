@@ -51,18 +51,18 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -162,6 +_,10 @@
-     runtimeOnly("com.mysql:mysql-connector-j:9.1.0")
-     runtimeOnly("com.lmax:disruptor:3.4.4")
+@@ -158,6 +_,10 @@
+     implementation("org.spongepowered:configurate-yaml:4.2.0-20250225.064233-199")
+     implementation("org.spongepowered:configurate-core:4.2.0-20250225.064233-204") // Pinned dependency of above pinned yaml snapshot.
  
 +    implementation("org.mozilla:rhino-runtime:1.7.14") // Purpur
 +    implementation("org.mozilla:rhino-engine:1.7.14") // Purpur
 +    implementation("dev.omega24:upnp4j:1.0") // Purpur
 +
-     runtimeOnly("org.apache.maven:maven-resolver-provider:3.9.6")
-     runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.9.18")
-     runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.9.18")
-@@ -201,14 +_,14 @@
+     // Deps that were previously in the API but have now been moved here for backwards compat, eventually to be removed
+     runtimeOnly("commons-lang:commons-lang:2.6")
+     runtimeOnly("org.xerial:sqlite-jdbc:3.49.1.0")
+@@ -206,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -82,7 +82,7 @@
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,
-@@ -262,7 +_,7 @@
+@@ -267,7 +_,7 @@
      jvmArgumentProviders.add(provider)
  }
  

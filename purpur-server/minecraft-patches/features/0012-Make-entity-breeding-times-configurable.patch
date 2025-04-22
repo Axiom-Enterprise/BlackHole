@@ -47,7 +47,7 @@ index 2ce0099460c14a6dd8b128f268ee915ea4be5183..1cae770340e969ec4f037b9121142878
          animal.resetLove();
          level.broadcastEntityEvent(this, (byte)18);
 diff --git a/net/minecraft/world/entity/animal/Bee.java b/net/minecraft/world/entity/animal/Bee.java
-index d07a708f06ba738369882ddaa968c2de9c6c560e..afe7fd92348e6a2a26f8f258373b0c57bb5f4f3f 100644
+index 7fbf46efe8007e4b0e2f07c3ada8f0e02484d59d..68acacdf30834fe318862d1900cb18800caa0e13 100644
 --- a/net/minecraft/world/entity/animal/Bee.java
 +++ b/net/minecraft/world/entity/animal/Bee.java
 @@ -480,6 +480,13 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -222,7 +222,7 @@ index 94031cbd5d40c9a5536b1d1c404bbe2666e8ae0a..d69992a1f729ba99f3992920cd2372a0
      @Override
      public SpawnGroupData finalizeSpawn(
 diff --git a/net/minecraft/world/entity/animal/Pig.java b/net/minecraft/world/entity/animal/Pig.java
-index 70d5debdf6a7e9b631e21b47e7e35b15c065410b..142581c85e4ee6be2798fc1d412ce6876f394adb 100644
+index bdf0574bf6b70aa7477e1143df24e63d658bc841..f81a448a522fa7551ead16a5ac2b41460235f4b6 100644
 --- a/net/minecraft/world/entity/animal/Pig.java
 +++ b/net/minecraft/world/entity/animal/Pig.java
 @@ -90,6 +90,13 @@ public class Pig extends Animal implements ItemSteerable {
@@ -559,7 +559,7 @@ index fab5a8d0974aab57a1e4a803eb4f3b47a3ee4a07..a21604d3ff3377946cbcbd57ddfa1cbb
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/animal/wolf/Wolf.java b/net/minecraft/world/entity/animal/wolf/Wolf.java
-index 601343a604322bae7ef91eecc91da70ee377d8f3..7bbcca12492b114211c71df5cf198da2ac4814f8 100644
+index cca4debfabbe60ecea9fc59514a24fc199c79003..99050a33a170b685c2fe3645b80c21b6069ab48a 100644
 --- a/net/minecraft/world/entity/animal/wolf/Wolf.java
 +++ b/net/minecraft/world/entity/animal/wolf/Wolf.java
 @@ -217,6 +217,13 @@ public class Wolf extends TamableAnimal implements NeutralMob {
@@ -577,7 +577,7 @@ index 601343a604322bae7ef91eecc91da70ee377d8f3..7bbcca12492b114211c71df5cf198da2
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new FloatGoal(this));
 diff --git a/net/minecraft/world/entity/monster/Strider.java b/net/minecraft/world/entity/monster/Strider.java
-index 4ea92637677997ab4c98da437394f5682ba2389a..309cdc88d98eaf61691bc1594275250f55b4f30c 100644
+index a68e9f3f96f37b6dd685fd02072f38b9e320fffc..4e300141b0c7fa967e3d0b9ef952097efeb2bef6 100644
 --- a/net/minecraft/world/entity/monster/Strider.java
 +++ b/net/minecraft/world/entity/monster/Strider.java
 @@ -117,6 +117,13 @@ public class Strider extends Animal implements ItemSteerable {

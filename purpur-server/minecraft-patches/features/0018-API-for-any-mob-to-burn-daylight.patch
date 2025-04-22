@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 6d18921bf283dac5279c82ae0562927db0f7f14f..f55db145661cab3cfc9ffa755792be2c3d80f50a 100644
+index 1edca56b4bf880460148d00b98225fc34bd15f17..5b0a4ef4ae5a762432dbb0def005f7505197445e 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -521,6 +521,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -35,7 +35,7 @@ index 6d18921bf283dac5279c82ae0562927db0f7f14f..f55db145661cab3cfc9ffa755792be2c
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 476b570ffe9d2df173bd57b57fe65372cb35fa1d..4586d7afb4f0a27c7d61abb80af24205d46cb83f 100644
+index 13a1b5dd8b1a07a584f71b1f24da28965f5e2a5d..fb42e31e812f99bf7b74c376ed47fcaee3213238 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -273,6 +273,7 @@ public abstract class LivingEntity extends Entity implements Attackable {

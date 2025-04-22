@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing bypass to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index bdae20191d2e5765761442eb06924968e710b189..476b570ffe9d2df173bd57b57fe65372cb35fa1d 100644
+index 5dd1a36b967176f96a18cb0d842ccb73b7b584ef..13a1b5dd8b1a07a584f71b1f24da28965f5e2a5d 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1904,7 +1904,7 @@ public abstract class LivingEntity extends Entity implements Attackable {

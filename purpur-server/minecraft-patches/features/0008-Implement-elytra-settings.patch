@@ -53,10 +53,10 @@ index 18d63d2da49451a2d5e1da7bf0c00e05e2f192bc..1f081e098ce3bec61b7f374e9b737838
                          itemInHand.shrink(1); // Moved up from below
                      } else {
 diff --git a/net/minecraft/world/item/ItemStack.java b/net/minecraft/world/item/ItemStack.java
-index 2f0b280d36aefc0cc2a09c395adabdffad43bf17..f1b61e98e07d1d89f9af225f99085d8a3fee878c 100644
+index 6de42886ed681b5e00903f0d213e4d2fcaea1482..36677cb0db42b74fa84d67b85717f629f84b4dd0 100644
 --- a/net/minecraft/world/item/ItemStack.java
 +++ b/net/minecraft/world/item/ItemStack.java
-@@ -725,6 +725,14 @@ public final class ItemStack implements DataComponentHolder {
+@@ -724,6 +724,14 @@ public final class ItemStack implements DataComponentHolder {
                  org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerItemBreakEvent(serverPlayer, this); // Paper - Add EntityDamageItemEvent
              }
              // CraftBukkit end

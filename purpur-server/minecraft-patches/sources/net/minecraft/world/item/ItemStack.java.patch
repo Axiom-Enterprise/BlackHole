@@ -16,7 +16,7 @@
  
                          serverLevel.notifyAndUpdatePhysics(newPos, null, oldBlock, block, serverLevel.getBlockState(newPos), updateFlags, net.minecraft.world.level.block.Block.UPDATE_LIMIT); // send null chunk as chunk.k() returns false by this point
                      }
-@@ -618,6 +_,26 @@
+@@ -617,6 +_,26 @@
          return this.isDamageableItem() && this.getDamageValue() > 0;
      }
  
@@ -43,7 +43,7 @@
      public int getDamageValue() {
          return Mth.clamp(this.getOrDefault(DataComponents.DAMAGE, 0), 0, this.getMaxDamage());
      }
-@@ -1280,6 +_,12 @@
+@@ -1279,6 +_,12 @@
      public boolean isEnchanted() {
          return !this.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty();
      }

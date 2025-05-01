@@ -25,7 +25,7 @@
                  event.disallow(org.bukkit.event.player.PlayerLoginEvent.Result.KICK_FULL, net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(org.spigotmc.SpigotConfig.serverFullMessage)); // Spigot // Paper - Adventure
              }
          }
-@@ -920,6 +_,20 @@
+@@ -932,6 +_,20 @@
          }
      }
  
@@ -46,7 +46,7 @@
      public void broadcastAll(Packet<?> packet, ResourceKey<Level> dimension) {
          for (ServerPlayer serverPlayer : this.players) {
              if (serverPlayer.level().dimension() == dimension) {
-@@ -1004,6 +_,7 @@
+@@ -1016,6 +_,7 @@
              } else {
                  b = (byte)(24 + permLevel);
              }

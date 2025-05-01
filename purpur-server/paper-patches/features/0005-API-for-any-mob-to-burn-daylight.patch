@@ -24,12 +24,12 @@ index f48d9dbd75e62621f7e4c8cd11f9fd4084db9097..8feb78c4d7fa793f01991756b618fc49
          Preconditions.checkArgument(entity != null, "Unknown entity");
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 61750e2e36d7654a2284637c7b84908416705fe6..5b74ca7c52fb0437726a2a00483134884dc50b2f 100644
+index 3527864c55862f9ab4ed2762c1a6606cf3240cc0..6d654afe8d9e2f90510e68904a6e90ac9269810b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-@@ -1167,4 +1167,16 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
-     public boolean canUseEquipmentSlot(org.bukkit.inventory.EquipmentSlot slot) {
-         return this.getHandle().canUseSlot(org.bukkit.craftbukkit.CraftEquipmentSlot.getNMS(slot));
+@@ -1179,4 +1179,16 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+     public CombatTracker getCombatTracker() {
+         return this.combatTracker;
      }
 +
 +    // Purpur start - API for any mob to burn daylight

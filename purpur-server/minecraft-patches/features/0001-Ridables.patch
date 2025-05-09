@@ -30,7 +30,7 @@ index 924dc9a32cd78f37078ff47cde54e61844572f47..d1e33c3ed23f4c68694ec3628c64e87d
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index f61521a4d57c73fb65f1f314ff6061cf63943e82..d8a8e6d006d18de5ec148a0d9d6f08a6a40a65bb 100644
+index f3f53791d4c5532434abc281a5798ee0e2653da2..56eabc55203756461fc679837b55b30a5c503268 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -213,6 +213,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -42,10 +42,10 @@ index f61521a4d57c73fb65f1f314ff6061cf63943e82..d8a8e6d006d18de5ec148a0d9d6f08a6
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 1879c2a15e3f28f5d4687d098c832671f342806f..5b396f22a9607f95fbc2fc505f92f9a72d4fcae0 100644
+index a7043588459defe8d47db011bab81403321319a0..bf673320ac4068550b54d64ace82a0f7278ed4d9 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -800,6 +800,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -799,6 +799,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          this.trackEnteredOrExitedLavaOnVehicle();
          this.updatePlayerAttributes();
          this.advancements.flushDirty(this, true);
@@ -75,10 +75,10 @@ index c6b2591eb8ba7005919ea4b885f95c4d603305b6..9f695e97d247b24b12a4a115bfb012c7
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 6c1dcbb9fff2ce8bb88e16d47dab7656c70f7367..bf50fa4694c693713db8c54c4a9b87d8d9a169cd 100644
+index b8a0abd1cbdc0c86ae9e68ebaeec14cd4728450e..05b936babba4fb9847dedb823406d06fa79a95c2 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -3094,6 +3094,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3110,6 +3110,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -92,7 +92,7 @@ index 6c1dcbb9fff2ce8bb88e16d47dab7656c70f7367..bf50fa4694c693713db8c54c4a9b87d8
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -3135,6 +3142,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3151,6 +3158,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index 6c1dcbb9fff2ce8bb88e16d47dab7656c70f7367..bf50fa4694c693713db8c54c4a9b87d8
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5137,4 +5152,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5153,4 +5168,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter

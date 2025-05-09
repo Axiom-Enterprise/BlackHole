@@ -17,10 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index ffe8b5d974dc38e63fa649ba4c994167d3d6e10f..45a6add63146fa018cb246dfe9ad8811ec05effa 100644
+index db183796391e90c12958096eb0099308d8647781..f7d2c10038b1bd7af4cf54984b3c0c9f2e2b8f21 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -299,6 +299,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -300,6 +300,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          boolean retainPassengers = flagSet.contains(io.papermc.paper.entity.TeleportFlag.EntityState.RETAIN_PASSENGERS);
          // Don't allow teleporting between worlds while keeping passengers
          if (flagSet.contains(io.papermc.paper.entity.TeleportFlag.EntityState.RETAIN_PASSENGERS) && this.entity.isVehicle() && location.getWorld() != this.getWorld()) {

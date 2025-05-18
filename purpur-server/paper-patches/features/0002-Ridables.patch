@@ -5,10 +5,10 @@ Subject: [PATCH] Ridables
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 9ee51c63f2b524300a3c9f8025f8b8b49935814c..db183796391e90c12958096eb0099308d8647781 100644
+index f70cf786578b1467ec1e02ecea4844dca4277614..041fc1d4182834bda5de9b2172601a2a59b5514b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1318,4 +1318,26 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1325,4 +1325,26 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return this.entity.get(io.papermc.paper.datacomponent.PaperDataComponentType.bukkitToMinecraft(type)) != null;
      }
  

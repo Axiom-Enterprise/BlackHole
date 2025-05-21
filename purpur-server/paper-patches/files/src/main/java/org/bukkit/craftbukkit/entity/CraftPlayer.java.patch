@@ -17,13 +17,13 @@
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -2722,6 +_,28 @@
+@@ -2720,6 +_,28 @@
          return this.getHandle().getAbilities().walkingSpeed * 2f;
      }
  
 +    // Purpur start - OfflinePlayer API
 +    @Override
-+    public boolean teleportOffline(@NotNull Location destination) {
++    public boolean teleportOffline(Location destination) {
 +        return this.teleport(destination);
 +    }
 +
@@ -33,12 +33,12 @@
 +    }
 +
 +    @Override
-+    public java.util.concurrent.CompletableFuture<Boolean> teleportOfflineAsync(@NotNull Location destination) {
++    public java.util.concurrent.CompletableFuture<Boolean> teleportOfflineAsync(Location destination) {
 +        return this.teleportAsync(destination);
 +    }
 +
 +    @Override
-+    public java.util.concurrent.CompletableFuture<Boolean> teleportOfflineAsync(@NotNull Location destination, PlayerTeleportEvent.TeleportCause cause) {
++    public java.util.concurrent.CompletableFuture<Boolean> teleportOfflineAsync(Location destination, PlayerTeleportEvent.TeleportCause cause) {
 +        return this.teleportAsync(destination, cause);
 +    }
 +    // Purpur end - OfflinePlayer API
@@ -46,7 +46,7 @@
      private void validateSpeed(float value) {
          Preconditions.checkArgument(value <= 1f && value >= -1f, "Speed value (%s) need to be between -1f and 1f", value);
      }
-@@ -3568,4 +_,76 @@
+@@ -3566,4 +_,76 @@
      public void setDeathScreenScore(final int score) {
          getHandle().setScore(score);
      }

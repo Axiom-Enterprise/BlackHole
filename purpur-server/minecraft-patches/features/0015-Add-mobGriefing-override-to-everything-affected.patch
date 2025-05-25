@@ -157,10 +157,10 @@ index f0ec9334d9e6bf879568a085db691c46f7c652b6..38772967805dc73ffaae19d95b4f2d20
                      int alternativeTarget = Mth.floor(this.getBbWidth() / 2.0F + 1.0F);
                      int floor = Mth.floor(this.getBbHeight());
 diff --git a/net/minecraft/world/entity/monster/EnderMan.java b/net/minecraft/world/entity/monster/EnderMan.java
-index c01c91db94136700f9501624763e3bd735986a9f..9ba0ff75dcee5f331bc8e51ac1c53273c92e3e3b 100644
+index b8094cd018e7b6cf165c92bd37cf6f9d5703599a..a6f8a3164a7c57ac9d9ea9850f037410c861de26 100644
 --- a/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/net/minecraft/world/entity/monster/EnderMan.java
-@@ -509,7 +509,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -511,7 +511,7 @@ public class EnderMan extends Monster implements NeutralMob {
          public boolean canUse() {
              if (!enderman.level().purpurConfig.endermanAllowGriefing) return false; // Purpur - Add enderman and creeper griefing controls
              return this.enderman.getCarriedBlock() != null
@@ -169,7 +169,7 @@ index c01c91db94136700f9501624763e3bd735986a9f..9ba0ff75dcee5f331bc8e51ac1c53273
                  && this.enderman.getRandom().nextInt(reducedTickDelay(2000)) == 0;
          }
  
-@@ -659,7 +659,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -661,7 +661,7 @@ public class EnderMan extends Monster implements NeutralMob {
          public boolean canUse() {
              if (!enderman.level().purpurConfig.endermanAllowGriefing) return false; // Purpur - Add enderman and creeper griefing controls
              return this.enderman.getCarriedBlock() == null

@@ -26,7 +26,7 @@
          } else {
              AbstractThrownPotion abstractThrownPotion1 = damageSource.getDirectEntity() instanceof AbstractThrownPotion abstractThrownPotion
                  ? abstractThrownPotion
-@@ -390,6 +_,7 @@
+@@ -392,6 +_,7 @@
              } else {
                  boolean flag = abstractThrownPotion1 != null && this.hurtWithCleanWater(level, damageSource, abstractThrownPotion1, amount);
  
@@ -34,7 +34,7 @@
                  if (this.tryEscape(com.destroystokyo.paper.event.entity.EndermanEscapeEvent.Reason.INDIRECT)) { // Paper - EndermanEscapeEvent
                  for (int i = 0; i < 64; i++) {
                      if (this.teleport()) {
-@@ -433,7 +_,7 @@
+@@ -435,7 +_,7 @@
  
      @Override
      public boolean requiresCustomPersistence() {
@@ -43,7 +43,7 @@
      }
  
      static class EndermanFreezeWhenLookedAt extends Goal {
-@@ -477,6 +_,7 @@
+@@ -479,6 +_,7 @@
  
          @Override
          public boolean canUse() {
@@ -51,7 +51,7 @@
              return this.enderman.getCarriedBlock() != null
                  && getServerLevel(this.enderman).getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
                  && this.enderman.getRandom().nextInt(reducedTickDelay(2000)) == 0;
-@@ -626,6 +_,7 @@
+@@ -628,6 +_,7 @@
  
          @Override
          public boolean canUse() {

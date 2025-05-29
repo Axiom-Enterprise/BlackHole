@@ -36,10 +36,10 @@ index f70cf786578b1467ec1e02ecea4844dca4277614..041fc1d4182834bda5de9b2172601a2a
 +    // Purpur end - Ridables
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 6f86a505c99010eb80e76e2fbe36414fcde80a39..3a3fbbfa0b82092cd9ac8eab2d179fb9f590aec8 100644
+index 574f982a29e8a8ccdbedf65432a1d78928a4b807..e04b7e7d4d3e6e5edba7dbc72b4458174025024c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -514,6 +514,15 @@ public class CraftEventFactory {
+@@ -515,6 +515,15 @@ public class CraftEventFactory {
          }
          craftServer.getPluginManager().callEvent(event);
  
@@ -55,7 +55,7 @@ index 6f86a505c99010eb80e76e2fbe36414fcde80a39..3a3fbbfa0b82092cd9ac8eab2d179fb9
          return event;
      }
  
-@@ -1046,6 +1055,7 @@ public class CraftEventFactory {
+@@ -1047,6 +1056,7 @@ public class CraftEventFactory {
          EntityDamageEvent event;
          if (damager != null) {
              event = new EntityDamageByEntityEvent(damager.getBukkitEntity(), damagee.getBukkitEntity(), cause, bukkitDamageSource, modifiers, modifierFunctions, critical);

@@ -11,7 +11,7 @@
  
  plugins {
      `java-library`
-@@ -20,6 +_,46 @@
+@@ -20,13 +_,65 @@
      testRuntimeOnly("org.junit.platform:junit-platform-launcher")
  }
  
@@ -58,10 +58,13 @@
  paperweight {
      minecraftVersion = providers.gradleProperty("mcVersion")
      gitFilePatches = false
-@@ -28,6 +_,18 @@
-     //    oldPaperCommit = "f4f275519f7c1fbe9db173b7144a4fe81440e365"
-     //}
  
+-    updatingMinecraft {
+-        oldPaperCommit = "a033e3b9ef78cfe85be807ac3fd1dd956274d4db"
++    //updatingMinecraft {
++    //    oldPaperCommit = "a033e3b9ef78cfe85be807ac3fd1dd956274d4db"
++    //}
++
 +    // Purpur start - Rebrand
 +    val purpur = forks.register("purpur") {
 +        upstream.patchDir("paperServer") {
@@ -70,13 +73,12 @@
 +            patchesDir = rootDirectory.dir("purpur-server/paper-patches")
 +            outputDir = rootDirectory.dir("paper-server")
 +        }
-+    }
+     }
 +    activeFork = purpur
 +    // Purpur end - Rebrand
-+
+ 
      spigot {
          buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
-         packageVersion = "v1_21_R4" // also needs to be updated in MappingEnvironment
 @@ -108,7 +_,21 @@
      }
  }

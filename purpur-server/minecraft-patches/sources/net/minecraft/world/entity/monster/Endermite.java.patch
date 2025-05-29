@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/monster/Endermite.java b/net/minecraft/world/entity/monster/Endermite.java
+index 7fad96756972308e71fd38033f06148467a7aecd..37eaed1455f34011c24170ca0b05f606bd03fac0 100644
 --- a/net/minecraft/world/entity/monster/Endermite.java
 +++ b/net/minecraft/world/entity/monster/Endermite.java
-@@ -29,12 +_,23 @@
+@@ -29,12 +29,23 @@ public class Endermite extends Monster {
      private static final int MAX_LIFE = 2400;
      private static final int DEFAULT_LIFE = 0;
      public int life = 0;
@@ -24,7 +32,7 @@
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new FloatGoal(this));
-@@ -80,12 +_,14 @@
+@@ -80,12 +91,14 @@ public class Endermite extends Monster {
      public void readAdditionalSaveData(CompoundTag compound) {
          super.readAdditionalSaveData(compound);
          this.life = compound.getIntOr("Lifetime", 0);

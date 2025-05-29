@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/animal/Animal.java b/net/minecraft/world/entity/animal/Animal.java
+index b851f94d63a049292a3657009d68bc1641222104..2ce0099460c14a6dd8b128f268ee915ea4be5183 100644
 --- a/net/minecraft/world/entity/animal/Animal.java
 +++ b/net/minecraft/world/entity/animal/Animal.java
-@@ -142,7 +_,7 @@
+@@ -142,7 +142,7 @@ public abstract class Animal extends AgeableMob {
          ItemStack itemInHand = player.getItemInHand(hand);
          if (this.isFood(itemInHand)) {
              int age = this.getAge();
@@ -9,7 +17,7 @@
                  final ItemStack breedCopy = itemInHand.copy(); // Paper - Fix EntityBreedEvent copying
                  this.usePlayerItem(player, hand, itemInHand);
                  this.setInLove(player, breedCopy); // Paper - Fix EntityBreedEvent copying
-@@ -239,10 +_,20 @@
+@@ -239,10 +239,20 @@ public abstract class Animal extends AgeableMob {
      public void spawnChildFromBreeding(ServerLevel level, Animal mate) {
          AgeableMob breedOffspring = this.getBreedOffspring(level, mate);
          if (breedOffspring != null) {

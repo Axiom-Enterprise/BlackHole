@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/monster/ZombieVillager.java b/net/minecraft/world/entity/monster/ZombieVillager.java
+index a8cd7103e636b57be1270d0f3549c709330b5536..6b0bbcf99941d768d235b9f96c3e112a4dfea2fc 100644
 --- a/net/minecraft/world/entity/monster/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/ZombieVillager.java
-@@ -130,10 +_,10 @@
+@@ -130,10 +130,10 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
      public InteractionResult mobInteract(Player player, InteractionHand hand) {
          ItemStack itemInHand = player.getItemInHand(hand);
          if (itemInHand.is(Items.GOLDEN_APPLE)) {

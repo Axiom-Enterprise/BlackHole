@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/entity/ConduitBlockEntity.java b/net/minecraft/world/level/block/entity/ConduitBlockEntity.java
+index 2f07a23a6151a4dfb28ddc0ab38ec2abefcdd27c..aeb10f21cd9dab3b134d1d8478083453dc37e3f2 100644
 --- a/net/minecraft/world/level/block/entity/ConduitBlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/ConduitBlockEntity.java
-@@ -151,7 +_,7 @@
+@@ -151,7 +151,7 @@ public class ConduitBlockEntity extends BlockEntity {
                          BlockPos blockPos1 = pos.offset(i, i1, i2x);
                          BlockState blockState = level.getBlockState(blockPos1);
  
@@ -9,7 +17,7 @@
                              if (blockState.is(block)) {
                                  positions.add(blockPos1);
                              }
-@@ -166,13 +_,13 @@
+@@ -166,13 +166,13 @@ public class ConduitBlockEntity extends BlockEntity {
  
      private static void applyEffects(Level level, BlockPos pos, List<BlockPos> positions) {
          // CraftBukkit start
@@ -26,7 +34,7 @@
          // CraftBukkit start
          return i;
      }
-@@ -209,17 +_,17 @@
+@@ -209,17 +209,17 @@ public class ConduitBlockEntity extends BlockEntity {
              blockEntity.destroyTargetUUID = null;
          } else if (blockEntity.destroyTarget == null) {
              List<LivingEntity> entitiesOfClass = level.getEntitiesOfClass(
@@ -47,7 +55,7 @@
              level.playSound(
                  null,
                  blockEntity.destroyTarget.getX(),
-@@ -249,16 +_,22 @@
+@@ -249,16 +249,22 @@ public class ConduitBlockEntity extends BlockEntity {
      }
  
      public static AABB getDestroyRangeAABB(BlockPos pos) {

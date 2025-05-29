@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/commands/GiveCommand.java b/net/minecraft/server/commands/GiveCommand.java
+index b81f98738ef166336e4cc3092b6ba63f385b68e3..ca4bad763602f202423409ffb16f797f91a5dadc 100644
 --- a/net/minecraft/server/commands/GiveCommand.java
 +++ b/net/minecraft/server/commands/GiveCommand.java
-@@ -66,6 +_,7 @@
+@@ -66,6 +66,7 @@ public class GiveCommand {
                      i1 -= min;
                      ItemStack itemStack1 = item.createItemStack(min, false);
                      boolean flag = serverPlayer.getInventory().add(itemStack1);

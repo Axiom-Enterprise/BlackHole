@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/level/ServerPlayerGameMode.java b/net/minecraft/server/level/ServerPlayerGameMode.java
+index b604cba2490a747661d6819251bc3b9a1d35c7d4..3a596650feb96123c5684bb5065e20c5b005c0b9 100644
 --- a/net/minecraft/server/level/ServerPlayerGameMode.java
 +++ b/net/minecraft/server/level/ServerPlayerGameMode.java
-@@ -348,6 +_,7 @@
+@@ -348,6 +348,7 @@ public class ServerPlayerGameMode {
                  }
                  return false;
              }
@@ -8,7 +16,7 @@
          }
          // CraftBukkit end
  
-@@ -461,6 +_,7 @@
+@@ -461,6 +462,7 @@ public class ServerPlayerGameMode {
      public InteractionHand interactHand;
      public ItemStack interactItemStack;
      public InteractionResult useItemOn(ServerPlayer player, Level level, ItemStack stack, InteractionHand hand, BlockHitResult hitResult) {
@@ -16,7 +24,7 @@
          BlockPos blockPos = hitResult.getBlockPos();
          BlockState blockState = level.getBlockState(blockPos);
          boolean cancelledBlock = false;
-@@ -503,7 +_,7 @@
+@@ -503,7 +505,7 @@ public class ServerPlayerGameMode {
              boolean flag = !player.getMainHandItem().isEmpty() || !player.getOffhandItem().isEmpty();
              boolean flag1 = player.isSecondaryUseActive() && flag;
              ItemStack itemStack = stack.copy();
@@ -25,7 +33,7 @@
                  InteractionResult interactionResult = blockState.useItemOn(player.getItemInHand(hand), level, player, hand, hitResult);
                  if (interactionResult.consumesAction()) {
                      CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(player, blockPos, itemStack);
-@@ -549,4 +_,18 @@
+@@ -549,4 +551,18 @@ public class ServerPlayerGameMode {
      public void setLevel(ServerLevel serverLevel) {
          this.level = serverLevel;
      }

@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
+index c5b3b5e5f621f8db152aa190374ae0fe567d6828..4e0fa0a7c639f2c0ded1bfbc8dd01da142043505 100644
 --- a/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-@@ -186,6 +_,21 @@
+@@ -186,6 +186,21 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
          }
  
          ItemStack itemStack = furnace.items.get(1);
@@ -22,7 +30,7 @@
          ItemStack itemStack1 = furnace.items.get(0);
          boolean flag1 = !itemStack1.isEmpty();
          boolean flag2 = !itemStack.isEmpty();
-@@ -269,6 +_,8 @@
+@@ -269,6 +284,8 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
          if (flag) {
              setChanged(level, pos, state);
          }

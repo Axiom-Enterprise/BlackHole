@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/gui/StatsComponent.java b/net/minecraft/server/gui/StatsComponent.java
+index 35fd539eb2bfe60ad17ab1e558a01273666acc54..103ff139dae918c991413ce9df61da3e22ee458a 100644
 --- a/net/minecraft/server/gui/StatsComponent.java
 +++ b/net/minecraft/server/gui/StatsComponent.java
-@@ -43,7 +_,7 @@
+@@ -43,7 +43,7 @@ public class StatsComponent extends JComponent {
          }
          this.msgs[0] = "Memory use: " + l / 1024L / 1024L + " mb (" + Runtime.getRuntime().freeMemory() * 100L / Runtime.getRuntime().maxMemory() + "% free)";
          this.msgs[1] = "Avg tick: " + DECIMAL_FORMAT.format((double)this.server.getAverageTickTimeNanos() / TimeUtil.NANOSECONDS_PER_MILLISECOND) + " ms";

@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/decoration/ArmorStand.java b/net/minecraft/world/entity/decoration/ArmorStand.java
+index 5248f3c22abb608d7d7b338f169f13bfbf4cd2d6..fa20c642c05fa4ed3739cd0b3964e31fd4dba1d3 100644
 --- a/net/minecraft/world/entity/decoration/ArmorStand.java
 +++ b/net/minecraft/world/entity/decoration/ArmorStand.java
-@@ -95,10 +_,13 @@
+@@ -95,10 +95,13 @@ public class ArmorStand extends LivingEntity {
      private boolean noTickPoseDirty = false;
      private boolean noTickEquipmentDirty = false;
      // Paper end - Allow ArmorStands not to tick
@@ -14,7 +22,7 @@
      }
  
      public ArmorStand(Level level, double x, double y, double z) {
-@@ -546,6 +_,7 @@
+@@ -546,6 +549,7 @@ public class ArmorStand extends LivingEntity {
  
      @Override
      public void tick() {
@@ -22,7 +30,7 @@
          // Paper start - Allow ArmorStands not to tick
          if (!this.canTick) {
              if (this.noTickPoseDirty) {
-@@ -875,4 +_,18 @@
+@@ -875,4 +879,18 @@ public class ArmorStand extends LivingEntity {
          }
      }
      // Paper end

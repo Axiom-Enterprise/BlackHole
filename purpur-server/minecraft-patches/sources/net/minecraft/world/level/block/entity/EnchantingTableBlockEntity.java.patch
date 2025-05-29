@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/entity/EnchantingTableBlockEntity.java b/net/minecraft/world/level/block/entity/EnchantingTableBlockEntity.java
+index 4b2462ece4eb5abb76ea9259b3e6a77f8a8e4e07..d35d04823e5d0de4487310caadd013f7dab1f419 100644
 --- a/net/minecraft/world/level/block/entity/EnchantingTableBlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/EnchantingTableBlockEntity.java
-@@ -31,6 +_,7 @@
+@@ -31,6 +31,7 @@ public class EnchantingTableBlockEntity extends BlockEntity implements Nameable
      private static final RandomSource RANDOM = RandomSource.create();
      @Nullable
      private Component name;
@@ -8,7 +16,7 @@
  
      public EnchantingTableBlockEntity(BlockPos pos, BlockState state) {
          super(BlockEntityType.ENCHANTING_TABLE, pos, state);
-@@ -42,12 +_,14 @@
+@@ -42,12 +43,14 @@ public class EnchantingTableBlockEntity extends BlockEntity implements Nameable
          if (this.hasCustomName()) {
              tag.store("CustomName", ComponentSerialization.CODEC, registries.createSerializationContext(NbtOps.INSTANCE), this.name);
          }
@@ -23,7 +31,7 @@
      }
  
      public static void bookAnimationTick(Level level, BlockPos pos, BlockState state, EnchantingTableBlockEntity enchantingTable) {
-@@ -139,4 +_,14 @@
+@@ -139,4 +142,14 @@ public class EnchantingTableBlockEntity extends BlockEntity implements Nameable
      public void removeComponentsFromTag(CompoundTag tag) {
          tag.remove("CustomName");
      }

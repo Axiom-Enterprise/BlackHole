@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/CactusBlock.java b/net/minecraft/world/level/block/CactusBlock.java
+index 8f6878cc8e72513446895bfc79886075bfcd5565..0f8cfa5423cd1813c655237aa544dad2dc56ba4d 100644
 --- a/net/minecraft/world/level/block/CactusBlock.java
 +++ b/net/minecraft/world/level/block/CactusBlock.java
-@@ -22,7 +_,7 @@
+@@ -22,7 +22,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
  import net.minecraft.world.phys.shapes.CollisionContext;
  import net.minecraft.world.phys.shapes.VoxelShape;
  
@@ -9,7 +17,7 @@
      public static final MapCodec<CactusBlock> CODEC = simpleCodec(CactusBlock::new);
      public static final IntegerProperty AGE = BlockStateProperties.AGE_15;
      public static final int MAX_AGE = 15;
-@@ -117,7 +_,7 @@
+@@ -117,7 +117,7 @@ public class CactusBlock extends Block {
      protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
          for (Direction direction : Direction.Plane.HORIZONTAL) {
              BlockState blockState = level.getBlockState(pos.relative(direction));
@@ -18,7 +26,7 @@
                  return false;
              }
          }
-@@ -141,4 +_,34 @@
+@@ -141,4 +141,34 @@ public class CactusBlock extends Block {
      protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
          return false;
      }

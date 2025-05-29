@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/animal/Ocelot.java b/net/minecraft/world/entity/animal/Ocelot.java
+index 9e86a42f04d06c3dcd241f16ab876b0c8422fd81..48c8fdfea8687f37187b6092c285275c12963ea0 100644
 --- a/net/minecraft/world/entity/animal/Ocelot.java
 +++ b/net/minecraft/world/entity/animal/Ocelot.java
-@@ -233,7 +_,7 @@
+@@ -233,7 +233,7 @@ public class Ocelot extends Animal {
      public boolean checkSpawnObstruction(LevelReader level) {
          if (level.isUnobstructed(this) && !level.containsAnyLiquid(this.getBoundingBox())) {
              BlockPos blockPos = this.blockPosition();

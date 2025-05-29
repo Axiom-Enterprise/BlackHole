@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/monster/Creeper.java b/net/minecraft/world/entity/monster/Creeper.java
+index 3f5e1e98802e5dd1cfc9075559e1102046605a04..c2327306f093c834da9574f9466236fbec572aec 100644
 --- a/net/minecraft/world/entity/monster/Creeper.java
 +++ b/net/minecraft/world/entity/monster/Creeper.java
-@@ -54,6 +_,7 @@
+@@ -54,6 +54,7 @@ public class Creeper extends Monster {
      public int explosionRadius = 3;
      private int droppedSkulls;
      public @Nullable Entity entityIgniter; // CraftBukkit
@@ -8,7 +16,7 @@
  
      public Creeper(EntityType<? extends Creeper> entityType, Level level) {
          super(entityType, level);
-@@ -157,6 +_,27 @@
+@@ -157,6 +158,27 @@ public class Creeper extends Monster {
          return false; // CraftBukkit
      }
  
@@ -36,7 +44,7 @@
      @Override
      public SoundEvent getHurtSound(DamageSource damageSource) {
          return SoundEvents.CREEPER_HURT;
-@@ -239,14 +_,16 @@
+@@ -239,14 +261,16 @@ public class Creeper extends Monster {
      }
  
      public void explodeCreeper() {
@@ -55,7 +63,7 @@
              this.spawnLingeringCloud();
              this.triggerOnDeathMobEffects(serverLevel, Entity.RemovalReason.KILLED);
              this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.EXPLODE); // CraftBukkit - add Bukkit remove cause
-@@ -257,6 +_,7 @@
+@@ -257,6 +281,7 @@ public class Creeper extends Monster {
              }
              // CraftBukkit end
          }

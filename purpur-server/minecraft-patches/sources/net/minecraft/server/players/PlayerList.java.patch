@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
+index 9ca3c55a3b5b1a532b86b08eb92460df4cb54f2a..f7b12d5924005a24899aef11746b9f056fac3559 100644
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -400,6 +_,7 @@
+@@ -400,6 +400,7 @@ public abstract class PlayerList {
              scoreboard.addPlayerToTeam(player.getScoreboardName(), collideRuleTeam);
          }
          // Paper end - Configurable player collision
@@ -8,7 +16,7 @@
          PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", player.getName().getString(), loggableAddress, player.getId(), serverLevel.serverLevelData.getLevelName(), player.getX(), player.getY(), player.getZ());
          // Paper start - Send empty chunk, so players aren't stuck in the world loading screen with our chunk system not sending chunks when dead
          if (player.isDeadOrDying()) {
-@@ -505,6 +_,7 @@
+@@ -505,6 +506,7 @@ public abstract class PlayerList {
      }
      public @Nullable net.kyori.adventure.text.Component remove(ServerPlayer player, net.kyori.adventure.text.Component leaveMessage) {
          // Paper end - Fix kick event leave message not being sent
@@ -16,7 +24,7 @@
          ServerLevel serverLevel = player.serverLevel();
          player.awardStat(Stats.LEAVE_GAME);
          // CraftBukkit start - Quitting must be before we do final save of data, in case plugins need to modify it
-@@ -663,7 +_,7 @@
+@@ -663,7 +665,7 @@ public abstract class PlayerList {
              // return this.players.size() >= this.maxPlayers && !this.canBypassPlayerLimit(gameProfile)
              //     ? Component.translatable("multiplayer.disconnect.server_full")
              //     : null;
@@ -25,7 +33,7 @@
                  event.disallow(org.bukkit.event.player.PlayerLoginEvent.Result.KICK_FULL, net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(org.spigotmc.SpigotConfig.serverFullMessage)); // Spigot // Paper - Adventure
              }
          }
-@@ -932,6 +_,20 @@
+@@ -932,6 +934,20 @@ public abstract class PlayerList {
          }
      }
  
@@ -46,7 +54,7 @@
      public void broadcastAll(Packet<?> packet, ResourceKey<Level> dimension) {
          for (ServerPlayer serverPlayer : this.players) {
              if (serverPlayer.level().dimension() == dimension) {
-@@ -1016,6 +_,7 @@
+@@ -1016,6 +1032,7 @@ public abstract class PlayerList {
              } else {
                  b = (byte)(24 + permLevel);
              }

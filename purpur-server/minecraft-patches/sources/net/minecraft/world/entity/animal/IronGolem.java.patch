@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/animal/IronGolem.java b/net/minecraft/world/entity/animal/IronGolem.java
+index 33245f28c02c5cd42f2daec8748d615b7f5e21ec..91897447d7ef35af3300443e8eb96340081fed48 100644
 --- a/net/minecraft/world/entity/animal/IronGolem.java
 +++ b/net/minecraft/world/entity/animal/IronGolem.java
-@@ -57,13 +_,26 @@
+@@ -57,13 +57,26 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
      private int remainingPersistentAngerTime;
      @Nullable
      private UUID persistentAngerTarget;
@@ -27,7 +35,7 @@
          this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0, true));
          this.goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.9, 32.0F));
          this.goalSelector.addGoal(2, new MoveBackToVillageGoal(this, 0.6, false));
-@@ -141,6 +_,7 @@
+@@ -141,6 +154,7 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
      public void addAdditionalSaveData(CompoundTag compound) {
          super.addAdditionalSaveData(compound);
          compound.putBoolean("PlayerCreated", this.isPlayerCreated());
@@ -35,7 +43,7 @@
          this.addPersistentAngerSaveData(compound);
      }
  
-@@ -148,6 +_,7 @@
+@@ -148,6 +162,7 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
      public void readAdditionalSaveData(CompoundTag compound) {
          super.readAdditionalSaveData(compound);
          this.setPlayerCreated(compound.getBooleanOr("PlayerCreated", false));
@@ -43,7 +51,7 @@
          this.readPersistentAngerSaveData(this.level(), compound);
      }
  
-@@ -267,6 +_,7 @@
+@@ -267,6 +282,7 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
                  float f = 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
                  this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0F, f);
                  itemInHand.consume(1, player);

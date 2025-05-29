@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/phys/AABB.java b/net/minecraft/world/phys/AABB.java
+index c22acc8889fbb3c9ee698624189c195ee4b5eefb..5767fbfd7f33c5276fb4335ce473b2e1baca411c 100644
 --- a/net/minecraft/world/phys/AABB.java
 +++ b/net/minecraft/world/phys/AABB.java
-@@ -465,4 +_,10 @@
+@@ -465,4 +465,10 @@ public class AABB {
              return new AABB(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
          }
      }

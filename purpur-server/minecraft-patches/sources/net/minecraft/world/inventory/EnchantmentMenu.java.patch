@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/inventory/EnchantmentMenu.java b/net/minecraft/world/inventory/EnchantmentMenu.java
+index cf9ab4c9fba11f5a0b293978853e205de81d6fc7..d0d6ae9c9c432f8bd5d9c91113fc5491e321afad 100644
 --- a/net/minecraft/world/inventory/EnchantmentMenu.java
 +++ b/net/minecraft/world/inventory/EnchantmentMenu.java
-@@ -63,6 +_,22 @@
+@@ -63,6 +63,22 @@ public class EnchantmentMenu extends AbstractContainerMenu {
                  return access.getLocation();
              }
              // CraftBukkit end
@@ -23,7 +31,7 @@
          };
          // Paper end - Add missing InventoryHolders
          this.access = access;
-@@ -83,6 +_,16 @@
+@@ -83,6 +99,16 @@ public class EnchantmentMenu extends AbstractContainerMenu {
                  return EnchantmentMenu.EMPTY_SLOT_LAPIS_LAZULI;
              }
          });
@@ -40,7 +48,7 @@
          this.addStandardInventorySlots(playerInventory, 8, 84);
          this.addDataSlot(DataSlot.shared(this.costs, 0));
          this.addDataSlot(DataSlot.shared(this.costs, 1));
-@@ -299,7 +_,7 @@
+@@ -299,7 +325,7 @@ public class EnchantmentMenu extends AbstractContainerMenu {
      @Override
      public void removed(Player player) {
          super.removed(player);

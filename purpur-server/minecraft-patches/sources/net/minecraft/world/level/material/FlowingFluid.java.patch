@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/material/FlowingFluid.java b/net/minecraft/world/level/material/FlowingFluid.java
+index ace1099a12c762b2e73b71dd3551cf351fedf067..1b06e44a267d2d4af844997ac0c557f30aaf9b15 100644
 --- a/net/minecraft/world/level/material/FlowingFluid.java
 +++ b/net/minecraft/world/level/material/FlowingFluid.java
-@@ -232,7 +_,7 @@
+@@ -232,7 +232,7 @@ public abstract class FlowingFluid extends Fluid {
              }
          }
  
@@ -9,16 +17,16 @@
              BlockState blockState1 = level.getBlockState(mutableBlockPos.setWithOffset(pos, Direction.DOWN));
              FluidState fluidState1 = blockState1.getFluidState();
              if (blockState1.isSolid() || this.isSourceBlockOfThisType(fluidState1)) {
-@@ -319,6 +_,12 @@
-     }
+@@ -320,6 +320,12 @@ public abstract class FlowingFluid extends Fluid {
  
      protected abstract boolean canConvertToSource(ServerLevel level);
-+
+ 
 +    // Purpur start - Implement infinite liquids
 +    protected int getRequiredSources(Level level) {
 +        return 2;
 +    }
 +    // Purpur end - Implement infinite liquids
- 
++
      protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState blockState, Direction direction, FluidState fluidState) {
          if (blockState.getBlock() instanceof LiquidBlockContainer liquidBlockContainer) {
+             liquidBlockContainer.placeLiquid(level, pos, blockState, fluidState);

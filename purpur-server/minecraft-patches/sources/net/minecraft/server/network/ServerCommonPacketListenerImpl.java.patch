@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/network/ServerCommonPacketListenerImpl.java b/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
+index 186393485396cfe9b1baef29586198356e2d2600..66d70c330fd70009018d8d0a7441b93fcef96c97 100644
 --- a/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-@@ -41,6 +_,7 @@
+@@ -41,6 +41,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
      private long keepAliveChallenge;
      private long closedListenerTime;
      private boolean closed = false;
@@ -8,7 +16,7 @@
      private int latency;
      private volatile boolean suspendFlushingOnServerThread = false;
      // CraftBukkit start
-@@ -51,6 +_,7 @@
+@@ -51,6 +52,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
      public final java.util.Map<java.util.UUID, net.kyori.adventure.resource.ResourcePackCallback> packCallbacks = new java.util.concurrent.ConcurrentHashMap<>(); // Paper - adventure resource pack callbacks
      private static final long KEEPALIVE_LIMIT = Long.getLong("paper.playerconnection.keepalive", 30) * 1000; // Paper - provide property to set keepalive limit
      protected static final net.minecraft.resources.ResourceLocation MINECRAFT_BRAND = net.minecraft.resources.ResourceLocation.withDefaultNamespace("brand"); // Paper - Brand support
@@ -16,7 +24,7 @@
  
      public ServerCommonPacketListenerImpl(MinecraftServer server, Connection connection, CommonListenerCookie cookie, net.minecraft.server.level.ServerPlayer player) { // CraftBukkit
          this.server = server;
-@@ -118,6 +_,16 @@
+@@ -118,6 +120,16 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -33,7 +41,7 @@
          if (this.keepAlivePending && packet.getId() == this.keepAliveChallenge) {
              int i = (int)(Util.getMillis() - this.keepAliveTime);
              this.latency = (this.latency * 3 + i) / 4;
-@@ -169,6 +_,12 @@
+@@ -169,6 +181,12 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
                  return;
              }
  
@@ -46,7 +54,7 @@
              if (identifier.equals(MINECRAFT_BRAND)) {
                  this.player.clientBrandName = new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.wrappedBuffer(data)).readUtf(256);
              }
-@@ -242,6 +_,22 @@
+@@ -242,6 +260,22 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
          // Paper start - give clients a longer time to respond to pings as per pre 1.12.2 timings
          // This should effectively place the keepalive handling back to "as it was" before 1.12.2
          final long elapsedTime = millis - this.keepAliveTime;

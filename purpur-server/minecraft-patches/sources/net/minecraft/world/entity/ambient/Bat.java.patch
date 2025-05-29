@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/ambient/Bat.java b/net/minecraft/world/entity/ambient/Bat.java
+index eb9fb57440f498079182030a46034008d3f6b5e8..ed8920bb6d29ce49626bc716aa2c2ce938f6d92b 100644
 --- a/net/minecraft/world/entity/ambient/Bat.java
 +++ b/net/minecraft/world/entity/ambient/Bat.java
-@@ -232,7 +_,7 @@
+@@ -232,7 +232,7 @@ public class Bat extends AmbientCreature {
          } else {
              int maxLocalRawBrightness = level.getMaxLocalRawBrightness(pos);
              int i = 4;
@@ -9,7 +17,7 @@
                  i = 7;
              } else if (randomSource.nextBoolean()) {
                  return false;
-@@ -244,6 +_,11 @@
+@@ -244,6 +244,11 @@ public class Bat extends AmbientCreature {
          }
      }
  

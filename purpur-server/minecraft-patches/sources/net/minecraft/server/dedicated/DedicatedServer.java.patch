@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/dedicated/DedicatedServer.java b/net/minecraft/server/dedicated/DedicatedServer.java
+index 31e02f50edd46220dac81500dbb273f1ccdbe0b9..6a296adcd9d5289dd86840fdc58dce3accbe9ce5 100644
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -105,6 +_,7 @@
+@@ -105,6 +105,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              public void run() {
                  if (!org.bukkit.craftbukkit.Main.useConsole) return; // CraftBukkit
                  // Paper start - Use TerminalConsoleAppender
@@ -8,7 +16,7 @@
                  new com.destroystokyo.paper.console.PaperConsole(DedicatedServer.this).start();
                  /*
                  BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-@@ -183,6 +_,15 @@
+@@ -183,6 +184,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
          this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark
          com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
@@ -24,7 +32,7 @@
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // Paper - load version history now
  
          this.setPvpAllowed(properties.pvp);
-@@ -230,6 +_,30 @@
+@@ -230,6 +240,30 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              if (true) throw new IllegalStateException("Failed to bind to port", var10); // Paper - Propagate failed to bind to port error
              return false;
          }
@@ -55,7 +63,7 @@
  
          // CraftBukkit start
          this.server.loadPlugins();
-@@ -308,6 +_,8 @@
+@@ -308,6 +342,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
                  LOGGER.info("JMX monitoring enabled");
              }
  

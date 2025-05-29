@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/NetherPortalBlock.java b/net/minecraft/world/level/block/NetherPortalBlock.java
+index 2f08780430fc643991ffb4aeba1f1ae8e78944d2..fa0d6baa40c6052c993d870d124af911e8621f0a 100644
 --- a/net/minecraft/world/level/block/NetherPortalBlock.java
 +++ b/net/minecraft/world/level/block/NetherPortalBlock.java
-@@ -72,7 +_,7 @@
+@@ -72,7 +72,7 @@ public class NetherPortalBlock extends Block implements Portal {
      protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
          if (level.spigotConfig.enableZombiePigmenPortalSpawns && level.dimensionType().natural() // Spigot
              && level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
@@ -9,7 +17,7 @@
              && level.anyPlayerCloseEnoughForSpawning(pos)) {
              while (level.getBlockState(pos).is(this)) {
                  pos = pos.below();
-@@ -130,7 +_,7 @@
+@@ -130,7 +130,7 @@ public class NetherPortalBlock extends Block implements Portal {
      @Override
      public int getPortalTransitionTime(ServerLevel level, Entity entity) {
          return entity instanceof Player player

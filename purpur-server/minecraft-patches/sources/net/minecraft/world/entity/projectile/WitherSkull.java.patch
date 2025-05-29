@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/projectile/WitherSkull.java b/net/minecraft/world/entity/projectile/WitherSkull.java
+index a2fdc87bedd1a63064cb8c7a7615978483268fdc..c96dc62b9f890335892a8075ed9b1285f98c9e8a 100644
 --- a/net/minecraft/world/entity/projectile/WitherSkull.java
 +++ b/net/minecraft/world/entity/projectile/WitherSkull.java
-@@ -93,7 +_,7 @@
+@@ -93,7 +93,7 @@ public class WitherSkull extends AbstractHurtingProjectile {
          super.onHit(result);
          if (!this.level().isClientSide) {
              // CraftBukkit start
@@ -9,17 +17,17 @@
              if (event.callEvent()) {
                  this.level().explode(this, this.getX(), this.getY(), this.getZ(), event.getRadius(), event.getFire(), Level.ExplosionInteraction.MOB);
              }
-@@ -101,6 +_,13 @@
-             this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.HIT); // CraftBukkit - add Bukkit remove cause
+@@ -102,6 +102,13 @@ public class WitherSkull extends AbstractHurtingProjectile {
          }
      }
-+
+ 
 +    // Purpur start - Add canSaveToDisk to Entity
 +    @Override
 +    public boolean canSaveToDisk() {
 +        return false;
 +    }
 +    // Purpur end - Add canSaveToDisk to Entity
- 
++
      @Override
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
+         builder.define(DATA_DANGEROUS, false);

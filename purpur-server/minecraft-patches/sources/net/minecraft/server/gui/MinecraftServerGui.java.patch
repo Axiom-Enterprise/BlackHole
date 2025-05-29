@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/gui/MinecraftServerGui.java b/net/minecraft/server/gui/MinecraftServerGui.java
+index f262a7c5ae4e7d56f16f5c0f4f145a2e428abbe4..614c7d9f673c926562acc8fa3b3788623900db41 100644
 --- a/net/minecraft/server/gui/MinecraftServerGui.java
 +++ b/net/minecraft/server/gui/MinecraftServerGui.java
-@@ -39,6 +_,11 @@
+@@ -39,6 +39,11 @@ public class MinecraftServerGui extends JComponent {
      private Thread logAppenderThread;
      private final Collection<Runnable> finalizers = Lists.newArrayList();
      final AtomicBoolean isClosing = new AtomicBoolean();
@@ -12,7 +20,7 @@
  
      public static MinecraftServerGui showFrameFor(final DedicatedServer server) {
          try {
-@@ -46,7 +_,7 @@
+@@ -46,7 +51,7 @@ public class MinecraftServerGui extends JComponent {
          } catch (Exception var3) {
          }
  
@@ -21,7 +29,7 @@
          final MinecraftServerGui minecraftServerGui = new MinecraftServerGui(server);
          jFrame.setDefaultCloseOperation(2);
          jFrame.add(minecraftServerGui);
-@@ -54,7 +_,7 @@
+@@ -54,7 +59,7 @@ public class MinecraftServerGui extends JComponent {
          jFrame.setLocationRelativeTo(null);
          jFrame.setVisible(true);
          // Paper start - Improve ServerGUI
@@ -30,7 +38,7 @@
          try {
              jFrame.setIconImage(javax.imageio.ImageIO.read(java.util.Objects.requireNonNull(MinecraftServerGui.class.getClassLoader().getResourceAsStream("logo.png"))));
          } catch (java.io.IOException ignore) {
-@@ -64,7 +_,7 @@
+@@ -64,7 +69,7 @@ public class MinecraftServerGui extends JComponent {
              @Override
              public void windowClosing(WindowEvent event) {
                  if (!minecraftServerGui.isClosing.getAndSet(true)) {
@@ -39,7 +47,7 @@
                      server.halt(true);
                      minecraftServerGui.runFinalizers();
                  }
-@@ -112,7 +_,7 @@
+@@ -112,7 +117,7 @@ public class MinecraftServerGui extends JComponent {
  
      private JComponent buildChatPanel() {
          JPanel jPanel = new JPanel(new BorderLayout());
@@ -48,7 +56,7 @@
          JScrollPane jScrollPane = new JScrollPane(jTextArea, 22, 30);
          jTextArea.setEditable(false);
          jTextArea.setFont(MONOSPACED);
-@@ -121,10 +_,43 @@
+@@ -121,10 +126,43 @@ public class MinecraftServerGui extends JComponent {
              String trimmed = jTextField.getText().trim();
              if (!trimmed.isEmpty()) {
                  this.server.handleConsoleInput(trimmed, this.server.createCommandSourceStack());
@@ -92,7 +100,7 @@
          jTextArea.addFocusListener(new FocusAdapter() {
              @Override
              public void focusGained(FocusEvent event) {
-@@ -159,7 +_,7 @@
+@@ -159,7 +197,7 @@ public class MinecraftServerGui extends JComponent {
      }
  
      private static final java.util.regex.Pattern ANSI = java.util.regex.Pattern.compile("\\e\\[[\\d;]*[^\\d;]"); // CraftBukkit // Paper
@@ -101,7 +109,7 @@
          if (!SwingUtilities.isEventDispatchThread()) {
              SwingUtilities.invokeLater(() -> this.print(textArea, scrollPane, line));
          } else {
-@@ -170,16 +_,29 @@
+@@ -170,10 +208,11 @@ public class MinecraftServerGui extends JComponent {
                  flag = verticalScrollBar.getValue() + verticalScrollBar.getSize().getHeight() + MONOSPACED.getSize() * 4 > verticalScrollBar.getMaximum();
              }
  
@@ -115,10 +123,10 @@
  
              if (flag) {
                  verticalScrollBar.setValue(Integer.MAX_VALUE);
-             }
+@@ -181,6 +220,18 @@ public class MinecraftServerGui extends JComponent {
          }
      }
-+
+ 
 +    // Purpur start - GUI Improvements
 +    public static class CommandHistory extends java.util.LinkedList<String> {
 +        @Override
@@ -130,6 +138,7 @@
 +        }
 +    }
 +    // Purpur end - GUI Improvements
- 
++
      // Paper start - Add onboarding message for initial server start
      private JComponent buildOnboardingPanel() {
+         String onboardingLink = "https://docs.papermc.io/paper/next-steps";

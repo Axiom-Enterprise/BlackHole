@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/animal/Fox.java b/net/minecraft/world/entity/animal/Fox.java
+index 5c7572b75afcfa9965fcda5965f6ae2e59babb46..4aae42396bd3abb131efe336d7b774384897671d 100644
 --- a/net/minecraft/world/entity/animal/Fox.java
 +++ b/net/minecraft/world/entity/animal/Fox.java
-@@ -345,6 +_,11 @@
+@@ -345,6 +345,11 @@ public class Fox extends Animal {
      }
  
      private void setTargetGoals() {
@@ -12,7 +20,7 @@
          if (this.getVariant() == Fox.Variant.RED) {
              this.targetSelector.addGoal(4, this.landTargetGoal);
              this.targetSelector.addGoal(4, this.turtleEggTargetGoal);
-@@ -372,6 +_,7 @@
+@@ -372,6 +377,7 @@ public class Fox extends Animal {
  
      public void setVariant(Fox.Variant variant) {
          this.entityData.set(DATA_TYPE_ID, variant.getId());
@@ -20,11 +28,10 @@
      }
  
      @Nullable
-@@ -705,6 +_,29 @@
-         return slot == EquipmentSlot.MAINHAND;
+@@ -706,6 +712,29 @@ public class Fox extends Animal {
      }
      // Paper end
-+
+ 
 +    // Purpur start - Tulips change fox type
 +    @Override
 +    public net.minecraft.world.InteractionResult mobInteract(Player player, net.minecraft.world.InteractionHand hand) {
@@ -47,6 +54,7 @@
 +        return super.mobInteract(player, hand);
 +    }
 +    // Purpur end - Tulips change fox type
- 
++
      @Override
      // Paper start - Cancellable death event
+     protected org.bukkit.event.entity.EntityDeathEvent dropAllDeathLoot(ServerLevel level, DamageSource damageSource) {

@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/entity/SignBlockEntity.java b/net/minecraft/world/level/block/entity/SignBlockEntity.java
+index 8f87248a77c2083541105cfd1da1bc87bd122ba4..4c5de8783b2fc87a442e194e0069ce9cd5b5fd6c 100644
 --- a/net/minecraft/world/level/block/entity/SignBlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/SignBlockEntity.java
-@@ -151,16 +_,32 @@
+@@ -151,16 +151,32 @@ public class SignBlockEntity extends BlockEntity {
          return this.setText(updater.apply(text), isFrontText);
      }
  
@@ -35,11 +43,10 @@
                  );
              }
          }
-@@ -297,6 +_,24 @@
-         // CraftBukkit - this
+@@ -298,6 +314,24 @@ public class SignBlockEntity extends BlockEntity {
          return new CommandSourceStack(commandSource, Vec3.atCenterOf(pos), Vec2.ZERO, (ServerLevel)level, 2, string, component, level.getServer(), player); // Paper - Fix commands from signs not firing command events
      }
-+
+ 
 +    // Purpur start - Signs allow color codes
 +    public ClientboundBlockEntityDataPacket getTranslatedUpdatePacket(boolean filtered, boolean front) {
 +        final CompoundTag nbt = new CompoundTag();
@@ -57,6 +64,7 @@
 +        return ClientboundBlockEntityDataPacket.create(this, (blockEntity, registryAccess) -> nbt);
 +    }
 +    // Purpur end - Signs allow color codes
- 
++
      @Override
      public ClientboundBlockEntityDataPacket getUpdatePacket() {
+         return ClientboundBlockEntityDataPacket.create(this);

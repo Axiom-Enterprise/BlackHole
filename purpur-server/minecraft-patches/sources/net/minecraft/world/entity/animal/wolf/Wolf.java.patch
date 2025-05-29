@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/animal/wolf/Wolf.java b/net/minecraft/world/entity/animal/wolf/Wolf.java
+index d926ecd041ca2a421057bc22efe66a8b811ee649..0487c463806509b1dd93dcfee3b518c95b0bdb19 100644
 --- a/net/minecraft/world/entity/animal/wolf/Wolf.java
 +++ b/net/minecraft/world/entity/animal/wolf/Wolf.java
-@@ -100,6 +_,37 @@
+@@ -100,6 +100,37 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          EntityType<?> type = entity.getType();
          return type == EntityType.SHEEP || type == EntityType.RABBIT || type == EntityType.FOX;
      };
@@ -38,7 +46,7 @@
      private static final float START_HEALTH = 8.0F;
      private static final float TAME_HEALTH = 40.0F;
      private static final float ARMOR_REPAIR_UNIT = 0.125F;
-@@ -122,12 +_,47 @@
+@@ -122,12 +153,47 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          this.setPathfindingMalus(PathType.DANGER_POWDER_SNOW, -1.0F);
      }
  
@@ -86,7 +94,7 @@
          this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
          this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
          this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
-@@ -140,7 +_,7 @@
+@@ -140,7 +206,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
          this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setAlertOthers());
          this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
@@ -95,7 +103,7 @@
          this.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
          this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
          this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
-@@ -231,6 +_,7 @@
+@@ -231,6 +297,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
      public void addAdditionalSaveData(CompoundTag compound) {
          super.addAdditionalSaveData(compound);
          compound.store("CollarColor", DyeColor.LEGACY_ID_CODEC, this.getCollarColor());
@@ -103,7 +111,7 @@
          VariantUtils.writeVariant(compound, this.getVariant());
          this.addPersistentAngerSaveData(compound);
          this.getSoundVariant()
-@@ -245,6 +_,10 @@
+@@ -245,6 +312,10 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          super.readAdditionalSaveData(compound);
          VariantUtils.readVariant(compound, this.registryAccess(), Registries.WOLF_VARIANT).ifPresent(this::setVariant);
          this.setCollarColor(compound.read("CollarColor", DyeColor.LEGACY_ID_CODEC).orElse(DEFAULT_COLLAR_COLOR));
@@ -114,7 +122,7 @@
          this.readPersistentAngerSaveData(this.level(), compound);
          compound.read("sound_variant", ResourceKey.codec(Registries.WOLF_SOUND_VARIANT))
              .flatMap(resourceKey -> this.registryAccess().lookupOrThrow(Registries.WOLF_SOUND_VARIANT).get((ResourceKey<WolfSoundVariant>)resourceKey))
-@@ -269,6 +_,10 @@
+@@ -269,6 +340,10 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          }
  
          this.setSoundVariant(WolfSoundVariants.pickRandomSoundVariant(this.registryAccess(), this.random));
@@ -125,7 +133,7 @@
          return super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
      }
  
-@@ -319,6 +_,11 @@
+@@ -319,6 +394,11 @@ public class Wolf extends TamableAnimal implements NeutralMob {
      public void tick() {
          super.tick();
          if (this.isAlive()) {
@@ -137,7 +145,7 @@
              this.interestedAngleO = this.interestedAngle;
              if (this.isInterested()) {
                  this.interestedAngle = this.interestedAngle + (1.0F - this.interestedAngle) * 0.4F;
-@@ -532,13 +_,27 @@
+@@ -532,13 +612,27 @@ public class Wolf extends TamableAnimal implements NeutralMob {
              itemInHand.consume(1, player);
              this.tryToTame(player);
              return InteractionResult.SUCCESS_SERVER;

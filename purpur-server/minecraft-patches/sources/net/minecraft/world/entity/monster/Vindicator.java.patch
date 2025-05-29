@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/monster/Vindicator.java b/net/minecraft/world/entity/monster/Vindicator.java
+index d02b4bfc3834cdfae37983ec616ee3cbcd9f0988..79c2248b0dce457fed6d61d4b38eeb92bbc3927e 100644
 --- a/net/minecraft/world/entity/monster/Vindicator.java
 +++ b/net/minecraft/world/entity/monster/Vindicator.java
-@@ -131,6 +_,11 @@
+@@ -131,6 +131,11 @@ public class Vindicator extends AbstractIllager {
          RandomSource random = level.getRandom();
          this.populateDefaultEquipmentSlots(random, difficulty);
          this.populateDefaultEquipmentEnchantments(level, random, difficulty);

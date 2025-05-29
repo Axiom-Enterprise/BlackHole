@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/boss/enderdragon/EndCrystal.java b/net/minecraft/world/entity/boss/enderdragon/EndCrystal.java
+index d813427cf20117014bc42af0eb7cdee037fbcd9c..57f9f705c62706902efe9a7873f0e3866820f7d9 100644
 --- a/net/minecraft/world/entity/boss/enderdragon/EndCrystal.java
 +++ b/net/minecraft/world/entity/boss/enderdragon/EndCrystal.java
-@@ -38,6 +_,24 @@
+@@ -38,6 +38,24 @@ public class EndCrystal extends Entity {
          this.setPos(x, y, z);
      }
  
@@ -25,7 +33,7 @@
      @Override
      protected Entity.MovementEmission getMovementEmission() {
          return Entity.MovementEmission.NONE;
-@@ -74,6 +_,8 @@
+@@ -74,6 +92,8 @@ public class EndCrystal extends Entity {
              }
          }
          // Paper end - Fix invulnerable end crystals
@@ -34,7 +42,7 @@
      }
  
      @Override
-@@ -114,15 +_,17 @@
+@@ -114,15 +134,17 @@ public class EndCrystal extends Entity {
                  }
                  // CraftBukkit end
                  if (!damageSource.is(DamageTypeTags.IS_EXPLOSION)) {

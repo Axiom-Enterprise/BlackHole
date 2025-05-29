@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/core/BlockPos.java b/net/minecraft/core/BlockPos.java
+index a81694a22e94cca6f7110f7d5b205d1303f4e071..6518d3fff6daf331b24a7bf5b39fa1920b73711d 100644
 --- a/net/minecraft/core/BlockPos.java
 +++ b/net/minecraft/core/BlockPos.java
-@@ -63,6 +_,12 @@
+@@ -63,6 +63,12 @@ public class BlockPos extends Vec3i {
      public static final int MAX_HORIZONTAL_COORDINATE = 33554431;
      // Paper end - Optimize Bit Operations by inlining
  

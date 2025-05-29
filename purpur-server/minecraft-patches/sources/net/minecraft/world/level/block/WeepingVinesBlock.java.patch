@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/WeepingVinesBlock.java b/net/minecraft/world/level/block/WeepingVinesBlock.java
+index f4ff810cdd4206711312a4fffba18f4b30a5701f..96fb69aaf9ed020a328ff609d49f88ab29a69952 100644
 --- a/net/minecraft/world/level/block/WeepingVinesBlock.java
 +++ b/net/minecraft/world/level/block/WeepingVinesBlock.java
-@@ -34,4 +_,11 @@
+@@ -34,4 +34,11 @@ public class WeepingVinesBlock extends GrowingPlantHeadBlock {
      protected boolean canGrowInto(BlockState state) {
          return NetherVines.isValidGrowthState(state);
      }

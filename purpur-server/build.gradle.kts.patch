@@ -1,5 +1,63 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
+@@ -1,9 +_,7 @@
+ import io.papermc.paperweight.attribute.DevBundleOutput
+ import io.papermc.paperweight.util.*
+-import io.papermc.paperweight.util.data.FileEntry
+-import paper.libs.com.google.gson.annotations.SerializedName
+ import java.time.Instant
+-import kotlin.io.path.readText
++import kotlin.io.path.writeText
+ 
+ plugins {
+     `java-library`
+@@ -20,6 +_,46 @@
+     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+ }
+ 
++tasks.register("rebuildMinecraftSourcesWithGit") {
++    group = "temp"
++
++    val patchDir = project.rootDir.resolve("purpur-server/minecraft-patches/sources").convertToPath().cleanDir()
++    val inputDir = this.project.rootDir.resolve("purpur-server/src/minecraft/java").convertToPath()
++
++    val git = Git(inputDir)
++    git("stash", "push").executeSilently(silenceErr = true)
++    git("checkout", "file").executeSilently(silenceErr = true)
++
++    rebuildWithGit(git, patchDir)
++}
++
++private fun rebuildWithGit(
++    git: Git,
++    patchDir: java.nio.file.Path
++): Int {
++    val files = git("diff-tree", "--name-only", "--no-commit-id", "-r", "HEAD").getText().split("\n")
++    files.parallelStream().forEach { filename ->
++        if (filename.isBlank()) return@forEach
++        val patch = git(
++            "format-patch",
++            "--diff-algorithm=myers",
++            "--full-index",
++            "--no-signature",
++            "--no-stat",
++            "--no-numbered",
++            "-1",
++            "HEAD",
++            "--stdout",
++            filename
++        ).getText()
++        val patchFile = patchDir.resolve("$filename.patch")
++        patchFile.createParentDirectories()
++        patchFile.writeText(patch)
++    }
++
++    return files.size
++}
++
+ paperweight {
+     minecraftVersion = providers.gradleProperty("mcVersion")
+     gitFilePatches = false
 @@ -28,6 +_,18 @@
      //    oldPaperCommit = "f4f275519f7c1fbe9db173b7144a4fe81440e365"
      //}

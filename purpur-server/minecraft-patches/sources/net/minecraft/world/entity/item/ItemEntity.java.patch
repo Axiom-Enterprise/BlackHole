@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/item/ItemEntity.java b/net/minecraft/world/entity/item/ItemEntity.java
+index 6c0ebfb2be4e8b884456a2aa3d5fdc87e45a0e3c..4ddf1cdf7a47bf06f95c5bfce8f3c4d035e87cfc 100644
 --- a/net/minecraft/world/entity/item/ItemEntity.java
 +++ b/net/minecraft/world/entity/item/ItemEntity.java
-@@ -59,6 +_,12 @@
+@@ -59,6 +59,12 @@ public class ItemEntity extends Entity implements TraceableEntity {
      public boolean canMobPickup = true; // Paper - Item#canEntityPickup
      private int despawnRate = -1; // Paper - Alternative item-despawn-rate
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
@@ -13,7 +21,7 @@
  
      public ItemEntity(EntityType<? extends ItemEntity> entityType, Level level) {
          super(entityType, level);
-@@ -344,7 +_,16 @@
+@@ -344,7 +350,16 @@ public class ItemEntity extends Entity implements TraceableEntity {
  
      @Override
      public final boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
@@ -31,7 +39,7 @@
              return false;
          } else if (!level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) && damageSource.getEntity() instanceof Mob) {
              return false;
-@@ -528,6 +_,12 @@
+@@ -528,6 +543,12 @@ public class ItemEntity extends Entity implements TraceableEntity {
      public void setItem(ItemStack stack) {
          this.getEntityData().set(DATA_ITEM, stack);
          this.despawnRate = this.level().paperConfig().entities.spawning.altItemDespawnRate.enabled ? this.level().paperConfig().entities.spawning.altItemDespawnRate.items.getOrDefault(stack.getItem(), this.level().spigotConfig.itemDespawnRate) : this.level().spigotConfig.itemDespawnRate; // Paper - Alternative item-despawn-rate

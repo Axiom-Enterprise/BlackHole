@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/item/TridentItem.java b/net/minecraft/world/item/TridentItem.java
+index df629e3f2defce5e65aaf874d7c5ddff71f39c28..122e24ed6fb319c951841ac8ef328c5eb70514d4 100644
 --- a/net/minecraft/world/item/TridentItem.java
 +++ b/net/minecraft/world/item/TridentItem.java
-@@ -83,7 +_,7 @@
+@@ -83,7 +83,7 @@ public class TridentItem extends Item implements ProjectileItem {
                          if (tridentSpinAttackStrength == 0.0F) {
                              ItemStack itemStack = stack.copyWithCount(1); // Paper
                              Projectile.Delayed<ThrownTrident> tridentDelayed = Projectile.spawnProjectileFromRotationDelayed( // Paper - PlayerLaunchProjectileEvent(
@@ -9,7 +17,7 @@
                              );
                              // Paper start - PlayerLaunchProjectileEvent
                              com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent event = new com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent((org.bukkit.entity.Player) player.getBukkitEntity(), org.bukkit.craftbukkit.inventory.CraftItemStack.asCraftMirror(stack), (org.bukkit.entity.Projectile) tridentDelayed.projectile().getBukkitEntity());
-@@ -94,6 +_,7 @@
+@@ -94,6 +94,7 @@ public class TridentItem extends Item implements ProjectileItem {
                                  return false;
                              }
                              ThrownTrident thrownTrident = tridentDelayed.projectile(); // Paper - PlayerLaunchProjectileEvent

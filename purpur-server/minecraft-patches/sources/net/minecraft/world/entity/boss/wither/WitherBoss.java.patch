@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/boss/wither/WitherBoss.java b/net/minecraft/world/entity/boss/wither/WitherBoss.java
+index 09924cccf9208abda22cc7e1635b567ed166e95a..2f7da367b58fd9c06c4e012e8eb7f59e5a7f9b6d 100644
 --- a/net/minecraft/world/entity/boss/wither/WitherBoss.java
 +++ b/net/minecraft/world/entity/boss/wither/WitherBoss.java
-@@ -78,6 +_,7 @@
+@@ -78,6 +78,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
      private static final TargetingConditions.Selector LIVING_ENTITY_SELECTOR = (entity, level) -> !entity.getType().is(EntityTypeTags.WITHER_FRIENDS)
          && entity.attackable();
      private static final TargetingConditions TARGETING_CONDITIONS = TargetingConditions.forCombat().range(20.0).selector(LIVING_ENTITY_SELECTOR);
@@ -8,7 +16,7 @@
  
      public WitherBoss(EntityType<? extends WitherBoss> entityType, Level level) {
          super(entityType, level);
-@@ -86,6 +_,17 @@
+@@ -86,6 +87,17 @@ public class WitherBoss extends Monster implements RangedAttackMob {
          this.xpReward = 50;
      }
  
@@ -26,7 +34,7 @@
      @Override
      protected PathNavigation createNavigation(Level level) {
          FlyingPathNavigation flyingPathNavigation = new FlyingPathNavigation(this, level);
-@@ -118,6 +_,7 @@
+@@ -118,6 +130,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
      public void addAdditionalSaveData(CompoundTag compound) {
          super.addAdditionalSaveData(compound);
          compound.putInt("Invul", this.getInvulnerableTicks());
@@ -34,7 +42,7 @@
      }
  
      @Override
-@@ -127,6 +_,7 @@
+@@ -127,6 +140,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
          if (this.hasCustomName()) {
              this.bossEvent.setName(this.getDisplayName());
          }
@@ -42,7 +50,7 @@
      }
  
      @Override
-@@ -270,7 +_,7 @@
+@@ -270,7 +284,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
                      level.explode(this, this.getX(), this.getEyeY(), this.getZ(), event.getRadius(), event.getFire(), Level.ExplosionInteraction.MOB);
                  }
                  // CraftBukkit end
@@ -51,7 +59,7 @@
                      // CraftBukkit start - Use relative location for far away sounds
                      // level.globalLevelEvent(1023, this.blockPosition(), 0);
                      int viewDistance = level.getCraftServer().getViewDistance() * 16;
-@@ -377,8 +_,10 @@
+@@ -377,8 +391,10 @@ public class WitherBoss extends Monster implements RangedAttackMob {
                  }
              }
  
@@ -64,7 +72,7 @@
              }
  
              this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
-@@ -575,6 +_,7 @@
+@@ -575,6 +591,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
  
      @Override
      protected boolean canRide(Entity entity) {

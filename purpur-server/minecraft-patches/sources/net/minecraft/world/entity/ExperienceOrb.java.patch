@@ -1,6 +1,14 @@
+From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/ExperienceOrb.java b/net/minecraft/world/entity/ExperienceOrb.java
+index c97a0e500e889b406cb2d679a3870715775f5393..81aa1a91a2ecda3053b22c2eb9e59f0ea2faf7b5 100644
 --- a/net/minecraft/world/entity/ExperienceOrb.java
 +++ b/net/minecraft/world/entity/ExperienceOrb.java
-@@ -328,7 +_,7 @@
+@@ -328,7 +328,7 @@ public class ExperienceOrb extends Entity {
      public void playerTouch(Player entity) {
          if (entity instanceof ServerPlayer serverPlayer) {
              if (entity.takeXpDelay == 0 && new com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent(serverPlayer.getBukkitEntity(), (org.bukkit.entity.ExperienceOrb) this.getBukkitEntity()).callEvent()) { // Paper - PlayerPickupExperienceEvent
@@ -9,7 +17,7 @@
                  entity.take(this, 1);
                  int i = this.repairPlayerItems(serverPlayer, this.getValue());
                  if (i > 0) {
-@@ -344,7 +_,7 @@
+@@ -344,7 +344,7 @@ public class ExperienceOrb extends Entity {
      }
  
      private int repairPlayerItems(ServerPlayer player, int value) {

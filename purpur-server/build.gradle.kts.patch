@@ -1,12 +1,9 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -1,9 +_,7 @@
- import io.papermc.paperweight.attribute.DevBundleOutput
- import io.papermc.paperweight.util.*
--import io.papermc.paperweight.util.data.FileEntry
--import paper.libs.com.google.gson.annotations.SerializedName
+@@ -4,6 +_,7 @@
+ import paper.libs.com.google.gson.annotations.SerializedName
  import java.time.Instant
--import kotlin.io.path.readText
+ import kotlin.io.path.readText
 +import kotlin.io.path.writeText
  
  plugins {

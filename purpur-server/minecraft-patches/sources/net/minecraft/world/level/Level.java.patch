@@ -1,14 +1,6 @@
-From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
-From: File <noreply+automated@papermc.io>
-Date: Sun, 20 Apr 1997 06:37:42 -0700
-Subject: [PATCH] purpur File Patches
-
-
-diff --git a/net/minecraft/world/level/Level.java b/net/minecraft/world/level/Level.java
-index 418d3958b7510d469142178f9427c829b6387d83..801c4e8e01590beeb3633275f58d436d87ad746e 100644
 --- a/net/minecraft/world/level/Level.java
 +++ b/net/minecraft/world/level/Level.java
-@@ -160,11 +160,55 @@ public abstract class Level implements LevelAccessor, UUIDLookup<Entity>, AutoCl
+@@ -152,11 +_,55 @@
      }
      // Paper end - add paper world config
  
@@ -64,8 +56,8 @@ index 418d3958b7510d469142178f9427c829b6387d83..801c4e8e01590beeb3633275f58d436d
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -840,6 +884,8 @@ public abstract class Level implements LevelAccessor, UUIDLookup<Entity>, AutoCl
-         // Paper end - getblock optimisations - cache world height/sections
+@@ -199,6 +_,8 @@
+     ) {
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) levelData).getLevelName()); // Spigot
          this.paperConfig = paperWorldConfigCreator.apply(this.spigotConfig); // Paper - create paper world config
 +        this.purpurConfig = new org.purpurmc.purpur.PurpurWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) levelData).getLevelName(), environment); // Purpur - Purpur config files
@@ -73,7 +65,7 @@ index 418d3958b7510d469142178f9427c829b6387d83..801c4e8e01590beeb3633275f58d436d
          this.generator = generator;
          this.world = new CraftWorld((ServerLevel) this, generator, biomeProvider, environment);
  
-@@ -2127,4 +2173,14 @@ public abstract class Level implements LevelAccessor, UUIDLookup<Entity>, AutoCl
+@@ -1407,4 +_,14 @@
              return this.id;
          }
      }

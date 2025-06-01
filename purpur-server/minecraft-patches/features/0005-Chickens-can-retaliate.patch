@@ -5,10 +5,10 @@ Subject: [PATCH] Chickens can retaliate
 
 
 diff --git a/net/minecraft/world/entity/animal/Chicken.java b/net/minecraft/world/entity/animal/Chicken.java
-index 40fc57f1c298e1c70fddf8b6eb2f3e8e9e41e60c..fc3291b5e1a2c3956802b268abb58189b24a7a16 100644
+index b4b2cebbc8d4645dec0b1bfe4243426a1e7ccda5..6f6d99c075b3e402742e3c7401dea366f2d871b6 100644
 --- a/net/minecraft/world/entity/animal/Chicken.java
 +++ b/net/minecraft/world/entity/animal/Chicken.java
-@@ -93,6 +93,11 @@ public class Chicken extends Animal {
+@@ -94,6 +94,11 @@ public class Chicken extends Animal {
      public void initAttributes() {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.chickenMaxHealth);
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.chickenScale);
@@ -20,7 +20,7 @@ index 40fc57f1c298e1c70fddf8b6eb2f3e8e9e41e60c..fc3291b5e1a2c3956802b268abb58189
      }
      // Purpur end - Configurable entity base attributes
  
-@@ -100,13 +105,21 @@ public class Chicken extends Animal {
+@@ -101,13 +106,21 @@ public class Chicken extends Animal {
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
@@ -43,7 +43,7 @@ index 40fc57f1c298e1c70fddf8b6eb2f3e8e9e41e60c..fc3291b5e1a2c3956802b268abb58189
      }
  
      @Override
-@@ -115,7 +128,7 @@ public class Chicken extends Animal {
+@@ -116,7 +129,7 @@ public class Chicken extends Animal {
      }
  
      public static AttributeSupplier.Builder createAttributes() {

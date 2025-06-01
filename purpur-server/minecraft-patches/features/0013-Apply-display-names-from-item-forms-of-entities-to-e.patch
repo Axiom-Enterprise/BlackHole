@@ -6,10 +6,10 @@ Subject: [PATCH] Apply display names from item forms of entities to entities
 
 
 diff --git a/net/minecraft/world/entity/decoration/ArmorStand.java b/net/minecraft/world/entity/decoration/ArmorStand.java
-index 4c78de34dc656d3a8c88913c03da4df228b4d134..a3408b9f6306b42a1ce1d8f094695052202c45a7 100644
+index 5dfd78a0e00cae85feff8acd785cdfdf23433ba6..e6813da9d002b90acd44db1435f5fa9bf1bbed47 100644
 --- a/net/minecraft/world/entity/decoration/ArmorStand.java
 +++ b/net/minecraft/world/entity/decoration/ArmorStand.java
-@@ -492,6 +492,7 @@ public class ArmorStand extends LivingEntity {
+@@ -450,6 +450,7 @@ public class ArmorStand extends LivingEntity {
  
      private org.bukkit.event.entity.EntityDeathEvent brokenByPlayer(ServerLevel level, DamageSource damageSource) { // Paper
          ItemStack itemStack = new ItemStack(Items.ARMOR_STAND);
@@ -18,10 +18,10 @@ index 4c78de34dc656d3a8c88913c03da4df228b4d134..a3408b9f6306b42a1ce1d8f094695052
          this.drops.add(new DefaultDrop(itemStack, stack -> Block.popResource(this.level(), this.blockPosition(), stack))); // CraftBukkit - add to drops // Paper - Restore vanilla drops behavior
          return this.brokenByAnything(level, damageSource); // Paper
 diff --git a/net/minecraft/world/entity/decoration/ItemFrame.java b/net/minecraft/world/entity/decoration/ItemFrame.java
-index f9a97000b75db7999b1cbe1f72d680d4d7b803b7..9dfadb5639e840e69274b35f3366322141527104 100644
+index 90fd3ca5ecd29befa9237222e9f86a8a79a011e4..7e96617f0d5e8777873b4c2cccd012d656612f96 100644
 --- a/net/minecraft/world/entity/decoration/ItemFrame.java
 +++ b/net/minecraft/world/entity/decoration/ItemFrame.java
-@@ -232,7 +232,11 @@ public class ItemFrame extends HangingEntity {
+@@ -237,7 +237,11 @@ public class ItemFrame extends HangingEntity {
                  this.removeFramedMap(item);
              } else {
                  if (dropItem) {
@@ -35,10 +35,10 @@ index f9a97000b75db7999b1cbe1f72d680d4d7b803b7..9dfadb5639e840e69274b35f33663221
  
                  if (!item.isEmpty()) {
 diff --git a/net/minecraft/world/entity/decoration/Painting.java b/net/minecraft/world/entity/decoration/Painting.java
-index 3f13bb1ad260d250efe2622297e432dc300e73a0..b1ee059501532cc2df5f0824e5becbd2bc6727b2 100644
+index cc34cadac8896a5f546d0879e795fea08d0c3f98..26a08b16de2318d5080be59a29c5f11e3597426d 100644
 --- a/net/minecraft/world/entity/decoration/Painting.java
 +++ b/net/minecraft/world/entity/decoration/Painting.java
-@@ -179,7 +179,11 @@ public class Painting extends HangingEntity {
+@@ -182,7 +182,11 @@ public class Painting extends HangingEntity {
          if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
              this.playSound(SoundEvents.PAINTING_BREAK, 1.0F, 1.0F);
              if (!(entity instanceof Player player && player.hasInfiniteMaterials())) {
@@ -52,10 +52,10 @@ index 3f13bb1ad260d250efe2622297e432dc300e73a0..b1ee059501532cc2df5f0824e5becbd2
          }
      }
 diff --git a/net/minecraft/world/entity/vehicle/AbstractBoat.java b/net/minecraft/world/entity/vehicle/AbstractBoat.java
-index abfe3370382c39aeab2cc7832c0ff6ee5b95fa5b..4f61c17e0a4a82773834bc21e00cac6eb75f794e 100644
+index 4dcf6daa146645f096ac8815588c837715073c22..d947801b616af5b5dcdcc8bb70b36f97d6a69fdd 100644
 --- a/net/minecraft/world/entity/vehicle/AbstractBoat.java
 +++ b/net/minecraft/world/entity/vehicle/AbstractBoat.java
-@@ -822,7 +822,13 @@ public abstract class AbstractBoat extends VehicleEntity implements Leashable {
+@@ -825,7 +825,13 @@ public abstract class AbstractBoat extends VehicleEntity implements Leashable {
  
      @Override
      public final ItemStack getPickResult() {

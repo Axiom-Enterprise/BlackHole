@@ -5,7 +5,7 @@ Subject: [PATCH] Giants AI settings
 
 
 diff --git a/net/minecraft/world/entity/monster/Giant.java b/net/minecraft/world/entity/monster/Giant.java
-index 13021800af7cc9263ef4f393f9cfbda5061a32ae..73da18c4b54e250c434fd75971ef0a8f7c8cf6a3 100644
+index e673f488bfab9648075857bc40e1339f974a903c..f5565d314ded2145219debc446c7ddcb93b660e9 100644
 --- a/net/minecraft/world/entity/monster/Giant.java
 +++ b/net/minecraft/world/entity/monster/Giant.java
 @@ -30,8 +30,25 @@ public class Giant extends Monster {
@@ -36,8 +36,8 @@ index 13021800af7cc9263ef4f393f9cfbda5061a32ae..73da18c4b54e250c434fd75971ef0a8f
      }
      // Purpur end - Ridables
  
-@@ -49,8 +66,36 @@ public class Giant extends Monster {
-         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 100.0).add(Attributes.MOVEMENT_SPEED, 0.5).add(Attributes.ATTACK_DAMAGE, 50.0);
+@@ -53,8 +70,36 @@ public class Giant extends Monster {
+             .add(Attributes.CAMERA_DISTANCE, 16.0);
      }
  
 +    // Purpur - Giants AI settings

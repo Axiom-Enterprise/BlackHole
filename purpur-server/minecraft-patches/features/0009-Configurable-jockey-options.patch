@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable jockey options
 
 
 diff --git a/net/minecraft/world/entity/monster/Drowned.java b/net/minecraft/world/entity/monster/Drowned.java
-index 526de34154d873d1479f9276981e181be959ebef..2004595c51564d863aee65fc47541014ea184e10 100644
+index ec0f27d04125765e91e43c4c18415b29db62b181..ffd9e34b4d57bdafc597b2208f754c7454afd48a 100644
 --- a/net/minecraft/world/entity/monster/Drowned.java
 +++ b/net/minecraft/world/entity/monster/Drowned.java
-@@ -105,6 +105,23 @@ public class Drowned extends Zombie implements RangedAttackMob {
+@@ -106,6 +106,23 @@ public class Drowned extends Zombie implements RangedAttackMob {
      }
      // Purpur end - Configurable entity base attributes
  
@@ -61,10 +61,10 @@ index 5b0794bd87423715cada1f860b4141fdacd9ede6..75cb1db5584c04e442583ab2f50a2613
          EntityType<Husk> entityType, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index 126c5982c1b274cad67649b8e26391c7c4011bab..02073d4374580278829e680b875d596844213e78 100644
+index 6f26221e6982db3c97a77d4496686c666a80e3a4..ede9101c44ba53c5bd67254bea6fcff7f00b5b47 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
-@@ -129,6 +129,20 @@ public class Zombie extends Monster {
+@@ -128,6 +128,20 @@ public class Zombie extends Monster {
      }
      // Purpur end - Configurable entity base attributes
  
@@ -85,7 +85,7 @@ index 126c5982c1b274cad67649b8e26391c7c4011bab..02073d4374580278829e680b875d5968
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
-@@ -558,19 +572,18 @@ public class Zombie extends Monster {
+@@ -557,19 +571,18 @@ public class Zombie extends Monster {
          }
  
          if (spawnGroupData instanceof Zombie.ZombieGroupData zombieGroupData) {
@@ -111,7 +111,7 @@ index 126c5982c1b274cad67649b8e26391c7c4011bab..02073d4374580278829e680b875d5968
                          Chicken chicken1 = EntityType.CHICKEN.create(this.level(), EntitySpawnReason.JOCKEY);
                          if (chicken1 != null) {
                              chicken1.snapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-@@ -579,6 +592,7 @@ public class Zombie extends Monster {
+@@ -578,6 +591,7 @@ public class Zombie extends Monster {
                              this.startRiding(chicken1);
                              level.addFreshEntity(chicken1, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.MOUNT); // CraftBukkit
                          }
@@ -120,10 +120,10 @@ index 126c5982c1b274cad67649b8e26391c7c4011bab..02073d4374580278829e680b875d5968
                  }
              }
 diff --git a/net/minecraft/world/entity/monster/ZombieVillager.java b/net/minecraft/world/entity/monster/ZombieVillager.java
-index 239e78203dec09653ef8e001aef3e4b95b0f7a7c..6bd633390df582e0b1999f5c67cd76e2b23a04eb 100644
+index 537bff97a27e043ed2f71fc82580689ecb784ac8..02b503453fb8b64cbf0b9db1e498566289c6bbe3 100644
 --- a/net/minecraft/world/entity/monster/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/ZombieVillager.java
-@@ -106,6 +106,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+@@ -105,6 +105,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
      }
      // Purpur end - Configurable entity base attributes
  
@@ -148,10 +148,10 @@ index 239e78203dec09653ef8e001aef3e4b95b0f7a7c..6bd633390df582e0b1999f5c67cd76e2
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/monster/ZombifiedPiglin.java b/net/minecraft/world/entity/monster/ZombifiedPiglin.java
-index ada982eb4dca7c75a5fd3576d3793f1f12819e51..a8916a8fe5bed57e7b1f755a20e15bed544567fb 100644
+index f0a809464d9e7f1839e1932955a7313e744384b1..2adee917a4275742968a2e1e8b65bce4b9ac3cc3 100644
 --- a/net/minecraft/world/entity/monster/ZombifiedPiglin.java
 +++ b/net/minecraft/world/entity/monster/ZombifiedPiglin.java
-@@ -88,6 +88,23 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
+@@ -89,6 +89,23 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
      }
      // Purpur end - Configurable entity base attributes
  

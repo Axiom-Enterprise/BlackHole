@@ -5,10 +5,10 @@ Subject: [PATCH] Cows naturally aggressive to players chance
 
 
 diff --git a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index 46022a0aabc9c319deeb75913d356eeb74f1a12c..9952eed6a8ac31c757d5c27e043b85d7a949b481 100644
+index bead2f6800bdc404228500c12caf326559fa47de..e6ef56d94e29a6629c9b672ed4ac4ef29ad6a286 100644
 --- a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-@@ -126,7 +126,7 @@ public class DefaultAttributes {
+@@ -128,7 +128,7 @@ public class DefaultAttributes {
          .put(EntityType.IRON_GOLEM, IronGolem.createAttributes().build())
          .put(EntityType.LLAMA, Llama.createAttributes().build())
          .put(EntityType.MAGMA_CUBE, MagmaCube.createAttributes().build())
@@ -18,11 +18,11 @@ index 46022a0aabc9c319deeb75913d356eeb74f1a12c..9952eed6a8ac31c757d5c27e043b85d7
          .put(EntityType.OCELOT, Ocelot.createAttributes().build())
          .put(EntityType.PANDA, Panda.createAttributes().build())
 diff --git a/net/minecraft/world/entity/animal/Cow.java b/net/minecraft/world/entity/animal/Cow.java
-index 4bc6d0eb56b4674e2ac0f13010521314a95e0096..731f27cf8687ffa95c0df5601a4465b5174fe248 100644
+index d584ffe3cc8dfb5fd4ce352b1da18af6a143d575..09ee10a17e15431a2937cf753e670dc000a2e36f 100644
 --- a/net/minecraft/world/entity/animal/Cow.java
 +++ b/net/minecraft/world/entity/animal/Cow.java
-@@ -22,6 +22,8 @@ import net.minecraft.world.level.Level;
- import net.minecraft.world.level.ServerLevelAccessor;
+@@ -23,6 +23,8 @@ import net.minecraft.world.level.storage.ValueInput;
+ import net.minecraft.world.level.storage.ValueOutput;
  
  public class Cow extends AbstractCow {
 +    private boolean isNaturallyAggressiveToPlayers; // Purpur - Cows naturally aggressive to players chance
@@ -30,7 +30,7 @@ index 4bc6d0eb56b4674e2ac0f13010521314a95e0096..731f27cf8687ffa95c0df5601a4465b5
      private static final EntityDataAccessor<Holder<CowVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(Cow.class, EntityDataSerializers.COW_VARIANT);
  
      public Cow(EntityType<? extends Cow> entityType, Level level) {
-@@ -48,8 +50,9 @@ public class Cow extends AbstractCow {
+@@ -49,8 +51,9 @@ public class Cow extends AbstractCow {
      // Purpur start - Configurable entity base attributes
      @Override
      public void initAttributes() {
@@ -42,7 +42,7 @@ index 4bc6d0eb56b4674e2ac0f13010521314a95e0096..731f27cf8687ffa95c0df5601a4465b5
      }
      // Purpur end - Configurable entity base attributes
  
-@@ -67,6 +70,13 @@ public class Cow extends AbstractCow {
+@@ -68,6 +71,13 @@ public class Cow extends AbstractCow {
      }
      // Purpur end - Toggle for water sensitive mob damage
  
@@ -56,8 +56,8 @@ index 4bc6d0eb56b4674e2ac0f13010521314a95e0096..731f27cf8687ffa95c0df5601a4465b5
      @Override
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
-@@ -79,6 +89,12 @@ public class Cow extends AbstractCow {
-         VariantUtils.writeVariant(compound, this.getVariant());
+@@ -80,6 +90,12 @@ public class Cow extends AbstractCow {
+         VariantUtils.writeVariant(output, this.getVariant());
      }
  
 +    // Purpur start - Cows naturally aggressive to players chance
@@ -67,13 +67,13 @@ index 4bc6d0eb56b4674e2ac0f13010521314a95e0096..731f27cf8687ffa95c0df5601a4465b5
 +    // Purpur end - Cows naturally aggressive to players chance
 +
      @Override
-     public void readAdditionalSaveData(CompoundTag compound) {
-         super.readAdditionalSaveData(compound);
-@@ -100,6 +116,7 @@ public class Cow extends AbstractCow {
+     protected void readAdditionalSaveData(ValueInput input) {
+         super.readAdditionalSaveData(input);
+@@ -101,6 +117,7 @@ public class Cow extends AbstractCow {
      public SpawnGroupData finalizeSpawn(
          ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData
      ) {
 +        this.isNaturallyAggressiveToPlayers = level.getLevel().purpurConfig.cowNaturallyAggressiveToPlayersChance > 0.0D && random.nextDouble() <= level.getLevel().purpurConfig.cowNaturallyAggressiveToPlayersChance; // Purpur - Cows naturally aggressive to players chance
-         CowVariants.selectVariantToSpawn(this.random, this.registryAccess(), SpawnContext.create(level, this.blockPosition())).ifPresent(this::setVariant);
+         VariantUtils.selectVariantToSpawn(SpawnContext.create(level, this.blockPosition()), Registries.COW_VARIANT).ifPresent(this::setVariant);
          return super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
      }

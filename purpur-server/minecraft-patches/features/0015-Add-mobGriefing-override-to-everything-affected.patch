@@ -5,10 +5,10 @@ Subject: [PATCH] Add mobGriefing override to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 5dd1a36b967176f96a18cb0d842ccb73b7b584ef..e7b7f09d224a630f61259a0d905b2ad6a6fa6986 100644
+index 4f149e5e17d2d2f2964e2f6626e20f52121e72d9..a70fddd19b24bb25edde63e4fda4685ee6997eba 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -1904,7 +1904,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1936,7 +1936,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          if (this.level() instanceof ServerLevel serverLevel) {
              boolean var6 = false;
              if (this.dead && entitySource instanceof WitherBoss) { // Paper
@@ -18,10 +18,10 @@ index 5dd1a36b967176f96a18cb0d842ccb73b7b584ef..e7b7f09d224a630f61259a0d905b2ad6
                      BlockState blockState = Blocks.WITHER_ROSE.defaultBlockState();
                      if (this.level().getBlockState(blockPos).isAir() && blockState.canSurvive(this.level(), blockPos)) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index ca1d0164c90e695731f05de39c1d2fff947ecfc1..964c7e60a8b0171ee31b12a277a4e9f8940ab58d 100644
+index 3215ca469e0e469089a559672739e91c9db0edaf..e05cf29c630d43c66614012c50b9dd4ece4c44f6 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -519,7 +519,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -532,7 +532,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
              && this.canPickUpLoot()
              && this.isAlive()
              && !this.dead
@@ -92,10 +92,10 @@ index 3d40911970caf6f1de2a1ebee1df4c077703226a..179597558e93c6e9172207f716f9294d
          } else if (this.nextStartTick > 0) {
              this.nextStartTick--;
 diff --git a/net/minecraft/world/entity/animal/Fox.java b/net/minecraft/world/entity/animal/Fox.java
-index 6a531e5d93d42d3dca7a5e49fb2ba14063665d2e..9fc8ec5886e2b747f9780e43df3ac2212f50526d 100644
+index 37b6bfa8dc1fd4ed0006f6531d2056bcd3c3abae..07767c9d649e7ef2b8fd8e3ac62d99ce13271fe4 100644
 --- a/net/minecraft/world/entity/animal/Fox.java
 +++ b/net/minecraft/world/entity/animal/Fox.java
-@@ -1061,7 +1061,7 @@ public class Fox extends Animal {
+@@ -1058,7 +1058,7 @@ public class Fox extends Animal {
          }
  
          protected void onReachedTarget() {
@@ -105,10 +105,10 @@ index 6a531e5d93d42d3dca7a5e49fb2ba14063665d2e..9fc8ec5886e2b747f9780e43df3ac221
                  if (blockState.is(Blocks.SWEET_BERRY_BUSH)) {
                      this.pickSweetBerries(blockState);
 diff --git a/net/minecraft/world/entity/animal/Rabbit.java b/net/minecraft/world/entity/animal/Rabbit.java
-index 6c1e23e96352aa777c4e0c7d00f7620aa3f29a32..09b618be3ae8baed11f4d411923edbc9b26ccca8 100644
+index 5fc1d6ba3cb54f2ea8c6fe3f994ffea2cca5784b..39154b01e23c626cc29b587ae96c611062e5b791 100644
 --- a/net/minecraft/world/entity/animal/Rabbit.java
 +++ b/net/minecraft/world/entity/animal/Rabbit.java
-@@ -647,7 +647,7 @@ public class Rabbit extends Animal {
+@@ -648,7 +648,7 @@ public class Rabbit extends Animal {
          @Override
          public boolean canUse() {
              if (this.nextStartTick <= 0) {
@@ -118,10 +118,10 @@ index 6c1e23e96352aa777c4e0c7d00f7620aa3f29a32..09b618be3ae8baed11f4d411923edbc9
                  }
  
 diff --git a/net/minecraft/world/entity/animal/SnowGolem.java b/net/minecraft/world/entity/animal/SnowGolem.java
-index 764429b9d20ac105c9ae3b050adf5d3defbd6038..af3af77e5d6420044fa6d5aa62e64311247bc1a8 100644
+index 2350e5a0ba3d4c3782332a4ef51e2b0ef0b53f39..a747c4bd3a41025c6dc225e5d809ba03f57069f8 100644
 --- a/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/net/minecraft/world/entity/animal/SnowGolem.java
-@@ -135,7 +135,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
+@@ -136,7 +136,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
                  this.hurtServer(serverLevel, this.damageSources().onFire().knownCause(org.bukkit.event.entity.EntityDamageEvent.DamageCause.MELTING), 1.0F); // CraftBukkit
              }
  
@@ -131,10 +131,10 @@ index 764429b9d20ac105c9ae3b050adf5d3defbd6038..af3af77e5d6420044fa6d5aa62e64311
              }
  
 diff --git a/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index 793567170b33ba21016b8767598d294fca4acec4..967c360e11beeb0150920e80d2e2bcbbfd305ab2 100644
+index 40c92ff02c22ef18b36f5d8677096dc82a60f1bb..6191a58d09fd0ca4625ecb90be78cce2049e4696 100644
 --- a/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-@@ -543,7 +543,7 @@ public class EnderDragon extends Mob implements Enemy {
+@@ -544,7 +544,7 @@ public class EnderDragon extends Mob implements Enemy {
                      BlockPos blockPos = new BlockPos(i, i1, i2);
                      BlockState blockState = level.getBlockState(blockPos);
                      if (!blockState.isAir() && !blockState.is(BlockTags.DRAGON_TRANSPARENT)) {
@@ -144,10 +144,10 @@ index 793567170b33ba21016b8767598d294fca4acec4..967c360e11beeb0150920e80d2e2bcbb
                              //flag1 = level.removeBlock(blockPos, false) || flag1;
                              flag1 = true;
 diff --git a/net/minecraft/world/entity/boss/wither/WitherBoss.java b/net/minecraft/world/entity/boss/wither/WitherBoss.java
-index f0ec9334d9e6bf879568a085db691c46f7c652b6..38772967805dc73ffaae19d95b4f2d203e5a2be4 100644
+index 7aaa905034979e557db97456eae3563614aab8d1..72a7fde24a132f986318c9730aad9e4cefc70fdb 100644
 --- a/net/minecraft/world/entity/boss/wither/WitherBoss.java
 +++ b/net/minecraft/world/entity/boss/wither/WitherBoss.java
-@@ -494,7 +494,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
+@@ -495,7 +495,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
  
              if (this.destroyBlocksTick > 0) {
                  this.destroyBlocksTick--;
@@ -157,10 +157,10 @@ index f0ec9334d9e6bf879568a085db691c46f7c652b6..38772967805dc73ffaae19d95b4f2d20
                      int alternativeTarget = Mth.floor(this.getBbWidth() / 2.0F + 1.0F);
                      int floor = Mth.floor(this.getBbHeight());
 diff --git a/net/minecraft/world/entity/monster/EnderMan.java b/net/minecraft/world/entity/monster/EnderMan.java
-index b8094cd018e7b6cf165c92bd37cf6f9d5703599a..a6f8a3164a7c57ac9d9ea9850f037410c861de26 100644
+index c83d7c43969a94432f6bec076f78fb500f672926..002fef87101e2c98c8a091d416cb4729bd092455 100644
 --- a/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/net/minecraft/world/entity/monster/EnderMan.java
-@@ -511,7 +511,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -507,7 +507,7 @@ public class EnderMan extends Monster implements NeutralMob {
          public boolean canUse() {
              if (!enderman.level().purpurConfig.endermanAllowGriefing) return false; // Purpur - Add enderman and creeper griefing controls
              return this.enderman.getCarriedBlock() != null
@@ -169,7 +169,7 @@ index b8094cd018e7b6cf165c92bd37cf6f9d5703599a..a6f8a3164a7c57ac9d9ea9850f037410
                  && this.enderman.getRandom().nextInt(reducedTickDelay(2000)) == 0;
          }
  
-@@ -661,7 +661,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -657,7 +657,7 @@ public class EnderMan extends Monster implements NeutralMob {
          public boolean canUse() {
              if (!enderman.level().purpurConfig.endermanAllowGriefing) return false; // Purpur - Add enderman and creeper griefing controls
              return this.enderman.getCarriedBlock() == null
@@ -179,10 +179,10 @@ index b8094cd018e7b6cf165c92bd37cf6f9d5703599a..a6f8a3164a7c57ac9d9ea9850f037410
          }
  
 diff --git a/net/minecraft/world/entity/monster/Evoker.java b/net/minecraft/world/entity/monster/Evoker.java
-index 5773dd99ad2b014dde6666f4b32a1e6ee024a9fc..6cba6b164749987c161790bccb5d842047fbf53c 100644
+index e8aac93cffa3a9d4105c03c1aeb4d571ee0eba6c..4d1d746e39d136243dc620c89b29daf80dc62230 100644
 --- a/net/minecraft/world/entity/monster/Evoker.java
 +++ b/net/minecraft/world/entity/monster/Evoker.java
-@@ -323,7 +323,7 @@ public class Evoker extends SpellcasterIllager {
+@@ -306,7 +306,7 @@ public class Evoker extends SpellcasterIllager {
                  return false;
              } else {
                  ServerLevel serverLevel = getServerLevel(Evoker.this.level());
@@ -192,10 +192,10 @@ index 5773dd99ad2b014dde6666f4b32a1e6ee024a9fc..6cba6b164749987c161790bccb5d8420
                  } else {
                      List<Sheep> nearbyEntities = serverLevel.getNearbyEntities(
 diff --git a/net/minecraft/world/entity/monster/Ravager.java b/net/minecraft/world/entity/monster/Ravager.java
-index 3adf0ec66db61b556a06ffe0fe835b57f8520948..007b35d1411aeda9cce3f8be431815367fab957c 100644
+index 9e7b07f353fb8f0650b8805014c371368eaabcd5..23b6d3c9746e1ee641d8b19ec50805cb271a9cc9 100644
 --- a/net/minecraft/world/entity/monster/Ravager.java
 +++ b/net/minecraft/world/entity/monster/Ravager.java
-@@ -178,7 +178,7 @@ public class Ravager extends Raider {
+@@ -179,7 +179,7 @@ public class Ravager extends Raider {
  
              if (this.level() instanceof ServerLevel serverLevel
                  && this.horizontalCollision
@@ -227,10 +227,10 @@ index c200d57841304ba0d7a76fdd9a440fe9f2b25136..6f4aaeb645d9638764c3516d2f150166
                                      continue;
                                  }
 diff --git a/net/minecraft/world/entity/monster/piglin/Piglin.java b/net/minecraft/world/entity/monster/piglin/Piglin.java
-index b37038568b83db1602dca06aa06d72c4c4978cdd..6b404571f2086c280b16d253e218c750bf085c37 100644
+index a86cd2da7d0467e5b7d79ec2daceb65c86750445..c600c9b1ea4fe08abdce0aed30f61ef073039c7c 100644
 --- a/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/net/minecraft/world/entity/monster/piglin/Piglin.java
-@@ -449,7 +449,7 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
+@@ -450,7 +450,7 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
  
      @Override
      public boolean wantsToPickUp(ServerLevel level, ItemStack stack) {
@@ -240,10 +240,10 @@ index b37038568b83db1602dca06aa06d72c4c4978cdd..6b404571f2086c280b16d253e218c750
  
      protected boolean canReplaceCurrentItem(ItemStack candidate) {
 diff --git a/net/minecraft/world/entity/projectile/LargeFireball.java b/net/minecraft/world/entity/projectile/LargeFireball.java
-index db1b5bce212a5147be82504469f1fa9660812ebc..9e994953a8a8757496892441c155fba5a511c19b 100644
+index dd0ec97ea4561d2dccf735580faf0d65d6ac4b0d..779879f8d678a5e45e2752e6e033cc350acac89b 100644
 --- a/net/minecraft/world/entity/projectile/LargeFireball.java
 +++ b/net/minecraft/world/entity/projectile/LargeFireball.java
-@@ -19,20 +19,20 @@ public class LargeFireball extends Fireball {
+@@ -20,20 +20,20 @@ public class LargeFireball extends Fireball {
  
      public LargeFireball(EntityType<? extends LargeFireball> entityType, Level level) {
          super(entityType, level);
@@ -268,10 +268,10 @@ index db1b5bce212a5147be82504469f1fa9660812ebc..9e994953a8a8757496892441c155fba5
              org.bukkit.event.entity.ExplosionPrimeEvent event = new org.bukkit.event.entity.ExplosionPrimeEvent((org.bukkit.entity.Explosive) this.getBukkitEntity());
              if (event.callEvent()) {
 diff --git a/net/minecraft/world/entity/projectile/Projectile.java b/net/minecraft/world/entity/projectile/Projectile.java
-index 4487c03183d20a187d391dd124abb7b926508b5b..0a1cee73ee7d895dba55745647daa4870038515c 100644
+index ee16a05b8b2747ce95fcae1616c96143a5dec74e..f8bc051167c0266824edb816060999e6d7db6639 100644
 --- a/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/net/minecraft/world/entity/projectile/Projectile.java
-@@ -466,7 +466,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -436,7 +436,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
      @Override
      public boolean mayInteract(ServerLevel level, BlockPos pos) {
          Entity owner = this.getOwner();
@@ -294,10 +294,10 @@ index 8c84cea43fc0e42a576004663670977eac99f1a6..6a0ec832226894687b28f35e1a8a190b
          // CraftBukkit end
      }
 diff --git a/net/minecraft/world/entity/raid/Raider.java b/net/minecraft/world/entity/raid/Raider.java
-index e81ae747fe95c22321fc69791a6509d601826fd6..76ebbab40f5bac6d5f588410d3c5e6716cbe0679 100644
+index df0753c89b7c613f2abac9c50ce7f897ba280803..3baba21d106ab09ae476238f2636169c371f43cf 100644
 --- a/net/minecraft/world/entity/raid/Raider.java
 +++ b/net/minecraft/world/entity/raid/Raider.java
-@@ -400,7 +400,7 @@ public abstract class Raider extends PatrollingMonster {
+@@ -401,7 +401,7 @@ public abstract class Raider extends PatrollingMonster {
          }
  
          private boolean cannotPickUpBanner() {
@@ -307,10 +307,10 @@ index e81ae747fe95c22321fc69791a6509d601826fd6..76ebbab40f5bac6d5f588410d3c5e671
                  return true;
              } else if (this.mob.getCurrentRaid().isOver()) {
 diff --git a/net/minecraft/world/level/GameRules.java b/net/minecraft/world/level/GameRules.java
-index 02bc5d83b92a594ec519f0a02b0517fdb4b9e954..92fe6acbd530e985da23f50e615817309915122c 100644
+index d5536dd40a1e9a2e05967652f690abbbca287852..d510503a8ad272255aeba20a916642828023fd19 100644
 --- a/net/minecraft/world/level/GameRules.java
 +++ b/net/minecraft/world/level/GameRules.java
-@@ -343,6 +343,13 @@ public class GameRules {
+@@ -354,6 +354,13 @@ public class GameRules {
          this.<T>getRule(key).setFrom(rule, level); // CraftBukkit - per-world
      }
  

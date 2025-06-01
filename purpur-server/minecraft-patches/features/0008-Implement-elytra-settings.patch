@@ -5,10 +5,10 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index a3b83376f1468dbdb4e17fb86d199e66047f686c..5dd1a36b967176f96a18cb0d842ccb73b7b584ef 100644
+index ae0c2f41c522656bde37d4f31699ee6172b5a79d..4f149e5e17d2d2f2964e2f6626e20f52121e72d9 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -3643,7 +3643,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3699,7 +3699,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                          .filter(equipmentSlot1 -> canGlideUsing(this.getItemBySlot(equipmentSlot1), equipmentSlot1))
                          .toList();
                      EquipmentSlot equipmentSlot = Util.getRandom(list, this.random);
@@ -29,14 +29,13 @@ index a3b83376f1468dbdb4e17fb86d199e66047f686c..5dd1a36b967176f96a18cb0d842ccb73
  
                  this.gameEvent(GameEvent.ELYTRA_GLIDE);
 diff --git a/net/minecraft/world/item/FireworkRocketItem.java b/net/minecraft/world/item/FireworkRocketItem.java
-index 18d63d2da49451a2d5e1da7bf0c00e05e2f192bc..1f081e098ce3bec61b7f374e9b737838783657bb 100644
+index 83cfe63b0245f79d0873477ab3aae75f690ecb68..f32370217735b5e9556a0df7652682d89f23c595 100644
 --- a/net/minecraft/world/item/FireworkRocketItem.java
 +++ b/net/minecraft/world/item/FireworkRocketItem.java
-@@ -62,6 +62,19 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
-                 com.destroystokyo.paper.event.player.PlayerElytraBoostEvent event = new com.destroystokyo.paper.event.player.PlayerElytraBoostEvent((org.bukkit.entity.Player) player.getBukkitEntity(), org.bukkit.craftbukkit.inventory.CraftItemStack.asCraftMirror(itemInHand), (org.bukkit.entity.Firework) delayed.projectile().getBukkitEntity(), org.bukkit.craftbukkit.CraftEquipmentSlot.getHand(hand));
-                 if (event.callEvent() && delayed.attemptSpawn()) {
-                     player.awardStat(Stats.ITEM_USED.get(this)); // Moved up from below
-+
+@@ -72,6 +72,17 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
+                     if (player.dropAllLeashConnections(null)) {
+                         level.playSound(null, player, SoundEvents.LEAD_BREAK, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                     }
 +                    // Purpur start - Implement elytra settings
 +                    if (level.purpurConfig.elytraDamagePerFireworkBoost > 0) {
 +                        java.util.List<net.minecraft.world.entity.EquipmentSlot> list = net.minecraft.world.entity.EquipmentSlot.VALUES.stream().filter((enumitemslot) -> net.minecraft.world.entity.LivingEntity.canGlideUsing(player.getItemBySlot(enumitemslot), enumitemslot)).toList();
@@ -48,15 +47,14 @@ index 18d63d2da49451a2d5e1da7bf0c00e05e2f192bc..1f081e098ce3bec61b7f374e9b737838
 +                        }
 +                    }
 +                    // Purpur end - Implement elytra settings
-+
                      if (event.shouldConsume() && !player.hasInfiniteMaterials()) {
                          itemInHand.shrink(1); // Moved up from below
                      } else {
 diff --git a/net/minecraft/world/item/ItemStack.java b/net/minecraft/world/item/ItemStack.java
-index 6de42886ed681b5e00903f0d213e4d2fcaea1482..36677cb0db42b74fa84d67b85717f629f84b4dd0 100644
+index 52aaa325476af53eca97fc14ad5f82fbb9193c80..d512ee6b1039b80b908816b625ef1aa9cd50461c 100644
 --- a/net/minecraft/world/item/ItemStack.java
 +++ b/net/minecraft/world/item/ItemStack.java
-@@ -724,6 +724,14 @@ public final class ItemStack implements DataComponentHolder {
+@@ -700,6 +700,14 @@ public final class ItemStack implements DataComponentHolder {
                  org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerItemBreakEvent(serverPlayer, this); // Paper - Add EntityDamageItemEvent
              }
              // CraftBukkit end

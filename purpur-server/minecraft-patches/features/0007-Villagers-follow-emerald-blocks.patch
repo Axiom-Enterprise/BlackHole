@@ -5,10 +5,10 @@ Subject: [PATCH] Villagers follow emerald blocks
 
 
 diff --git a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index 75d8fe03558ba38caf46c826dfea5208f88bde52..46022a0aabc9c319deeb75913d356eeb74f1a12c 100644
+index 4bb7a8955182d786a09fd2667b37a93373ff47be..bead2f6800bdc404228500c12caf326559fa47de 100644
 --- a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-@@ -162,7 +162,7 @@ public class DefaultAttributes {
+@@ -164,7 +164,7 @@ public class DefaultAttributes {
          .put(EntityType.VILLAGER, Villager.createAttributes().build())
          .put(EntityType.VINDICATOR, Vindicator.createAttributes().build())
          .put(EntityType.WARDEN, Warden.createAttributes().build())
@@ -18,10 +18,10 @@ index 75d8fe03558ba38caf46c826dfea5208f88bde52..46022a0aabc9c319deeb75913d356eeb
          .put(EntityType.WITHER, WitherBoss.createAttributes().build())
          .put(EntityType.WITHER_SKELETON, AbstractSkeleton.createAttributes().build())
 diff --git a/net/minecraft/world/entity/ai/goal/TemptGoal.java b/net/minecraft/world/entity/ai/goal/TemptGoal.java
-index 438d6347778a94b4fe430320b268a2d67afa209a..f88f618d34fb343b31de3af1a875d6633703df71 100644
+index dae935cc68e2e571d50e56ac8913c099a11cf771..a805c9426630c2c46db9d0dd536f1d16769395d3 100644
 --- a/net/minecraft/world/entity/ai/goal/TemptGoal.java
 +++ b/net/minecraft/world/entity/ai/goal/TemptGoal.java
-@@ -58,7 +58,7 @@ public class TemptGoal extends Goal {
+@@ -71,7 +71,7 @@ public class TemptGoal extends Goal {
      }
  
      private boolean shouldFollow(LivingEntity entity) {
@@ -31,10 +31,10 @@ index 438d6347778a94b4fe430320b268a2d67afa209a..f88f618d34fb343b31de3af1a875d663
  
      @Override
 diff --git a/net/minecraft/world/entity/npc/AbstractVillager.java b/net/minecraft/world/entity/npc/AbstractVillager.java
-index 1d3381f1481bb2b192bb78462c85c2a185d94ad5..e574c38e1c1c13fc2f96340138f784697cef8c48 100644
+index f8782cdcf3015cad2693663a3c222bd60822f45b..d1a77544df7bcaa5f1dbca3139324107d687ae0d 100644
 --- a/net/minecraft/world/entity/npc/AbstractVillager.java
 +++ b/net/minecraft/world/entity/npc/AbstractVillager.java
-@@ -35,6 +35,7 @@ import net.minecraft.world.level.portal.TeleportTransition;
+@@ -35,6 +35,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  import net.minecraft.world.phys.Vec3;
  
  public abstract class AbstractVillager extends AgeableMob implements InventoryCarrier, Npc, Merchant {
@@ -43,10 +43,10 @@ index 1d3381f1481bb2b192bb78462c85c2a185d94ad5..e574c38e1c1c13fc2f96340138f78469
      public static final int VILLAGER_SLOT_OFFSET = 300;
      private static final int VILLAGER_INVENTORY_SIZE = 8;
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index b2687ee9494d491971fa4124382b214d7c3ba9be..005af720a6385056f09f939813e97c10a7414a91 100644
+index b91c7bdfa4df80bf52ed714efc877a30cdcb3f36..4a68a8124716a57801f2d42a87e4d68c99d2f348 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
-@@ -268,6 +268,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -269,6 +269,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
@@ -54,7 +54,7 @@ index b2687ee9494d491971fa4124382b214d7c3ba9be..005af720a6385056f09f939813e97c10
      }
      // Purpur end - Ridables
  
-@@ -276,6 +277,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -277,6 +278,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      public void initAttributes() {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.villagerMaxHealth);
          this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.villagerScale);
@@ -62,7 +62,7 @@ index b2687ee9494d491971fa4124382b214d7c3ba9be..005af720a6385056f09f939813e97c10
      }
      // Purpur end - Configurable entity base attributes
  
-@@ -344,7 +346,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -345,7 +347,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
  
      public static AttributeSupplier.Builder createAttributes() {
@@ -72,10 +72,10 @@ index b2687ee9494d491971fa4124382b214d7c3ba9be..005af720a6385056f09f939813e97c10
  
      public boolean assignProfessionWhenSpawned() {
 diff --git a/net/minecraft/world/entity/npc/WanderingTrader.java b/net/minecraft/world/entity/npc/WanderingTrader.java
-index 4abc4037a059b9c1dc58bf7a776e6269c5188868..e726893a3ddf49bdfd2d190477bccf6e33de1847 100644
+index 28c86505efa994f9c7657538f5ffdf12772fb0a9..2917820bf01b1a2ca7301a7099b7b3dcd6c3ee67 100644
 --- a/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -87,9 +87,16 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -88,9 +88,16 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
      @Override
      public void initAttributes() {
          this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.wanderingTraderMaxHealth);
@@ -92,7 +92,7 @@ index 4abc4037a059b9c1dc58bf7a776e6269c5188868..e726893a3ddf49bdfd2d190477bccf6e
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
-@@ -124,6 +131,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -125,6 +132,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
          this.goalSelector.addGoal(1, new PanicGoal(this, 0.5));
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0, 0.35));

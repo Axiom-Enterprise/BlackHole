@@ -135,10 +135,10 @@ index f0583076ef62189508a392a76c3fb6b741bbdde9..dc4a9ddb8479e9d0c4895b19d7d677cd
              brain.setMemory(MemoryModuleType.SECONDARY_JOB_SITE, list);
          } else {
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index 005af720a6385056f09f939813e97c10a7414a91..2846aca7bad55b56430738baeee9554e34da316c 100644
+index 4a68a8124716a57801f2d42a87e4d68c99d2f348..3b78e25de462a6fc393175f7992b9a1d4d08c64b 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
-@@ -314,7 +314,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -315,7 +315,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              villagerBrain.setSchedule(Schedule.VILLAGER_DEFAULT);
              villagerBrain.addActivityWithConditions(
                  Activity.WORK,
@@ -147,7 +147,7 @@ index 005af720a6385056f09f939813e97c10a7414a91..2846aca7bad55b56430738baeee9554e
                  ImmutableSet.of(Pair.of(MemoryModuleType.JOB_SITE, MemoryStatus.VALUE_PRESENT))
              );
          }
-@@ -965,7 +965,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -966,7 +966,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
  
      public boolean hasFarmSeeds() {

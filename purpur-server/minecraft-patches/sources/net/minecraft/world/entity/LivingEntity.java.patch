@@ -1,14 +1,6 @@
-From 10208bcef5c949e133092f588296ebb6e22f36d8 Mon Sep 17 00:00:00 2001
-From: File <noreply+automated@papermc.io>
-Date: Sun, 20 Apr 1997 06:37:42 -0700
-Subject: [PATCH] purpur File Patches
-
-
-diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e0755fa77 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -430,6 +430,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -444,6 +_,12 @@
                  if (d < 0.0) {
                      double damagePerBlock = serverLevel1.getWorldBorder().getDamagePerBlock();
                      if (damagePerBlock > 0.0) {
@@ -21,7 +13,7 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
                          this.hurtServer(serverLevel1, this.damageSources().outOfBorder(), Math.max(1, Mth.floor(-d * damagePerBlock)));
                      }
                  }
-@@ -442,10 +448,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -456,10 +_,10 @@
                      && (!flag || !((Player)this).getAbilities().invulnerable);
                  if (flag1) {
                      this.setAirSupply(this.decreaseAirSupply(this.getAirSupply()));
@@ -34,7 +26,7 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
                      }
                  } else if (this.getAirSupply() < this.getMaxAirSupply()) {
                      this.setAirSupply(this.increaseAirSupply(this.getAirSupply()));
-@@ -1014,15 +1020,33 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1039,14 +_,32 @@
          if (lookingEntity != null) {
              ItemStack itemBySlot = this.getItemBySlot(EquipmentSlot.HEAD);
              EntityType<?> type = lookingEntity.getType();
@@ -44,13 +36,15 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
 -                || type == EntityType.PIGLIN_BRUTE && itemBySlot.is(Items.PIGLIN_HEAD)
 -                || type == EntityType.CREEPER && itemBySlot.is(Items.CREEPER_HEAD)) {
 -                d *= 0.5;
+-            }
+-        }
 +            // Purpur start - Mob head visibility percent
 +            if (type == EntityType.SKELETON && itemBySlot.is(Items.SKELETON_SKULL)) {
 +                d *= lookingEntity.level().purpurConfig.skeletonHeadVisibilityPercent;
 +            }
 +            else if (type == EntityType.ZOMBIE && itemBySlot.is(Items.ZOMBIE_HEAD)) {
 +                d *= lookingEntity.level().purpurConfig.zombieHeadVisibilityPercent;
-             }
++            }
 +            else if ((type == EntityType.PIGLIN || type == EntityType.PIGLIN_BRUTE) && itemBySlot.is(Items.PIGLIN_HEAD)) {
 +                d *= lookingEntity.level().purpurConfig.piglinHeadVisibilityPercent;
 +            }
@@ -58,8 +52,8 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
 +                d *= lookingEntity.level().purpurConfig.creeperHeadVisibilityPercent;
 +            }
 +            // Purpur end - Mob head visibility percent
-         }
- 
++        }
++
 +        // Purpur start - Configurable mob blindness
 +        if (lookingEntity instanceof LivingEntity entityliving) {
 +            if (entityliving.hasEffect(MobEffects.BLINDNESS)) {
@@ -70,11 +64,10 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
 +            }
 +        }
 +        // Purpur end - Configurable mob blindness
-+
+ 
          return d;
      }
- 
-@@ -1068,6 +1092,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1093,6 +_,7 @@
              Iterator<MobEffectInstance> iterator = this.activeEffects.values().iterator();
              while (iterator.hasNext()) {
                  MobEffectInstance effect = iterator.next();
@@ -82,7 +75,7 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
                  EntityPotionEffectEvent event = CraftEventFactory.callEntityPotionEffectChangeEvent(this, effect, null, cause, EntityPotionEffectEvent.Action.CLEARED);
                  if (event.isCancelled()) {
                      continue;
-@@ -1385,6 +1410,24 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1417,6 +_,24 @@
                  this.stopSleeping();
              }
  
@@ -107,7 +100,7 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
              this.noActionTime = 0;
              if (amount < 0.0F) {
                  amount = 0.0F;
-@@ -1646,10 +1689,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1678,10 +_,10 @@
      protected Player resolvePlayerResponsibleForDamage(DamageSource damageSource) {
          Entity entity = damageSource.getEntity();
          if (entity instanceof Player player) {
@@ -120,7 +113,7 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
              } else {
                  this.lastHurtByPlayer = null;
                  this.lastHurtByPlayerMemoryTime = 0;
-@@ -1700,6 +1743,18 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1732,6 +_,18 @@
                  }
              }
  
@@ -139,7 +132,7 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
              final org.bukkit.inventory.EquipmentSlot handSlot = (hand != null) ? org.bukkit.craftbukkit.CraftEquipmentSlot.getHand(hand) : null;
              final EntityResurrectEvent event = new EntityResurrectEvent((org.bukkit.entity.LivingEntity) this.getBukkitEntity(), handSlot);
              event.setCancelled(itemStack == null);
-@@ -1875,6 +1930,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1907,6 +_,7 @@
          boolean flag = this.lastHurtByPlayerMemoryTime > 0;
          this.dropEquipment(level); // CraftBukkit - from below
          if (this.shouldDropLoot() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
@@ -147,7 +140,7 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
              this.dropFromLootTable(level, damageSource, flag);
              // Paper start
              final boolean prev = this.clearEquipmentSlots;
-@@ -1883,6 +1939,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1915,6 +_,7 @@
              // Paper end
              this.dropCustomDeathLoot(level, damageSource, flag);
              this.clearEquipmentSlots = prev; // Paper
@@ -155,7 +148,7 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
          }
  
          // CraftBukkit start - Call death event // Paper start - call advancement triggers with correct entity equipment
-@@ -3057,6 +3114,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -3109,6 +_,7 @@
              float f = (float)(d * 10.0 - 3.0);
              if (f > 0.0F) {
                  this.playSound(this.getFallDamageSound((int)f), 1.0F, 1.0F);
@@ -163,16 +156,16 @@ index ef92dc4384f698cc6b5c4e67fe052a3d4af98f4c..20d9856daa5ef4c42010381091c2a85e
                  this.hurt(this.damageSources().flyIntoWall(), f);
              }
          }
-@@ -4452,6 +4510,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -4507,6 +_,12 @@
+             ? slot == EquipmentSlot.MAINHAND && this.canUseSlot(EquipmentSlot.MAINHAND)
              : slot == equippable.slot() && this.canUseSlot(equippable.slot()) && equippable.canBeEquippedBy(this.getType());
      }
- 
++
 +    // Purpur start - Dispenser curse of binding protection
 +    public @Nullable EquipmentSlot getEquipmentSlotForDispenserItem(ItemStack itemstack) {
 +        return EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.BINDING_CURSE, itemstack) > 0 ? null : this.getEquipmentSlotForItem(itemstack);
 +    }
 +    // Purpur end - Dispenser curse of binding protection
-+
+ 
      private static SlotAccess createEquipmentSlotAccess(LivingEntity entity, EquipmentSlot slot) {
          return slot != EquipmentSlot.HEAD && slot != EquipmentSlot.MAINHAND && slot != EquipmentSlot.OFFHAND
-             ? SlotAccess.forEquipmentSlot(entity, slot, itemStack -> itemStack.isEmpty() || entity.getEquipmentSlotForItem(itemStack) == slot)

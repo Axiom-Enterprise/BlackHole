@@ -1,8 +1,8 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftItem.java
-@@ -143,4 +_,53 @@
+@@ -145,4 +_,53 @@
      public UUID getThrower() {
-         return this.getHandle().thrower;
+         return Optionull.map(this.getHandle().thrower, EntityReference::getUUID);
      }
 +
 +    // Purpur start - Item entity immunities

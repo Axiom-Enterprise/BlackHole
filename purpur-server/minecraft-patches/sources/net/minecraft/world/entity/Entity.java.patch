@@ -81,7 +81,7 @@
          return this.isInWater() || flag;
      }
  
--    void updateInWaterStateAndDoWaterCurrentPushing() {
+-    public void updateInWaterStateAndDoWaterCurrentPushing() {
 +    public void updateInWaterStateAndDoWaterCurrentPushing() { // Purpur - Movement options for armor stands - package-private -> public - TODO: use AT file
          if (this.getVehicle() instanceof AbstractBoat abstractBoat && !abstractBoat.isUnderWater()) {
              this.wasTouchingWater = false;
@@ -98,16 +98,12 @@
          } catch (Throwable var7) {
              CrashReport crashReport = CrashReport.forThrowable(var7, "Saving entity NBT");
              CrashReportCategory crashReportCategory = crashReport.addCategory("Entity being saved");
-@@ -2557,6 +_,13 @@
+@@ -2557,6 +_,9 @@
              }
              freezeLocked = input.getBooleanOr("Paper.FreezeLock", false);
              // Paper end
 +
-+            // Purpur start - Fire immune API
-+            if (input.contains("Purpur.FireImmune")) {
-+                immuneToFire = input.getBoolean("Purpur.FireImmune").orElse(null);
-+            }
-+            // Purpur end - Fire immune API
++            immuneToFire = input.read("Purpur.FireImmune", com.mojang.serialization.Codec.BOOL).orElse(null); // Purpur - Fire immune API
 +
          } catch (Throwable var7) {
              CrashReport crashReport = CrashReport.forThrowable(var7, "Loading entity NBT");

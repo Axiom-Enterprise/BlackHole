@@ -809,10 +809,10 @@ index 4d1d746e39d136243dc620c89b29daf80dc62230..d77e3b0f36ec4a262ff375d9e2da9125
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Ghast.java b/net/minecraft/world/entity/monster/Ghast.java
-index 5e2ae3ada994b5fa7758a61cdf1c0e9f26c23a79..92a9ce3d7db83a631281a6ac11ccc4441e04efdc 100644
+index 06333fe18ea71464d35584592f487c6ac572f0cd..07ea4f44d9fd32d5be5aae6c36b30806acc9db64 100644
 --- a/net/minecraft/world/entity/monster/Ghast.java
 +++ b/net/minecraft/world/entity/monster/Ghast.java
-@@ -94,6 +94,13 @@ public class Ghast extends Mob implements Enemy {
+@@ -82,6 +82,13 @@ public class Ghast extends Mob implements Enemy {
      }
      // Purpur end - Configurable entity base attributes
  
@@ -917,10 +917,10 @@ index bb1364c4a220cc93f7ac01cbaa617561de4cd2e3..da90b7dc79aa6d01e88c1250fff662ba
          return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.2F);
      }
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index f0351975340dec2b2bd51670f193baf44a62ae16..3e66363e0677d98b5c406fbaac2d4eaa533c6eb2 100644
+index 5b2018019f6ec9e91357d46dd66865e2f232507a..67dc738faef3ab414bf791692090aaea3dbe7385 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
-@@ -141,6 +141,13 @@ public class Phantom extends Mob implements Enemy {
+@@ -129,6 +129,13 @@ public class Phantom extends Mob implements Enemy {
      }
      // Purpur end - Phantoms attracted to crystals and crystals shoot phantoms
  
@@ -971,7 +971,7 @@ index 23b6d3c9746e1ee641d8b19ec50805cb271a9cc9..d75df6de50f9830efeea826d0ebdac17
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index 069dacf455e597a4cb2efae03553479cac2a5fec..d38c6025833079a435971c66cfbb90486721ca14 100644
+index 66f26ecce4f9d74c1b008b09c0eaf4b6ef4a177a..decadd1844e197400e4130c2d4f8ef8622cfd7f6 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
 @@ -135,6 +135,13 @@ public class Shulker extends AbstractGolem implements Enemy {

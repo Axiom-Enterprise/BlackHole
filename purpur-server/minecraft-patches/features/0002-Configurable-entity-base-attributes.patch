@@ -23,7 +23,7 @@ index 8e8ddab59de508c84c4182e105a11554387dcce0..1896f91e10a5e17332836d5354813a18
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index e78d30d8fdfcb1a530bf3380251fabd0c9a18f46..ae0c2f41c522656bde37d4f31699ee6172b5a79d 100644
+index d272f5e789cb6c03ede0bece14fc3fe976a02ff3..41b6b18130d89b3c3c31bbb2d184fa735a8cd99c 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -291,6 +291,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -1107,10 +1107,10 @@ index 10142de6bdf9474958ca939c956a428218ee48db..e8aac93cffa3a9d4105c03c1aeb4d571
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Ghast.java b/net/minecraft/world/entity/monster/Ghast.java
-index c7ac650f9618fd124035f9cf01fffada7efc97e1..5e2ae3ada994b5fa7758a61cdf1c0e9f26c23a79 100644
+index e09004313c7c8333eba38bbfab09b20bdb646034..06333fe18ea71464d35584592f487c6ac572f0cd 100644
 --- a/net/minecraft/world/entity/monster/Ghast.java
 +++ b/net/minecraft/world/entity/monster/Ghast.java
-@@ -86,6 +86,14 @@ public class Ghast extends Mob implements Enemy {
+@@ -74,6 +74,14 @@ public class Ghast extends Mob implements Enemy {
      }
      // Purpur end - Ridables
  
@@ -1243,10 +1243,10 @@ index 4a1299d6cee2807522de0c2d0d4745c5810e4121..bb1364c4a220cc93f7ac01cbaa617561
          return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.2F);
      }
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 99194cf1fa89d3112719ead9f7de260ca5b9b676..96ef89704122485948a526bcc323379474ac9343 100644
+index 855ec37a7e4110e37823ecf62f67f5cb3714f4bf..e35d1e91c1300d8f7d14a5cfa54c404c9f21184d 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
-@@ -153,7 +153,10 @@ public class Phantom extends Mob implements Enemy {
+@@ -141,7 +141,10 @@ public class Phantom extends Mob implements Enemy {
      private void updatePhantomSizeInfo() {
          this.refreshDimensions();
          if (level().purpurConfig.phantomFlamesOnSwoop && attackPhase == AttackPhase.SWOOP) shoot(); // Purpur - Ridables - Phantom flames on swoop
@@ -1258,7 +1258,7 @@ index 99194cf1fa89d3112719ead9f7de260ca5b9b676..96ef89704122485948a526bcc3233794
      }
  
      public int getPhantomSize() {
-@@ -178,6 +181,23 @@ public class Phantom extends Mob implements Enemy {
+@@ -166,6 +169,23 @@ public class Phantom extends Mob implements Enemy {
          return true;
      }
  
@@ -1321,7 +1321,7 @@ index b67ac487ce4a7fd8b2f62452ab0b87f4a55006f2..9e7b07f353fb8f0650b8805014c37136
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index e0c70493e771b50885b0263ff07e8ee594c2dfdc..069dacf455e597a4cb2efae03553479cac2a5fec 100644
+index 7b04bf19ee575b9199cb65f0eb3f412a05acac08..66f26ecce4f9d74c1b008b09c0eaf4b6ef4a177a 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
 @@ -127,6 +127,14 @@ public class Shulker extends AbstractGolem implements Enemy {

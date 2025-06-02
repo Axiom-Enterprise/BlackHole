@@ -149,6 +149,24 @@ index 869a0154c81593db8933f9daa6a7d3a9d02facc5..37b6bfa8dc1fd4ed0006f6531d2056bc
                  this.animal.resetLove();
                  this.partner.resetLove();
                  serverLevel.addFreshEntityWithPassengers(fox, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.BREEDING); // CraftBukkit - added SpawnReason
+diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
+index 8e998a2b35e38dbc74edbaa007f66e98e5486647..74bca6719c0bb1a4cabe058eeff6f8dc73632628 100644
+--- a/net/minecraft/world/entity/animal/HappyGhast.java
++++ b/net/minecraft/world/entity/animal/HappyGhast.java
+@@ -120,6 +120,13 @@ public class HappyGhast extends Animal {
+         this.removeAllGoals(goal -> true);
+     }
+ 
++    // Purpur start - Make entity breeding times configurable
++    @Override
++    public int getPurpurBreedTime() {
++        return 6000;
++    }
++    // Purpur end - Make entity breeding times configurable
++
+     @Override
+     protected void ageBoundaryReached() {
+         if (this.isBaby()) {
 diff --git a/net/minecraft/world/entity/animal/MushroomCow.java b/net/minecraft/world/entity/animal/MushroomCow.java
 index 8cfbe37df24647c3f0a2d64bcc3451de1402c86f..3e4cb7680e6082ebab95e2b8307eedb0d3fcfbcd 100644
 --- a/net/minecraft/world/entity/animal/MushroomCow.java

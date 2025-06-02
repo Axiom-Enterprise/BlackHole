@@ -210,8 +210,8 @@
 +    }
 +
 +    @Override
-+    public boolean canBeCollidedWith() {
-+        return !this.isAfk() && super.canBeCollidedWith();
++    public boolean canBeCollidedWith(Entity entity) {
++        return !this.isAfk() && super.canBeCollidedWith(entity);
 +    }
 +    // Purpur end - AFK API
  

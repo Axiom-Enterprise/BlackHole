@@ -10,7 +10,7 @@
          super(world, blockEntity);
 +        // Purpur start - load bees to be able to modify them individually - Stored Bee API
 +        for(BeehiveBlockEntity.BeeData data : blockEntity.getStored()) {
-+            storage.add(new org.purpurmc.purpur.entity.PurpurStoredBee(data, this));
++            storage.add(new org.purpurmc.purpur.entity.PurpurStoredBee(data, this, blockEntity));
 +        }
 +        // Purpur end - Stored Bee API
      }
@@ -65,7 +65,7 @@
 +        // Purpur start - check if new bee was added, and if yes, add to stored bees - Stored Bee API
 +        List<BeehiveBlockEntity.BeeData> storedBeeData = this.getSnapshot().getStored();
 +        if(length < storedBeeData.size()) {
-+            storage.add(new org.purpurmc.purpur.entity.PurpurStoredBee(storedBeeData.getLast(), this));
++            storage.add(new org.purpurmc.purpur.entity.PurpurStoredBee(storedBeeData.getLast(), this, this.getBlockEntity()));
 +        }
 +        // Purpur end - Stored Bee API
      }

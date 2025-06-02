@@ -6,7 +6,7 @@
          // Paper end - read persistent data container
 +
 +
-+        this.persistentLore = tag.read("Purpur.persistentLore", net.minecraft.world.item.component.ItemLore.CODEC).orElse(null); // Purpur - Persistent BlockEntity Lore and DisplayName
++        this.persistentLore = input.read("Purpur.persistentLore", net.minecraft.world.item.component.ItemLore.CODEC).orElse(null); // Purpur - Persistent BlockEntity Lore and DisplayName
 +
      }
  

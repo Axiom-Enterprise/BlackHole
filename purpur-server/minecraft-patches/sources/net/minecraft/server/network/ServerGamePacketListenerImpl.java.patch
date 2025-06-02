@@ -179,8 +179,8 @@
                                      }
  
 +                                    // Purpur start - Dont run with scissors!
-+                                    if (this.player.serverLevel().purpurConfig.dontRunWithScissors && this.player.isSprinting() && !(this.player.serverLevel().purpurConfig.ignoreScissorsInWater && this.player.isInWater()) && !(this.player.serverLevel().purpurConfig.ignoreScissorsInLava && this.player.isInLava()) && (isScissors(this.player.getItemInHand(InteractionHand.MAIN_HAND)) || isScissors(this.player.getItemInHand(InteractionHand.OFF_HAND))) && (int) (Math.random() * 10) == 0) {
-+                                        this.player.hurtServer(this.player.serverLevel(), this.player.damageSources().scissors(), (float) this.player.serverLevel().purpurConfig.scissorsRunningDamage);
++                                    if (this.player.level().purpurConfig.dontRunWithScissors && this.player.isSprinting() && !(this.player.level().purpurConfig.ignoreScissorsInWater && this.player.isInWater()) && !(this.player.level().purpurConfig.ignoreScissorsInLava && this.player.isInLava()) && (isScissors(this.player.getItemInHand(InteractionHand.MAIN_HAND)) || isScissors(this.player.getItemInHand(InteractionHand.OFF_HAND))) && (int) (Math.random() * 10) == 0) {
++                                        this.player.hurtServer(this.player.level(), this.player.damageSources().scissors(), (float) this.player.level().purpurConfig.scissorsRunningDamage);
 +                                        if (!org.purpurmc.purpur.PurpurConfig.dontRunWithScissors.isBlank()) this.player.sendActionBarMessage(org.purpurmc.purpur.PurpurConfig.dontRunWithScissors);
 +                                    }
 +                                    // Purpur end - Dont run with scissors!
@@ -197,7 +197,7 @@
 +        if (!stack.is(Items.SHEARS)) return false;
 +
 +        ResourceLocation itemModelReference = stack.get(net.minecraft.core.component.DataComponents.ITEM_MODEL);
-+        if (itemModelReference != null && itemModelReference.equals(this.player.serverLevel().purpurConfig.dontRunWithScissorsItemModelReference)) return true;
++        if (itemModelReference != null && itemModelReference.equals(this.player.level().purpurConfig.dontRunWithScissorsItemModelReference)) return true;
 +
 +        return stack.getOrDefault(DataComponents.CUSTOM_MODEL_DATA, net.minecraft.world.item.component.CustomModelData.EMPTY).equals(net.minecraft.world.item.component.CustomModelData.EMPTY);
 +    }

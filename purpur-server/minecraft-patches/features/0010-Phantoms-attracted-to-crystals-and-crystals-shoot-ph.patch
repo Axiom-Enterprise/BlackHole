@@ -72,7 +72,7 @@ index 5bff703ae4f95091620dec5347246d7c0cbe5d5e..220a828717e1933a44c5282b56713ba0
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 96ef89704122485948a526bcc323379474ac9343..f9f6199f5b64733be69e9e8dbdb3cd26700d822b 100644
+index e35d1e91c1300d8f7d14a5cfa54c404c9f21184d..1d7432bcce99c893a1f6e4a02d0cad65c0d6d3a4 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -49,6 +49,7 @@ public class Phantom extends Mob implements Enemy {
@@ -83,7 +83,7 @@ index 96ef89704122485948a526bcc323379474ac9343..f9f6199f5b64733be69e9e8dbdb3cd26
      // Paper start
      @Nullable
      public java.util.UUID spawningEntity;
-@@ -120,6 +121,25 @@ public class Phantom extends Mob implements Enemy {
+@@ -108,6 +109,25 @@ public class Phantom extends Mob implements Enemy {
      }
      // Purpur end - Ridables
  
@@ -109,7 +109,7 @@ index 96ef89704122485948a526bcc323379474ac9343..f9f6199f5b64733be69e9e8dbdb3cd26
      @Override
      public boolean isFlapping() {
          return (this.getUniqueFlapTickOffset() + this.tickCount) % TICKS_PER_FLAP == 0;
-@@ -133,9 +153,15 @@ public class Phantom extends Mob implements Enemy {
+@@ -121,9 +141,15 @@ public class Phantom extends Mob implements Enemy {
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
@@ -128,7 +128,7 @@ index 96ef89704122485948a526bcc323379474ac9343..f9f6199f5b64733be69e9e8dbdb3cd26
          this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
          this.targetSelector.addGoal(1, new Phantom.PhantomAttackPlayerTargetGoal());
      }
-@@ -517,6 +543,124 @@ public class Phantom extends Mob implements Enemy {
+@@ -514,6 +540,124 @@ public class Phantom extends Mob implements Enemy {
          }
      }
  

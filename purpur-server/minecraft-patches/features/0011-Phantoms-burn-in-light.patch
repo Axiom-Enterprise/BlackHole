@@ -5,7 +5,7 @@ Subject: [PATCH] Phantoms burn in light
 
 
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index f9f6199f5b64733be69e9e8dbdb3cd26700d822b..f0351975340dec2b2bd51670f193baf44a62ae16 100644
+index 1d7432bcce99c893a1f6e4a02d0cad65c0d6d3a4..5b2018019f6ec9e91357d46dd66865e2f232507a 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -55,6 +55,7 @@ public class Phantom extends Mob implements Enemy {
@@ -16,7 +16,7 @@ index f9f6199f5b64733be69e9e8dbdb3cd26700d822b..f0351975340dec2b2bd51670f193baf4
  
      public Phantom(EntityType<? extends Phantom> entityType, Level level) {
          super(entityType, level);
-@@ -255,7 +256,11 @@ public class Phantom extends Mob implements Enemy {
+@@ -243,7 +244,11 @@ public class Phantom extends Mob implements Enemy {
  
      @Override
      public void aiStep() {
@@ -29,7 +29,7 @@ index f9f6199f5b64733be69e9e8dbdb3cd26700d822b..f0351975340dec2b2bd51670f193baf4
              if (getRider() == null || !this.isControllable()) // Purpur - Ridables
              this.igniteForSeconds(8.0F);
          }
-@@ -378,6 +383,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -375,6 +380,7 @@ public class Phantom extends Mob implements Enemy {
                  List<Player> nearbyPlayers = serverLevel.getNearbyPlayers(
                      this.attackTargeting, Phantom.this, Phantom.this.getBoundingBox().inflate(16.0, 64.0, 16.0)
                  );
@@ -37,7 +37,7 @@ index f9f6199f5b64733be69e9e8dbdb3cd26700d822b..f0351975340dec2b2bd51670f193baf4
                  if (!nearbyPlayers.isEmpty()) {
                      nearbyPlayers.sort(Comparator.<Player, Double>comparing(Entity::getY).reversed());
  
-@@ -747,6 +753,12 @@ public class Phantom extends Mob implements Enemy {
+@@ -744,6 +750,12 @@ public class Phantom extends Mob implements Enemy {
                  return false;
              } else if (!target.isAlive()) {
                  return false;

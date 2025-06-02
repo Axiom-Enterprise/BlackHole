@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index bce2b06cd7c0b9928a6538ddcd370f2c4d84a9ae..5a6db2d02204cf98de02c30b63666692ed03c000 100644
+index 7e9e0e9cd0a12af66d937859885da5c0f619af22..0fb1267063476bb510ff236800132b535c29a50c 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -435,6 +435,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -35,7 +35,7 @@ index bce2b06cd7c0b9928a6538ddcd370f2c4d84a9ae..5a6db2d02204cf98de02c30b63666692
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index a70fddd19b24bb25edde63e4fda4685ee6997eba..eabee40979ab8a1611b2d4eff04414f303b672f1 100644
+index 70808e9f092953a3edf7001b318c91228844f73c..98096df5f83196a6fee8d26637a1816807952f3f 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -286,6 +286,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -207,7 +207,7 @@ index 9baec22561093d64157d93449e84c23b3f238b39..3f331215ef49c52fa3a53bcf744159d2
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 3e66363e0677d98b5c406fbaac2d4eaa533c6eb2..bfd4d7eef537c0d3688159d6db99236d6ed2f810 100644
+index 67dc738faef3ab414bf791692090aaea3dbe7385..2c7f11e165ea9f59dca6de559c7bcba39977cb19 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -62,6 +62,7 @@ public class Phantom extends Mob implements Enemy {
@@ -218,7 +218,7 @@ index 3e66363e0677d98b5c406fbaac2d4eaa533c6eb2..bfd4d7eef537c0d3688159d6db99236d
      }
  
      // Purpur start - Ridables
-@@ -148,6 +149,16 @@ public class Phantom extends Mob implements Enemy {
+@@ -136,6 +137,16 @@ public class Phantom extends Mob implements Enemy {
      }
      // Purpur end - Toggle for water sensitive mob damage
  
@@ -235,7 +235,7 @@ index 3e66363e0677d98b5c406fbaac2d4eaa533c6eb2..bfd4d7eef537c0d3688159d6db99236d
      @Override
      public boolean isFlapping() {
          return (this.getUniqueFlapTickOffset() + this.tickCount) % TICKS_PER_FLAP == 0;
-@@ -263,15 +274,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -251,15 +262,7 @@ public class Phantom extends Mob implements Enemy {
  
      @Override
      public void aiStep() {
@@ -252,7 +252,7 @@ index 3e66363e0677d98b5c406fbaac2d4eaa533c6eb2..bfd4d7eef537c0d3688159d6db99236d
          super.aiStep();
      }
  
-@@ -309,7 +312,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -306,7 +309,7 @@ public class Phantom extends Mob implements Enemy {
          this.setPhantomSize(input.getIntOr("size", 0));
          // Paper start
          this.spawningEntity = input.read("Paper.SpawningEntity", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
@@ -261,7 +261,7 @@ index 3e66363e0677d98b5c406fbaac2d4eaa533c6eb2..bfd4d7eef537c0d3688159d6db99236d
          // Paper end
      }
  
-@@ -320,7 +323,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -317,7 +320,7 @@ public class Phantom extends Mob implements Enemy {
          output.putInt("size", this.getPhantomSize());
          // Paper start
          output.storeNullable("Paper.SpawningEntity", net.minecraft.core.UUIDUtil.CODEC, this.spawningEntity);

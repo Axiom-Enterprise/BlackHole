@@ -1972,6 +1972,29 @@ public class PurpurWorldConfig {
         chanceHeadHalloweenOnEntity = (float) getDouble("gameplay-mechanics.halloween.head-chance", chanceHeadHalloweenOnEntity);
     }
 
+    public boolean happyGhastRidableInWater = false;
+    public double happyGhastMaxHealth = 20.0D;
+    public double happyGhastTemptRange = 16.0D;
+    public double happyGhastFlyingSpeed = 0.05D;
+    public double happyGhastMovementSpeed = 0.05D;
+    public double happyGhastFollowRange = 16.0D;
+    public double happyGhastCameraDistance = 8.0D;
+    public double happyGhastScale = 1.0D;
+    public boolean happyGhastTakeDamageFromWater = false;
+    public boolean happyGhastAlwaysDropExp = false;
+    private void happyGhastSettings() {
+        happyGhastRidableInWater = getBoolean("mobs.happy_ghast.ridable-in-water", happyGhastRidableInWater);
+        happyGhastMaxHealth = getDouble("mobs.happy_ghast.attributes.max_health", happyGhastMaxHealth);
+        happyGhastTemptRange = getDouble("mobs.happy_ghast.attributes.tempt_range", happyGhastTemptRange);
+        happyGhastFlyingSpeed = getDouble("mobs.happy_ghast.attributes.flying_speed", happyGhastFlyingSpeed);
+        happyGhastMovementSpeed = getDouble("mobs.happy_ghast.attributes.movement_speed", happyGhastMovementSpeed);
+        happyGhastFollowRange = getDouble("mobs.happy_ghast.attributes.follow_range", happyGhastFollowRange);
+        happyGhastCameraDistance = getDouble("mobs.happy_ghast.attributes.camera_distance", happyGhastCameraDistance);
+        happyGhastScale = Mth.clamp(getDouble("mobs.happy_ghast.attributes.scale", happyGhastScale), 0.0625D, 1.0D);
+        happyGhastTakeDamageFromWater = getBoolean("mobs.happy_ghast.takes-damage-from-water", happyGhastTakeDamageFromWater);
+        happyGhastAlwaysDropExp = getBoolean("mobs.happy_ghast.always-drop-exp", happyGhastAlwaysDropExp);
+    }
+
     public boolean hoglinRidable = false;
     public boolean hoglinRidableInWater = true;
     public boolean hoglinControllable = true;

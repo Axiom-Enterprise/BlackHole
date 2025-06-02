@@ -75,7 +75,7 @@ index 55e74b04ed0576923b8acfdf833e6c999d5a7b6c..900d59620d309258b3b883ccd8cb086f
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index efeee8849237270ad7c8cd0577dcefed34b82299..7e9e0e9cd0a12af66d937859885da5c0f619af22 100644
+index b2bcdaa27b5b8dcca60da185fa331fcf2d711665..be21e55bb0e3e4ce0a93d20ba5eb80e342c3d29e 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3065,6 +3065,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -1076,6 +1076,24 @@ index 354c7a41407fc6518965d09bfe3089676b6da794..a81ada76bfd6c4b49d1552f48e2009bc
              }
          }
      }
+diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
+index 8e998a2b35e38dbc74edbaa007f66e98e5486647..3154ba3c1786a607a9f6511288051889632764bf 100644
+--- a/net/minecraft/world/entity/animal/HappyGhast.java
++++ b/net/minecraft/world/entity/animal/HappyGhast.java
+@@ -120,6 +120,13 @@ public class HappyGhast extends Animal {
+         this.removeAllGoals(goal -> true);
+     }
+ 
++    // Purpur start - Ridables
++    @Override
++    public boolean dismountsUnderwater() {
++        return level().purpurConfig.useDismountsUnderwaterTag ? super.dismountsUnderwater() : !level().purpurConfig.happyGhastRidableInWater;
++    }
++    // Purpur end - Ridables
++
+     @Override
+     protected void ageBoundaryReached() {
+         if (this.isBaby()) {
 diff --git a/net/minecraft/world/entity/animal/IronGolem.java b/net/minecraft/world/entity/animal/IronGolem.java
 index 25e0438e1a98dc5f6aaabba8af2295cec871d6f1..d7c330e77c384bba800829bdbe07f6b66695896e 100644
 --- a/net/minecraft/world/entity/animal/IronGolem.java

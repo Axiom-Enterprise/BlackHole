@@ -150,12 +150,12 @@ index 869a0154c81593db8933f9daa6a7d3a9d02facc5..37b6bfa8dc1fd4ed0006f6531d2056bc
                  this.partner.resetLove();
                  serverLevel.addFreshEntityWithPassengers(fox, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.BREEDING); // CraftBukkit - added SpawnReason
 diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
-index 8e998a2b35e38dbc74edbaa007f66e98e5486647..74bca6719c0bb1a4cabe058eeff6f8dc73632628 100644
+index 801fc7e1a6ec56a6cde5b787daebe3c8c008cc93..50a64a312cb6af0f39117993553b66de1f095150 100644
 --- a/net/minecraft/world/entity/animal/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/HappyGhast.java
-@@ -120,6 +120,13 @@ public class HappyGhast extends Animal {
-         this.removeAllGoals(goal -> true);
+@@ -140,6 +140,13 @@ public class HappyGhast extends Animal {
      }
+     // Purpur end - Configurable entity base attributes
  
 +    // Purpur start - Make entity breeding times configurable
 +    @Override

@@ -201,6 +201,39 @@ index a81ada76bfd6c4b49d1552f48e2009bc7d8c71d2..869a0154c81593db8933f9daa6a7d3a9
      @Override
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
+diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
+index 3154ba3c1786a607a9f6511288051889632764bf..801fc7e1a6ec56a6cde5b787daebe3c8c008cc93 100644
+--- a/net/minecraft/world/entity/animal/HappyGhast.java
++++ b/net/minecraft/world/entity/animal/HappyGhast.java
+@@ -127,6 +127,19 @@ public class HappyGhast extends Animal {
+     }
+     // Purpur end - Ridables
+ 
++    // Purpur start - Configurable entity base attributes
++    @Override
++    public void initAttributes() {
++        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.happyGhastMaxHealth);
++        this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.happyGhastScale);
++        this.getAttribute(Attributes.TEMPT_RANGE).setBaseValue(this.level().purpurConfig.happyGhastTemptRange);
++        this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(this.level().purpurConfig.happyGhastFlyingSpeed);
++        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.level().purpurConfig.happyGhastMovementSpeed);
++        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(this.level().purpurConfig.happyGhastFollowRange);
++        this.getAttribute(Attributes.CAMERA_DISTANCE).setBaseValue(this.level().purpurConfig.happyGhastCameraDistance);
++    }
++    // Purpur end - Configurable entity base attributes
++
+     @Override
+     protected void ageBoundaryReached() {
+         if (this.isBaby()) {
+@@ -150,7 +163,7 @@ public class HappyGhast extends Animal {
+ 
+     @Override
+     protected float sanitizeScale(float scale) {
+-        return Math.min(scale, 1.0F);
++        return Math.min(scale, 1.0F); // Purpur - Configurable entity base attributes
+     }
+ 
+     @Override
 diff --git a/net/minecraft/world/entity/animal/IronGolem.java b/net/minecraft/world/entity/animal/IronGolem.java
 index d7c330e77c384bba800829bdbe07f6b66695896e..1cb7e0985a59e83f118d4656e94a79f4d81836ff 100644
 --- a/net/minecraft/world/entity/animal/IronGolem.java

@@ -48,11 +48,11 @@
 +
 +            final Component[] lines = front ? frontText.getMessages(filtered) : backText.getMessages(filtered);
 +            final String side = front ? "front_text" : "back_text";
++            net.minecraft.world.level.storage.ValueOutput sideNbt = tagValueOutput.child(side);
++            net.minecraft.world.level.storage.ValueOutput.TypedOutputList<String> messagesNbt = sideNbt.list("messages", com.mojang.serialization.Codec.STRING);
 +            for (int i = 0; i < 4; i++) {
 +                final net.kyori.adventure.text.Component component = io.papermc.paper.adventure.PaperAdventure.asAdventure(lines[i]);
 +                final String line = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().serialize(component);
-+                net.minecraft.world.level.storage.ValueOutput sideNbt = tagValueOutput.child(side);
-+                net.minecraft.world.level.storage.ValueOutput.TypedOutputList<String> messagesNbt = sideNbt.list("messages", com.mojang.serialization.Codec.STRING);
 +                messagesNbt.add(line);
 +            }
 +            tagValueOutput.putString("PurpurEditor", "true");

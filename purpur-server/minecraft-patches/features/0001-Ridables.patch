@@ -75,10 +75,10 @@ index 014557e343d3ede351b3a2b950bb803d7e771490..628b1a5ac93d7cd1be8175aab88d2f5e
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 5351e368233d2bca5fe8568cb97c09e49293fb70..d4f9a29cfbb59d557eef790ca07575187c99854b 100644
+index 4857161d69150e4c63ca54728ea12c0a59927acb..afc3d54982818a7ae5d9f3c6bae9c84f2ca8b7f6 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -3302,6 +3302,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3303,6 +3303,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -92,7 +92,7 @@ index 5351e368233d2bca5fe8568cb97c09e49293fb70..d4f9a29cfbb59d557eef790ca0757518
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -3343,6 +3350,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3344,6 +3351,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index 5351e368233d2bca5fe8568cb97c09e49293fb70..d4f9a29cfbb59d557eef790ca0757518
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5388,4 +5403,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5389,4 +5404,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
@@ -1077,7 +1077,7 @@ index 354c7a41407fc6518965d09bfe3089676b6da794..a81ada76bfd6c4b49d1552f48e2009bc
          }
      }
 diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
-index 210b35ce4abe22d79c13c9c6dbd7114a723f66ee..e0491ba54d93f85359e11fdbc66775d11bcec7ac 100644
+index 6e294ce65c8977db01ff1b9c8281c1c59ba156c0..d72af85b4605549aa73c7ef5956db30075325a16 100644
 --- a/net/minecraft/world/entity/animal/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/HappyGhast.java
 @@ -120,6 +120,13 @@ public class HappyGhast extends Animal {

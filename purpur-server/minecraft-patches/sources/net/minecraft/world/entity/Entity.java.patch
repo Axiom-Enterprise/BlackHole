@@ -107,7 +107,7 @@
                          // Paper start - EntityUnleashEvent
                          if (!org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerUnleashEntityEvent(
                              leashable2, player, hand, !player.hasInfiniteMaterials()
-@@ -3388,15 +_,18 @@
+@@ -3389,15 +_,18 @@
          return Vec3.directionFromRotation(this.getRotationVector());
      }
  
@@ -127,7 +127,7 @@
              }
          }
      }
-@@ -3601,7 +_,7 @@
+@@ -3602,7 +_,7 @@
      }
  
      public int getMaxAirSupply() {
@@ -136,7 +136,7 @@
      }
  
      public int getAirSupply() {
-@@ -4146,7 +_,7 @@
+@@ -4147,7 +_,7 @@
      // CraftBukkit end
  
      public boolean canUsePortal(boolean allowPassengers) {
@@ -145,7 +145,7 @@
      }
  
      public boolean canTeleport(Level fromLevel, Level toLevel) {
-@@ -4671,6 +_,12 @@
+@@ -4672,6 +_,12 @@
          return Mth.lerp(partialTick, this.yRotO, this.yRot);
      }
  
@@ -158,7 +158,7 @@
      // Paper start - optimise collisions
      public boolean updateFluidHeightAndDoFluidPushing(final TagKey<Fluid> fluid, final double flowScale) {
          if (this.touchingUnloadedChunk()) {
-@@ -5102,7 +_,7 @@
+@@ -5103,7 +_,7 @@
      }
  
      public float maxUpStep() {

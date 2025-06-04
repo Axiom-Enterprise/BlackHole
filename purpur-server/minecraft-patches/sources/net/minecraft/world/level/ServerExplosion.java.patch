@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/ServerExplosion.java
 +++ b/net/minecraft/world/level/ServerExplosion.java
-@@ -73,7 +_,7 @@
+@@ -316,7 +_,7 @@
      ) {
          this.level = level;
          this.source = source;
@@ -9,7 +9,7 @@
          this.center = center;
          this.fire = fire;
          this.blockInteraction = blockInteraction;
-@@ -356,10 +_,27 @@
+@@ -638,7 +_,7 @@
  
      public void explode() {
          // CraftBukkit start
@@ -18,6 +18,10 @@
              return;
          }
          // CraftBukkit end
+@@ -650,6 +_,23 @@
+         this.directMappedBlockCache = new ca.spottedleaf.moonrise.patches.collisions.ExplosionBlockCache[BLOCK_EXPLOSION_CACHE_WIDTH * BLOCK_EXPLOSION_CACHE_WIDTH * BLOCK_EXPLOSION_CACHE_WIDTH];
+         this.mutablePos = new BlockPos.MutableBlockPos();
+         // Paper end - collision optimisations
 +        // Purpur start - add PreExplodeEvents
 +        if (this.source != null) {
 +            Location location = new Location(this.level.getWorld(), this.center.x, this.center.y, this.center.z);

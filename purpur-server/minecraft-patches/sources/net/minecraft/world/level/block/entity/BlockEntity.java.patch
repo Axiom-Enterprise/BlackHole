@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/entity/BlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/BlockEntity.java
-@@ -104,6 +_,10 @@
+@@ -105,6 +_,10 @@
          input.read("PublicBukkitValues", CompoundTag.CODEC)
              .ifPresent(this.persistentDataContainer::putAll);
          // Paper end - read persistent data container
@@ -11,7 +11,7 @@
      }
  
      public final void loadWithComponents(ValueInput input) {
-@@ -116,6 +_,11 @@
+@@ -117,6 +_,11 @@
      }
  
      protected void saveAdditional(ValueOutput output) {
@@ -23,7 +23,7 @@
      }
  
      public final CompoundTag saveWithFullMetadata(HolderLookup.Provider registries) {
-@@ -400,4 +_,17 @@
+@@ -402,4 +_,17 @@
              return this.blockEntity.getNameForReporting() + "@" + this.blockEntity.getBlockPos();
          }
      }

@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: granny <contact@granny.dev>
+Date: Thu, 5 Jun 2025 20:05:32 -0700
+Subject: [PATCH] fix tests
+
+
+diff --git a/src/test/java/org/bukkit/craftbukkit/inventory/YamlSerializationTest.java b/src/test/java/org/bukkit/craftbukkit/inventory/YamlSerializationTest.java
+index 6ecfd6209dc2c994b43d29d328668435e16c69d1..f92ce0a220b347e54252ebaf3123d5abca807c22 100644
+--- a/src/test/java/org/bukkit/craftbukkit/inventory/YamlSerializationTest.java
++++ b/src/test/java/org/bukkit/craftbukkit/inventory/YamlSerializationTest.java
+@@ -94,8 +94,8 @@ public class YamlSerializationTest {
+               count: 1
+               components:
+                 minecraft:unbreakable: '{}'
++                minecraft:tooltip_display: '{hidden_components:["minecraft:unbreakable","minecraft:enchantments"]}'
+                 minecraft:enchantments: '{"minecraft:sharpness":2}'
+-                minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:unbreakable"]}'
+               schema_version: 1
+             """.formatted(Bukkit.getUnsafe().getDataVersion()));
+     }

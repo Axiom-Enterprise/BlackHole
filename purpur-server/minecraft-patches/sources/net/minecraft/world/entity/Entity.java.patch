@@ -106,7 +106,7 @@
 +                        if (hand == InteractionHand.OFF_HAND && (level().purpurConfig.villagerCanBeLeashed || level().purpurConfig.wanderingTraderCanBeLeashed) && this instanceof net.minecraft.world.entity.npc.AbstractVillager) return InteractionResult.CONSUME; // Purpur - Allow leashing villagers
                          // Paper start - EntityUnleashEvent
                          if (!org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerUnleashEntityEvent(
-                             leashable2, player, hand, !player.hasInfiniteMaterials()
+                             leashable2, player, hand, !player.hasInfiniteMaterials(), true
 @@ -3389,15 +_,18 @@
          return Vec3.directionFromRotation(this.getRotationVector());
      }

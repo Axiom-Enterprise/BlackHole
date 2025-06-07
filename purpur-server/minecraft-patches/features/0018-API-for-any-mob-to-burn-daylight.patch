@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 1edca56b4bf880460148d00b98225fc34bd15f17..5b0a4ef4ae5a762432dbb0def005f7505197445e 100644
+index ce456b05dc05534b9e2bfe408d96a44fd59f3b59..de389a4db6faf229dad599366d26feff63497126 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -521,6 +521,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -525,6 +525,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
      // Purpur end - Add canSaveToDisk to Entity
  
@@ -35,7 +35,7 @@ index 1edca56b4bf880460148d00b98225fc34bd15f17..5b0a4ef4ae5a762432dbb0def005f750
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 13a1b5dd8b1a07a584f71b1f24da28965f5e2a5d..fb42e31e812f99bf7b74c376ed47fcaee3213238 100644
+index e7b7f09d224a630f61259a0d905b2ad6a6fa6986..b4fc3f22c088849837cb73996a5906515f12bde6 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -273,6 +273,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -96,7 +96,7 @@ index 13a1b5dd8b1a07a584f71b1f24da28965f5e2a5d..fb42e31e812f99bf7b74c376ed47fcae
  
      protected void applyInput() {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index b828524d62a940f89f0c0fa926ef0423019ec212..e9344f61a943d610dfabe4918c227ddba166f17f 100644
+index 964c7e60a8b0171ee31b12a277a4e9f8940ab58d..09b4e592255aa2dc49dbd82be35f2f87e0b9b6ba 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -1531,19 +1531,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -122,7 +122,7 @@ index b828524d62a940f89f0c0fa926ef0423019ec212..e9344f61a943d610dfabe4918c227ddb
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/AbstractSkeleton.java b/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 0a5de00d41c59528e9f85a7cf82363c45e24d2bc..185edd9878f5193c44b75a126e8182caade7e943 100644
+index 607be674b6dcb9b099e9182b268c6bd960c5a87d..21cf84f1d037e3e387a3e254599673125f89ba9c 100644
 --- a/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -64,11 +64,12 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo

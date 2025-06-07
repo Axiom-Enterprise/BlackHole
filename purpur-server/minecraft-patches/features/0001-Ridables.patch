@@ -62,7 +62,7 @@ index 5ced523477c2b86e2b46182a77a9d991cf4cdd1f..f55dc4affffd495b4c02b77c8a60f172
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index c6b2591eb8ba7005919ea4b885f95c4d603305b6..9f695e97d247b24b12a4a115bfb012c7e344ccf8 100644
+index bf8a8124145e4339cadcc83691f076bdad3ec43d..6315f7aa585aa287c3c59c0cabe85faf633374fa 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2831,6 +2831,8 @@ public class ServerGamePacketListenerImpl
@@ -75,10 +75,10 @@ index c6b2591eb8ba7005919ea4b885f95c4d603305b6..9f695e97d247b24b12a4a115bfb012c7
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index b8a0abd1cbdc0c86ae9e68ebaeec14cd4728450e..05b936babba4fb9847dedb823406d06fa79a95c2 100644
+index ff6a936093abbd4799f36c2581bb57a529a18e00..ce456b05dc05534b9e2bfe408d96a44fd59f3b59 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -3110,6 +3110,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3114,6 +3114,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  this.passengers = ImmutableList.copyOf(list);
              }
  
@@ -92,7 +92,7 @@ index b8a0abd1cbdc0c86ae9e68ebaeec14cd4728450e..05b936babba4fb9847dedb823406d06f
              this.gameEvent(GameEvent.ENTITY_MOUNT, passenger);
          }
      }
-@@ -3151,6 +3158,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3155,6 +3162,14 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index b8a0abd1cbdc0c86ae9e68ebaeec14cd4728450e..05b936babba4fb9847dedb823406d06f
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5153,4 +5168,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5157,4 +5172,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
@@ -3347,7 +3347,7 @@ index fd33a8b59f40299ab644a4c52921b66a9b6552ca..eccbb27aa7efa6e24e04db114b06c7db
          return Guardian.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 8.0).add(Attributes.MAX_HEALTH, 80.0);
      }
 diff --git a/net/minecraft/world/entity/monster/EnderMan.java b/net/minecraft/world/entity/monster/EnderMan.java
-index 19a047c99c3afc6f8b23d7279491b156785a2c28..f991e59e896fc39da8f318871168b4c9bb0d8328 100644
+index ed322ed572cac147acf26ba18a7803685557e0d7..16df35760f7a3057be4caa63e0b59db67622a25e 100644
 --- a/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/net/minecraft/world/entity/monster/EnderMan.java
 @@ -91,9 +91,27 @@ public class EnderMan extends Monster implements NeutralMob {

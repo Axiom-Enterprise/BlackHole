@@ -65,7 +65,7 @@
          this.generator = generator;
          this.world = new CraftWorld((ServerLevel) this, generator, biomeProvider, environment);
  
-@@ -2131,4 +_,14 @@
+@@ -2124,4 +_,14 @@
              return this.id;
          }
      }

@@ -1,10 +1,9 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftVillager.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftVillager.java
-@@ -380,4 +_,12 @@
-     public void clearReputations() {
-         getHandle().getGossips().gossips.clear();
+@@ -390,4 +_,11 @@
+     public void restock() {
+         getHandle().restock();
      }
-+    // Paper end
 +
 +    // Purpur start - Lobotomize stuck villagers
 +    @Override

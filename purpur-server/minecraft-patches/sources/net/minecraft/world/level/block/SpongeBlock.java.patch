@@ -19,7 +19,7 @@
 +                        if (!fluidState.is(FluidTags.WATER) && (!level.purpurConfig.spongeAbsorbsLava || !fluidState.is(FluidTags.LAVA)) && (!level.purpurConfig.spongeAbsorbsWaterFromMud || !blockState.is(Blocks.MUD))) { // Purpur - Option for sponges to work on lava and mud
                              return BlockPos.TraversalNodeStatus.SKIP;
                          } else if (blockState.getBlock() instanceof BucketPickup bucketPickup
-                             && !bucketPickup.pickupBlock(null, blockList, blockPos, blockState).isEmpty()) { // CraftBukkit
+                             && !bucketPickup.pickupBlock(null, level, blockPos, blockState).isEmpty()) {
 @@ -76,6 +_,10 @@
                          } else {
                              if (blockState.getBlock() instanceof LiquidBlock) {

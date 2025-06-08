@@ -104,7 +104,7 @@
  
 @@ -504,7 +_,7 @@
  
-     private void updateDemand() {
+     public void updateDemand() {
          for (MerchantOffer merchantOffer : this.getOffers()) {
 -            merchantOffer.updateDemand();
 +            merchantOffer.updateDemand(this.level().purpurConfig.villagerMinimumDemand); // Purpur - Configurable minimum demand for trades

@@ -104,48 +104,47 @@
  idea {
      module {
          generatedSourceDirs.add(generatedDir.toFile())
-@@ -375,4 +_,44 @@
-     description = "Spin up a test server from the reobf Paperclip jar"
+@@ -376,3 +_,43 @@
      classpath(tasks.createReobfPaperclipJar.flatMap { it.outputZip })
      mainClass.set(null as String?)
-+}
-+
-+tasks.register("rebuildMinecraftSourcesWithGit") {
-+    group = "temp"
-+
-+    val patchDir = project.rootDir.resolve("purpur-server/minecraft-patches/sources").convertToPath().cleanDir()
-+    val inputDir = this.project.rootDir.resolve("purpur-server/src/minecraft/java").convertToPath()
-+
-+    val git = Git(inputDir)
-+    git("stash", "push").executeSilently(silenceErr = true)
-+    git("checkout", "file").executeSilently(silenceErr = true)
-+
-+    rebuildWithGit(git, patchDir)
-+}
-+
-+private fun rebuildWithGit(
-+    git: Git,
-+    patchDir: java.nio.file.Path
-+): Int {
-+    val files = git("diff-tree", "--name-only", "--no-commit-id", "-r", "HEAD").getText().split("\n")
-+    files.parallelStream().forEach { filename ->
-+        if (filename.isBlank()) return@forEach
-+        val patch = git(
-+            "format-patch",
-+            "--diff-algorithm=myers",
-+            "--full-index",
-+            "--no-signature",
-+            "--no-stat",
-+            "--no-numbered",
-+            "-1",
-+            "HEAD",
-+            "--stdout",
-+            filename
-+        ).getText()
-+        val patchFile = patchDir.resolve("$filename.patch")
-+        patchFile.createParentDirectories()
-+        patchFile.writeText(patch)
-+    }
-+
-+    return files.size
  }
++
++// tasks.register("rebuildMinecraftSourcesWithGit") {
++//     group = "temp"
++//
++//     val patchDir = project.rootDir.resolve("purpur-server/minecraft-patches/sources").convertToPath().cleanDir()
++//     val inputDir = this.project.rootDir.resolve("purpur-server/src/minecraft/java").convertToPath()
++//
++//     val git = Git(inputDir)
++//     git("stash", "push").executeSilently(silenceErr = true)
++//     git("checkout", "file").executeSilently(silenceErr = true)
++//
++//     rebuildWithGit(git, patchDir)
++// }
++//
++// private fun rebuildWithGit(
++//     git: Git,
++//     patchDir: java.nio.file.Path
++// ): Int {
++//     val files = git("diff-tree", "--name-only", "--no-commit-id", "-r", "HEAD").getText().split("\n")
++//     files.parallelStream().forEach { filename ->
++//         if (filename.isBlank()) return@forEach
++//         val patch = git(
++//             "format-patch",
++//             "--diff-algorithm=myers",
++//             "--full-index",
++//             "--no-signature",
++//             "--no-stat",
++//             "--no-numbered",
++//             "-1",
++//             "HEAD",
++//             "--stdout",
++//             filename
++//         ).getText()
++//         val patchFile = patchDir.resolve("$filename.patch")
++//         patchFile.createParentDirectories()
++//         patchFile.writeText(patch)
++//     }
++//
++//     return files.size
++// }

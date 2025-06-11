@@ -1,9 +1,10 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
-@@ -228,4 +_,15 @@
-             return this.getKey().hashCode();
+@@ -135,4 +_,16 @@
+             super(holder);
          }
      }
++
 +    // Purpur start - Configurable chance for wolves to spawn rabid
 +    @Override
 +    public boolean isRabid() {

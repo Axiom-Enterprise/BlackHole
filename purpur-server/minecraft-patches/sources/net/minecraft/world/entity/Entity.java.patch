@@ -136,7 +136,7 @@
      }
  
      public int getAirSupply() {
-@@ -4147,7 +_,7 @@
+@@ -4156,7 +_,7 @@
      // CraftBukkit end
  
      public boolean canUsePortal(boolean allowPassengers) {
@@ -145,7 +145,7 @@
      }
  
      public boolean canTeleport(Level fromLevel, Level toLevel) {
-@@ -4672,6 +_,12 @@
+@@ -4681,6 +_,12 @@
          return Mth.lerp(partialTick, this.yRotO, this.yRot);
      }
  
@@ -158,7 +158,7 @@
      // Paper start - optimise collisions
      public boolean updateFluidHeightAndDoFluidPushing(final TagKey<Fluid> fluid, final double flowScale) {
          if (this.touchingUnloadedChunk()) {
-@@ -5103,7 +_,7 @@
+@@ -5112,7 +_,7 @@
      }
  
      public float maxUpStep() {

@@ -75,7 +75,7 @@ index 014557e343d3ede351b3a2b950bb803d7e771490..628b1a5ac93d7cd1be8175aab88d2f5e
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 4857161d69150e4c63ca54728ea12c0a59927acb..afc3d54982818a7ae5d9f3c6bae9c84f2ca8b7f6 100644
+index 68ce2b0b2d193c712ec237ed2bccfa4561e2b489..e09bc76039127b518dcfa076d8b683134b781a1b 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3303,6 +3303,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -107,7 +107,7 @@ index 4857161d69150e4c63ca54728ea12c0a59927acb..afc3d54982818a7ae5d9f3c6bae9c84f
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5389,4 +5404,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5398,4 +5413,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
@@ -1077,7 +1077,7 @@ index 354c7a41407fc6518965d09bfe3089676b6da794..a81ada76bfd6c4b49d1552f48e2009bc
          }
      }
 diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
-index 6e294ce65c8977db01ff1b9c8281c1c59ba156c0..d72af85b4605549aa73c7ef5956db30075325a16 100644
+index 24fdfda487bf5348c32707022719ec9907debc80..80517d5c7f074b62555d0991b0ad0678f585834f 100644
 --- a/net/minecraft/world/entity/animal/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/HappyGhast.java
 @@ -120,6 +120,13 @@ public class HappyGhast extends Animal {
@@ -4402,7 +4402,7 @@ index 4b9e60d930bc3a4bfe9aad2e81391e57cfc45d40..ddd3a0d629f720b7acacf01bf2a7db53
                  if (isFood && !this.isSilent()) {
                      this.level()
 diff --git a/net/minecraft/world/entity/monster/Vex.java b/net/minecraft/world/entity/monster/Vex.java
-index b6f570c0140200ddaf29fe8334d6c1e729acf8a0..970eab5794263e40243f0527ab8be98252841fb0 100644
+index a621e08fe4f88fcfa8da83bc44b23fc2ffaa5918..543913b7e9e92ac43c2e557213a487140326a69e 100644
 --- a/net/minecraft/world/entity/monster/Vex.java
 +++ b/net/minecraft/world/entity/monster/Vex.java
 @@ -60,6 +60,50 @@ public class Vex extends Monster implements TraceableEntity {

@@ -3,6 +3,7 @@ package org.purpurmc.purpur.entity;
 import com.mojang.logging.LogUtils;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -39,7 +40,7 @@ public class PurpurStoredBee implements StoredEntity<Bee> {
         CompoundTag customData = handle.occupant.entityData().copyTag();
 
         try (ProblemReporter.ScopedCollector scopedCollector = new ProblemReporter.ScopedCollector(blockEntity.problemPath(), LOGGER)) {
-            ValueInput valueInput = TagValueInput.create(scopedCollector, blockEntity.getLevel().registryAccess(), customData);
+            ValueInput valueInput = TagValueInput.create(scopedCollector, RegistryAccess.EMPTY, customData);
 
             net.minecraft.network.chat.Component customNameMinecraft = BlockEntity.parseCustomNameSafe(valueInput, "CustomName");
             this.customName = customNameMinecraft == null ? null : PaperAdventure.asAdventure(customNameMinecraft);

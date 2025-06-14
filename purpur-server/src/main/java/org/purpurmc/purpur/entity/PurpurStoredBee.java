@@ -2,6 +2,7 @@ package org.purpurmc.purpur.entity;
 
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,7 +32,7 @@ public class PurpurStoredBee implements StoredEntity<Bee> {
         this.blockStorage = blockStorage;
 
         CompoundTag customData = handle.occupant.entityData().copyTag();
-        net.minecraft.network.chat.Component customNameMinecraft = BlockEntity.parseCustomNameSafe(customData.get("CustomName"), ((CraftWorld) blockStorage.getWorld()).getHandle().registryAccess());
+        net.minecraft.network.chat.Component customNameMinecraft = BlockEntity.parseCustomNameSafe(customData.get("CustomName"), RegistryAccess.EMPTY);
         this.customName = customNameMinecraft == null ? null : PaperAdventure.asAdventure(customNameMinecraft);
 
         if (customData.get("BukkitValues") instanceof CompoundTag compoundTag) {
@@ -98,7 +99,7 @@ public class PurpurStoredBee implements StoredEntity<Bee> {
         if(customName == null) {
             handle.occupant.entityData().copyTag().remove("CustomName");
         } else {
-            handle.occupant.entityData().copyTag().putString("CustomName", net.minecraft.network.chat.Component.Serializer.toJson(PaperAdventure.asVanilla(customName), ((CraftWorld) blockStorage.getWorld()).getHandle().registryAccess()));
+            handle.occupant.entityData().copyTag().putString("CustomName", net.minecraft.network.chat.Component.Serializer.toJson(PaperAdventure.asVanilla(customName), RegistryAccess.EMPTY));
         }
     }
 }

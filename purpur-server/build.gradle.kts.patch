@@ -8,16 +8,10 @@
  
  plugins {
      `java-library`
-@@ -24,9 +_,21 @@
+@@ -24,6 +_,18 @@
      minecraftVersion = providers.gradleProperty("mcVersion")
      gitFilePatches = false
  
--    updatingMinecraft {
--        oldPaperCommit = "a033e3b9ef78cfe85be807ac3fd1dd956274d4db"
-+    //updatingMinecraft {
-+    //    oldPaperCommit = "a033e3b9ef78cfe85be807ac3fd1dd956274d4db"
-+    //}
-+
 +    // Purpur start - Rebrand
 +    val purpur = forks.register("purpur") {
 +        upstream.patchDir("paperServer") {
@@ -26,13 +20,14 @@
 +            patchesDir = rootDirectory.dir("purpur-server/paper-patches")
 +            outputDir = rootDirectory.dir("paper-server")
 +        }
-     }
++    }
 +    activeFork = purpur
 +    // Purpur end - Rebrand
- 
++
      spigot {
          enabled = false
-@@ -109,7 +_,21 @@
+         buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
+@@ -105,7 +_,21 @@
      }
  }
  
@@ -55,7 +50,7 @@
  configurations.named(log4jPlugins.compileClasspathConfigurationName) {
      extendsFrom(configurations.compileClasspath.get())
  }
-@@ -131,7 +_,7 @@
+@@ -127,7 +_,7 @@
  }
  
  dependencies {
@@ -64,7 +59,7 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -159,6 +_,10 @@
+@@ -155,6 +_,10 @@
      implementation("org.spongepowered:configurate-yaml:4.2.0-20250225.064233-199")
      implementation("org.spongepowered:configurate-core:4.2.0-20250225.064233-204") // Pinned dependency of above pinned yaml snapshot.
  
@@ -75,7 +70,7 @@
      // Deps that were previously in the API but have now been moved here for backwards compat, eventually to be removed
      runtimeOnly("commons-lang:commons-lang:2.6")
      runtimeOnly("org.xerial:sqlite-jdbc:3.49.1.0")
-@@ -207,14 +_,14 @@
+@@ -203,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -95,7 +90,7 @@
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,
-@@ -273,7 +_,7 @@
+@@ -269,7 +_,7 @@
      jvmArgumentProviders.add(provider)
  }
  
@@ -104,7 +99,7 @@
  idea {
      module {
          generatedSourceDirs.add(generatedDir.toFile())
-@@ -376,3 +_,43 @@
+@@ -372,3 +_,43 @@
      classpath(tasks.createReobfPaperclipJar.flatMap { it.outputZip })
      mainClass.set(null as String?)
  }

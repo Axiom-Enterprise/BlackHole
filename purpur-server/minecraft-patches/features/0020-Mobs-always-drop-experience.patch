@@ -166,6 +166,24 @@ index 23e119ce82c3a0541b40249b20f133e39fac6858..8964bb5098c0dc36741af3656af6bc0b
      @Override
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
+diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
+index 60073e503d6e52160e6d4e037b128bdeb6d56073..b187c9db564e8fabc34aa1bfe428a00fafb27fec 100644
+--- a/net/minecraft/world/entity/animal/HappyGhast.java
++++ b/net/minecraft/world/entity/animal/HappyGhast.java
+@@ -154,6 +154,13 @@ public class HappyGhast extends Animal {
+     }
+     // Purpur end - Toggle for water sensitive mob damage
+ 
++    // Purpur start - Mobs always drop experience
++    @Override
++    protected boolean isAlwaysExperienceDropper() {
++        return this.level().purpurConfig.happyGhastAlwaysDropExp;
++    }
++    // Purpur end - Mobs always drop experience
++
+     @Override
+     protected void ageBoundaryReached() {
+         if (this.isBaby()) {
 diff --git a/net/minecraft/world/entity/animal/IronGolem.java b/net/minecraft/world/entity/animal/IronGolem.java
 index 006df1758bdaeb55a7db938afd9e00c575a62e60..8885ab56eb72c0106ef57359ca11f70c012fc348 100644
 --- a/net/minecraft/world/entity/animal/IronGolem.java
@@ -1067,7 +1085,7 @@ index 533801988cb4f8a916ef002a179990ca913b2f32..fe31c4a45afd61be8b74efe9d0858ccd
          EntityType<Strider> entityType, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Vex.java b/net/minecraft/world/entity/monster/Vex.java
-index 193994476a78d68d2ef45f7a354648ce347b0f55..7502f447610cd43dde465d3dc94d3a9682133a14 100644
+index 30bd8a1b75376e6c74847ec338cc7f8988d6ca8a..ab320cf5a8c68fd239e81172a2f3909a67931105 100644
 --- a/net/minecraft/world/entity/monster/Vex.java
 +++ b/net/minecraft/world/entity/monster/Vex.java
 @@ -119,6 +119,13 @@ public class Vex extends Monster implements TraceableEntity {
@@ -1265,7 +1283,7 @@ index f4893cc54d7f144025da0057beedb3a974c80dc1..70ee15527fa6f30783d6a58bb767b181
          return Monster.createMonsterAttributes()
              .add(Attributes.MAX_HEALTH, 50.0)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index 6490b3791648f0680d44d6ca1e0d3b67df180997..baf72d0e5701cd234752988284e7fefba4c56380 100644
+index b71954a47e930bfc0c501c325697cd88166a190c..630ef56b5543b1d7a3d0526c132c19b93b217b16 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -289,6 +289,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

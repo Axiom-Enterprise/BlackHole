@@ -959,10 +959,10 @@ index d75df6de50f9830efeea826d0ebdac17f56d4c4b..2b85cedf235e673d6030c2a649abf60b
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index decadd1844e197400e4130c2d4f8ef8622cfd7f6..2ace8aebd050e43582524c4a659132fef0e05be4 100644
+index 9f6b05671c973e1262cbd6673aac7f1d3a74e2e3..a46ca09f661a4f8f3ede6550d613e0c704a9389b 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
-@@ -142,6 +142,13 @@ public class Shulker extends AbstractGolem implements Enemy {
+@@ -141,6 +141,13 @@ public class Shulker extends AbstractGolem implements Enemy {
      }
      // Purpur end - Toggle for water sensitive mob damage
  

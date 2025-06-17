@@ -202,7 +202,7 @@ index a81ada76bfd6c4b49d1552f48e2009bc7d8c71d2..869a0154c81593db8933f9daa6a7d3a9
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
-index 3154ba3c1786a607a9f6511288051889632764bf..801fc7e1a6ec56a6cde5b787daebe3c8c008cc93 100644
+index 80517d5c7f074b62555d0991b0ad0678f585834f..6c80c12313147fb022d1bb0c8694fcf85174ae7c 100644
 --- a/net/minecraft/world/entity/animal/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/HappyGhast.java
 @@ -127,6 +127,19 @@ public class HappyGhast extends Animal {
@@ -1354,10 +1354,10 @@ index b67ac487ce4a7fd8b2f62452ab0b87f4a55006f2..9e7b07f353fb8f0650b8805014c37136
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index 7b04bf19ee575b9199cb65f0eb3f412a05acac08..66f26ecce4f9d74c1b008b09c0eaf4b6ef4a177a 100644
+index f37ba04ae0277152d93e3e585973d46c25e52395..1782b1c8e03447d3d4e542f7066cb1af8acd8246 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
-@@ -127,6 +127,14 @@ public class Shulker extends AbstractGolem implements Enemy {
+@@ -126,6 +126,14 @@ public class Shulker extends AbstractGolem implements Enemy {
      }
      // Purpur end - Ridables
  
@@ -1372,7 +1372,7 @@ index 7b04bf19ee575b9199cb65f0eb3f412a05acac08..66f26ecce4f9d74c1b008b09c0eaf4b6
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
-@@ -610,7 +618,7 @@ public class Shulker extends AbstractGolem implements Enemy {
+@@ -609,7 +617,7 @@ public class Shulker extends AbstractGolem implements Enemy {
  
      @Override
      protected float sanitizeScale(float scale) {
@@ -1533,7 +1533,7 @@ index ddd3a0d629f720b7acacf01bf2a7db53ee28724e..a68e9f3f96f37b6dd685fd02072f38b9
          EntityType<Strider> entityType, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Vex.java b/net/minecraft/world/entity/monster/Vex.java
-index 970eab5794263e40243f0527ab8be98252841fb0..b5e0f1a2c3ca138cfa1cc4138cf1c5e76dcb9436 100644
+index 543913b7e9e92ac43c2e557213a487140326a69e..48e193182861d5e5b5364b226493c665957bcc2f 100644
 --- a/net/minecraft/world/entity/monster/Vex.java
 +++ b/net/minecraft/world/entity/monster/Vex.java
 @@ -104,6 +104,14 @@ public class Vex extends Monster implements TraceableEntity {
@@ -1783,7 +1783,7 @@ index 4c8e49ba064241ec7ac505fa6f5df6d7f9c009b6..f52aba35ee7e202074cda8fb4dfd6a7d
          return Monster.createMonsterAttributes()
              .add(Attributes.MAX_HEALTH, 50.0)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index dc5622cbb9d6a3ba92db634d5572d3c1c16d2bf6..b91c7bdfa4df80bf52ed714efc877a30cdcb3f36 100644
+index 098dfbcf406040939e53ec212d3b433ab3b41291..76f9abb9dbb11e1b5d404cd7a398c0e8ee103150 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -272,6 +272,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

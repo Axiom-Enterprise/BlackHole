@@ -4055,10 +4055,10 @@ index 2b9a72b8742bf13c69df5ce0c905d47a92b9d8bc..b67ac487ce4a7fd8b2f62452ab0b87f4
                  this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0);
              } else {
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index b45145051f936bb08941be1b3cd2790f73102352..7b04bf19ee575b9199cb65f0eb3f412a05acac08 100644
+index ff16e0dd78687f4c9a0bce5ede4eda30e2a06263..f37ba04ae0277152d93e3e585973d46c25e52395 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
-@@ -110,12 +110,31 @@ public class Shulker extends AbstractGolem implements Enemy {
+@@ -109,12 +109,31 @@ public class Shulker extends AbstractGolem implements Enemy {
      }
      // Purpur end - Shulker change color with dye
  
@@ -4090,7 +4090,7 @@ index b45145051f936bb08941be1b3cd2790f73102352..7b04bf19ee575b9199cb65f0eb3f412a
          this.targetSelector.addGoal(1, new HurtByTargetGoal(this, this.getClass()).setAlertOthers());
          this.targetSelector.addGoal(2, new Shulker.ShulkerNearestAttackGoal(this));
          this.targetSelector.addGoal(3, new Shulker.ShulkerDefenseAttackGoal(this));
-@@ -719,7 +738,7 @@ public class Shulker extends AbstractGolem implements Enemy {
+@@ -718,7 +737,7 @@ public class Shulker extends AbstractGolem implements Enemy {
          }
      }
  
@@ -4969,7 +4969,7 @@ index 4a4cc7f9c95d4f4b6ad4948e3ed3504efbbcef15..f8a6aba7d6f0f357c72602f4ac6c2537
              && this.level() == entity.level()
              && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index bcd191dc713d426b0af739ad67953fa130d0898c..dc5622cbb9d6a3ba92db634d5572d3c1c16d2bf6 100644
+index ff4b73b83e96e0ac0b63922e6f72445cd96d2305..098dfbcf406040939e53ec212d3b433ab3b41291 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -250,6 +250,28 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

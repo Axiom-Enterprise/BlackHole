@@ -1,13 +1,5 @@
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
-@@ -52,6 +_,7 @@
- import net.minecraft.world.level.ServerLevelAccessor;
- import net.minecraft.world.level.block.Blocks;
- import net.minecraft.world.level.block.state.BlockState;
-+import net.minecraft.world.level.entity.EntityTypeTest;
- import net.minecraft.world.level.gameevent.GameEvent;
- import net.minecraft.world.level.storage.ValueInput;
- import net.minecraft.world.level.storage.ValueOutput;
 @@ -94,6 +_,21 @@
          this.lookControl = new Shulker.ShulkerLookControl(this);
      }
@@ -42,7 +34,7 @@
 +        if ((!this.level().purpurConfig.shulkerSpawnFromBulletRequireOpenLid || !this.isClosed()) && this.teleportSomewhere()) {
 +            float chance = this.level().purpurConfig.shulkerSpawnFromBulletBaseChance;
 +            if (!this.level().purpurConfig.shulkerSpawnFromBulletNearbyEquation.isBlank()) {
-+                int nearby = this.level().getEntities((EntityTypeTest) EntityType.SHULKER, boundingBox.inflate(this.level().purpurConfig.shulkerSpawnFromBulletNearbyRange), Entity::isAlive).size();
++                int nearby = this.level().getEntities((net.minecraft.world.level.entity.EntityTypeTest) EntityType.SHULKER, boundingBox.inflate(this.level().purpurConfig.shulkerSpawnFromBulletNearbyRange), Entity::isAlive).size();
 +                try {
 +                    chance -= ((Number) scriptEngine.eval("let nearby = " + nearby + "; " + this.level().purpurConfig.shulkerSpawnFromBulletNearbyEquation)).floatValue();
 +                } catch (javax.script.ScriptException e) {

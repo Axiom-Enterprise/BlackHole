@@ -1,9 +1,9 @@
 --- a/src/main/java/org/bukkit/entity/Villager.java
 +++ b/src/main/java/org/bukkit/entity/Villager.java
-@@ -391,4 +_,13 @@
-      * reputation regardless of its impact and the player associated.
+@@ -408,4 +_,13 @@
+      * Demand is still updated even if all events are canceled.
       */
-     public void clearReputations();
+     public void restock();
 +
 +    // Purpur start
 +    /**

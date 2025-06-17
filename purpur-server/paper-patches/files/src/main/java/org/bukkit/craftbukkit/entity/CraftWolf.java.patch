@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
-@@ -91,6 +_,18 @@
+@@ -90,6 +_,18 @@
          this.getHandle().setSoundVariant(CraftSoundVariant.bukkitToMinecraftHolder(soundVariant));
      }
  
@@ -16,6 +16,6 @@
 +    }
 +    // Purpur end - Configurable chance for wolves to spawn rabid
 +
-     public static class CraftVariant implements Variant, Handleable<WolfVariant> {
+     public static class CraftVariant extends HolderableBase<WolfVariant> implements Variant {
  
          public static Variant minecraftToBukkit(WolfVariant minecraft) {

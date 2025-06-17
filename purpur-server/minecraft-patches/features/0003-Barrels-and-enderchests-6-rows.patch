@@ -5,10 +5,10 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
-index 803d022cb325c850f830e2b52cd1917d230807de..5a31e11e72e80e5a5aef211a45370fb293dfd144 100644
+index cc26f97e1e72eb077dc60691dadbcd5a52235c0d..1f03fb4c45f0cc97492d3821245cc4c758d258e1 100644
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -1036,6 +1036,27 @@ public abstract class PlayerList {
+@@ -1037,6 +1037,27 @@ public abstract class PlayerList {
          player.getBukkitEntity().recalculatePermissions(); // CraftBukkit
          this.server.getCommands().sendCommands(player);
          } // Paper - Add sendOpLevel API

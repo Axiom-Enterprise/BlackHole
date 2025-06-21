@@ -1,24 +1,6 @@
 --- a/net/minecraft/world/level/ServerExplosion.java
 +++ b/net/minecraft/world/level/ServerExplosion.java
-@@ -316,7 +_,7 @@
-     ) {
-         this.level = level;
-         this.source = source;
--        this.radius = (float) Math.max(radius, 0.0); // CraftBukkit - clamp bad values
-+        this.radius = (float) (level == null || level.purpurConfig.explosionClampRadius ? Math.max(radius, 0.0) : radius); // CraftBukkit - clamp bad values // Purpur - Config to remove explosion radius clamp
-         this.center = center;
-         this.fire = fire;
-         this.blockInteraction = blockInteraction;
-@@ -638,7 +_,7 @@
- 
-     public void explode() {
-         // CraftBukkit start
--        if (this.radius < 0.1F) {
-+        if ((this.level == null || this.level.purpurConfig.explosionClampRadius) && this.radius < 0.1F) { // Purpur - Config to remove explosion radius clamp
-             return;
-         }
-         // CraftBukkit end
-@@ -650,6 +_,23 @@
+@@ -648,6 +_,23 @@
          this.directMappedBlockCache = new ca.spottedleaf.moonrise.patches.collisions.ExplosionBlockCache[BLOCK_EXPLOSION_CACHE_WIDTH * BLOCK_EXPLOSION_CACHE_WIDTH * BLOCK_EXPLOSION_CACHE_WIDTH];
          this.mutablePos = new BlockPos.MutableBlockPos();
          // Paper end - collision optimisations

@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing override to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 4f149e5e17d2d2f2964e2f6626e20f52121e72d9..a70fddd19b24bb25edde63e4fda4685ee6997eba 100644
+index c7071efb54381976890b28d99b15391130217f31..70808e9f092953a3edf7001b318c91228844f73c 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1936,7 +1936,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -294,15 +294,15 @@ index 8c84cea43fc0e42a576004663670977eac99f1a6..6a0ec832226894687b28f35e1a8a190b
          // CraftBukkit end
      }
 diff --git a/net/minecraft/world/entity/raid/Raider.java b/net/minecraft/world/entity/raid/Raider.java
-index df0753c89b7c613f2abac9c50ce7f897ba280803..3baba21d106ab09ae476238f2636169c371f43cf 100644
+index a495789b2d21fa9a24d5dca4ecfa196ddce49466..2254493c889b8967011c09dc448ba375d82e2035 100644
 --- a/net/minecraft/world/entity/raid/Raider.java
 +++ b/net/minecraft/world/entity/raid/Raider.java
 @@ -401,7 +401,7 @@ public abstract class Raider extends PatrollingMonster {
          }
  
          private boolean cannotPickUpBanner() {
--            if (!getServerLevel(this.mob).getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING) || !this.mob.canPickUpLoot()) return false; // Paper - respect game and entity rules for picking up items
-+            if (!getServerLevel(this.mob).getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING, this.mob.level().purpurConfig.pillagerMobGriefingOverride) || !this.mob.canPickUpLoot()) return false; // Paper - respect game and entity rules for picking up items // Purpur - Add mobGriefing override to everything affected
+-            if (!getServerLevel(this.mob).getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING)) return true; // Paper - respect game and entity rules for picking up items
++            if (!getServerLevel(this.mob).getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING, this.mob.level().purpurConfig.pillagerMobGriefingOverride)) return true; // Paper - respect game and entity rules for picking up items // Purpur - Add mobGriefing override to everything affected
              if (!this.mob.hasActiveRaid()) {
                  return true;
              } else if (this.mob.getCurrentRaid().isOver()) {

@@ -1,6 +1,6 @@
 --- a/net/minecraft/commands/Commands.java
 +++ b/net/minecraft/commands/Commands.java
-@@ -251,7 +_,7 @@
+@@ -252,7 +_,7 @@
              JfrCommand.register(this.dispatcher);
          }
  
@@ -9,7 +9,7 @@
              RaidCommand.register(this.dispatcher, context);
              DebugPathCommand.register(this.dispatcher);
              DebugMobSpawningCommand.register(this.dispatcher);
-@@ -279,6 +_,14 @@
+@@ -280,6 +_,14 @@
              StopCommand.register(this.dispatcher);
              TransferCommand.register(this.dispatcher);
              WhitelistCommand.register(this.dispatcher);
@@ -24,7 +24,7 @@
          }
  
          if (selection.includeIntegrated) {
-@@ -537,6 +_,7 @@
+@@ -502,6 +_,7 @@
      private void runSync(ServerPlayer player, java.util.Collection<String> bukkit, RootCommandNode<CommandSourceStack> rootCommandNode) {
          // Paper end - Perf: Async command map building
          new com.destroystokyo.paper.event.brigadier.AsyncPlayerSendCommandsEvent<CommandSourceStack>(player.getBukkitEntity(), (RootCommandNode) rootCommandNode, true).callEvent(); // Paper - Brigadier API
@@ -32,7 +32,7 @@
          org.bukkit.event.player.PlayerCommandSendEvent event = new org.bukkit.event.player.PlayerCommandSendEvent(player.getBukkitEntity(), new java.util.LinkedHashSet<>(bukkit));
          event.getPlayer().getServer().getPluginManager().callEvent(event);
  
-@@ -547,6 +_,8 @@
+@@ -512,6 +_,8 @@
              }
          }
          // CraftBukkit end

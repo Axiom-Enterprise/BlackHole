@@ -24,7 +24,7 @@
          }
  
          if (selection.includeIntegrated) {
-@@ -502,6 +_,7 @@
+@@ -504,6 +_,7 @@
      private void runSync(ServerPlayer player, java.util.Collection<String> bukkit, RootCommandNode<CommandSourceStack> rootCommandNode) {
          // Paper end - Perf: Async command map building
          new com.destroystokyo.paper.event.brigadier.AsyncPlayerSendCommandsEvent<CommandSourceStack>(player.getBukkitEntity(), (RootCommandNode) rootCommandNode, true).callEvent(); // Paper - Brigadier API
@@ -32,7 +32,7 @@
          org.bukkit.event.player.PlayerCommandSendEvent event = new org.bukkit.event.player.PlayerCommandSendEvent(player.getBukkitEntity(), new java.util.LinkedHashSet<>(bukkit));
          event.getPlayer().getServer().getPluginManager().callEvent(event);
  
-@@ -512,6 +_,8 @@
+@@ -514,6 +_,8 @@
              }
          }
          // CraftBukkit end

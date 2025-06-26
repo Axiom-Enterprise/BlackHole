@@ -158,7 +158,7 @@
      // Paper start - optimise collisions
      public boolean updateFluidHeightAndDoFluidPushing(final TagKey<Fluid> fluid, final double flowScale) {
          if (this.touchingUnloadedChunk()) {
-@@ -5117,7 +_,7 @@
+@@ -5107,7 +_,7 @@
      }
  
      public float maxUpStep() {

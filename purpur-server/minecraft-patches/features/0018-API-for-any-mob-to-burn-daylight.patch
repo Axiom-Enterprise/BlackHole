@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index d4f9a29cfbb59d557eef790ca07575187c99854b..068ce6f155abf3bda758f2bcdb4377836c610945 100644
+index 34e0fbef06b0c7aededf27fe9dc64f3f6f33e3ae..ce3e5ec505ac37c820436bcf7c7d6452ff015f70 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -542,6 +542,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -122,7 +122,7 @@ index e05cf29c630d43c66614012c50b9dd4ece4c44f6..b0a5f79eb2c3ea84fd37eaa653a4f2c8
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/AbstractSkeleton.java b/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index caa018d1dd0b6e97ec9d3fa70bbffe9eb3b1edec..d69d5b575e93b4ae9a0e2b311352fd3790d464c6 100644
+index 352d0655374e05da787225c3fce8803fa547c99d..53ab51ffa5dd7d30a25f17dea0d9106bf30b49ba 100644
 --- a/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -64,11 +64,12 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -168,7 +168,7 @@ index caa018d1dd0b6e97ec9d3fa70bbffe9eb3b1edec..d69d5b575e93b4ae9a0e2b311352fd37
          super.aiStep();
      }
  
-@@ -242,14 +223,14 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+@@ -245,14 +226,14 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
      protected void readAdditionalSaveData(ValueInput input) {
          super.readAdditionalSaveData(input);
          this.reassessWeaponGoal();

@@ -18,10 +18,10 @@ index 61ab8b508d2b614d0f05ae4cc23dc214f8e95a1d..d6e8bd3b302f821b286b15db3d66c8b2
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 3a07d62d6f00bc261b0ac9edd039cdd4c6e20556..81c5d821ea566b738904ee8005d39f524ff92587 100644
+index ef5c6a760eb6e72beab186a315bd02e804c9ae53..306230339574bc35a309877033fa6012e4596f08 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1746,6 +1746,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1744,6 +1744,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              serverLevel.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              serverLevel.updateLagCompensationTick(); // Paper - lag compensation
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = serverLevel.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
@@ -42,10 +42,10 @@ index 83eff33884bffddfafc85eeb4a2900104a396e2e..3c7159d0981c948e71a5612ba4083acc
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index cb8b23e04d9315c733856a2e2956cfbf5860d516..1ac6488820c569e84c5666ce58223b321dab7a39 100644
+index 63ef4690ff76df961fcc51dabd0f4f3d7de09fe9..7adb3d1f75896f1e31747e3356b124948a1c77c0 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -797,6 +797,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -861,6 +861,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          this.trackEnteredOrExitedLavaOnVehicle();
          this.updatePlayerAttributes();
          this.advancements.flushDirty(this, true);
@@ -62,7 +62,7 @@ index cb8b23e04d9315c733856a2e2956cfbf5860d516..1ac6488820c569e84c5666ce58223b32
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 014557e343d3ede351b3a2b950bb803d7e771490..628b1a5ac93d7cd1be8175aab88d2f5e29b60257 100644
+index 8a04052908fa53028b7d5a4619908d12b1e10766..79c3baf041cb7f10753d8a01ec03e95d5564f21b 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2844,6 +2844,8 @@ public class ServerGamePacketListenerImpl
@@ -75,7 +75,7 @@ index 014557e343d3ede351b3a2b950bb803d7e771490..628b1a5ac93d7cd1be8175aab88d2f5e
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 0e1c463d53c02454f0770f7ad547768f5ba0ca02..a2a7b927cb36ef8b1f98f452ea4169b8e2d540e9 100644
+index 1d8ba25d542c49a687414a8b6d1d2fa16ca695d5..34e0fbef06b0c7aededf27fe9dc64f3f6f33e3ae 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3303,6 +3303,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -107,7 +107,7 @@ index 0e1c463d53c02454f0770f7ad547768f5ba0ca02..a2a7b927cb36ef8b1f98f452ea4169b8
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5403,4 +5418,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5398,4 +5413,44 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
@@ -3009,7 +3009,7 @@ index c4a2fb6f08e5d6d69571f448c6ac9defaac3fcd3..2c6158de44a8ba95d3c5124ed2827a0a
  
      public boolean isPowered() {
 diff --git a/net/minecraft/world/entity/monster/AbstractSkeleton.java b/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index fa124fc779aaf7c1747a2007a2d5826cd4fde13a..caa018d1dd0b6e97ec9d3fa70bbffe9eb3b1edec 100644
+index 4e14f1a9ee22d08065a3e971c2aecc9363ebff13..352d0655374e05da787225c3fce8803fa547c99d 100644
 --- a/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -73,12 +73,14 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -3731,7 +3731,7 @@ index 8d6def85583a111841b28f20f58ddb8b8cbd7bc1..0335e85f196363c06597812149e9a93c
          EntityType<Husk> entityType, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Illusioner.java b/net/minecraft/world/entity/monster/Illusioner.java
-index ec090d191969983c31950b8376bbb36ee8fce922..304a1ce41071e5597859b1235fa014f966ff5cfb 100644
+index 7441b019f669653e3e738f27c866270c30acffd4..bb2649001f0b31676a51378745818d5c5b15c443 100644
 --- a/net/minecraft/world/entity/monster/Illusioner.java
 +++ b/net/minecraft/world/entity/monster/Illusioner.java
 @@ -57,10 +57,28 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {

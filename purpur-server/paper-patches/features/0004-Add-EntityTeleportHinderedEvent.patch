@@ -17,10 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 7aaeafd5ee030d032d6e0574fc991942fac5eaa7..df23fbae231eca494131bf7ec78924669cd5e03d 100644
+index edc1758f12b36555edb7eaba2ea3bd78118dda93..7a9e20699a8a5e95910ed15eb6cd1192b2df89cc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -309,6 +309,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -314,6 +314,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          boolean retainPassengers = flagSet.contains(io.papermc.paper.entity.TeleportFlag.EntityState.RETAIN_PASSENGERS);
          // Don't allow teleporting between worlds while keeping passengers
          if (flagSet.contains(io.papermc.paper.entity.TeleportFlag.EntityState.RETAIN_PASSENGERS) && this.entity.isVehicle() && location.getWorld() != this.getWorld()) {
@@ -29,10 +29,10 @@ index 7aaeafd5ee030d032d6e0574fc991942fac5eaa7..df23fbae231eca494131bf7ec7892466
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 91f56fffbced0599d77d39c6d1d8de78b960e58c..213afcae6bb02e4e340d5fa477bdddbb9434fc70 100644
+index 5fa91d288bd5bc3990f4416f9d30202d7379ccdd..7f17c5025f25e44a917f5d6a65b8d958a982b301 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1439,6 +1439,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1447,6 +1447,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          // Paper start - Teleport passenger API
          // Don't allow teleporting between worlds while keeping passengers
          if (ignorePassengers && entity.isVehicle() && location.getWorld() != this.getWorld()) {
@@ -40,7 +40,7 @@ index 91f56fffbced0599d77d39c6d1d8de78b960e58c..213afcae6bb02e4e340d5fa477bdddbb
              return false;
          }
  
-@@ -1460,6 +1461,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1468,6 +1469,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          }
  
          if (entity.isVehicle() && !ignorePassengers) { // Paper - Teleport API

@@ -5,10 +5,10 @@ Subject: [PATCH] Ridables
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 5fcfbb42c4491ee0878c87bd1724b9bfab57c128..7aaeafd5ee030d032d6e0574fc991942fac5eaa7 100644
+index af6420cdf988badaf70e8c075d2ab9b6a4935e88..edc1758f12b36555edb7eaba2ea3bd78118dda93 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1348,4 +1348,26 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1345,4 +1345,26 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return this.entity.get(io.papermc.paper.datacomponent.PaperDataComponentType.bukkitToMinecraft(type)) != null;
      }
  
@@ -36,7 +36,7 @@ index 5fcfbb42c4491ee0878c87bd1724b9bfab57c128..7aaeafd5ee030d032d6e0574fc991942
 +    // Purpur end - Ridables
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 5ceb08265f883e6634f3f4189c74aa8395addd12..5d64ce696db99f4cefe2c74357b400e00a4ccf60 100644
+index c5daefa56597bd13fe227fa014ca5225c00a2a2d..98b766d115856dbf3ea11a983c1304591032f1b0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -515,6 +515,15 @@ public class CraftEventFactory {

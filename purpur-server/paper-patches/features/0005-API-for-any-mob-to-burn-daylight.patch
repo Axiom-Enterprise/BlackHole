@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index d00238a0f39c5b19575cd0463b0b5da1f1db1a2e..55ae7d0a5b36ff10880d4e5fb1bb7f7724a743fd 100644
+index 7a9e20699a8a5e95910ed15eb6cd1192b2df89cc..476eefebace887064b728f08af40c746b6f70787 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -120,6 +120,13 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -125,6 +125,13 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
      }
      // Purpur end - Fire Immunity API
  

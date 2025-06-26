@@ -1,0 +1,26 @@
+From fdaa40d397c78dc3305420f9e42eead78bea1982 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/Blocks.java b/net/minecraft/world/level/block/Blocks.java
+index ff2743d808f3c309bf098b98a6fcba7d019f54c1..941c57083803d69503e83c3ccbbb2759ba3db605 100644
+--- a/net/minecraft/world/level/block/Blocks.java
++++ b/net/minecraft/world/level/block/Blocks.java
+@@ -6571,6 +6571,7 @@ public class Blocks {
+         BlockBehaviour.Properties.of()
+             .mapColor(MapColor.PLANT)
+             .forceSolidOff()
++            .randomTicks() // Purpur - Chance for azalea blocks to grow into trees naturally
+             .instabreak()
+             .sound(SoundType.AZALEA)
+             .noOcclusion()
+@@ -6582,6 +6583,7 @@ public class Blocks {
+         BlockBehaviour.Properties.of()
+             .mapColor(MapColor.PLANT)
+             .forceSolidOff()
++            .randomTicks() // Purpur - Chance for azalea blocks to grow into trees naturally
+             .instabreak()
+             .sound(SoundType.FLOWERING_AZALEA)
+             .noOcclusion()

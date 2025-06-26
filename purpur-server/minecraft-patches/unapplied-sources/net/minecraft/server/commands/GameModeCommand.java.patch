@@ -1,0 +1,29 @@
+From fdaa40d397c78dc3305420f9e42eead78bea1982 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/commands/GameModeCommand.java b/net/minecraft/server/commands/GameModeCommand.java
+index 9da9ab3b835a8dcc7e1da286be1de88a3f0240fa..4b8c9aaf1d143bc38f52f646e4e73b56013eda8c 100644
+--- a/net/minecraft/server/commands/GameModeCommand.java
++++ b/net/minecraft/server/commands/GameModeCommand.java
+@@ -53,6 +53,18 @@ public class GameModeCommand {
+     }
+ 
+     private static int setMode(CommandContext<CommandSourceStack> source, Collection<ServerPlayer> players, GameType gameType) {
++        // Purpur start - Gamemode extra permissions
++        if (org.purpurmc.purpur.PurpurConfig.commandGamemodeRequiresPermission) {
++            String gamemode = gameType.getName();
++            CommandSourceStack sender = source.getSource();
++            if (!sender.testPermission(2, "minecraft.command.gamemode." + gamemode)) {
++                return 0;
++            }
++            if (sender.getEntity() instanceof ServerPlayer player && (players.size() > 1 || !players.contains(player)) && !sender.testPermission(2, "minecraft.command.gamemode." + gamemode + ".other")) {
++                return 0;
++            }
++        }
++        // Purpur end - Gamemode extra permissions
+         int i = 0;
+ 
+         for (ServerPlayer serverPlayer : players) {

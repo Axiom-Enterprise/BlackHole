@@ -1,0 +1,21 @@
+From fdaa40d397c78dc3305420f9e42eead78bea1982 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/item/DyeColor.java b/net/minecraft/world/item/DyeColor.java
+index 76bb211843eee94334fbba87e5fa5ba5430f89ba..c9cde255117b46690b2b6670d009a00b051af016 100644
+--- a/net/minecraft/world/item/DyeColor.java
++++ b/net/minecraft/world/item/DyeColor.java
+@@ -126,4 +126,10 @@ public enum DyeColor implements StringRepresentable {
+     private static CraftingInput makeCraftColorInput(DyeColor first, DyeColor second) {
+         return CraftingInput.of(2, 1, List.of(new ItemStack(DyeItem.byColor(first)), new ItemStack(DyeItem.byColor(second))));
+     }
++
++    // Purpur start - Shulker spawn from bullet options
++    public static DyeColor random(net.minecraft.util.RandomSource random) {
++        return values()[random.nextInt(values().length)];
++    }
++    // Purpur end - Shulker spawn from bullet options
+ }

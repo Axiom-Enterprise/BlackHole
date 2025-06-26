@@ -1,0 +1,19 @@
+From fdaa40d397c78dc3305420f9e42eead78bea1982 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/PoweredRailBlock.java b/net/minecraft/world/level/block/PoweredRailBlock.java
+index e4c4a6b4a6ea41b1fdb006cfc70dfb68dcd056c0..0c78c9003d93d0a36da9318910b6f0769932d39a 100644
+--- a/net/minecraft/world/level/block/PoweredRailBlock.java
++++ b/net/minecraft/world/level/block/PoweredRailBlock.java
+@@ -28,7 +28,7 @@ public class PoweredRailBlock extends BaseRailBlock {
+     }
+ 
+     protected boolean findPoweredRailSignal(Level level, BlockPos pos, BlockState state, boolean searchForward, int recursionCount) {
+-        if (recursionCount >= 8) {
++        if (recursionCount >= level.purpurConfig.railActivationRange) { // Purpur - Config for powered rail activation distance
+             return false;
+         } else {
+             int x = pos.getX();

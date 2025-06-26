@@ -1,0 +1,36 @@
+From fdaa40d397c78dc3305420f9e42eead78bea1982 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/monster/piglin/PiglinAi.java b/net/minecraft/world/entity/monster/piglin/PiglinAi.java
+index 4b1a3772f9e6b9e4efcf11e14b0fb882512ec86d..2841c765b2bd804f08bd0e603b4b29cf8a801fab 100644
+--- a/net/minecraft/world/entity/monster/piglin/PiglinAi.java
++++ b/net/minecraft/world/entity/monster/piglin/PiglinAi.java
+@@ -661,7 +661,10 @@ public class PiglinAi {
+ 
+     public static boolean isWearingSafeArmor(LivingEntity entity) {
+         for (EquipmentSlot equipmentSlot : EquipmentSlotGroup.ARMOR) {
+-            if (entity.getItemBySlot(equipmentSlot).is(ItemTags.PIGLIN_SAFE_ARMOR)) {
++            // Purpur start - piglins ignore gold-trimmed armor
++            net.minecraft.world.item.ItemStack itemStack = entity.getItemBySlot(equipmentSlot);
++            if (itemStack.is(ItemTags.PIGLIN_SAFE_ARMOR) || (entity.level().purpurConfig.piglinIgnoresArmorWithGoldTrim && isWearingGoldTrim(itemStack))) {
++            // Purpur end - piglins ignore gold-trimmed armor
+                 return true;
+             }
+         }
+@@ -669,6 +672,13 @@ public class PiglinAi {
+         return false;
+     }
+ 
++    // Purpur start - piglins ignore gold-trimmed armor
++    private static boolean isWearingGoldTrim(net.minecraft.world.item.ItemStack itemstack) {
++        net.minecraft.world.item.equipment.trim.ArmorTrim armorTrim = itemstack.getComponents().get(net.minecraft.core.component.DataComponents.TRIM);
++        return armorTrim != null && armorTrim.material().is(net.minecraft.world.item.equipment.trim.TrimMaterials.GOLD);
++    }
++    // Purpur end - piglins ignore gold-trimmed armor
++
+     private static void stopWalking(Piglin piglin) {
+         piglin.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+         piglin.getNavigation().stop();

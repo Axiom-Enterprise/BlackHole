@@ -1,0 +1,18 @@
+From fdaa40d397c78dc3305420f9e42eead78bea1982 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/commands/GiveCommand.java b/net/minecraft/server/commands/GiveCommand.java
+index ea9db57a1fe2f11739ceb062ea7cce15776f959a..a919d91eeaaeef0f79190cc5e78e4f8b2fb468dd 100644
+--- a/net/minecraft/server/commands/GiveCommand.java
++++ b/net/minecraft/server/commands/GiveCommand.java
+@@ -69,6 +69,7 @@ public class GiveCommand {
+                     i1 -= min;
+                     ItemStack itemStack1 = item.createItemStack(min, false);
+                     boolean flag = serverPlayer.getInventory().add(itemStack1);
++                    if (org.purpurmc.purpur.PurpurConfig.disableGiveCommandDrops) continue; // Purpur - add config option for toggling give command dropping
+                     if (flag && itemStack1.isEmpty()) {
+                         ItemEntity itemEntity = serverPlayer.drop(itemStack, false);
+                         if (itemEntity != null) {

@@ -1,0 +1,88 @@
+From fdaa40d397c78dc3305420f9e42eead78bea1982 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
+index 0470c4bbf8be7e48ce8dfa4910c3b9f5ebb23360..9784ae86390748bf72e2cc75d67b99f766335ee8 100644
+--- a/net/minecraft/world/entity/Mob.java
++++ b/net/minecraft/world/entity/Mob.java
+@@ -139,6 +139,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+     private BlockPos homePosition = BlockPos.ZERO;
+     private int homeRadius = -1;
+     public boolean aware = true; // CraftBukkit
++    public int ticksSinceLastInteraction; // Purpur - Entity lifespan
+ 
+     protected Mob(EntityType<? extends Mob> entityType, Level level) {
+         super(entityType, level);
+@@ -284,6 +285,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+                 target = null;
+             }
+         }
++        if (target instanceof net.minecraft.server.level.ServerPlayer) this.ticksSinceLastInteraction = 0; // Purpur - Entity lifespan
+         this.target = target;
+         return true;
+         // CraftBukkit end
+@@ -327,8 +329,28 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+         }
+ 
+         profilerFiller.pop();
++        incrementTicksSinceLastInteraction(); // Purpur - Entity lifespan
+     }
+ 
++    // Purpur start - Entity lifespan
++    private void incrementTicksSinceLastInteraction() {
++        ++this.ticksSinceLastInteraction;
++        if (getRider() != null) {
++            this.ticksSinceLastInteraction = 0;
++            return;
++        }
++        if (this.level().purpurConfig.entityLifeSpan <= 0) {
++            return; // feature disabled
++        }
++        if (!this.removeWhenFarAway(0) || isPersistenceRequired() || requiresCustomPersistence() || hasCustomName()) {
++            return; // mob persistent
++        }
++        if (this.ticksSinceLastInteraction > this.level().purpurConfig.entityLifeSpan) {
++            this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
++        }
++    }
++    // Purpur end - Entity lifespan
++
+     @Override
+     protected void playHurtSound(DamageSource source) {
+         this.resetAmbientSoundTime();
+@@ -427,6 +449,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+             output.putBoolean("NoAI", this.isNoAi());
+         }
+         output.putBoolean("Bukkit.Aware", this.aware); // CraftBukkit
++        output.putInt("Purpur.ticksSinceLastInteraction", this.ticksSinceLastInteraction); // Purpur - Entity lifespan
+     }
+ 
+     @Override
+@@ -454,6 +477,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+         this.lootTableSeed = input.getLongOr("DeathLootTableSeed", 0L);
+         this.setNoAi(input.getBooleanOr("NoAI", false));
+         this.aware = input.getBooleanOr("Bukkit.Aware", true); // CraftBukkit
++        this.ticksSinceLastInteraction = input.getIntOr("Purpur.ticksSinceLastInteraction", 0); // Purpur- Entity lifespan
+     }
+ 
+     @Override
+@@ -1188,7 +1212,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+             );
+         }
+ 
+-        this.setLeftHanded(random.nextFloat() < 0.05F);
++        this.setLeftHanded(random.nextFloat() < level.getLevel().purpurConfig.entityLeftHandedChance); // Purpur - Changeable Mob Left Handed Chance
+         return spawnGroupData;
+     }
+ 
+@@ -1525,6 +1549,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+             this.playAttackSound();
+         }
+ 
++        if (target instanceof net.minecraft.server.level.ServerPlayer) this.ticksSinceLastInteraction = 0; // Purpur - Entity lifespan
+         return flag;
+     }
+ 

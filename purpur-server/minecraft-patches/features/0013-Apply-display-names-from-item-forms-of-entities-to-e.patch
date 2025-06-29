@@ -6,7 +6,7 @@ Subject: [PATCH] Apply display names from item forms of entities to entities
 
 
 diff --git a/net/minecraft/world/entity/decoration/ArmorStand.java b/net/minecraft/world/entity/decoration/ArmorStand.java
-index 5dfd78a0e00cae85feff8acd785cdfdf23433ba6..e6813da9d002b90acd44db1435f5fa9bf1bbed47 100644
+index e2ffc9b4a95a7684a28b47ad93644c95f9eb5ec8..f145925a8215a501c8013045947de996e3c85532 100644
 --- a/net/minecraft/world/entity/decoration/ArmorStand.java
 +++ b/net/minecraft/world/entity/decoration/ArmorStand.java
 @@ -450,6 +450,7 @@ public class ArmorStand extends LivingEntity {

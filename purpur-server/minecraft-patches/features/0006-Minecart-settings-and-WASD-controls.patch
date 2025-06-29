@@ -5,10 +5,10 @@ Subject: [PATCH] Minecart settings and WASD controls
 
 
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 7adb3d1f75896f1e31747e3356b124948a1c77c0..a8d3db032f9a808419b4c3a3790c65a63a31ab9d 100644
+index a249567d9cd2dfb552748ab4112709c0c0d2009b..f047ba2070ffe733a97a944b02fdb5f62046f657 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -1270,6 +1270,11 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1204,6 +1204,11 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          } else {
              // Purpur start - Add boat fall damage config
              if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_FALL)) {

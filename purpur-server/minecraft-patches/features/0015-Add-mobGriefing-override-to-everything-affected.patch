@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing override to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index c7071efb54381976890b28d99b15391130217f31..70808e9f092953a3edf7001b318c91228844f73c 100644
+index 4f149e5e17d2d2f2964e2f6626e20f52121e72d9..a70fddd19b24bb25edde63e4fda4685ee6997eba 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1936,7 +1936,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin

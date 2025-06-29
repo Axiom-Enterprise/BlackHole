@@ -176,10 +176,10 @@ index 07767c9d649e7ef2b8fd8e3ac62d99ce13271fe4..23e119ce82c3a0541b40249b20f133e3
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
-index 136b918f053cacbc4fa60b0ed434619c5e07adf5..60073e503d6e52160e6d4e037b128bdeb6d56073 100644
+index 9b101015f7add4821fb863255294ba2171f5405f..57d691d4bdb63d20ee582f28c475b5eaca128269 100644
 --- a/net/minecraft/world/entity/animal/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/HappyGhast.java
-@@ -147,6 +147,13 @@ public class HappyGhast extends Animal {
+@@ -153,6 +153,13 @@ public class HappyGhast extends Animal {
      }
      // Purpur end - Make entity breeding times configurable
  
@@ -899,7 +899,7 @@ index 75cb1db5584c04e442583ab2f50a26132ed48bfb..9baec22561093d64157d93449e84c23b
          EntityType<Husk> entityType, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Illusioner.java b/net/minecraft/world/entity/monster/Illusioner.java
-index c45786fa6b9c7834b73fa0266ad4f37dfdfb8937..b2e59058c71eb0b05670be8dcddfff073ae2d0db 100644
+index 6311261d71aa062ba497a73cd22cb5dbdf2a4cdb..4b68c0e999c37b3a3b62b522e2fcc805d2483943 100644
 --- a/net/minecraft/world/entity/monster/Illusioner.java
 +++ b/net/minecraft/world/entity/monster/Illusioner.java
 @@ -84,6 +84,13 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {
@@ -989,7 +989,7 @@ index 23b6d3c9746e1ee641d8b19ec50805cb271a9cc9..d75df6de50f9830efeea826d0ebdac17
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index 1782b1c8e03447d3d4e542f7066cb1af8acd8246..9f6b05671c973e1262cbd6673aac7f1d3a74e2e3 100644
+index 5bd06e2128dfbd58d1d6308e93fb6a086185d346..dae9752d8f45a067b952885b25df3990504c077e 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
 @@ -134,6 +134,13 @@ public class Shulker extends AbstractGolem implements Enemy {
@@ -1137,10 +1137,10 @@ index 48e193182861d5e5b5364b226493c665957bcc2f..30bd8a1b75376e6c74847ec338cc7f89
      public boolean isFlapping() {
          return this.tickCount % TICKS_PER_FLAP == 0;
 diff --git a/net/minecraft/world/entity/monster/Vindicator.java b/net/minecraft/world/entity/monster/Vindicator.java
-index 0abc1da5154bef4c7aa03d44f651af39b289c187..9f4d93308adc49d7ae83796a8dc43db16e7992b6 100644
+index 1f66c8d5194ee5b3794ea86a951ae553aa375422..28fc1cd1e8721e2a87b5aa610d27afa8df3f4074 100644
 --- a/net/minecraft/world/entity/monster/Vindicator.java
 +++ b/net/minecraft/world/entity/monster/Vindicator.java
-@@ -82,6 +82,13 @@ public class Vindicator extends AbstractIllager {
+@@ -81,6 +81,13 @@ public class Vindicator extends AbstractIllager {
      }
      // Purpur end - Configurable entity base attributes
  
@@ -1317,10 +1317,10 @@ index f52aba35ee7e202074cda8fb4dfd6a7d9ded1f09..f4893cc54d7f144025da0057beedb3a9
          return Monster.createMonsterAttributes()
              .add(Attributes.MAX_HEALTH, 50.0)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index f46a105ac032d3c5a749e92cf004f6d74d0fb957..b71954a47e930bfc0c501c325697cd88166a190c 100644
+index d4c4856dccb56e2108f174a37e88ad2268967c8a..67732dbbad95791724901058615026a90ad05fc5 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
-@@ -282,6 +282,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -281,6 +281,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
      // Purpur end - Configurable entity base attributes
  

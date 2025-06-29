@@ -23,7 +23,7 @@ index 8e8ddab59de508c84c4182e105a11554387dcce0..1896f91e10a5e17332836d5354813a18
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index d272f5e789cb6c03ede0bece14fc3fe976a02ff3..41b6b18130d89b3c3c31bbb2d184fa735a8cd99c 100644
+index e78d30d8fdfcb1a530bf3380251fabd0c9a18f46..ae0c2f41c522656bde37d4f31699ee6172b5a79d 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -291,6 +291,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -202,10 +202,10 @@ index a81ada76bfd6c4b49d1552f48e2009bc7d8c71d2..869a0154c81593db8933f9daa6a7d3a9
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
-index 80517d5c7f074b62555d0991b0ad0678f585834f..6c80c12313147fb022d1bb0c8694fcf85174ae7c 100644
+index b425f43eb15abdfd6e10b5443acc3d5a68d63a70..3bdfd064ba3985e7f3d1c537d60908568678ec78 100644
 --- a/net/minecraft/world/entity/animal/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/HappyGhast.java
-@@ -127,6 +127,19 @@ public class HappyGhast extends Animal {
+@@ -133,6 +133,19 @@ public class HappyGhast extends Animal {
      }
      // Purpur end - Ridables
  
@@ -225,7 +225,7 @@ index 80517d5c7f074b62555d0991b0ad0678f585834f..6c80c12313147fb022d1bb0c8694fcf8
      @Override
      protected void ageBoundaryReached() {
          if (this.isBaby()) {
-@@ -150,7 +163,7 @@ public class HappyGhast extends Animal {
+@@ -156,7 +169,7 @@ public class HappyGhast extends Animal {
  
      @Override
      protected float sanitizeScale(float scale) {
@@ -1222,7 +1222,7 @@ index 0335e85f196363c06597812149e9a93cba57fa9e..5b0794bd87423715cada1f860b4141fd
          EntityType<Husk> entityType, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Illusioner.java b/net/minecraft/world/entity/monster/Illusioner.java
-index 304a1ce41071e5597859b1235fa014f966ff5cfb..c45786fa6b9c7834b73fa0266ad4f37dfdfb8937 100644
+index bb2649001f0b31676a51378745818d5c5b15c443..6311261d71aa062ba497a73cd22cb5dbdf2a4cdb 100644
 --- a/net/minecraft/world/entity/monster/Illusioner.java
 +++ b/net/minecraft/world/entity/monster/Illusioner.java
 @@ -74,6 +74,16 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {
@@ -1354,7 +1354,7 @@ index b67ac487ce4a7fd8b2f62452ab0b87f4a55006f2..9e7b07f353fb8f0650b8805014c37136
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index f37ba04ae0277152d93e3e585973d46c25e52395..1782b1c8e03447d3d4e542f7066cb1af8acd8246 100644
+index c19258a6dade5b7605d97eca7140a7b30e00cb8b..5bd06e2128dfbd58d1d6308e93fb6a086185d346 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
 @@ -126,6 +126,14 @@ public class Shulker extends AbstractGolem implements Enemy {
@@ -1552,10 +1552,10 @@ index 543913b7e9e92ac43c2e557213a487140326a69e..48e193182861d5e5b5364b226493c665
      public boolean isFlapping() {
          return this.tickCount % TICKS_PER_FLAP == 0;
 diff --git a/net/minecraft/world/entity/monster/Vindicator.java b/net/minecraft/world/entity/monster/Vindicator.java
-index f908db6eeff5ee5a1ab2783d8e8bbb1598c3ace3..0abc1da5154bef4c7aa03d44f651af39b289c187 100644
+index 8e5bf153a457026808e2ea670e874e66ca0d5e98..1f66c8d5194ee5b3794ea86a951ae553aa375422 100644
 --- a/net/minecraft/world/entity/monster/Vindicator.java
 +++ b/net/minecraft/world/entity/monster/Vindicator.java
-@@ -74,6 +74,14 @@ public class Vindicator extends AbstractIllager {
+@@ -73,6 +73,14 @@ public class Vindicator extends AbstractIllager {
      }
      // Purpur end - Ridables
  
@@ -1783,10 +1783,10 @@ index 4c8e49ba064241ec7ac505fa6f5df6d7f9c009b6..f52aba35ee7e202074cda8fb4dfd6a7d
          return Monster.createMonsterAttributes()
              .add(Attributes.MAX_HEALTH, 50.0)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index 098dfbcf406040939e53ec212d3b433ab3b41291..76f9abb9dbb11e1b5d404cd7a398c0e8ee103150 100644
+index b1cad9a37d8d1f053add366699c5277c4fd84f6b..eefc5c1f494f1053f93559e8c666065f561dec10 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
-@@ -272,6 +272,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -271,6 +271,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
      // Purpur end - Ridables
  

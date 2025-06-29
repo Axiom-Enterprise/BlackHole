@@ -42,10 +42,10 @@ index 83eff33884bffddfafc85eeb4a2900104a396e2e..3c7159d0981c948e71a5612ba4083acc
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 63ef4690ff76df961fcc51dabd0f4f3d7de09fe9..7adb3d1f75896f1e31747e3356b124948a1c77c0 100644
+index 982836b811289eee0f4f5481c7c8796a89a3ef74..a249567d9cd2dfb552748ab4112709c0c0d2009b 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -861,6 +861,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -795,6 +795,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          this.trackEnteredOrExitedLavaOnVehicle();
          this.updatePlayerAttributes();
          this.advancements.flushDirty(this, true);
@@ -62,10 +62,10 @@ index 63ef4690ff76df961fcc51dabd0f4f3d7de09fe9..7adb3d1f75896f1e31747e3356b12494
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 8a04052908fa53028b7d5a4619908d12b1e10766..79c3baf041cb7f10753d8a01ec03e95d5564f21b 100644
+index eb0ca5cc1ea9e5a7d78a7ec601770c2b35b95517..71c82b5b19f34d05fe944706db2818ee7a147139 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2844,6 +2844,8 @@ public class ServerGamePacketListenerImpl
+@@ -2842,6 +2842,8 @@ public class ServerGamePacketListenerImpl
  
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
  
@@ -75,7 +75,7 @@ index 8a04052908fa53028b7d5a4619908d12b1e10766..79c3baf041cb7f10753d8a01ec03e95d
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 1d8ba25d542c49a687414a8b6d1d2fa16ca695d5..34e0fbef06b0c7aededf27fe9dc64f3f6f33e3ae 100644
+index 1e8fcceaa609f79cc1e70ac73511fdf7d79196bc..4bf841dae4d1f95836365f339dd87c102f1355b0 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3303,6 +3303,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -177,7 +177,7 @@ index f0c452ddc4b299a930de261722cc41a89aa78eeb..8e8ddab59de508c84c4182e105a11554
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 96e47e6145a4cce8c154a05f9b155c1ba74bfa6a..d272f5e789cb6c03ede0bece14fc3fe976a02ff3 100644
+index 65cb0a0cfa3d75e4d1083b7e6b22ca1b2682dc49..e78d30d8fdfcb1a530bf3380251fabd0c9a18f46 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -238,9 +238,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -1077,10 +1077,10 @@ index 354c7a41407fc6518965d09bfe3089676b6da794..a81ada76bfd6c4b49d1552f48e2009bc
          }
      }
 diff --git a/net/minecraft/world/entity/animal/HappyGhast.java b/net/minecraft/world/entity/animal/HappyGhast.java
-index 24fdfda487bf5348c32707022719ec9907debc80..80517d5c7f074b62555d0991b0ad0678f585834f 100644
+index 272f57aca640e045efca64dd018b221335c667ee..b425f43eb15abdfd6e10b5443acc3d5a68d63a70 100644
 --- a/net/minecraft/world/entity/animal/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/HappyGhast.java
-@@ -120,6 +120,13 @@ public class HappyGhast extends Animal {
+@@ -126,6 +126,13 @@ public class HappyGhast extends Animal {
          this.removeAllGoals(goal -> true);
      }
  
@@ -4055,7 +4055,7 @@ index 2b9a72b8742bf13c69df5ce0c905d47a92b9d8bc..b67ac487ce4a7fd8b2f62452ab0b87f4
                  this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0);
              } else {
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index ff16e0dd78687f4c9a0bce5ede4eda30e2a06263..f37ba04ae0277152d93e3e585973d46c25e52395 100644
+index 4a4c72b0c265289f5b0dfbdc2f7fc08f9f112d8f..c19258a6dade5b7605d97eca7140a7b30e00cb8b 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
 @@ -109,12 +109,31 @@ public class Shulker extends AbstractGolem implements Enemy {
@@ -4512,10 +4512,10 @@ index a621e08fe4f88fcfa8da83bc44b23fc2ffaa5918..543913b7e9e92ac43c2e557213a48714
                          Vec3 deltaMovement = Vex.this.getDeltaMovement();
                          Vex.this.setYRot(-((float)Mth.atan2(deltaMovement.x, deltaMovement.z)) * (180.0F / (float)Math.PI));
 diff --git a/net/minecraft/world/entity/monster/Vindicator.java b/net/minecraft/world/entity/monster/Vindicator.java
-index 86886889f4a2859eaf35c57b5130b2b10143a368..f908db6eeff5ee5a1ab2783d8e8bbb1598c3ace3 100644
+index 71d84306788be023bc949400d30966548d968c86..8e5bf153a457026808e2ea670e874e66ca0d5e98 100644
 --- a/net/minecraft/world/entity/monster/Vindicator.java
 +++ b/net/minecraft/world/entity/monster/Vindicator.java
-@@ -57,15 +57,34 @@ public class Vindicator extends AbstractIllager {
+@@ -56,15 +56,34 @@ public class Vindicator extends AbstractIllager {
          super(entityType, level);
      }
  
@@ -4969,10 +4969,10 @@ index 4a4cc7f9c95d4f4b6ad4948e3ed3504efbbcef15..f8a6aba7d6f0f357c72602f4ac6c2537
              && this.level() == entity.level()
              && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index ff4b73b83e96e0ac0b63922e6f72445cd96d2305..098dfbcf406040939e53ec212d3b433ab3b41291 100644
+index 98303277236f2205f20e3db29f17f576ba2a7938..b1cad9a37d8d1f053add366699c5277c4fd84f6b 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
-@@ -250,6 +250,28 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -249,6 +249,28 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
      // Purpur end - Lobotomize stuck villagers
  
@@ -5001,7 +5001,7 @@ index ff4b73b83e96e0ac0b63922e6f72445cd96d2305..098dfbcf406040939e53ec212d3b433a
      @Override
      public Brain<Villager> getBrain() {
          return (Brain<Villager>)super.getBrain();
-@@ -359,7 +381,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -358,7 +380,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          }
          // Purpur end - Lobotomize stuck villagers
          // Pufferfish start
@@ -5010,7 +5010,7 @@ index ff4b73b83e96e0ac0b63922e6f72445cd96d2305..098dfbcf406040939e53ec212d3b433a
              this.getBrain().tick(level, this); // Paper - EAR 2
          }
          else if (this.isLobotomized && shouldRestock()) restock(); // Purpur - Lobotomize stuck villagers
-@@ -419,7 +441,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -418,7 +440,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              return super.mobInteract(player, hand);
          } else if (this.isBaby()) {
              this.setUnhappy();
@@ -5019,7 +5019,7 @@ index ff4b73b83e96e0ac0b63922e6f72445cd96d2305..098dfbcf406040939e53ec212d3b433a
          } else {
              if (!this.level().isClientSide) {
                  boolean isEmpty = this.getOffers().isEmpty();
-@@ -432,9 +454,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -431,9 +453,11 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
                  }
  
                  if (isEmpty) {
@@ -5072,7 +5072,7 @@ index 93ed977260f369677028bbd8396862f344dfeaa3..e5d6d8bd30876832e6219969849e8260
                  if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
                  this.setTradingPlayer(player);
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index cc29c094f81f16e6b4d74877e31fabd4a0e62435..65d981d26c729d63aa9bad1bbe90cef35207e832 100644
+index aba0104c4953ef514118ee8af76d029100081fc4..c421cc7dc6c401a19eaf193abd970f21e910f927 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -239,6 +239,19 @@ public abstract class Player extends LivingEntity {

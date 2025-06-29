@@ -222,7 +222,7 @@
                      packet.dispatch(
                          new ServerboundInteractPacket.Handler() {
                              private void performInteraction(InteractionHand hand, ServerGamePacketListenerImpl.EntityInteraction entityInteraction, PlayerInteractEntityEvent event) { // CraftBukkit
-@@ -3745,6 +_,12 @@
+@@ -3747,6 +_,12 @@
                  readChannelIdentifier(data, startIndex, data.length, registerChannel);
                  return;
              }

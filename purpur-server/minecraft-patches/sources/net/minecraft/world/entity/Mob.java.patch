@@ -1,0 +1,80 @@
+--- a/net/minecraft/world/entity/Mob.java
++++ b/net/minecraft/world/entity/Mob.java
+@@ -139,6 +_,7 @@
+     private BlockPos homePosition = BlockPos.ZERO;
+     private int homeRadius = -1;
+     public boolean aware = true; // CraftBukkit
++    public int ticksSinceLastInteraction; // Purpur - Entity lifespan
+ 
+     protected Mob(EntityType<? extends Mob> entityType, Level level) {
+         super(entityType, level);
+@@ -284,6 +_,7 @@
+                 target = null;
+             }
+         }
++        if (target instanceof net.minecraft.server.level.ServerPlayer) this.ticksSinceLastInteraction = 0; // Purpur - Entity lifespan
+         this.target = target;
+         return true;
+         // CraftBukkit end
+@@ -327,7 +_,27 @@
+         }
+ 
+         profilerFiller.pop();
+-    }
++        incrementTicksSinceLastInteraction(); // Purpur - Entity lifespan
++    }
++
++    // Purpur start - Entity lifespan
++    private void incrementTicksSinceLastInteraction() {
++        ++this.ticksSinceLastInteraction;
++        if (getRider() != null) {
++            this.ticksSinceLastInteraction = 0;
++            return;
++        }
++        if (this.level().purpurConfig.entityLifeSpan <= 0) {
++            return; // feature disabled
++        }
++        if (!this.removeWhenFarAway(0) || isPersistenceRequired() || requiresCustomPersistence() || hasCustomName()) {
++            return; // mob persistent
++        }
++        if (this.ticksSinceLastInteraction > this.level().purpurConfig.entityLifeSpan) {
++            this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
++        }
++    }
++    // Purpur end - Entity lifespan
+ 
+     @Override
+     protected void playHurtSound(DamageSource source) {
+@@ -427,6 +_,7 @@
+             output.putBoolean("NoAI", this.isNoAi());
+         }
+         output.putBoolean("Bukkit.Aware", this.aware); // CraftBukkit
++        output.putInt("Purpur.ticksSinceLastInteraction", this.ticksSinceLastInteraction); // Purpur - Entity lifespan
+     }
+ 
+     @Override
+@@ -454,6 +_,7 @@
+         this.lootTableSeed = input.getLongOr("DeathLootTableSeed", 0L);
+         this.setNoAi(input.getBooleanOr("NoAI", false));
+         this.aware = input.getBooleanOr("Bukkit.Aware", true); // CraftBukkit
++        this.ticksSinceLastInteraction = input.getIntOr("Purpur.ticksSinceLastInteraction", 0); // Purpur- Entity lifespan
+     }
+ 
+     @Override
+@@ -1188,7 +_,7 @@
+             );
+         }
+ 
+-        this.setLeftHanded(random.nextFloat() < 0.05F);
++        this.setLeftHanded(random.nextFloat() < level.getLevel().purpurConfig.entityLeftHandedChance); // Purpur - Changeable Mob Left Handed Chance
+         return spawnGroupData;
+     }
+ 
+@@ -1525,6 +_,7 @@
+             this.playAttackSound();
+         }
+ 
++        if (target instanceof net.minecraft.server.level.ServerPlayer) this.ticksSinceLastInteraction = 0; // Purpur - Entity lifespan
+         return flag;
+     }
+ 

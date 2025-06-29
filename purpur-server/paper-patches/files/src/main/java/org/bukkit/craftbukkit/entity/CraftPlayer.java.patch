@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -625,10 +_,15 @@
+@@ -575,10 +_,15 @@
  
      @Override
      public void setPlayerListName(String name) {
@@ -17,7 +17,7 @@
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -2726,6 +_,28 @@
+@@ -2676,6 +_,28 @@
          return this.getHandle().getAbilities().walkingSpeed * 2f;
      }
  
@@ -46,9 +46,9 @@
      private void validateSpeed(float value) {
          Preconditions.checkArgument(value <= 1f && value >= -1f, "Speed value (%s) need to be between -1f and 1f", value);
      }
-@@ -3569,4 +_,76 @@
-     public void setDeathScreenScore(final int score) {
-         getHandle().setScore(score);
+@@ -3524,4 +_,76 @@
+     public PlayerGameConnection getConnection() {
+         return this.getHandle().connection.playerGameConnection;
      }
 +
 +    // Purpur start - Purpur client support

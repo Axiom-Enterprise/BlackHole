@@ -1,9 +1,9 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -3925,4 +_,123 @@
-      * @param score New death screen score of player
+@@ -3934,4 +_,123 @@
       */
-     void setDeathScreenScore(int score);
+     @ApiStatus.Experimental
+     PlayerGameConnection getConnection();
 +
 +    // Purpur start
 +    /**

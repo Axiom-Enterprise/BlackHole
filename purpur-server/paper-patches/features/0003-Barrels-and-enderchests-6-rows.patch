@@ -5,10 +5,10 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftContainer.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftContainer.java
-index c00ddfe41439954fa0fd87c0933f274c8a752eb6..5fde4c71915f55f100cd30406803d6fca5b573dc 100644
+index 2f41a92465b9da28e026297cc3528898bb1c8412..83ae4b40e33e0dc58e0fd6aacf22e22ae0cd3684 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftContainer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftContainer.java
-@@ -150,8 +150,19 @@ public class CraftContainer extends AbstractContainerMenu {
+@@ -148,8 +148,19 @@ public class CraftContainer extends AbstractContainerMenu {
              case PLAYER:
              case CHEST:
              case ENDER_CHEST:

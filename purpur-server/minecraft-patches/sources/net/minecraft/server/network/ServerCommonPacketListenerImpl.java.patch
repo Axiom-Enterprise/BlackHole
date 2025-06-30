@@ -48,10 +48,10 @@
 +        if (org.purpurmc.purpur.PurpurConfig.useAlternateKeepAlive) {
 +            if (this.checkIfClosed(millis) && !this.processedDisconnect) {
 +                long currTime = System.nanoTime();
-+                if ((currTime - this.player.lastKeepAliveTx) >= java.util.concurrent.TimeUnit.SECONDS.toNanos(1L)) { // 1 second
-+                    this.player.lastKeepAliveTx = currTime;
++                if ((currTime - this.keepAlive.lastKeepAliveTx) >= java.util.concurrent.TimeUnit.SECONDS.toNanos(1L)) { // 1 second
++                    this.keepAlive.lastKeepAliveTx = currTime;
 +                    if (this.keepAlivePending && !this.processedDisconnect && keepAlives.size() * 1000L >= KEEPALIVE_LIMIT) {
-+                        this.disconnect(ServerCommonPacketListenerImpl.TIMEOUT_DISCONNECTION_MESSAGE, org.bukkit.event.player.PlayerKickEvent.Cause.TIMEOUT);
++                        this.disconnect(TIMEOUT_DISCONNECTION_MESSAGE, io.papermc.paper.connection.DisconnectionReason.TIMEOUT);
 +                    } else if (this.checkIfClosed(millis)) {
 +                        this.keepAlivePending = true;
 +                        this.keepAlives.add(millis); // currentTime is ID

@@ -1,14 +1,5 @@
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
-@@ -80,7 +_,7 @@
-         Vec3i unitVec3i = Direction.SOUTH.getUnitVec3i();
-         return new Vector3f(unitVec3i.getX(), unitVec3i.getY(), unitVec3i.getZ());
-     });
--    public static final float MAX_SCALE = 3.0F;
-+    private static final float MAX_SCALE = 3.0F;
-     private float currentPeekAmountO;
-     private float currentPeekAmount;
-     @Nullable
 @@ -94,6 +_,21 @@
          this.lookControl = new Shulker.ShulkerLookControl(this);
      }

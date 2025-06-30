@@ -19,7 +19,7 @@
      public int tickCount;
      private int remainingFireTicks;
      public boolean wasTouchingWater;
-@@ -315,13 +_,13 @@
+@@ -315,8 +_,8 @@
      public PortalProcessor portalProcess;
      public int portalCooldown;
      private boolean invulnerable;
@@ -30,12 +30,6 @@
      private boolean hasGlowingTag;
      private final Set<String> tags = new io.papermc.paper.util.SizeLimitedSet<>(new it.unimi.dsi.fastutil.objects.ObjectOpenHashSet<>(), MAX_ENTITY_TAG_COUNT); // Paper - fully limit tag size - replace set impl
      private final double[] pistonDeltas = new double[]{0.0, 0.0, 0.0};
-     private long pistonDeltasGameTime;
--    protected EntityDimensions dimensions;
-+    private EntityDimensions dimensions;
-     private float eyeHeight;
-     public boolean isInPowderSnow;
-     public boolean wasInPowderSnow;
 @@ -371,6 +_,7 @@
      public long activatedTick = Integer.MIN_VALUE;
      public boolean isTemporarilyActive;
@@ -83,15 +77,6 @@
      }
  
      public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
-@@ -1964,7 +_,7 @@
-         return this.isInWater() || flag;
-     }
- 
--    public void updateInWaterStateAndDoWaterCurrentPushing() {
-+    void updateInWaterStateAndDoWaterCurrentPushing() {
-         if (this.getVehicle() instanceof AbstractBoat abstractBoat && !abstractBoat.isUnderWater()) {
-             this.wasTouchingWater = false;
-         } else if (this.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014)) {
 @@ -2585,6 +_,11 @@
                  output.putBoolean("Paper.FreezeLock", true);
              }

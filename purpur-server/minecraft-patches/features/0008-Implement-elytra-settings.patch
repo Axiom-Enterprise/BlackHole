@@ -5,10 +5,10 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index bc26752293f8edd7d40bfc161b235c2a6eaf2c29..de3bb90db932cc452a81b0a2b267f00a51f0e47b 100644
+index 7d0a8048cea101be9747a2b89713288f53ce6637..49089d7235857e2d788002c1bc6d0fe5979e7ec0 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -3719,7 +3719,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3714,7 +3714,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                          .filter(equipmentSlot1 -> canGlideUsing(this.getItemBySlot(equipmentSlot1), equipmentSlot1))
                          .toList();
                      EquipmentSlot equipmentSlot = Util.getRandom(list, this.random);

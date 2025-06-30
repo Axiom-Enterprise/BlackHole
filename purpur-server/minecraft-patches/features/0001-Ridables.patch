@@ -62,7 +62,7 @@ index 982836b811289eee0f4f5481c7c8796a89a3ef74..a249567d9cd2dfb552748ab4112709c0
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index eb0ca5cc1ea9e5a7d78a7ec601770c2b35b95517..71c82b5b19f34d05fe944706db2818ee7a147139 100644
+index 5321bccd3d221bbe4e2554ab84ed662ff67b1f6a..34342b32b199de1be4b18a7288fb31ee458d8029 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2842,6 +2842,8 @@ public class ServerGamePacketListenerImpl
@@ -75,7 +75,7 @@ index eb0ca5cc1ea9e5a7d78a7ec601770c2b35b95517..71c82b5b19f34d05fe944706db2818ee
                                      if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 1e8fcceaa609f79cc1e70ac73511fdf7d79196bc..4bf841dae4d1f95836365f339dd87c102f1355b0 100644
+index 1d8ba25d542c49a687414a8b6d1d2fa16ca695d5..34e0fbef06b0c7aededf27fe9dc64f3f6f33e3ae 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3303,6 +3303,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -177,7 +177,7 @@ index f0c452ddc4b299a930de261722cc41a89aa78eeb..8e8ddab59de508c84c4182e105a11554
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 65cb0a0cfa3d75e4d1083b7e6b22ca1b2682dc49..e78d30d8fdfcb1a530bf3380251fabd0c9a18f46 100644
+index 65cb0a0cfa3d75e4d1083b7e6b22ca1b2682dc49..310c18480dd5ff3d700f477a2466cbcc42690034 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -238,9 +238,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -210,7 +210,28 @@ index 65cb0a0cfa3d75e4d1083b7e6b22ca1b2682dc49..e78d30d8fdfcb1a530bf3380251fabd0
  
      @Override
      protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-@@ -3629,8 +3630,10 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3026,6 +3027,20 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+             this.move(MoverType.SELF, this.getDeltaMovement());
+             this.setDeltaMovement(this.getDeltaMovement().scale(0.5));
+         } else {
++            // Purpur start - Ridables
++            if (this.getRider() != null && this.isControllable()) {
++                float friction = 0.91F;
++                if (this.onGround()) {
++                    friction = this.level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getBlock().getFriction() * 0.91F;
++                }
++
++                float frictionCompensation = 0.16277137F / (friction * friction * friction);
++                this.moveRelative(this.onGround() ? 0.1F * frictionCompensation : 0.02F, relative);
++                this.move(MoverType.SELF, this.getDeltaMovement());
++                this.setDeltaMovement(this.getDeltaMovement().scale(friction));
++                return;
++            }
++            // Purpur end - Ridables
+             this.moveRelative(amount, relative);
+             this.move(MoverType.SELF, this.getDeltaMovement());
+             this.setDeltaMovement(this.getDeltaMovement().scale(0.91F));
+@@ -3629,8 +3644,10 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.pushEntities();
          profilerFiller.pop();
          // Paper start - Add EntityMoveEvent
@@ -223,7 +244,7 @@ index 65cb0a0cfa3d75e4d1083b7e6b22ca1b2682dc49..e78d30d8fdfcb1a530bf3380251fabd0
                  Location from = new Location(this.level().getWorld(), this.xo, this.yo, this.zo, this.yRotO, this.xRotO);
                  Location to = new Location(this.level().getWorld(), this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                  io.papermc.paper.event.entity.EntityMoveEvent event = new io.papermc.paper.event.entity.EntityMoveEvent(this.getBukkitLivingEntity(), from, to.clone());
-@@ -3640,6 +3643,21 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3640,6 +3657,21 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                      this.absSnapTo(event.getTo().getX(), event.getTo().getY(), event.getTo().getZ(), event.getTo().getYaw(), event.getTo().getPitch());
                  }
              }
@@ -2362,10 +2383,10 @@ index 2a1d720557c0bd4895a32723e34512c0a557e4f2..f1cb2e315e1d86f9fcd87db11d3ee7a8
      protected void randomizeAttributes(RandomSource random) {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(generateMaxHealth(random::nextInt));
 diff --git a/net/minecraft/world/entity/animal/horse/Llama.java b/net/minecraft/world/entity/animal/horse/Llama.java
-index 5e3382351b1b5728750534f64babc85c4da3ac54..da6450f7573ca9797577d5afae2bb1365d112177 100644
+index 5e3382351b1b5728750534f64babc85c4da3ac54..f7c6b2188ed3801417c7497dbc36749def3e5057 100644
 --- a/net/minecraft/world/entity/animal/horse/Llama.java
 +++ b/net/minecraft/world/entity/animal/horse/Llama.java
-@@ -84,7 +84,51 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
+@@ -84,7 +84,58 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
          super(entityType, level);
          this.getNavigation().setRequiredPathLength(40.0F);
          this.maxDomestication = 30; // Paper - Missing entity API; configure max temper instead of a hardcoded value
@@ -2411,13 +2432,20 @@ index 5e3382351b1b5728750534f64babc85c4da3ac54..da6450f7573ca9797577d5afae2bb136
 +
 +    @Override
 +    public boolean isSaddled() {
-+        return super.isSaddled() || (isTamed());
++        return super.isWearingBodyArmor() || this.isTamed();
++    }
++
++    @Nullable
++    @Override
++    public LivingEntity getControllingPassenger() {
++        Entity firstPassenger = this.getFirstPassenger();
++        return !this.isNoAi() && firstPassenger instanceof net.minecraft.world.entity.Mob mob && firstPassenger.canControlVehicle() ? mob : null;
      }
 +    // Purpur end - Ridables
  
      public boolean isTraderLlama() {
          return false;
-@@ -127,6 +171,7 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
+@@ -127,6 +178,7 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -2425,7 +2453,7 @@ index 5e3382351b1b5728750534f64babc85c4da3ac54..da6450f7573ca9797577d5afae2bb136
          this.goalSelector.addGoal(1, new RunAroundLikeCrazyGoal(this, 1.2));
          this.goalSelector.addGoal(2, new LlamaFollowCaravanGoal(this, 2.1F));
          this.goalSelector.addGoal(3, new RangedAttackGoal(this, 1.25, 40, 20.0F));
-@@ -137,6 +182,7 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
+@@ -137,6 +189,7 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
          this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.7));
          this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
          this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -4055,7 +4083,7 @@ index 2b9a72b8742bf13c69df5ce0c905d47a92b9d8bc..b67ac487ce4a7fd8b2f62452ab0b87f4
                  this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0);
              } else {
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index 4a4c72b0c265289f5b0dfbdc2f7fc08f9f112d8f..c19258a6dade5b7605d97eca7140a7b30e00cb8b 100644
+index ff16e0dd78687f4c9a0bce5ede4eda30e2a06263..f37ba04ae0277152d93e3e585973d46c25e52395 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
 @@ -109,12 +109,31 @@ public class Shulker extends AbstractGolem implements Enemy {
@@ -5072,7 +5100,7 @@ index 93ed977260f369677028bbd8396862f344dfeaa3..e5d6d8bd30876832e6219969849e8260
                  if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
                  this.setTradingPlayer(player);
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index aba0104c4953ef514118ee8af76d029100081fc4..c421cc7dc6c401a19eaf193abd970f21e910f927 100644
+index cc29c094f81f16e6b4d74877e31fabd4a0e62435..65d981d26c729d63aa9bad1bbe90cef35207e832 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -239,6 +239,19 @@ public abstract class Player extends LivingEntity {

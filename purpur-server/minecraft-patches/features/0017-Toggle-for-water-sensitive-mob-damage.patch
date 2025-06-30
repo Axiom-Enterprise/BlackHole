@@ -513,10 +513,10 @@ index 3678c767818abb9e4180c2ade378ca09761ad784..2928159447a87ea8cc945e73e2e81ad1
      protected void randomizeAttributes(RandomSource random) {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(generateMaxHealth(random::nextInt));
 diff --git a/net/minecraft/world/entity/animal/horse/Llama.java b/net/minecraft/world/entity/animal/horse/Llama.java
-index 9cfc31b9acca44c56b78ba6d935bcb6c1d6c5697..017482c8818a854b23237e27e3304498d800569d 100644
+index 45d0977b5016a8728b11ec13c528b160598c80e2..ea25c48cb60aff6fbc82a364789beff92b054a88 100644
 --- a/net/minecraft/world/entity/animal/horse/Llama.java
 +++ b/net/minecraft/world/entity/animal/horse/Llama.java
-@@ -154,6 +154,13 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
+@@ -161,6 +161,13 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
      }
      // Purpur end - Make entity breeding times configurable
  
@@ -989,7 +989,7 @@ index 23b6d3c9746e1ee641d8b19ec50805cb271a9cc9..d75df6de50f9830efeea826d0ebdac17
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index 5bd06e2128dfbd58d1d6308e93fb6a086185d346..dae9752d8f45a067b952885b25df3990504c077e 100644
+index 1782b1c8e03447d3d4e542f7066cb1af8acd8246..9f6b05671c973e1262cbd6673aac7f1d3a74e2e3 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
 @@ -134,6 +134,13 @@ public class Shulker extends AbstractGolem implements Enemy {

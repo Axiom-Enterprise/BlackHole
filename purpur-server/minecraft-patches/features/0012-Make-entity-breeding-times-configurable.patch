@@ -451,10 +451,10 @@ index 53c0eac62018a0d88e30b8c13de94216ff829cd8..3678c767818abb9e4180c2ade378ca09
      protected void randomizeAttributes(RandomSource random) {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(generateMaxHealth(random::nextInt));
 diff --git a/net/minecraft/world/entity/animal/horse/Llama.java b/net/minecraft/world/entity/animal/horse/Llama.java
-index 6fe6507edbf4c3c2795b8fe000d230d5fe6a2486..9cfc31b9acca44c56b78ba6d935bcb6c1d6c5697 100644
+index 3bc0f670a84216e5a62d1e3a9fb26bd85a0cd79a..45d0977b5016a8728b11ec13c528b160598c80e2 100644
 --- a/net/minecraft/world/entity/animal/horse/Llama.java
 +++ b/net/minecraft/world/entity/animal/horse/Llama.java
-@@ -147,6 +147,13 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
+@@ -154,6 +154,13 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
      }
      // Purpur end - Configurable entity base attributes
  

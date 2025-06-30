@@ -222,3 +222,12 @@
                      packet.dispatch(
                          new ServerboundInteractPacket.Handler() {
                              private void performInteraction(InteractionHand hand, ServerGamePacketListenerImpl.EntityInteraction entityInteraction, PlayerInteractEntityEvent event) { // CraftBukkit
+@@ -3538,7 +_,7 @@
+     @Override
+     public void handleChangeGameMode(ServerboundChangeGameModePacket packet) {
+         PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
+-        if (!this.player.hasPermissions(2)) {
++        if (!this.player.hasPermissions(2) && !player.getBukkitEntity().hasPermission("purpur.debug.f3n")) { // Purpur - Add permission for F3+N debug
+             LOGGER.warn(
+                 "Player {} tried to change game mode to {} without required permissions",
+                 this.player.getGameProfile().getName(),

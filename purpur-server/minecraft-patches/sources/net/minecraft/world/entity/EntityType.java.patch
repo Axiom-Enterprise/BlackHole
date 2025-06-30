@@ -1,14 +1,5 @@
 --- a/net/minecraft/world/entity/EntityType.java
 +++ b/net/minecraft/world/entity/EntityType.java
-@@ -1089,7 +_,7 @@
-     @Nullable
-     private Component description;
-     private final Optional<ResourceKey<LootTable>> lootTable;
--    public EntityDimensions dimensions;
-+    private final EntityDimensions dimensions;
-     private final float spawnDimensionsScale;
-     private final FeatureFlagSet requiredFeatures;
- 
 @@ -1105,6 +_,16 @@
          return register(vanillaEntityId(key), builder);
      }

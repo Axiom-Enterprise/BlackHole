@@ -156,15 +156,6 @@
                  this.hurt(this.damageSources().flyIntoWall(), f);
              }
          }
-@@ -3628,7 +_,7 @@
-         }
-     }
- 
--    public boolean canGlide() {
-+    protected boolean canGlide() {
-         if (!this.onGround() && !this.isPassenger() && !this.hasEffect(MobEffects.LEVITATION)) {
-             for (EquipmentSlot equipmentSlot : EquipmentSlot.VALUES) {
-                 if (canGlideUsing(this.getItemBySlot(equipmentSlot), equipmentSlot)) {
 @@ -4507,6 +_,12 @@
              ? slot == EquipmentSlot.MAINHAND && this.canUseSlot(EquipmentSlot.MAINHAND)
              : slot == equippable.slot() && this.canUseSlot(equippable.slot()) && equippable.canBeEquippedBy(this.getType());

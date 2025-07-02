@@ -42,10 +42,10 @@ index 83eff33884bffddfafc85eeb4a2900104a396e2e..3c7159d0981c948e71a5612ba4083acc
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 982836b811289eee0f4f5481c7c8796a89a3ef74..a249567d9cd2dfb552748ab4112709c0c0d2009b 100644
+index ee8f785ec897950a3ac3026ee0a5093502a1ec75..b89ef2c981d48e40d1c278f90891e36f7fc9a5bc 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -795,6 +795,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -794,6 +794,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          this.trackEnteredOrExitedLavaOnVehicle();
          this.updatePlayerAttributes();
          this.advancements.flushDirty(this, true);
@@ -62,7 +62,7 @@ index 982836b811289eee0f4f5481c7c8796a89a3ef74..a249567d9cd2dfb552748ab4112709c0
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 5321bccd3d221bbe4e2554ab84ed662ff67b1f6a..34342b32b199de1be4b18a7288fb31ee458d8029 100644
+index b17c1eeb7d102d983fc9b4f234a4afffec36f8dc..4b3096d211032e799208cbb79f7ebdc3d8747148 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2842,6 +2842,8 @@ public class ServerGamePacketListenerImpl
@@ -177,7 +177,7 @@ index f0c452ddc4b299a930de261722cc41a89aa78eeb..8e8ddab59de508c84c4182e105a11554
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 65cb0a0cfa3d75e4d1083b7e6b22ca1b2682dc49..310c18480dd5ff3d700f477a2466cbcc42690034 100644
+index 96e47e6145a4cce8c154a05f9b155c1ba74bfa6a..9342765509beb740aec2d6079c9a7a98bc66ba77 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -238,9 +238,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin

@@ -1,10 +1,9 @@
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -429,6 +_,10 @@
+@@ -429,6 +_,9 @@
      public boolean isRealPlayer; // Paper
      public @Nullable com.destroystokyo.paper.event.entity.PlayerNaturallySpawnCreaturesEvent playerNaturallySpawnedEvent; // Paper - PlayerNaturallySpawnCreaturesEvent
      public @Nullable org.bukkit.event.player.PlayerQuitEvent.QuitReason quitReason = null; // Paper - Add API for quit reason; there are a lot of changes to do if we change all methods leading to the event
-+    public boolean purpurClient = false; // Purpur - Purpur client support
 +    private boolean tpsBar = false; // Purpur - Implement TPSBar
 +    private boolean compassBar = false; // Purpur - Add compass command
 +    private boolean ramBar = false; // Purpur - Implement rambar commands

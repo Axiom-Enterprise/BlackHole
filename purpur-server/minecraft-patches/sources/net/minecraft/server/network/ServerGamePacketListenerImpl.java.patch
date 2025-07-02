@@ -231,16 +231,3 @@
              LOGGER.warn(
                  "Player {} tried to change game mode to {} without required permissions",
                  this.player.getGameProfile().getName(),
-@@ -3747,6 +_,12 @@
-                 readChannelIdentifier(data, startIndex, data.length, registerChannel);
-                 return;
-             }
-+
-+            // Purpur start - Purpur client support
-+            if (identifier.equals(PURPUR_CLIENT)) {
-+               this.player.purpurClient = true;
-+            }
-+            // Purpur end - Purpur client support
- 
-             if (identifier.equals(MINECRAFT_BRAND)) {
-                 this.player.connection.playerBrand = new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.wrappedBuffer(data)).readUtf(256);

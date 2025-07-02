@@ -1,11 +1,11 @@
 --- a/src/main/java/io/papermc/paper/command/PaperPluginsCommand.java
 +++ b/src/main/java/io/papermc/paper/command/PaperPluginsCommand.java
-@@ -70,10 +_,10 @@
-         this.setAliases(List.of("pl"));
+@@ -74,10 +_,10 @@
+             .build();
      }
  
 -    private static <T> List<Component> formatProviders(final TreeMap<String, PluginProvider<T>> plugins) {
-+    private static <T> List<Component> formatProviders(final TreeMap<String, PluginProvider<T>> plugins, CommandSender sender) { // Purpur - Improve output of plugins command
++    private static <T> List<Component> formatProviders(final TreeMap<String, PluginProvider<T>> plugins, final CommandSender sender) { // Purpur - Improve output of plugins command
          final List<Component> components = new ArrayList<>(plugins.size());
          for (final PluginProvider<T> entry : plugins.values()) {
 -            components.add(formatProvider(entry));
@@ -13,7 +13,7 @@
          }
  
          boolean isFirst = true;
-@@ -100,15 +_,49 @@
+@@ -104,15 +_,49 @@
          return formattedSubLists;
      }
  
@@ -66,7 +66,7 @@
  
          builder.append(pluginName);
  
-@@ -126,6 +_,23 @@
+@@ -130,6 +_,23 @@
          return componentHeader.append(Component.text(":")).build();
      }
  
@@ -90,7 +90,7 @@
      private static Component asPlainComponents(final String strings) {
          final net.kyori.adventure.text.TextComponent.Builder builder = Component.text();
          for (final String string : strings.split("\n")) {
-@@ -186,25 +_,25 @@
+@@ -188,25 +_,25 @@
          final int sizePaperPlugins = paperPlugins.size();
          final int sizeSpigotPlugins = spigotPlugins.size();
          final int sizePlugins = sizePaperPlugins + sizeSpigotPlugins;

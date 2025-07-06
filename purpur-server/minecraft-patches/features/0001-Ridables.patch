@@ -18,10 +18,10 @@ index 61ab8b508d2b614d0f05ae4cc23dc214f8e95a1d..d6e8bd3b302f821b286b15db3d66c8b2
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index ef5c6a760eb6e72beab186a315bd02e804c9ae53..306230339574bc35a309877033fa6012e4596f08 100644
+index 6ddb166a7502886dd67fb6b6fa026095a1d1235d..1c064e1d2edcda5d0b10fb3cc3417937ac0b3835 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1744,6 +1744,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1745,6 +1745,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              serverLevel.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              serverLevel.updateLagCompensationTick(); // Paper - lag compensation
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = serverLevel.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
@@ -62,10 +62,10 @@ index ee8f785ec897950a3ac3026ee0a5093502a1ec75..b89ef2c981d48e40d1c278f90891e36f
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index b17c1eeb7d102d983fc9b4f234a4afffec36f8dc..4b3096d211032e799208cbb79f7ebdc3d8747148 100644
+index 8c34c10e3de60188c9a8719def63225c0a3c44bb..a8b2c19cc9803058b421b07c739166afdf291e47 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2842,6 +2842,8 @@ public class ServerGamePacketListenerImpl
+@@ -2854,6 +2854,8 @@ public class ServerGamePacketListenerImpl
  
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
  

@@ -24,7 +24,7 @@
      // Paper start - retain certain values
      public @Nullable String playerBrand;
      public final java.util.Set<String> pluginMessagerChannels;
-@@ -98,6 +_,18 @@
+@@ -104,6 +_,18 @@
          // Paper start - improve keepalives
          long now = System.nanoTime();
          io.papermc.paper.util.KeepAlive.PendingKeepAlive pending = this.keepAlive.pendingKeepAlives.peek();
@@ -43,7 +43,7 @@
          if (pending != null && pending.challengeId() == packet.getId()) {
              this.keepAlive.pendingKeepAlives.remove(pending);
  
-@@ -172,6 +_,12 @@
+@@ -178,6 +_,12 @@
                  return;
              }
  
@@ -56,7 +56,7 @@
              if (identifier.equals(MINECRAFT_BRAND)) {
                  this.playerBrand = new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.wrappedBuffer(data)).readUtf(256);
              }
-@@ -251,6 +_,23 @@
+@@ -263,6 +_,23 @@
          Profiler.get().push("keepAlive");
          long millis = Util.getMillis();
          // Paper start - improve keepalives

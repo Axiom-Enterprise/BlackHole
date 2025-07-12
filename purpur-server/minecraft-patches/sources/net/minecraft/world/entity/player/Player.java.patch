@@ -70,7 +70,7 @@
                          }
  
                          float f2 = f + f1;
-@@ -1823,7 +_,23 @@
+@@ -1822,7 +_,23 @@
  
      @Override
      protected int getBaseExperienceReward(ServerLevel level) {
@@ -95,7 +95,7 @@
      }
  
      @Override
-@@ -1861,6 +_,13 @@
+@@ -1860,6 +_,13 @@
      public boolean addItem(ItemStack stack) {
          return this.inventory.add(stack);
      }

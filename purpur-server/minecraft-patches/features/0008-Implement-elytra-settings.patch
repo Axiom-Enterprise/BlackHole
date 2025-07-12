@@ -5,7 +5,7 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 1b45fa392d3c3b58e232e6364d344354cf82f2c3..388bd20aeafbcedb8a7cf579bb2b1a038b93ac8f 100644
+index 177333f6c375eac51e0468e337806987fc7ada0f..24dda86c8f03b5876bc0afc827829da78ec85850 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -3713,7 +3713,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -29,7 +29,7 @@ index 1b45fa392d3c3b58e232e6364d344354cf82f2c3..388bd20aeafbcedb8a7cf579bb2b1a03
  
                  this.gameEvent(GameEvent.ELYTRA_GLIDE);
 diff --git a/net/minecraft/world/item/FireworkRocketItem.java b/net/minecraft/world/item/FireworkRocketItem.java
-index 83cfe63b0245f79d0873477ab3aae75f690ecb68..f32370217735b5e9556a0df7652682d89f23c595 100644
+index f86b0579e707ecfa5c2074ea22bbe383b5e11841..43a6d9bd3a2e301e3957e9933663c3aff43722d6 100644
 --- a/net/minecraft/world/item/FireworkRocketItem.java
 +++ b/net/minecraft/world/item/FireworkRocketItem.java
 @@ -72,6 +72,17 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
@@ -51,10 +51,10 @@ index 83cfe63b0245f79d0873477ab3aae75f690ecb68..f32370217735b5e9556a0df7652682d8
                          itemInHand.shrink(1); // Moved up from below
                      } else {
 diff --git a/net/minecraft/world/item/ItemStack.java b/net/minecraft/world/item/ItemStack.java
-index 7041e93158ffab707f14ff6e48c3977bebf275a9..b95acf4c688a9113a34e9be2639536245c66c83e 100644
+index 373822831e3025e0365f2bf1a41013450f8b0e00..d3892cc9ef3ab66a45fe3ab72e8a5ef8b904b7c0 100644
 --- a/net/minecraft/world/item/ItemStack.java
 +++ b/net/minecraft/world/item/ItemStack.java
-@@ -700,6 +700,14 @@ public final class ItemStack implements DataComponentHolder {
+@@ -696,6 +696,14 @@ public final class ItemStack implements DataComponentHolder {
                  org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerItemBreakEvent(serverPlayer, this); // Paper - Add EntityDamageItemEvent
              }
              // CraftBukkit end
@@ -70,10 +70,10 @@ index 7041e93158ffab707f14ff6e48c3977bebf275a9..b95acf4c688a9113a34e9be263953624
              onBreak.accept(item);
          }
 diff --git a/net/minecraft/world/item/TridentItem.java b/net/minecraft/world/item/TridentItem.java
-index 122e24ed6fb319c951841ac8ef328c5eb70514d4..34d15412b8f68ed1bae45b81ecf759c9c4d7e20c 100644
+index 37720f5f8a680201db5ba78ca43ee59f72cb2e9a..7fe10d298a1204d87c0484f97f3767de6779c687 100644
 --- a/net/minecraft/world/item/TridentItem.java
 +++ b/net/minecraft/world/item/TridentItem.java
-@@ -127,6 +127,18 @@ public class TridentItem extends Item implements ProjectileItem {
+@@ -126,6 +126,18 @@ public class TridentItem extends Item implements ProjectileItem {
                          f1 *= tridentSpinAttackStrength / squareRoot;
                          f2 *= tridentSpinAttackStrength / squareRoot;
                          org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerRiptideEvent(player, stack, f, f1, f2); // CraftBukkit

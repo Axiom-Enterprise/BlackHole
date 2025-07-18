@@ -70,7 +70,7 @@
      // Deps that were previously in the API but have now been moved here for backwards compat, eventually to be removed
      runtimeOnly("commons-lang:commons-lang:2.6")
      runtimeOnly("org.xerial:sqlite-jdbc:3.49.1.0")
-@@ -205,14 +_,14 @@
+@@ -201,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -90,7 +90,7 @@
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,
-@@ -271,7 +_,7 @@
+@@ -267,7 +_,7 @@
      jvmArgumentProviders.add(provider)
  }
  
@@ -99,7 +99,7 @@
  idea {
      module {
          generatedSourceDirs.add(generatedDir.toFile())
-@@ -374,6 +_,46 @@
+@@ -370,6 +_,46 @@
      classpath(tasks.createReobfPaperclipJar.flatMap { it.outputZip })
      mainClass.set(null as String?)
  }

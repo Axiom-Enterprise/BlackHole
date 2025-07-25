@@ -42,7 +42,7 @@ index 83eff33884bffddfafc85eeb4a2900104a396e2e..3c7159d0981c948e71a5612ba4083acc
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 76ee1d113046c9ff7da4a77bf42732325401c1d8..c70c02ba949a56010e25167bdf8649024e334b9a 100644
+index fdd65d1a285f7e1bbcb2b553d8919cee49d7a75e..30d08bbcdc948b0837d15e3c515b63374abf912d 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -794,6 +794,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
@@ -62,20 +62,20 @@ index 76ee1d113046c9ff7da4a77bf42732325401c1d8..c70c02ba949a56010e25167bdf864902
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index d09627c10e3a4e51aa7e2bb746e4c3f568091134..a63ade75461b68a780c56bfb5ff7c61f99f76744 100644
+index c1c72c71f8e01bd8d573ce65ba6e6d0ec4e37bff..349e8add5cc862a8587f84ac75f7edd3cd336d82 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2854,6 +2854,8 @@ public class ServerGamePacketListenerImpl
- 
+@@ -2855,6 +2855,8 @@ public class ServerGamePacketListenerImpl
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
+                                     final boolean resendData = event.isCancelled() || !ServerGamePacketListenerImpl.this.player.getItemInHand(hand).is(itemType);
  
 +                                    player.processClick(hand); // Purpur - Ridables
 +
                                      // Entity in bucket - SPIGOT-4048 and SPIGOT-6859
-                                     if ((target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && origItem != null && origItem == Items.WATER_BUCKET) && (event.isCancelled() || ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().isEmpty() || !ServerGamePacketListenerImpl.this.player.getInventory().getSelectedItem().is(origItem))) {
+                                     if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index e5676044132d6d003533ff3bd5b1232727cee0f7..725612ca589b15679126178a5bf95123ae334007 100644
+index 9fa26e76a0e53e79b97b935596863abe3c6a16b8..029cfd544165725b7762947f6628271016844278 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3302,6 +3302,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -617,7 +617,7 @@ index b18765bb91b4015bef326663dbc8966945929996..0002e39e2670ad92849ccc0aada163b1
                  double d = this.wantedX - this.fish.getX();
                  double d1 = this.wantedY - this.fish.getY();
 diff --git a/net/minecraft/world/entity/animal/Bee.java b/net/minecraft/world/entity/animal/Bee.java
-index 5588eb85a101f118fcaeb0a085f4d3b69498c72d..be1774d479bfcd349e62ecb69bf7367d6eea7d75 100644
+index a74def8accfbed14257b4090889a6c8d1a3ccd87..38f7ad124ead01670cfe82855a25bed738f859cc 100644
 --- a/net/minecraft/world/entity/animal/Bee.java
 +++ b/net/minecraft/world/entity/animal/Bee.java
 @@ -150,6 +150,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {

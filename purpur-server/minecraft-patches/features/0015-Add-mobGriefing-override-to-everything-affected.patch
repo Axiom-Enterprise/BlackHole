@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing override to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 4f149e5e17d2d2f2964e2f6626e20f52121e72d9..a70fddd19b24bb25edde63e4fda4685ee6997eba 100644
+index 24dda86c8f03b5876bc0afc827829da78ec85850..e396eddb5ef0a78efaf239f30a51a5269367eeaa 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1936,7 +1936,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -18,10 +18,10 @@ index 4f149e5e17d2d2f2964e2f6626e20f52121e72d9..a70fddd19b24bb25edde63e4fda4685e
                      BlockState blockState = Blocks.WITHER_ROSE.defaultBlockState();
                      if (this.level().getBlockState(blockPos).isAir() && blockState.canSurvive(this.level(), blockPos)) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 3215ca469e0e469089a559672739e91c9db0edaf..e05cf29c630d43c66614012c50b9dd4ece4c44f6 100644
+index f9a8cfd96f0bd8d080e8635d754db82fb7a5400f..cb09a8d2c0d8a561814c5e9dc91bbeaa28a58db0 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -532,7 +532,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -539,7 +539,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
              && this.canPickUpLoot()
              && this.isAlive()
              && !this.dead
@@ -144,7 +144,7 @@ index 40c92ff02c22ef18b36f5d8677096dc82a60f1bb..6191a58d09fd0ca4625ecb90be78cce2
                              //flag1 = level.removeBlock(blockPos, false) || flag1;
                              flag1 = true;
 diff --git a/net/minecraft/world/entity/boss/wither/WitherBoss.java b/net/minecraft/world/entity/boss/wither/WitherBoss.java
-index 7aaa905034979e557db97456eae3563614aab8d1..72a7fde24a132f986318c9730aad9e4cefc70fdb 100644
+index f5aabc5d181881a1da96cff5da299c9d136aa1ec..068676a28b6aaca96b91769b1ab59fea1ec97866 100644
 --- a/net/minecraft/world/entity/boss/wither/WitherBoss.java
 +++ b/net/minecraft/world/entity/boss/wither/WitherBoss.java
 @@ -495,7 +495,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {

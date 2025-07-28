@@ -5,10 +5,10 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
-index 56faf055cfbe1d646db24510092b9ab86950dda4..b5c770317f7d3c5c7857201c7fbb056183161eba 100644
+index 189bf2f787e6f99ed16d75c2e05ff4351d2c8747..db56578bff06574337463c2421537f43d1a19189 100644
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -1004,6 +1004,27 @@ public abstract class PlayerList {
+@@ -1002,6 +1002,27 @@ public abstract class PlayerList {
          player.getBukkitEntity().recalculatePermissions(); // CraftBukkit
          this.server.getCommands().sendCommands(player);
          } // Paper - Add sendOpLevel API
@@ -37,7 +37,7 @@ index 56faf055cfbe1d646db24510092b9ab86950dda4..b5c770317f7d3c5c7857201c7fbb0561
  
      // Paper start - whitelist verify event / login event
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index c421cc7dc6c401a19eaf193abd970f21e910f927..acb53dba83fe9481508fa4d4704203a08f575450 100644
+index b12bd1f756b91a1168eb8ac4959152dcca01c5b5..d72e338232b95826b63d784ac0731f5a20bf8dcb 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -221,6 +221,7 @@ public abstract class Player extends LivingEntity {

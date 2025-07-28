@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 34e0fbef06b0c7aededf27fe9dc64f3f6f33e3ae..ce3e5ec505ac37c820436bcf7c7d6452ff015f70 100644
+index 029cfd544165725b7762947f6628271016844278..cb5c4491a8b4964df1a58933c27191024ad9f787 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -542,6 +542,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -35,7 +35,7 @@ index 34e0fbef06b0c7aededf27fe9dc64f3f6f33e3ae..ce3e5ec505ac37c820436bcf7c7d6452
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index f22862464068180a4276175bf79c40394523703f..3d93e89e7bad80cd5b5c7ccbb738980f4b3469bc 100644
+index e396eddb5ef0a78efaf239f30a51a5269367eeaa..ddd3acbc804cbc07eaccf578349d3f9e0e00b6fc 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -286,6 +286,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -96,10 +96,10 @@ index f22862464068180a4276175bf79c40394523703f..3d93e89e7bad80cd5b5c7ccbb738980f
  
      protected void applyInput() {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index e05cf29c630d43c66614012c50b9dd4ece4c44f6..b0a5f79eb2c3ea84fd37eaa653a4f2c83caeab5d 100644
+index cb09a8d2c0d8a561814c5e9dc91bbeaa28a58db0..035eb50335daa88679672cba550ed87ac3fa5873 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -1557,19 +1557,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1570,19 +1570,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      }
  
      public boolean isSunBurnTick() {

@@ -18,7 +18,7 @@ index 61ab8b508d2b614d0f05ae4cc23dc214f8e95a1d..d6e8bd3b302f821b286b15db3d66c8b2
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 6ddb166a7502886dd67fb6b6fa026095a1d1235d..1c064e1d2edcda5d0b10fb3cc3417937ac0b3835 100644
+index 04d41316764fc151cae4a5b932a7288c5bbdb107..1109e34c36cb8c21560f3f2410a51497b17ddc3d 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -1745,6 +1745,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -42,10 +42,10 @@ index 83eff33884bffddfafc85eeb4a2900104a396e2e..3c7159d0981c948e71a5612ba4083acc
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index fdd65d1a285f7e1bbcb2b553d8919cee49d7a75e..30d08bbcdc948b0837d15e3c515b63374abf912d 100644
+index 90e4965d7c266d7349112bfdc27bbcba0f12523a..83e69de9e59cc18cc7aff71fbee1e40ad0781f90 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -794,6 +794,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -798,6 +798,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          this.trackEnteredOrExitedLavaOnVehicle();
          this.updatePlayerAttributes();
          this.advancements.flushDirty(this, true);
@@ -62,7 +62,7 @@ index fdd65d1a285f7e1bbcb2b553d8919cee49d7a75e..30d08bbcdc948b0837d15e3c515b6337
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index c1c72c71f8e01bd8d573ce65ba6e6d0ec4e37bff..349e8add5cc862a8587f84ac75f7edd3cd336d82 100644
+index 19d964230bf56dc8c4823b98a47fb4258f787390..d6e96a191469c8b263031da18a2e519032dd79d7 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2855,6 +2855,8 @@ public class ServerGamePacketListenerImpl
@@ -267,10 +267,10 @@ index 4638003724e826b27ab26fc1aec4825e7ab5fa3e..844e24c162a67bbc488d4dd83e2c076b
          // Paper end - Add EntityMoveEvent
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 9784ae86390748bf72e2cc75d67b99f766335ee8..3215ca469e0e469089a559672739e91c9db0edaf 100644
+index 150d12e27c2de0740af5c554286358f81e290fae..f9a8cfd96f0bd8d080e8635d754db82fb7a5400f 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -145,8 +145,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -146,8 +146,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
          super(entityType, level);
          this.goalSelector = new GoalSelector();
          this.targetSelector = new GoalSelector();
@@ -281,7 +281,7 @@ index 9784ae86390748bf72e2cc75d67b99f766335ee8..3215ca469e0e469089a559672739e91c
          this.jumpControl = new JumpControl(this);
          this.bodyRotationControl = this.createBodyControl();
          this.navigation = this.createNavigation(level);
-@@ -1300,7 +1300,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1313,7 +1313,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      }
  
      protected InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -290,7 +290,7 @@ index 9784ae86390748bf72e2cc75d67b99f766335ee8..3215ca469e0e469089a559672739e91c
      }
  
      public boolean isWithinHome() {
-@@ -1617,4 +1617,58 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1630,4 +1630,58 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
              this.getNavigation().updatePathfinderMaxVisitedNodes();
          }
      }
@@ -2851,7 +2851,7 @@ index 3389c79e18601d582f95fe3765c291d46706d015..f669dd446fc07d15c66a2a96006891bc
                          this.dragonFight.updateDragon(this);
                      }
 diff --git a/net/minecraft/world/entity/boss/wither/WitherBoss.java b/net/minecraft/world/entity/boss/wither/WitherBoss.java
-index c4a2fb6f08e5d6d69571f448c6ac9defaac3fcd3..2c6158de44a8ba95d3c5124ed2827a0aa24b672d 100644
+index f8aeb8364723cf09bbe7f4fad00ddede784338b6..8c915d1455add668b24721c2dbd215a733bf14e7 100644
 --- a/net/minecraft/world/entity/boss/wither/WitherBoss.java
 +++ b/net/minecraft/world/entity/boss/wither/WitherBoss.java
 @@ -71,6 +71,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {

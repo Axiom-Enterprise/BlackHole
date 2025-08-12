@@ -5,7 +5,7 @@ Subject: [PATCH] Phantoms burn in light
 
 
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 1d7432bcce99c893a1f6e4a02d0cad65c0d6d3a4..5b2018019f6ec9e91357d46dd66865e2f232507a 100644
+index 029d90b7ef1dfe264ef873af133e7ac5334b1740..7f3ac34023fe5232d53157e9fade56ffd0597c28 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -55,6 +55,7 @@ public class Phantom extends Mob implements Enemy {
@@ -37,7 +37,7 @@ index 1d7432bcce99c893a1f6e4a02d0cad65c0d6d3a4..5b2018019f6ec9e91357d46dd66865e2
                  if (!nearbyPlayers.isEmpty()) {
                      nearbyPlayers.sort(Comparator.<Player, Double>comparing(Entity::getY).reversed());
  
-@@ -744,6 +750,12 @@ public class Phantom extends Mob implements Enemy {
+@@ -745,6 +751,12 @@ public class Phantom extends Mob implements Enemy {
                  return false;
              } else if (!target.isAlive()) {
                  return false;

@@ -3841,7 +3841,7 @@ index 889c31cc9257fbbd5df8325ccee9ce39b026ec4b..4a1299d6cee2807522de0c2d0d4745c5
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 2abb55d84507fd29817760cb0068dd083f7f1c37..855ec37a7e4110e37823ecf62f67f5cb3714f4bf 100644
+index dd808ce350aa8755df69a84ba5e779f82a76a960..1a2c31932dadddcdf882d3c727c55785b015239d 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -62,6 +62,52 @@ public class Phantom extends Mob implements Enemy {
@@ -3941,7 +3941,7 @@ index 2abb55d84507fd29817760cb0068dd083f7f1c37..855ec37a7e4110e37823ecf62f67f5cb
      }
  
      @Override
-@@ -419,25 +478,42 @@ public class Phantom extends Mob implements Enemy {
+@@ -420,25 +479,42 @@ public class Phantom extends Mob implements Enemy {
          }
      }
  

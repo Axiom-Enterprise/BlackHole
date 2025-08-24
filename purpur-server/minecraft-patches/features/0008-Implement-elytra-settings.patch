@@ -5,7 +5,7 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 177333f6c375eac51e0468e337806987fc7ada0f..24dda86c8f03b5876bc0afc827829da78ec85850 100644
+index 56b090a464d6f8481f8b5a516799c325b25b5bf5..7165479d4445a7d370bdefe73ac23d5caeafabd9 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -3713,7 +3713,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -70,14 +70,13 @@ index 373822831e3025e0365f2bf1a41013450f8b0e00..d3892cc9ef3ab66a45fe3ab72e8a5ef8
              onBreak.accept(item);
          }
 diff --git a/net/minecraft/world/item/TridentItem.java b/net/minecraft/world/item/TridentItem.java
-index 37720f5f8a680201db5ba78ca43ee59f72cb2e9a..7fe10d298a1204d87c0484f97f3767de6779c687 100644
+index 44b616ad2740d6ba9c8b2579ecd14edde64fffbb..8f7e6ac2ccb845133f6af69d2aac9b8674b1cc56 100644
 --- a/net/minecraft/world/item/TridentItem.java
 +++ b/net/minecraft/world/item/TridentItem.java
-@@ -126,6 +126,18 @@ public class TridentItem extends Item implements ProjectileItem {
+@@ -126,6 +126,17 @@ public class TridentItem extends Item implements ProjectileItem {
                          f1 *= tridentSpinAttackStrength / squareRoot;
                          f2 *= tridentSpinAttackStrength / squareRoot;
-                         org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerRiptideEvent(player, stack, f, f1, f2); // CraftBukkit
-+
+                         if (!org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerRiptideEvent(player, stack, f, f1, f2)) return false; // Paper - Add player riptide event
 +                        // Purpur start - Implement elytra settings
 +                        List<net.minecraft.world.entity.EquipmentSlot> list = net.minecraft.world.entity.EquipmentSlot.VALUES.stream().filter((enumitemslot) -> LivingEntity.canGlideUsing(entity.getItemBySlot(enumitemslot), enumitemslot)).toList();
 +                        if (!list.isEmpty()) {

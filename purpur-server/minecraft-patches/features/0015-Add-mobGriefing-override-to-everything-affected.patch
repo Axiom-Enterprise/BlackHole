@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing override to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 24dda86c8f03b5876bc0afc827829da78ec85850..e396eddb5ef0a78efaf239f30a51a5269367eeaa 100644
+index 7165479d4445a7d370bdefe73ac23d5caeafabd9..5fb425f5064f2d9bf376ce209910a36808656417 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1936,7 +1936,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -268,7 +268,7 @@ index dd0ec97ea4561d2dccf735580faf0d65d6ac4b0d..779879f8d678a5e45e2752e6e033cc35
              org.bukkit.event.entity.ExplosionPrimeEvent event = new org.bukkit.event.entity.ExplosionPrimeEvent((org.bukkit.entity.Explosive) this.getBukkitEntity());
              if (event.callEvent()) {
 diff --git a/net/minecraft/world/entity/projectile/Projectile.java b/net/minecraft/world/entity/projectile/Projectile.java
-index ee16a05b8b2747ce95fcae1616c96143a5dec74e..f8bc051167c0266824edb816060999e6d7db6639 100644
+index dae6619f4670c6f68dae7e4b10b0b6a8bbe6dc2e..44166e077009ef0bdab95ed2df7c8252bf6bb87f 100644
 --- a/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/net/minecraft/world/entity/projectile/Projectile.java
 @@ -436,7 +436,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
@@ -351,10 +351,10 @@ index 9883e6d1a1b76155c8ba1817fda6615b4742e18e..dc1ad33f801c308871931d271f97ff91
                  // CraftBukkit start - Interact soil
                  org.bukkit.event.Cancellable cancellable;
 diff --git a/net/minecraft/world/level/block/PowderSnowBlock.java b/net/minecraft/world/level/block/PowderSnowBlock.java
-index 248ac9bc820a96fc7653471308b18834fc735a77..ef70ba88e492904c426c7d35df442fa6f8d68844 100644
+index a9b0e6c4dbccfc4f2ca31e0ff67bc7fb3ec4bef2..46a2726c3aa50d48eca8702cfde4ac87e2cfae82 100644
 --- a/net/minecraft/world/level/block/PowderSnowBlock.java
 +++ b/net/minecraft/world/level/block/PowderSnowBlock.java
-@@ -89,7 +89,7 @@ public class PowderSnowBlock extends Block implements BucketPickup {
+@@ -94,7 +94,7 @@ public class PowderSnowBlock extends Block implements BucketPickup {
                          // CraftBukkit - move down
                      && entity1.mayInteract(serverLevel, blockPos)) {
                      // CraftBukkit start

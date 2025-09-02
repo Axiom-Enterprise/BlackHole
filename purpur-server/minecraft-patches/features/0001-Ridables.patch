@@ -18,10 +18,10 @@ index 61ab8b508d2b614d0f05ae4cc23dc214f8e95a1d..d6e8bd3b302f821b286b15db3d66c8b2
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 04d41316764fc151cae4a5b932a7288c5bbdb107..1109e34c36cb8c21560f3f2410a51497b17ddc3d 100644
+index 0595271ec939a72d38b97241270c109ece0be0e0..9dbf05636429821b17c4269e3981a0bedbc6e6a3 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1745,6 +1745,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1746,6 +1746,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              serverLevel.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              serverLevel.updateLagCompensationTick(); // Paper - lag compensation
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = serverLevel.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
@@ -75,7 +75,7 @@ index 19d964230bf56dc8c4823b98a47fb4258f787390..d6e96a191469c8b263031da18a2e5190
                                      if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 9fa26e76a0e53e79b97b935596863abe3c6a16b8..029cfd544165725b7762947f6628271016844278 100644
+index f532809a855562b43545e45957bd28c207bd4547..dc59c61cf44ce01a17e02761507cea1b3c3e7b0d 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3302,6 +3302,13 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -177,7 +177,7 @@ index f0c452ddc4b299a930de261722cc41a89aa78eeb..8e8ddab59de508c84c4182e105a11554
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 4638003724e826b27ab26fc1aec4825e7ab5fa3e..844e24c162a67bbc488d4dd83e2c076befd871cb 100644
+index 92ef84721a75b85331b936a808c3beb3585aefab..b167f2d6308fc02521abd4251fd11ba06f8375ae 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -238,9 +238,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin

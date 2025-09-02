@@ -59,7 +59,7 @@
      public final RollingAverage tps1 = new RollingAverage(60);
      public final RollingAverage tps5 = new RollingAverage(60 * 5);
      public final RollingAverage tps15 = new RollingAverage(60 * 15);
-@@ -1198,6 +_,16 @@
+@@ -1199,6 +_,16 @@
              }
              // Paper end - Add onboarding message for initial server start
  
@@ -76,7 +76,7 @@
              while (this.running) {
                  long l;
                  if (!this.isPaused() && this.tickRateManager.isSprinting() && this.tickRateManager.checkShouldSprintThisTick()) {
-@@ -1222,14 +_,19 @@
+@@ -1223,14 +_,19 @@
                  if (++MinecraftServer.currentTick % MinecraftServer.SAMPLE_INTERVAL == 0) {
                      final long diff = currentTime - tickSection;
                      final java.math.BigDecimal currentTps = TPS_BASE.divide(new java.math.BigDecimal(diff), 30, java.math.RoundingMode.HALF_UP);
@@ -99,7 +99,7 @@
                      tickSection = currentTime;
                  }
                  // Paper end - further improve server tick loop
-@@ -1261,6 +_,12 @@
+@@ -1262,6 +_,12 @@
                      profilerFiller.popPush("nextTickWait");
                      this.mayHaveDelayedTasks = true;
                      this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + l, this.nextTickTimeNanos);
@@ -112,7 +112,7 @@
                      this.startMeasuringTaskExecutionTime();
                      this.waitUntilNextTick();
                      this.finishMeasuringTaskExecutionTime();
-@@ -1690,7 +_,7 @@
+@@ -1691,7 +_,7 @@
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -121,7 +121,7 @@
                      continue;
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
-@@ -1855,7 +_,7 @@
+@@ -1856,7 +_,7 @@
  
      @DontObfuscate
      public String getServerModName() {

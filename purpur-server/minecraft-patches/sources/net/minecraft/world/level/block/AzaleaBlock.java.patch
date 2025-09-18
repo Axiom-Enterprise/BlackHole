@@ -1,6 +1,14 @@
+From 1e4693c6129676cacc2e29a157b5a69107c78543 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 06:37:42 -0700
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/AzaleaBlock.java b/net/minecraft/world/level/block/AzaleaBlock.java
+index 435a455ad2ec3dfb142d570a51a720bc6c49dac3..32a1dc20202bad7a15794e98cdc1bf2fb2ad5308 100644
 --- a/net/minecraft/world/level/block/AzaleaBlock.java
 +++ b/net/minecraft/world/level/block/AzaleaBlock.java
-@@ -50,6 +_,20 @@
+@@ -50,6 +50,20 @@ public class AzaleaBlock extends VegetationBlock implements BonemealableBlock {
  
      @Override
      public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {

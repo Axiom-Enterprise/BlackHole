@@ -104,7 +104,7 @@
                      this.mayHaveDelayedTasks = true;
                      this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + l, this.nextTickTimeNanos);
 +                    // Purpur start - Configurable TPS Catchup
-+                    if (!org.purpurmc.purpur.PurpurConfig.tpsCatchup /*|| !gg.pufferfish.pufferfish.PufferfishConfig.tpsCatchup*/) { // Purpur - Configurable TPS Catchup
++                    if (!org.purpurmc.purpur.PurpurConfig.tpsCatchup) {
 +                        this.nextTickTimeNanos = currentTime + l;
 +                        this.delayedTasksMaxNextTickTimeNanos = nextTickTimeNanos;
 +                    }

@@ -1,14 +1,6 @@
-From 1e4693c6129676cacc2e29a157b5a69107c78543 Mon Sep 17 00:00:00 2001
-From: File <noreply+automated@papermc.io>
-Date: Sun, 20 Apr 1997 06:37:42 -0700
-Subject: [PATCH] purpur File Patches
-
-
-diff --git a/net/minecraft/world/level/block/entity/BlockEntity.java b/net/minecraft/world/level/block/entity/BlockEntity.java
-index 5986825d6a381eeb445dd424dd127864aa703163..a5ade8268a74738170caf519e7e45e13862bc39d 100644
 --- a/net/minecraft/world/level/block/entity/BlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/BlockEntity.java
-@@ -105,6 +105,10 @@ public abstract class BlockEntity {
+@@ -105,6 +_,10 @@
          input.read("PublicBukkitValues", CompoundTag.CODEC)
              .ifPresent(this.persistentDataContainer::putAll);
          // Paper end - read persistent data container
@@ -19,7 +11,7 @@ index 5986825d6a381eeb445dd424dd127864aa703163..a5ade8268a74738170caf519e7e45e13
      }
  
      public final void loadWithComponents(ValueInput input) {
-@@ -117,6 +121,11 @@ public abstract class BlockEntity {
+@@ -117,6 +_,11 @@
      }
  
      protected void saveAdditional(ValueOutput output) {
@@ -31,7 +23,7 @@ index 5986825d6a381eeb445dd424dd127864aa703163..a5ade8268a74738170caf519e7e45e13
      }
  
      public final CompoundTag saveWithFullMetadata(HolderLookup.Provider registries) {
-@@ -402,4 +411,17 @@ public abstract class BlockEntity {
+@@ -402,4 +_,17 @@
              return this.blockEntity.getNameForReporting() + "@" + this.blockEntity.getBlockPos();
          }
      }

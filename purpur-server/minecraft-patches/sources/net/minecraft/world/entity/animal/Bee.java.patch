@@ -18,6 +18,15 @@
      }
  
      public void setStayOutOfHiveCountdown(int stayOutOfHiveCountdown) {
+@@ -391,7 +_,7 @@
+     @Override
+     protected void customServerAiStep(ServerLevel level) {
+         boolean hasStung = this.hasStung();
+-        if (this.isInWater()) {
++        if (this.level().purpurConfig.beeCanInstantlyStartDrowning && this.isInWater()) { // Purpur - bee can instantly start drowning in water option
+             this.underWaterTicks++;
+         } else {
+             this.underWaterTicks = 0;
 @@ -401,6 +_,7 @@
              this.hurtServer(level, this.damageSources().drown(), 1.0F);
          }

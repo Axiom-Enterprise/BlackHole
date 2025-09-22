@@ -52,14 +52,6 @@
              // Paper start - create time skip event - move up calculations
              final long newDayTime = this.levelData.getDayTime() + 24000L;
              org.bukkit.event.world.TimeSkipEvent event = new org.bukkit.event.world.TimeSkipEvent(
-@@ -855,6 +_,7 @@
-         this.debugSynchronizers.tick(this.server.debugSubscribers());
-         profilerFiller.pop();
-     }
-+    // Purpur end - Configurable daylight cycle
- 
-     @Override
-     public boolean shouldTickBlocksAt(long chunkPos) {
 @@ -872,6 +_,13 @@
              this.serverLevelData.getScheduledEvents().tick(this.server, l);
              Profiler.get().pop();
@@ -74,7 +66,7 @@
                  this.setDayTime(this.levelData.getDayTime() + 1L);
              }
          }
-@@ -879,6 +_,19 @@
+@@ -879,6 +_,20 @@
  
      public void setDayTime(long time) {
          this.serverLevelData.setDayTime(time);
@@ -91,6 +83,7 @@
 +    // Purpur start - Configurable daylight cycle
 +    public boolean isForceTime() {
 +        return this.forceTime;
++    // Purpur end - Configurable daylight cycle
      }
  
      public void tickCustomSpawners(boolean flag) {

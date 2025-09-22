@@ -6,7 +6,7 @@
                      if (damagePerBlock > 0.0) {
 +                        // Purpur start - Add option to teleport to spawn if outside world border
 +                        if (this.level().purpurConfig.teleportIfOutsideBorder && this instanceof ServerPlayer serverPlayer) {
-+                            serverPlayer.teleport(org.bukkit.craftbukkit.util.CraftLocation.toBukkit(this.level().getSharedSpawnPos(), this.level()));
++                            serverPlayer.teleport(org.bukkit.craftbukkit.util.CraftLocation.toBukkit(this.level().levelData.getRespawnData().pos(), this.level()));
 +                            return;
 +                        }
 +                        // Purpur end - Add option to teleport to spawn if outside world border

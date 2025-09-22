@@ -178,7 +178,7 @@
 +
 +        msg = event.getBroadcastMsg();
 +        if (msg != null && !msg.isEmpty()) {
-+            String playerName = this.getGameProfile().getName();
++            String playerName = this.getGameProfile().name();
 +            if (org.purpurmc.purpur.PurpurConfig.afkBroadcastUseDisplayName) {
 +                net.kyori.adventure.text.Component playerDisplayNameComponent = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(this.getBukkitEntity().getDisplayName());
 +                playerName = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(playerDisplayNameComponent);

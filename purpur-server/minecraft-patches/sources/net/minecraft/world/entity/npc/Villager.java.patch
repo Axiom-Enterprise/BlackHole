@@ -120,7 +120,7 @@
      }
  
      private boolean hungry() {
-@@ -919,6 +_,7 @@
+@@ -922,6 +_,7 @@
      }
  
      public void spawnGolemIfNeeded(ServerLevel serverLevel, long gameTime, int minVillagerAmount) {
@@ -128,7 +128,7 @@
          if (this.wantsToSpawnGolem(gameTime)) {
              AABB aabb = this.getBoundingBox().inflate(10.0, 10.0, 10.0);
              List<Villager> entitiesOfClass = serverLevel.getEntitiesOfClass(Villager.class, aabb);
-@@ -992,6 +_,12 @@
+@@ -989,6 +_,12 @@
  
      @Override
      public void startSleeping(BlockPos pos) {

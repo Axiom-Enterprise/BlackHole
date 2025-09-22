@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/entity/EnchantingTableBlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/EnchantingTableBlockEntity.java
-@@ -30,6 +_,7 @@
+@@ -31,6 +_,7 @@
      private static final RandomSource RANDOM = RandomSource.create();
      @Nullable
      private Component name;
@@ -8,7 +8,7 @@
  
      public EnchantingTableBlockEntity(BlockPos pos, BlockState state) {
          super(BlockEntityType.ENCHANTING_TABLE, pos, state);
-@@ -39,12 +_,14 @@
+@@ -40,12 +_,14 @@
      protected void saveAdditional(ValueOutput output) {
          super.saveAdditional(output);
          output.storeNullable("CustomName", ComponentSerialization.CODEC, this.name);
@@ -23,7 +23,7 @@
      }
  
      public static void bookAnimationTick(Level level, BlockPos pos, BlockState state, EnchantingTableBlockEntity enchantingTable) {
-@@ -136,4 +_,22 @@
+@@ -137,4 +_,22 @@
      public void removeComponentsFromTag(ValueOutput output) {
          output.discard("CustomName");
      }

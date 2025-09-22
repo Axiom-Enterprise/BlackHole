@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/LiquidBlock.java
 +++ b/net/minecraft/world/level/block/LiquidBlock.java
-@@ -134,7 +_,7 @@
+@@ -138,7 +_,7 @@
  
      @Override
      protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
@@ -9,7 +9,7 @@
              level.scheduleTick(pos, state.getFluidState().getType(), this.getFlowSpeed(level, pos)); // Paper - Configurable speed for water flowing over lava
          }
      }
-@@ -169,7 +_,7 @@
+@@ -173,7 +_,7 @@
          BlockState neighborState,
          RandomSource random
      ) {
@@ -18,7 +18,7 @@
              scheduledTickAccess.scheduleTick(pos, state.getFluidState().getType(), this.fluid.getTickDelay(level));
          }
  
-@@ -178,7 +_,7 @@
+@@ -182,7 +_,7 @@
  
      @Override
      protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {

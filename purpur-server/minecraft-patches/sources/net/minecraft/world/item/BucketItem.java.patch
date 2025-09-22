@@ -2,10 +2,10 @@
 +++ b/net/minecraft/world/item/BucketItem.java
 @@ -147,7 +_,7 @@
              // CraftBukkit end
-             if (!flag) {
+             if (!flag2) {
                  return hitResult != null && this.emptyContents(entity, level, hitResult.getBlockPos().relative(hitResult.getDirection()), null, direction, clicked, itemstack, hand); // CraftBukkit
 -            } else if (level.dimensionType().ultraWarm() && this.content.is(FluidTags.WATER)) {
-+            } else if ((level.dimensionType().ultraWarm() || (level.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) && this.content.is(FluidTags.WATER)) { // Purpur - Add allow water in end world option
++            } else if ((level.dimensionType().ultraWarm() || (level.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) && this.content == Fluids.WATER) { // Purpur - Add allow water in end world option
                  int x = pos.getX();
                  int y = pos.getY();
                  int z = pos.getZ();

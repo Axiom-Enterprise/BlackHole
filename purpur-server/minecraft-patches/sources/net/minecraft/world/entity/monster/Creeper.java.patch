@@ -1,14 +1,14 @@
 --- a/net/minecraft/world/entity/monster/Creeper.java
 +++ b/net/minecraft/world/entity/monster/Creeper.java
-@@ -55,6 +_,7 @@
+@@ -56,6 +_,7 @@
      public int explosionRadius = 3;
-     private int droppedSkulls;
+     private boolean droppedSkulls;
      public @Nullable Entity entityIgniter; // CraftBukkit
 +    private boolean exploding = false; // Purpur - Config to make Creepers explode on death
  
      public Creeper(EntityType<? extends Creeper> entityType, Level level) {
          super(entityType, level);
-@@ -158,6 +_,27 @@
+@@ -159,6 +_,27 @@
          return false; // CraftBukkit
      }
  
@@ -36,7 +36,7 @@
      @Override
      public SoundEvent getHurtSound(DamageSource damageSource) {
          return SoundEvents.CREEPER_HURT;
-@@ -240,14 +_,16 @@
+@@ -243,14 +_,16 @@
      }
  
      public void explodeCreeper() {
@@ -55,7 +55,7 @@
              this.spawnLingeringCloud();
              this.triggerOnDeathMobEffects(serverLevel, Entity.RemovalReason.KILLED);
              this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.EXPLODE); // CraftBukkit - add Bukkit remove cause
-@@ -258,6 +_,7 @@
+@@ -261,6 +_,7 @@
              }
              // CraftBukkit end
          }

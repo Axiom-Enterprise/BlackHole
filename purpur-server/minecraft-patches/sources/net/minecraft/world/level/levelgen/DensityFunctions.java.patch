@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/levelgen/DensityFunctions.java
 +++ b/net/minecraft/world/level/levelgen/DensityFunctions.java
-@@ -528,7 +_,7 @@
+@@ -534,7 +_,7 @@
              int i1 = z / 2;
              int i2 = x % 2;
              int i3 = z % 2;

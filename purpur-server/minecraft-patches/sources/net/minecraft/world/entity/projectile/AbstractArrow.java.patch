@@ -17,7 +17,7 @@
      }
  
      public boolean isInGround() {
-@@ -572,6 +_,12 @@
+@@ -573,6 +_,12 @@
      public ItemStack getWeaponItem() {
          return this.firedFromWeapon;
      }

@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/monster/Monster.java
 +++ b/net/minecraft/world/entity/monster/Monster.java
-@@ -88,6 +_,14 @@
+@@ -84,6 +_,14 @@
      }
  
      public static boolean isDarkEnoughToSpawn(ServerLevelAccessor level, BlockPos pos, RandomSource random) {

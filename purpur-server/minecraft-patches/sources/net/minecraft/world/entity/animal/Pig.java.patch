@@ -18,5 +18,5 @@
 +        // Purpur end - Pigs give saddle back
 +
          if (!isFood && this.isSaddled() && !this.isVehicle() && !player.isSecondaryUseActive()) {
-             if (!this.level().isClientSide) {
+             if (!this.level().isClientSide()) {
                  player.startRiding(this);

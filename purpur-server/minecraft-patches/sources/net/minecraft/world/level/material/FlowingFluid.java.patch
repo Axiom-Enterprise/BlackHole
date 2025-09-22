@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/material/FlowingFluid.java
 +++ b/net/minecraft/world/level/material/FlowingFluid.java
-@@ -232,7 +_,7 @@
+@@ -233,7 +_,7 @@
              }
          }
  
@@ -9,7 +9,7 @@
              BlockState blockState1 = level.getBlockState(mutableBlockPos.setWithOffset(pos, Direction.DOWN));
              FluidState fluidState1 = blockState1.getFluidState();
              if (blockState1.isSolid() || this.isSourceBlockOfThisType(fluidState1)) {
-@@ -319,6 +_,12 @@
+@@ -322,6 +_,12 @@
      }
  
      protected abstract boolean canConvertToSource(ServerLevel level);

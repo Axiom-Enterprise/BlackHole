@@ -1,14 +1,6 @@
-From 1e4693c6129676cacc2e29a157b5a69107c78543 Mon Sep 17 00:00:00 2001
-From: File <noreply+automated@papermc.io>
-Date: Sun, 20 Apr 1997 06:37:42 -0700
-Subject: [PATCH] purpur File Patches
-
-
-diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba0f12523a 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -429,6 +429,9 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -442,6 +_,9 @@
      public boolean isRealPlayer; // Paper
      public @Nullable com.destroystokyo.paper.event.entity.PlayerNaturallySpawnCreaturesEvent playerNaturallySpawnedEvent; // Paper - PlayerNaturallySpawnCreaturesEvent
      public @Nullable org.bukkit.event.player.PlayerQuitEvent.QuitReason quitReason = null; // Paper - Add API for quit reason; there are a lot of changes to do if we change all methods leading to the event
@@ -18,20 +10,19 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
  
      // Paper start - rewrite chunk system
      private ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -562,6 +565,10 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -515,6 +_,9 @@
          this.respawnConfig = input.read("respawn", ServerPlayer.RespawnConfig.CODEC).orElse(null);
          this.spawnExtraParticlesOnFall = input.getBooleanOr("spawn_extra_particles_on_fall", false);
          this.raidOmenPosition = input.read("raid_omen_position", BlockPos.CODEC).orElse(null);
-+
 +        this.tpsBar = input.getBooleanOr("Purpur.TPSBar", false); // Purpur - Implement TPSBar
 +        this.compassBar = input.getBooleanOr("Purpur.CompassBar", false); // Purpur - Add compass command
 +        this.ramBar = input.getBooleanOr("Purpur.RamBar", false); // Purpur - Implement rambar command
+         // Paper start - Expand PlayerGameModeChangeEvent
+         this.loadGameTypes(input);
      }
- 
-     @Override
-@@ -579,6 +586,9 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
-         output.storeNullable("raid_omen_position", BlockPos.CODEC, this.raidOmenPosition);
-         this.saveEnderPearls(output);
+@@ -556,6 +_,9 @@
+             output.store("ShoulderEntityRight", CompoundTag.CODEC, this.getShoulderEntityRight());
+         }
          this.getBukkitEntity().setExtraData(output); // CraftBukkit
 +        output.putBoolean("Purpur.TPSBar", this.tpsBar); // Purpur - Implement TPSBar
 +        output.putBoolean("Purpur.CompassBar", this.compassBar); // Purpur - Add compass command
@@ -39,7 +30,7 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
      }
  
      private void saveParentVehicle(ValueOutput output) {
-@@ -1079,6 +1089,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1185,6 +_,7 @@
              // Paper - moved up to sendClientboundPlayerCombatKillPacket()
              sendClientboundPlayerCombatKillPacket(event.getShowDeathMessages(), deathScreenMessage); // Paper - Expand PlayerDeathEvent
              Team team = this.getTeam();
@@ -47,7 +38,7 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
              if (team == null || team.getDeathMessageVisibility() == Team.Visibility.ALWAYS) {
                  this.server.getPlayerList().broadcastSystemMessage(deathMessage, false);
              } else if (team.getDeathMessageVisibility() == Team.Visibility.HIDE_FOR_OTHER_TEAMS) {
-@@ -1185,6 +1196,13 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1292,6 +_,13 @@
          if (this.isInvulnerableTo(level, damageSource)) {
              return false;
          } else {
@@ -61,7 +52,7 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
              Entity entity = damageSource.getEntity();
              if (!( // Paper - split the if statement. If below statement is false, hurtServer would not have been evaluated. Return false.
               !(entity instanceof Player player && !this.canHarmPlayer(player))
-@@ -1438,6 +1456,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1549,6 +_,7 @@
                  serverLevel.removePlayerImmediately(this, Entity.RemovalReason.CHANGED_DIMENSION);
                  this.unsetRemoved();
                  // CraftBukkit end
@@ -69,7 +60,7 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
                  this.setServerLevel(level);
                  this.connection.internalTeleport(PositionMoveRotation.of(teleportTransition), teleportTransition.relatives()); // CraftBukkit - use internal teleport without event
                  this.connection.resetPosition();
-@@ -1554,7 +1573,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1668,7 +_,7 @@
                              new AABB(vec3.x() - 8.0, vec3.y() - 5.0, vec3.z() - 8.0, vec3.x() + 8.0, vec3.y() + 5.0, vec3.z() + 8.0),
                              monster -> monster.isPreventingPlayerRest(this.level(), this)
                          );
@@ -78,7 +69,7 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
                          return Either.left(Player.BedSleepingProblem.NOT_SAFE);
                      }
                  }
-@@ -1591,7 +1610,19 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1705,7 +_,19 @@
                      CriteriaTriggers.SLEPT_IN_BED.trigger(this);
                  });
                  if (!this.level().canSleepThroughNights()) {
@@ -99,7 +90,7 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
                  }
  
                  this.level().updateSleepingPlayerList();
-@@ -1683,6 +1714,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1797,6 +_,7 @@
  
      @Override
      public void openTextEdit(SignBlockEntity signEntity, boolean isFrontText) {
@@ -107,7 +98,7 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
          this.connection.send(new ClientboundBlockUpdatePacket(this.level(), signEntity.getBlockPos()));
          this.connection.send(new ClientboundOpenSignEditorPacket(signEntity.getBlockPos(), isFrontText));
      }
-@@ -1992,6 +2024,26 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -2106,6 +_,26 @@
          this.lastSentExp = -1; // CraftBukkit - Added to reset
      }
  
@@ -134,7 +125,7 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
      @Override
      public void displayClientMessage(Component chatComponent, boolean actionBar) {
          this.sendSystemMessage(chatComponent, actionBar);
-@@ -2210,6 +2262,20 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -2325,6 +_,20 @@
          );
      }
  
@@ -155,13 +146,14 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
      public void sendSystemMessage(Component mesage) {
          this.sendSystemMessage(mesage, false);
      }
-@@ -2348,8 +2414,68 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -2463,7 +_,67 @@
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
+-    }
 +        this.setAfk(false); // Purpur - AFK API
-     }
- 
++    }
++
 +    // Purpur start - AFK API
 +    private boolean isAfk = false;
 +
@@ -220,11 +212,10 @@ index 8f94c963f2c59668d72d162f46f7505d6a6b06a5..90e4965d7c266d7349112bfdc27bbcba
 +        return !this.isAfk() && super.canBeCollidedWith(entity);
 +    }
 +    // Purpur end - AFK API
-+
+ 
      public ServerStatsCounter getStats() {
          return this.stats;
-     }
-@@ -2976,4 +3102,56 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -3105,4 +_,56 @@
          return (org.bukkit.craftbukkit.entity.CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end

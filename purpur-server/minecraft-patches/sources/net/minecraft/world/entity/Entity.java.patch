@@ -1,22 +1,14 @@
-From 1e4693c6129676cacc2e29a157b5a69107c78543 Mon Sep 17 00:00:00 2001
-From: File <noreply+automated@papermc.io>
-Date: Sun, 20 Apr 1997 06:37:42 -0700
-Subject: [PATCH] purpur File Patches
-
-
-diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c207bd4547 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -148,6 +148,7 @@ import org.jetbrains.annotations.Contract;
+@@ -150,6 +_,7 @@
  import org.slf4j.Logger;
  
- public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess, ScoreHolder, DataComponentGetter, ca.spottedleaf.moonrise.patches.chunk_system.entity.ChunkSystemEntity, ca.spottedleaf.moonrise.patches.entity_tracker.EntityTrackerEntity { // Paper - rewrite chunk system // Paper - optimise entity tracker
+ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Nameable, ItemOwner, EntityAccess, ScoreHolder, DataComponentGetter, ca.spottedleaf.moonrise.patches.chunk_system.entity.ChunkSystemEntity, ca.spottedleaf.moonrise.patches.entity_tracker.EntityTrackerEntity { // Paper - rewrite chunk system // Paper - optimise entity tracker
 +    public static javax.script.ScriptEngine scriptEngine = new javax.script.ScriptEngineManager().getEngineByName("rhino"); // Purpur - Configurable entity base attributes
      // CraftBukkit start
      private static final int CURRENT_LEVEL = 2;
      public boolean preserveMotion = true; // Paper - Fix Entity Teleportation and cancel velocity if teleported; keep initial motion on first snapTo
-@@ -280,8 +281,9 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -282,8 +_,9 @@
      public double xOld;
      public double yOld;
      public double zOld;
@@ -27,7 +19,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
      public int tickCount;
      private int remainingFireTicks;
      public boolean wasTouchingWater;
-@@ -315,8 +317,8 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -317,8 +_,8 @@
      public PortalProcessor portalProcess;
      public int portalCooldown;
      private boolean invulnerable;
@@ -38,7 +30,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
      private boolean hasGlowingTag;
      private final Set<String> tags = new io.papermc.paper.util.SizeLimitedSet<>(new it.unimi.dsi.fastutil.objects.ObjectOpenHashSet<>(), MAX_ENTITY_TAG_COUNT); // Paper - fully limit tag size - replace set impl
      private final double[] pistonDeltas = new double[]{0.0, 0.0, 0.0};
-@@ -371,6 +373,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -373,6 +_,7 @@
      public long activatedTick = Integer.MIN_VALUE;
      public boolean isTemporarilyActive;
      public long activatedImmunityTick = Integer.MIN_VALUE;
@@ -46,7 +38,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
  
      public void inactiveTick() {
      }
-@@ -533,10 +536,21 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -535,10 +_,21 @@
      }
      // Paper end - optimise entity tracker
  
@@ -68,7 +60,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
          this.position = Vec3.ZERO;
          this.blockPosition = BlockPos.ZERO;
          this.chunkPosition = ChunkPos.ZERO;
-@@ -911,6 +925,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -917,6 +_,7 @@
              && this.level.paperConfig().environment.netherCeilingVoidDamageHeight.test(v -> this.getY() >= v)
              && (!(this instanceof Player player) || !player.getAbilities().invulnerable))) {
              // Paper end - Configurable nether ceiling damage
@@ -76,7 +68,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
              this.onBelowWorld();
          }
      }
-@@ -1889,7 +1904,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -1937,7 +_,7 @@
      }
  
      public boolean fireImmune() {
@@ -85,7 +77,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
      }
  
      public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
-@@ -2585,6 +2600,11 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2637,6 +_,11 @@
                  output.putBoolean("Paper.FreezeLock", true);
              }
              // Paper end
@@ -97,7 +89,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
          } catch (Throwable var7) {
              CrashReport crashReport = CrashReport.forThrowable(var7, "Saving entity NBT");
              CrashReportCategory crashReportCategory = crashReport.addCategory("Entity being saved");
-@@ -2705,6 +2725,9 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2757,6 +_,9 @@
              }
              freezeLocked = input.getBooleanOr("Paper.FreezeLock", false);
              // Paper end
@@ -107,7 +99,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
          } catch (Throwable var7) {
              CrashReport crashReport = CrashReport.forThrowable(var7, "Loading entity NBT");
              CrashReportCategory crashReportCategory = crashReport.addCategory("Entity being loaded");
-@@ -2983,6 +3006,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3030,6 +_,7 @@
              if (this.isAlive() && this instanceof Leashable leashable2) {
                  if (leashable2.getLeashHolder() == player) {
                      if (!this.level().isClientSide()) {
@@ -115,7 +107,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
                          // Paper start - EntityUnleashEvent
                          if (!org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerUnleashEntityEvent(
                              leashable2, player, hand, !player.hasInfiniteMaterials(), true
-@@ -3388,15 +3412,18 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3454,15 +_,18 @@
          return Vec3.directionFromRotation(this.getRotationVector());
      }
  
@@ -135,7 +127,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
              }
          }
      }
-@@ -3601,7 +3628,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -3667,7 +_,7 @@
      }
  
      public int getMaxAirSupply() {
@@ -144,7 +136,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
      }
  
      public int getAirSupply() {
-@@ -4155,7 +4182,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4229,7 +_,7 @@
      // CraftBukkit end
  
      public boolean canUsePortal(boolean allowPassengers) {
@@ -153,7 +145,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
      }
  
      public boolean canTeleport(Level fromLevel, Level toLevel) {
-@@ -4680,6 +4707,12 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4744,6 +_,12 @@
          return Mth.lerp(partialTick, this.yRotO, this.yRot);
      }
  
@@ -166,7 +158,7 @@ index 8dff36deb47de619f6958cead3c648c832ecc171..f532809a855562b43545e45957bd28c2
      // Paper start - optimise collisions
      public boolean updateFluidHeightAndDoFluidPushing(final TagKey<Fluid> fluid, final double flowScale) {
          if (this.touchingUnloadedChunk()) {
-@@ -5106,7 +5139,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -5171,7 +_,7 @@
      }
  
      public float maxUpStep() {

@@ -1,14 +1,6 @@
-From 1e4693c6129676cacc2e29a157b5a69107c78543 Mon Sep 17 00:00:00 2001
-From: File <noreply+automated@papermc.io>
-Date: Sun, 20 Apr 1997 06:37:42 -0700
-Subject: [PATCH] purpur File Patches
-
-
-diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index e0b3cb2b2694768803ed347a1026b881fd624951..150d12e27c2de0740af5c554286358f81e290fae 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -140,6 +140,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -150,6 +_,7 @@
      private int homeRadius = -1;
      public boolean aware = true; // CraftBukkit
      public net.kyori.adventure.util.TriState despawnInPeacefulOverride = net.kyori.adventure.util.TriState.NOT_SET; // Paper - allow changing despawnInPeaceful
@@ -16,7 +8,7 @@ index e0b3cb2b2694768803ed347a1026b881fd624951..150d12e27c2de0740af5c554286358f8
  
      protected Mob(EntityType<? extends Mob> entityType, Level level) {
          super(entityType, level);
-@@ -285,6 +286,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -295,6 +_,7 @@
                  target = null;
              }
          }
@@ -24,13 +16,14 @@ index e0b3cb2b2694768803ed347a1026b881fd624951..150d12e27c2de0740af5c554286358f8
          this.target = target;
          return true;
          // CraftBukkit end
-@@ -328,8 +330,28 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -338,7 +_,27 @@
          }
  
          profilerFiller.pop();
+-    }
 +        incrementTicksSinceLastInteraction(); // Purpur - Entity lifespan
-     }
- 
++    }
++
 +    // Purpur start - Entity lifespan
 +    private void incrementTicksSinceLastInteraction() {
 +        ++this.ticksSinceLastInteraction;
@@ -49,11 +42,10 @@ index e0b3cb2b2694768803ed347a1026b881fd624951..150d12e27c2de0740af5c554286358f8
 +        }
 +    }
 +    // Purpur end - Entity lifespan
-+
+ 
      @Override
      protected void playHurtSound(DamageSource source) {
-         this.resetAmbientSoundTime();
-@@ -433,6 +455,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -443,6 +_,7 @@
              output.putString("Paper.DespawnInPeacefulOverride", this.despawnInPeacefulOverride.name());
          }
          // Paper end - allow changing despawnInPeaceful
@@ -61,15 +53,15 @@ index e0b3cb2b2694768803ed347a1026b881fd624951..150d12e27c2de0740af5c554286358f8
      }
  
      @Override
-@@ -461,6 +484,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -470,6 +_,7 @@
+         this.lootTableSeed = input.getLongOr("DeathLootTableSeed", 0L);
          this.setNoAi(input.getBooleanOr("NoAI", false));
          this.aware = input.getBooleanOr("Bukkit.Aware", true); // CraftBukkit
-         this.despawnInPeacefulOverride = input.read("Paper.DespawnInPeacefulOverride", io.papermc.paper.util.PaperCodecs.TRI_STATE_CODEC).orElse(net.kyori.adventure.util.TriState.NOT_SET); // Paper - allow changing despawnInPeaceful
 +        this.ticksSinceLastInteraction = input.getIntOr("Purpur.ticksSinceLastInteraction", 0); // Purpur- Entity lifespan
+         // Paper start - allow changing despawnInPeaceful
+         this.despawnInPeacefulOverride = readDespawnInPeacefulOverride(input);
      }
- 
-     @Override
-@@ -1201,7 +1225,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1210,7 +_,7 @@
              );
          }
  
@@ -78,7 +70,7 @@ index e0b3cb2b2694768803ed347a1026b881fd624951..150d12e27c2de0740af5c554286358f8
          return spawnGroupData;
      }
  
-@@ -1538,6 +1562,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1557,6 +_,7 @@
              this.playAttackSound();
          }
  

@@ -1,14 +1,6 @@
-From 1e4693c6129676cacc2e29a157b5a69107c78543 Mon Sep 17 00:00:00 2001
-From: File <noreply+automated@papermc.io>
-Date: Sun, 20 Apr 1997 06:37:42 -0700
-Subject: [PATCH] purpur File Patches
-
-
-diff --git a/net/minecraft/world/level/block/Block.java b/net/minecraft/world/level/block/Block.java
-index be6f37f91569c659c609e5e8d38671ca86f8cd95..d023c985344807db2180665a15d282fa50754299 100644
 --- a/net/minecraft/world/level/block/Block.java
 +++ b/net/minecraft/world/level/block/Block.java
-@@ -99,6 +99,10 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -103,6 +_,10 @@
      public static final int UPDATE_LIMIT = 512;
      protected final StateDefinition<Block, BlockState> stateDefinition;
      private BlockState defaultBlockState;
@@ -19,7 +11,7 @@ index be6f37f91569c659c609e5e8d38671ca86f8cd95..d023c985344807db2180665a15d282fa
      // Paper start - Protect Bedrock and End Portal/Frames from being destroyed
      public final boolean isDestroyable() {
          return io.papermc.paper.configuration.GlobalConfiguration.get().unsupportedSettings.allowPermanentBlockBreakExploits ||
-@@ -345,7 +349,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -384,7 +_,7 @@
              event.setExpToDrop(block.getExpDrop(state, serverLevel, pos, net.minecraft.world.item.ItemStack.EMPTY, true)); // Paper - Properly handle xp dropping
              event.callEvent();
              for (org.bukkit.inventory.ItemStack drop : event.getDrops()) {
@@ -28,21 +20,21 @@ index be6f37f91569c659c609e5e8d38671ca86f8cd95..d023c985344807db2180665a15d282fa
              }
              state.spawnAfterBreak(serverLevel, pos, ItemStack.EMPTY, false); // Paper - Properly handle xp dropping
              block.popExperience(serverLevel, pos, event.getExpToDrop()); // Paper - Properly handle xp dropping
-@@ -363,7 +367,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -402,7 +_,7 @@
  
      public static void dropResources(BlockState state, LevelAccessor level, BlockPos pos, @Nullable BlockEntity blockEntity) {
          if (level instanceof ServerLevel) {
--            getDrops(state, (ServerLevel)level, pos, blockEntity).forEach(stack -> popResource((ServerLevel)level, pos, stack));
-+            getDrops(state, (ServerLevel)level, pos, blockEntity).forEach(stack -> popResource((ServerLevel)level, pos, applyLoreFromTile(stack, blockEntity))); // Purpur - Persistent BlockEntity Lore and DisplayName
+-            getDrops(state, (ServerLevel)level, pos, blockEntity).forEach(itemStack -> popResource((ServerLevel)level, pos, itemStack));
++            getDrops(state, (ServerLevel)level, pos, blockEntity).forEach(itemStack -> popResource((ServerLevel)level, pos, applyLoreFromTile(itemStack, blockEntity))); // Purpur - Persistent BlockEntity Lore and DisplayName
              state.spawnAfterBreak((ServerLevel)level, pos, ItemStack.EMPTY, true);
          }
      }
-@@ -375,11 +379,30 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -414,11 +_,30 @@
      public static void dropResources(BlockState state, Level level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool, boolean dropExperience) {
      // Paper end - Properly handle xp dropping
          if (level instanceof ServerLevel) {
--            getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach(stack -> popResource(level, pos, stack));
-+            getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach(stack -> popResource(level, pos, applyLoreFromTile(stack, blockEntity))); // Purpur - Persistent BlockEntity Lore and DisplayName
+-            getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach(itemStack -> popResource(level, pos, itemStack));
++            getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach(itemStack -> popResource(level, pos, applyLoreFromTile(itemStack, blockEntity))); // Purpur - Persistent BlockEntity Lore and DisplayName
              state.spawnAfterBreak((ServerLevel)level, pos, tool, dropExperience); // Paper - Properly handle xp dropping
          }
      }
@@ -69,10 +61,11 @@ index be6f37f91569c659c609e5e8d38671ca86f8cd95..d023c985344807db2180665a15d282fa
      public static void popResource(Level level, BlockPos pos, ItemStack stack) {
          double d = EntityType.ITEM.getHeight() / 2.0;
          double d1 = pos.getX() + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25);
-@@ -460,7 +483,15 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -499,7 +_,15 @@
      }
  
      public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+-    }
 +        this.placer = placer; // Purpur - Store placer on Block when placed
 +    }
 +
@@ -80,12 +73,12 @@ index be6f37f91569c659c609e5e8d38671ca86f8cd95..d023c985344807db2180665a15d282fa
 +    @Nullable protected LivingEntity placer = null;
 +    public void forgetPlacer() {
 +        this.placer = null;
-     }
++    }
 +    // Purpur end - Store placer on Block when placed
  
      public boolean isPossibleToRespawnInThis(BlockState state) {
          return !state.isSolid() && !state.liquid();
-@@ -471,7 +502,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -510,7 +_,7 @@
      }
  
      public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {

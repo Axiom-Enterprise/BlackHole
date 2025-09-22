@@ -22,7 +22,7 @@
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F, 0.02F, true));
-@@ -461,11 +_,21 @@
+@@ -457,11 +_,21 @@
      private void hitByShulkerBullet() {
          Vec3 vec3 = this.position();
          AABB boundingBox = this.getBoundingBox();
@@ -48,7 +48,7 @@
                  if (shulker != null) {
                      shulker.setVariant(this.getVariant());
                      shulker.snapTo(vec3);
-@@ -573,7 +_,7 @@
+@@ -569,7 +_,7 @@
      }
  
      public Optional<DyeColor> getVariant() {

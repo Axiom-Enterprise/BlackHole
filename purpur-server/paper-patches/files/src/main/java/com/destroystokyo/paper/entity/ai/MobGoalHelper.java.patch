@@ -1,7 +1,7 @@
 --- a/src/main/java/com/destroystokyo/paper/entity/ai/MobGoalHelper.java
 +++ b/src/main/java/com/destroystokyo/paper/entity/ai/MobGoalHelper.java
-@@ -144,6 +_,11 @@
-     private static final Map<String, String> NESTED_CLASS_NAMES = Util.make(new HashMap<>(), map -> {
+@@ -143,6 +_,11 @@
+     private static final Map<String, String> RENAMES = Util.make(new HashMap<>(), map -> {
          map.put("AbstractSkeleton$1", "AbstractSkeletonMelee");
  
 +        // Purpur start - Add option to disable zombie aggressiveness towards villagers

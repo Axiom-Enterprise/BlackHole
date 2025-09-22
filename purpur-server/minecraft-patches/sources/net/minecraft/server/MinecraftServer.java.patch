@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -290,6 +_,7 @@
+@@ -291,6 +_,7 @@
      public joptsimple.OptionSet options;
      public org.bukkit.command.ConsoleCommandSender console;
      public static int currentTick; // Paper - improve tick loop
@@ -8,7 +8,7 @@
      public java.util.Queue<Runnable> processQueue = new java.util.concurrent.ConcurrentLinkedQueue<Runnable>();
      public int autosavePeriod;
      // Paper - don't store the vanilla dispatcher
-@@ -300,7 +_,7 @@
+@@ -301,7 +_,7 @@
      public static final int TICK_TIME = 1000000000 / MinecraftServer.TPS;
      private static final int SAMPLE_INTERVAL = 20; // Paper - improve server tick loop
      @Deprecated(forRemoval = true) // Paper
@@ -17,7 +17,7 @@
      // Spigot end
      public volatile boolean hasFullyShutdown; // Paper - Improved watchdog support
      public volatile boolean abnormalExit; // Paper - Improved watchdog support
-@@ -309,6 +_,8 @@
+@@ -310,6 +_,8 @@
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
      private final Set<String> pluginsBlockingSleep = new java.util.HashSet<>(); // Paper - API to allow/disallow tick sleeping
      public static final long SERVER_INIT = System.nanoTime(); // Paper - Lag compensation
@@ -26,7 +26,7 @@
  
      public static <S extends MinecraftServer> S spin(Function<Thread, S> threadFunction) {
          AtomicReference<S> atomicReference = new AtomicReference<>();
-@@ -923,6 +_,15 @@
+@@ -927,6 +_,15 @@
  
          LOGGER.info("Stopping server");
          Commands.COMMAND_SENDING_POOL.shutdownNow(); // Paper - Perf: Async command map building; Shutdown and don't bother finishing
@@ -42,7 +42,7 @@
          // CraftBukkit start
          if (this.server != null) {
              this.server.spark.disable(); // Paper - spark
-@@ -1021,6 +_,8 @@
+@@ -1025,6 +_,8 @@
          this.safeShutdown(waitForServer, false);
      }
      public void safeShutdown(boolean waitForServer, boolean isRestarting) {
@@ -51,7 +51,7 @@
          this.isRestarting = isRestarting;
          this.hasLoggedStop = true; // Paper - Debugging
          if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper - Debugging
-@@ -1040,6 +_,7 @@
+@@ -1044,6 +_,7 @@
      private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
      private long lastTick = 0;
      private long catchupTime = 0;
@@ -59,7 +59,7 @@
      public final RollingAverage tps1 = new RollingAverage(60);
      public final RollingAverage tps5 = new RollingAverage(60 * 5);
      public final RollingAverage tps15 = new RollingAverage(60 * 15);
-@@ -1126,6 +_,16 @@
+@@ -1130,6 +_,16 @@
              }
              // Paper end - Add onboarding message for initial server start
  
@@ -76,7 +76,7 @@
              while (this.running) {
                  long l;
                  if (!this.isPaused() && this.tickRateManager.isSprinting() && this.tickRateManager.checkShouldSprintThisTick()) {
-@@ -1150,14 +_,19 @@
+@@ -1154,14 +_,19 @@
                  if (++MinecraftServer.currentTick % MinecraftServer.SAMPLE_INTERVAL == 0) {
                      final long diff = currentTime - tickSection;
                      final java.math.BigDecimal currentTps = TPS_BASE.divide(new java.math.BigDecimal(diff), 30, java.math.RoundingMode.HALF_UP);
@@ -99,7 +99,7 @@
                      tickSection = currentTime;
                  }
                  // Paper end - further improve server tick loop
-@@ -1189,6 +_,12 @@
+@@ -1193,6 +_,12 @@
                      profilerFiller.popPush("nextTickWait");
                      this.mayHaveDelayedTasks = true;
                      this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + l, this.nextTickTimeNanos);
@@ -112,7 +112,7 @@
                      this.startMeasuringTaskExecutionTime();
                      this.waitUntilNextTick();
                      this.finishMeasuringTaskExecutionTime();
-@@ -1634,7 +_,7 @@
+@@ -1627,7 +_,7 @@
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -121,7 +121,7 @@
                      continue;
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
-@@ -1805,7 +_,7 @@
+@@ -1799,7 +_,7 @@
  
      @DontObfuscate
      public String getServerModName() {

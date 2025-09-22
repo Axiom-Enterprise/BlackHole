@@ -15,9 +15,9 @@
 -        this.getHandle().listName = name.equals(this.getName()) ? null : CraftChatMessage.fromStringOrNull(name);
 +        this.getHandle().listName = name.equals(this.getName()) ? null : useMM ? io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(name)) : CraftChatMessage.fromStringOrNull(name); // Purpur - AFK API
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
-         for (ServerPlayer player : (List<ServerPlayer>) this.server.getHandle().players) {
+         for (ServerPlayer player : this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -1025,6 +_,78 @@
+@@ -978,6 +_,78 @@
          }
      }
  
@@ -94,9 +94,9 @@
 +    // Purpur end - Death screen API
 +
      @Override
-     public void sendBlockDamage(Location loc, float progress) {
-         this.sendBlockDamage(loc, progress, this.getEntityId());
-@@ -2695,6 +_,28 @@
+     public void sendBlockDamage(Location loc, float progress, org.bukkit.entity.Entity source) {
+         Preconditions.checkArgument(source != null, "source must not be null");
+@@ -2590,6 +_,28 @@
      public float getWalkSpeed() {
          return this.getHandle().getAbilities().walkingSpeed * 2f;
      }

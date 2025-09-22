@@ -5,13 +5,13 @@ Subject: [PATCH] Cows naturally aggressive to players chance
 
 
 diff --git a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index bead2f6800bdc404228500c12caf326559fa47de..e6ef56d94e29a6629c9b672ed4ac4ef29ad6a286 100644
+index 9251693b3caa2d77b093064b6599db1078cd06d0..99458462d99f0b503ccb55444f4930515c7c641c 100644
 --- a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-@@ -128,7 +128,7 @@ public class DefaultAttributes {
-         .put(EntityType.IRON_GOLEM, IronGolem.createAttributes().build())
+@@ -131,7 +131,7 @@ public class DefaultAttributes {
          .put(EntityType.LLAMA, Llama.createAttributes().build())
          .put(EntityType.MAGMA_CUBE, MagmaCube.createAttributes().build())
+         .put(EntityType.MANNEQUIN, LivingEntity.createLivingAttributes().build())
 -        .put(EntityType.MOOSHROOM, Cow.createAttributes().build())
 +        .put(EntityType.MOOSHROOM, net.minecraft.world.entity.animal.AbstractCow.createAttributes().build()) // Purpur - Cows naturally aggressive to players chance
          .put(EntityType.MULE, AbstractChestedHorse.createBaseChestedHorseAttributes().build())

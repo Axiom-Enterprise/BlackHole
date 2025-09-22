@@ -5,10 +5,10 @@ Subject: [PATCH] Villagers follow emerald blocks
 
 
 diff --git a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index 4bb7a8955182d786a09fd2667b37a93373ff47be..bead2f6800bdc404228500c12caf326559fa47de 100644
+index c23d6edeaca324bcfd60c6e96ec4038f6ef595a9..9251693b3caa2d77b093064b6599db1078cd06d0 100644
 --- a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-@@ -164,7 +164,7 @@ public class DefaultAttributes {
+@@ -167,7 +167,7 @@ public class DefaultAttributes {
          .put(EntityType.VILLAGER, Villager.createAttributes().build())
          .put(EntityType.VINDICATOR, Vindicator.createAttributes().build())
          .put(EntityType.WARDEN, Warden.createAttributes().build())
@@ -31,7 +31,7 @@ index dae935cc68e2e571d50e56ac8913c099a11cf771..a805c9426630c2c46db9d0dd536f1d16
  
      @Override
 diff --git a/net/minecraft/world/entity/npc/AbstractVillager.java b/net/minecraft/world/entity/npc/AbstractVillager.java
-index f8782cdcf3015cad2693663a3c222bd60822f45b..d1a77544df7bcaa5f1dbca3139324107d687ae0d 100644
+index cf4703cb909aa5906fdd689082208ea4dd77fc0f..8eceba09d1a410aaf359c71a2a0e5d44471e67b6 100644
 --- a/net/minecraft/world/entity/npc/AbstractVillager.java
 +++ b/net/minecraft/world/entity/npc/AbstractVillager.java
 @@ -35,6 +35,7 @@ import net.minecraft.world.level.storage.ValueOutput;
@@ -43,7 +43,7 @@ index f8782cdcf3015cad2693663a3c222bd60822f45b..d1a77544df7bcaa5f1dbca3139324107
      public static final int VILLAGER_SLOT_OFFSET = 300;
      private static final int VILLAGER_INVENTORY_SIZE = 8;
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index eefc5c1f494f1053f93559e8c666065f561dec10..835c80828f831c9bc0f8c7cdf451f268bb36e5ad 100644
+index b5dc02822ce6a82eb69fd7341c317fb1f7ee0a7f..4b076b9eeeb3614df3a024f16fecb287bed72ec7 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -268,6 +268,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -72,7 +72,7 @@ index eefc5c1f494f1053f93559e8c666065f561dec10..835c80828f831c9bc0f8c7cdf451f268
  
      public boolean assignProfessionWhenSpawned() {
 diff --git a/net/minecraft/world/entity/npc/WanderingTrader.java b/net/minecraft/world/entity/npc/WanderingTrader.java
-index 28c86505efa994f9c7657538f5ffdf12772fb0a9..2917820bf01b1a2ca7301a7099b7b3dcd6c3ee67 100644
+index 0eeda11b37cd17122183d5e22d02d9cd61f2b4e5..e9a98a7009555128cb5118093add3fb331a7d485 100644
 --- a/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/net/minecraft/world/entity/npc/WanderingTrader.java
 @@ -88,9 +88,16 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill

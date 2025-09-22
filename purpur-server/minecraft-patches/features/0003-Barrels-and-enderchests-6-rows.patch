@@ -5,10 +5,10 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
-index 189bf2f787e6f99ed16d75c2e05ff4351d2c8747..db56578bff06574337463c2421537f43d1a19189 100644
+index 23181b6192d3d69f263bf57bfd0d2fac000ce15b..f2fe9a8369b923edf6abe8af01d8a34e995e0b9b 100644
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -1002,6 +1002,27 @@ public abstract class PlayerList {
+@@ -912,6 +912,27 @@ public abstract class PlayerList {
          player.getBukkitEntity().recalculatePermissions(); // CraftBukkit
          this.server.getCommands().sendCommands(player);
          } // Paper - Add sendOpLevel API
@@ -37,10 +37,10 @@ index 189bf2f787e6f99ed16d75c2e05ff4351d2c8747..db56578bff06574337463c2421537f43
  
      // Paper start - whitelist verify event / login event
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index b12bd1f756b91a1168eb8ac4959152dcca01c5b5..d72e338232b95826b63d784ac0731f5a20bf8dcb 100644
+index 1e14640b74950ecd2abd0ae13a7c83fa6a318703..6a71ec21849b30dd3f0f1ad86ccb01ee472a55b7 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
-@@ -221,6 +221,7 @@ public abstract class Player extends LivingEntity {
+@@ -182,6 +182,7 @@ public abstract class Player extends Avatar implements ContainerUser {
      public net.kyori.adventure.util.TriState flyingFallDamage = net.kyori.adventure.util.TriState.NOT_SET; // Paper - flying fall damage
      public int burpDelay = 0; // Purpur - Burp delay
      public boolean canPortalInstant = false; // Purpur - Add portal permission bypass
@@ -84,10 +84,10 @@ index 0fffa384f928ab84451331380968fb4650eafe26..0399092c9f7a43ac100c11505176ade6
          return new ChestMenu(MenuType.GENERIC_9x6, containerId, playerInventory, container, 6);
      }
 diff --git a/net/minecraft/world/inventory/PlayerEnderChestContainer.java b/net/minecraft/world/inventory/PlayerEnderChestContainer.java
-index 51148b7b95c93a9e25da70ac9275c63f1458d84c..96359fef8c83b54ea65d4358aa5d594723b38ead 100644
+index 8cf089874a75735be690ab72a01264bac5ff793d..611f78f93b70674b53c025d9151dacb54af3e803 100644
 --- a/net/minecraft/world/inventory/PlayerEnderChestContainer.java
 +++ b/net/minecraft/world/inventory/PlayerEnderChestContainer.java
-@@ -26,11 +26,18 @@ public class PlayerEnderChestContainer extends SimpleContainer {
+@@ -27,11 +27,18 @@ public class PlayerEnderChestContainer extends SimpleContainer {
      }
  
      public PlayerEnderChestContainer(Player owner) {
@@ -108,7 +108,7 @@ index 51148b7b95c93a9e25da70ac9275c63f1458d84c..96359fef8c83b54ea65d4358aa5d5947
          this.activeChest = enderChestBlockEntity;
      }
 diff --git a/net/minecraft/world/level/block/EnderChestBlock.java b/net/minecraft/world/level/block/EnderChestBlock.java
-index 5077a9ff7b78801bdc53536a37aee07b8d86ee4d..72794e204f7fcc31ece94913b7fd9f36ae022b10 100644
+index 1518e035c4b6fdfc68b77fc42b043dd27f680767..a7b20c0781b0372a36e67c7b5a3eae90476f83e0 100644
 --- a/net/minecraft/world/level/block/EnderChestBlock.java
 +++ b/net/minecraft/world/level/block/EnderChestBlock.java
 @@ -85,8 +85,8 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
@@ -159,13 +159,13 @@ index 5077a9ff7b78801bdc53536a37aee07b8d86ee4d..72794e204f7fcc31ece94913b7fd9f36
      public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
          return new EnderChestBlockEntity(pos, state);
 diff --git a/net/minecraft/world/level/block/entity/BarrelBlockEntity.java b/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
-index d679ab599dfd0bdbdc3ab5530d7fcd1c38baf7fa..0e4f6455ec48c5a7fcd4613c1c5b79d599e4960a 100644
+index f8cad05f5f1692c9a8701ff01f33d83477600c34..a4a4150beab8f2fa409a2d1d495a56679aecbae3 100644
 --- a/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
-@@ -56,7 +56,17 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
+@@ -58,7 +58,16 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
      }
      // CraftBukkit end
- 
+     private static final Component DEFAULT_NAME = Component.translatable("container.barrel");
 -    private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
 +    // Purpur start - Barrels and enderchests 6 rows
 +    private NonNullList<ItemStack> items = NonNullList.withSize(switch (org.purpurmc.purpur.PurpurConfig.barrelRows) {
@@ -177,11 +177,10 @@ index d679ab599dfd0bdbdc3ab5530d7fcd1c38baf7fa..0e4f6455ec48c5a7fcd4613c1c5b79d5
 +        default -> 27;
 +    }, ItemStack.EMPTY);
 +    // Purpur end - Barrels and enderchests 6 rows
-+
      public final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
          @Override
          protected void onOpen(Level level, BlockPos pos, BlockState state) {
-@@ -108,7 +118,16 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
+@@ -110,7 +119,16 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
  
      @Override
      public int getContainerSize() {
@@ -199,7 +198,7 @@ index d679ab599dfd0bdbdc3ab5530d7fcd1c38baf7fa..0e4f6455ec48c5a7fcd4613c1c5b79d5
      }
  
      @Override
-@@ -128,7 +147,16 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
+@@ -130,7 +148,16 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
  
      @Override
      protected AbstractContainerMenu createMenu(int id, Inventory player) {

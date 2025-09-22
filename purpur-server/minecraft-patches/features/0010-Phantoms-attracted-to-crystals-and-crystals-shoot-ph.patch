@@ -72,7 +72,7 @@ index 5bff703ae4f95091620dec5347246d7c0cbe5d5e..220a828717e1933a44c5282b56713ba0
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 4d49d8c473319a9ca43a5163b632c72623e79f93..029d90b7ef1dfe264ef873af133e7ac5334b1740 100644
+index 958f0c86986a155f56d3995a87882f83df66043f..3e0df2669e567094ad52ff8c59037e3fb5c96f30 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -49,6 +49,7 @@ public class Phantom extends Mob implements Enemy {
@@ -128,7 +128,7 @@ index 4d49d8c473319a9ca43a5163b632c72623e79f93..029d90b7ef1dfe264ef873af133e7ac5
          this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
          this.targetSelector.addGoal(1, new Phantom.PhantomAttackPlayerTargetGoal());
      }
-@@ -515,6 +541,124 @@ public class Phantom extends Mob implements Enemy {
+@@ -510,6 +536,124 @@ public class Phantom extends Mob implements Enemy {
          }
      }
  

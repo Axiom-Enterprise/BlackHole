@@ -6,7 +6,7 @@ Subject: [PATCH] Apply display names from item forms of entities to entities
 
 
 diff --git a/net/minecraft/world/entity/decoration/ArmorStand.java b/net/minecraft/world/entity/decoration/ArmorStand.java
-index e2ffc9b4a95a7684a28b47ad93644c95f9eb5ec8..f145925a8215a501c8013045947de996e3c85532 100644
+index 3412b6dcc2d65986a4f657a6efd7b9fee63d5f8b..d2c5cf955cf8eb534f7bf0afebded9fdf209f117 100644
 --- a/net/minecraft/world/entity/decoration/ArmorStand.java
 +++ b/net/minecraft/world/entity/decoration/ArmorStand.java
 @@ -450,6 +450,7 @@ public class ArmorStand extends LivingEntity {
@@ -18,10 +18,10 @@ index e2ffc9b4a95a7684a28b47ad93644c95f9eb5ec8..f145925a8215a501c8013045947de996
          this.drops.add(new DefaultDrop(itemStack, stack -> Block.popResource(this.level(), this.blockPosition(), stack))); // CraftBukkit - add to drops // Paper - Restore vanilla drops behavior
          return this.brokenByAnything(level, damageSource); // Paper
 diff --git a/net/minecraft/world/entity/decoration/ItemFrame.java b/net/minecraft/world/entity/decoration/ItemFrame.java
-index 90fd3ca5ecd29befa9237222e9f86a8a79a011e4..7e96617f0d5e8777873b4c2cccd012d656612f96 100644
+index 56582d74b9420f688cc6a1abf31a644cb365b797..7346e1f49cc89fbc96bb5f903c2a043e71d0d1c9 100644
 --- a/net/minecraft/world/entity/decoration/ItemFrame.java
 +++ b/net/minecraft/world/entity/decoration/ItemFrame.java
-@@ -237,7 +237,11 @@ public class ItemFrame extends HangingEntity {
+@@ -239,7 +239,11 @@ public class ItemFrame extends HangingEntity {
                  this.removeFramedMap(item);
              } else {
                  if (dropItem) {
@@ -52,10 +52,10 @@ index cc34cadac8896a5f546d0879e795fea08d0c3f98..26a08b16de2318d5080be59a29c5f11e
          }
      }
 diff --git a/net/minecraft/world/entity/vehicle/AbstractBoat.java b/net/minecraft/world/entity/vehicle/AbstractBoat.java
-index 4dcf6daa146645f096ac8815588c837715073c22..d947801b616af5b5dcdcc8bb70b36f97d6a69fdd 100644
+index 464d342d8e24f33745cb09d0d61aad35cf98ebdf..e6abec1b9245e07c8f0636272bece71865f59d9b 100644
 --- a/net/minecraft/world/entity/vehicle/AbstractBoat.java
 +++ b/net/minecraft/world/entity/vehicle/AbstractBoat.java
-@@ -825,7 +825,13 @@ public abstract class AbstractBoat extends VehicleEntity implements Leashable {
+@@ -821,7 +821,13 @@ public abstract class AbstractBoat extends VehicleEntity implements Leashable {
  
      @Override
      public final ItemStack getPickResult() {
@@ -86,7 +86,7 @@ index 962483d6f7225f13f121141882262d36dacad8cb..89d4bc00898fd8f6d40cda87c04c5983
                      level.playSound(
                          null, armorStand.getX(), armorStand.getY(), armorStand.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F
 diff --git a/net/minecraft/world/item/BoatItem.java b/net/minecraft/world/item/BoatItem.java
-index 13ce174e4f7e406f57a68ea0d3ef0ee3367f3f3b..ca86122e38688b29340cd8413ccf1746315e292a 100644
+index e849d3b8d3cc0203fa7736f88a669c67af699110..fdf09c4fe801a36589f54982b07371d2f9421084 100644
 --- a/net/minecraft/world/item/BoatItem.java
 +++ b/net/minecraft/world/item/BoatItem.java
 @@ -63,6 +63,7 @@ public class BoatItem extends Item {
@@ -98,7 +98,7 @@ index 13ce174e4f7e406f57a68ea0d3ef0ee3367f3f3b..ca86122e38688b29340cd8413ccf1746
                          return InteractionResult.FAIL;
                      } else {
 diff --git a/net/minecraft/world/item/HangingEntityItem.java b/net/minecraft/world/item/HangingEntityItem.java
-index 5f9c166b8ba9e9dcabb7398308e7520a88335eae..e9e3a036290a5facc36cf6a484d03d4d3bfb65a5 100644
+index 0880db37298f9f338baa76028c132b4bb25f1d42..4a236dd14250bf0f1ce63e67349a4c48f104420c 100644
 --- a/net/minecraft/world/item/HangingEntityItem.java
 +++ b/net/minecraft/world/item/HangingEntityItem.java
 @@ -59,7 +59,7 @@ public class HangingEntityItem extends Item {
@@ -108,5 +108,5 @@ index 5f9c166b8ba9e9dcabb7398308e7520a88335eae..e9e3a036290a5facc36cf6a484d03d4d
 -            EntityType.<HangingEntity>createDefaultStackConfig(level, itemInHand, player).accept(hangingEntity);
 +            EntityType.<HangingEntity>appendDefaultStackConfig(entity -> {if (!level.purpurConfig.persistentDroppableEntityDisplayNames) entity.setCustomName(null);}, level, itemInHand, player).accept(hangingEntity); // Purpur - Apply display names from item forms of entities to entities and vice versa
              if (hangingEntity.survives()) {
-                 if (!level.isClientSide) {
+                 if (!level.isClientSide()) {
                      // CraftBukkit start - fire HangingPlaceEvent

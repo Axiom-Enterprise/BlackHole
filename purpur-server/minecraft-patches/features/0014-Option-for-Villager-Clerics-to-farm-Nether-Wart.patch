@@ -135,7 +135,7 @@ index f0583076ef62189508a392a76c3fb6b741bbdde9..dc4a9ddb8479e9d0c4895b19d7d677cd
              brain.setMemory(MemoryModuleType.SECONDARY_JOB_SITE, list);
          } else {
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index 835c80828f831c9bc0f8c7cdf451f268bb36e5ad..d4c4856dccb56e2108f174a37e88ad2268967c8a 100644
+index 4b076b9eeeb3614df3a024f16fecb287bed72ec7..23f7032a044c61b7d541fbe7609449ecede23258 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -314,7 +314,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

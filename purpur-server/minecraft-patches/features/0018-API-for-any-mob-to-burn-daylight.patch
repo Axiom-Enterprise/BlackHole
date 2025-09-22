@@ -6,16 +6,16 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 029cfd544165725b7762947f6628271016844278..cb5c4491a8b4964df1a58933c27191024ad9f787 100644
+index 0dc4962cae6fa15b4cfbfa2938e271f5303cf2bb..c5bf15d4c526e9eebaf3485baf9ac34dd1d1d806 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -542,6 +542,24 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -544,6 +544,24 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
      }
      // Purpur end - Add canSaveToDisk to Entity
  
 +    // Purpur start - copied from Mob - API for any mob to burn daylight
 +    public boolean isSunBurnTick() {
-+        if (this.level().isBrightOutside() && !this.level().isClientSide) {
++        if (this.level().isBrightOutside() && !this.level().isClientSide()) {
 +            float lightLevelDependentMagicValue = this.getLightLevelDependentMagicValue();
 +            BlockPos blockPos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
 +            boolean flag = this.isInWaterOrRain() || this.isInPowderSnow || this.wasInPowderSnow;
@@ -35,10 +35,10 @@ index 029cfd544165725b7762947f6628271016844278..cb5c4491a8b4964df1a58933c2719102
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index e396eddb5ef0a78efaf239f30a51a5269367eeaa..ddd3acbc804cbc07eaccf578349d3f9e0e00b6fc 100644
+index de18e6ac0c4336b089a2c40660256488c9d042d5..b758b62ea666b18cf2a8d52651901173410abac6 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -286,6 +286,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -287,6 +287,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
      public boolean silentDeath = false; // Paper - mark entity as dying silently for cancellable death event
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
      public int shieldBlockingDelay = this.level().paperConfig().misc.shieldBlockingDelay; // Paper - Make shield blocking delay configurable
@@ -46,7 +46,7 @@ index e396eddb5ef0a78efaf239f30a51a5269367eeaa..ddd3acbc804cbc07eaccf578349d3f9e
      // CraftBukkit end
  
      protected LivingEntity(EntityType<? extends LivingEntity> entityType, Level level) {
-@@ -789,6 +790,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -796,6 +797,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.getSleepingPos().ifPresent(blockPos -> output.store("sleeping_pos", BlockPos.CODEC, blockPos));
          DataResult<Dynamic<?>> dataResult = this.brain.serializeStart(NbtOps.INSTANCE).map(tag -> new Dynamic<>(NbtOps.INSTANCE, tag));
          dataResult.resultOrPartial(LOGGER::error).ifPresent(dynamic -> output.store("Brain", Codec.PASSTHROUGH, (Dynamic<?>)dynamic));
@@ -54,7 +54,7 @@ index e396eddb5ef0a78efaf239f30a51a5269367eeaa..ddd3acbc804cbc07eaccf578349d3f9e
          if (this.lastHurtByPlayer != null) {
              this.lastHurtByPlayer.store(output, "last_hurt_by_player");
              output.putInt("last_hurt_by_player_memory_time", this.lastHurtByPlayerMemoryTime);
-@@ -915,6 +917,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -922,6 +924,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
              } // Paper - The sleeping pos will always also set the actual pos, so a desync suggests something is wrong
          }, this::clearSleepingPos);
          input.read("Brain", Codec.PASSTHROUGH).ifPresent(dynamic -> this.brain = this.makeBrain((Dynamic<?>)dynamic));
@@ -62,7 +62,7 @@ index e396eddb5ef0a78efaf239f30a51a5269367eeaa..ddd3acbc804cbc07eaccf578349d3f9e
          this.lastHurtByPlayer = EntityReference.read(input, "last_hurt_by_player");
          this.lastHurtByPlayerMemoryTime = input.getIntOr("last_hurt_by_player_memory_time", 0);
          this.lastHurtByMob = EntityReference.read(input, "last_hurt_by_mob");
-@@ -3680,6 +3683,32 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3712,6 +3715,32 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
              this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
          }
@@ -96,14 +96,14 @@ index e396eddb5ef0a78efaf239f30a51a5269367eeaa..ddd3acbc804cbc07eaccf578349d3f9e
  
      protected void applyInput() {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index cb09a8d2c0d8a561814c5e9dc91bbeaa28a58db0..035eb50335daa88679672cba550ed87ac3fa5873 100644
+index b43145dad28a5ee58eaa4559ac5bd462466c114d..e7b29ba441b16661ad4d5f535b481980408ac2e2 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -1570,19 +1570,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1589,19 +1589,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      }
  
      public boolean isSunBurnTick() {
--        if (this.level().isBrightOutside() && !this.level().isClientSide) {
+-        if (this.level().isBrightOutside() && !this.level().isClientSide()) {
 -            float lightLevelDependentMagicValue = this.getLightLevelDependentMagicValue();
 -            BlockPos blockPos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
 -            boolean flag = this.isInWaterOrRain() || this.isInPowderSnow || this.wasInPowderSnow;
@@ -122,7 +122,7 @@ index cb09a8d2c0d8a561814c5e9dc91bbeaa28a58db0..035eb50335daa88679672cba550ed87a
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/AbstractSkeleton.java b/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 352d0655374e05da787225c3fce8803fa547c99d..53ab51ffa5dd7d30a25f17dea0d9106bf30b49ba 100644
+index 2ef478b287e1240dd172235f7cabf31f60456a8a..b228c29e550d77f62ac53df9f32efe1a31c9f933 100644
 --- a/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -64,11 +64,12 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -186,10 +186,10 @@ index 352d0655374e05da787225c3fce8803fa547c99d..53ab51ffa5dd7d30a25f17dea0d9106b
      // Paper end - shouldBurnInDay API
  
 diff --git a/net/minecraft/world/entity/monster/Husk.java b/net/minecraft/world/entity/monster/Husk.java
-index 9baec22561093d64157d93449e84c23b3f238b39..3f331215ef49c52fa3a53bcf744159d2221111f5 100644
+index d25baa1e1b03b38219c8851c1552f342543ba884..f8f27c7e5be15d6b7684159c193167837270d96b 100644
 --- a/net/minecraft/world/entity/monster/Husk.java
 +++ b/net/minecraft/world/entity/monster/Husk.java
-@@ -19,6 +19,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
+@@ -18,6 +18,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
  public class Husk extends Zombie {
      public Husk(EntityType<? extends Husk> entityType, Level level) {
          super(entityType, level);
@@ -197,7 +197,7 @@ index 9baec22561093d64157d93449e84c23b3f238b39..3f331215ef49c52fa3a53bcf744159d2
      }
  
      // Purpur start - Ridables
-@@ -82,7 +83,7 @@ public class Husk extends Zombie {
+@@ -81,7 +82,7 @@ public class Husk extends Zombie {
  
      @Override
      public boolean isSunSensitive() {
@@ -207,7 +207,7 @@ index 9baec22561093d64157d93449e84c23b3f238b39..3f331215ef49c52fa3a53bcf744159d2
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 67dc738faef3ab414bf791692090aaea3dbe7385..512195d639e84684a32ad6fb53e527996b0a4d21 100644
+index e0193db5ce783b4ab2b8afaeaeffde8ac8bc8a71..aa292ec60655cc9419da2a744c8cb841ddbc40e1 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -53,7 +53,7 @@ public class Phantom extends Mob implements Enemy {
@@ -244,7 +244,7 @@ index 67dc738faef3ab414bf791692090aaea3dbe7385..512195d639e84684a32ad6fb53e52799
      @Override
      public boolean isFlapping() {
          return (this.getUniqueFlapTickOffset() + this.tickCount) % TICKS_PER_FLAP == 0;
-@@ -251,15 +262,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -246,15 +257,7 @@ public class Phantom extends Mob implements Enemy {
  
      @Override
      public void aiStep() {
@@ -261,7 +261,7 @@ index 67dc738faef3ab414bf791692090aaea3dbe7385..512195d639e84684a32ad6fb53e52799
          super.aiStep();
      }
  
-@@ -306,7 +309,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -301,7 +304,7 @@ public class Phantom extends Mob implements Enemy {
          this.setPhantomSize(input.getIntOr("size", 0));
          // Paper start
          this.spawningEntity = input.read("Paper.SpawningEntity", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
@@ -270,7 +270,7 @@ index 67dc738faef3ab414bf791692090aaea3dbe7385..512195d639e84684a32ad6fb53e52799
          // Paper end
      }
  
-@@ -317,7 +320,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -312,7 +315,7 @@ public class Phantom extends Mob implements Enemy {
          output.putInt("size", this.getPhantomSize());
          // Paper start
          output.storeNullable("Paper.SpawningEntity", net.minecraft.core.UUIDUtil.CODEC, this.spawningEntity);
@@ -280,7 +280,7 @@ index 67dc738faef3ab414bf791692090aaea3dbe7385..512195d639e84684a32ad6fb53e52799
      }
  
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index 51cd12a8173d9f95c6a7c2503c3e0e4d40c427c5..147c030a2f8fd0d430070a36946fa42af177ea68 100644
+index 3c520bc7f53685d7a38238a35b0589aaf68e7906..fab34ee698752b4f0c79f143efac98f134b5276b 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
 @@ -92,11 +92,12 @@ public class Zombie extends Monster {

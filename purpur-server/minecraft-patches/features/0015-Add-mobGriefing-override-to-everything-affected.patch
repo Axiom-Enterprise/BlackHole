@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing override to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index b1dcb5d8849a1b5e93b01f883f1519aaebba82da..de18e6ac0c4336b089a2c40660256488c9d042d5 100644
+index a022ce7041c47c4d94679a3e322ca4f7486d77bf..7113d74f4684313d67d64a9449424c6e6243ce1f 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1944,7 +1944,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -18,7 +18,7 @@ index b1dcb5d8849a1b5e93b01f883f1519aaebba82da..de18e6ac0c4336b089a2c40660256488
                      BlockState blockState = Blocks.WITHER_ROSE.defaultBlockState();
                      if (this.level().getBlockState(blockPos).isAir() && blockState.canSurvive(this.level(), blockPos)) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 0ec11f0415bdb44d465c0e57c676eb73c8183be0..b43145dad28a5ee58eaa4559ac5bd462466c114d 100644
+index 2bef2cd10447f41d5fc4c37eb574ce32fc2386ab..8f58641132231f450d0fb0c1fa61559c6cef8dcf 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -554,7 +554,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -268,10 +268,10 @@ index dd0ec97ea4561d2dccf735580faf0d65d6ac4b0d..779879f8d678a5e45e2752e6e033cc35
              org.bukkit.event.entity.ExplosionPrimeEvent event = new org.bukkit.event.entity.ExplosionPrimeEvent((org.bukkit.entity.Explosive) this.getBukkitEntity());
              if (event.callEvent()) {
 diff --git a/net/minecraft/world/entity/projectile/Projectile.java b/net/minecraft/world/entity/projectile/Projectile.java
-index 90c0e0a7574529846500e98494246974e836ad9a..0429da7bb95751673b608f5c63a997b09a47fe41 100644
+index d538b1df2b07abd1c4257726891238696bf7a718..c0e83bbdcf3662bed498e0fe5a78d2b25c22a94e 100644
 --- a/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/net/minecraft/world/entity/projectile/Projectile.java
-@@ -430,7 +430,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -436,7 +436,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
      @Override
      public boolean mayInteract(ServerLevel level, BlockPos pos) {
          Entity owner = this.getOwner();

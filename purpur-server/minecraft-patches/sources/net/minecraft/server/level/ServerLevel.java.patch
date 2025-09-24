@@ -86,7 +86,7 @@
 +    // Purpur end - Configurable daylight cycle
      }
  
-     public void tickCustomSpawners(boolean flag) {
+     public void tickCustomSpawners(boolean spawnEnemies) {
 @@ -983,9 +_,17 @@
                      && this.random.nextDouble() < currentDifficultyAt.getEffectiveDifficulty() * this.paperConfig().entities.spawning.skeletonHorseThunderSpawnChance.or(0.01) // Paper - Configurable spawn chances for skeleton horses
                      && !this.getBlockState(blockPos.below()).is(BlockTags.LIGHTNING_RODS);

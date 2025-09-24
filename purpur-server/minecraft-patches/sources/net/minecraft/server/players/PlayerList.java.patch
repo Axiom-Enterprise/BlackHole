@@ -37,7 +37,7 @@
      public void broadcastAll(Packet<?> packet, ResourceKey<Level> dimension) {
          for (ServerPlayer serverPlayer : this.players) {
              if (serverPlayer.level().dimension() == dimension) {
-@@ -904,6 +_,7 @@
+@@ -906,6 +_,7 @@
              } else {
                  b = (byte)(24 + permLevel);
              }
@@ -45,7 +45,7 @@
  
              player.connection.send(new ClientboundEntityEventPacket(player, b));
          }
-@@ -916,7 +_,7 @@
+@@ -918,7 +_,7 @@
  
      // Paper start - whitelist verify event / login event
      public LoginResult canBypassFullServerLogin(final NameAndId nameAndId, final LoginResult currentResult) {

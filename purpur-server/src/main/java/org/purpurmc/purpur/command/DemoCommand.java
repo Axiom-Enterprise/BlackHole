@@ -27,7 +27,7 @@ public class DemoCommand {
         for (ServerPlayer player : targets) {
             ClientboundGameEventPacket packet = new ClientboundGameEventPacket(ClientboundGameEventPacket.DEMO_EVENT, 0);
             player.connection.send(packet);
-            String output = String.format(PurpurConfig.demoCommandOutput, player.getGameProfile().getName());
+            String output = String.format(PurpurConfig.demoCommandOutput, player.getGameProfile().name());
             sender.sendSuccess(output, false);
         }
         return targets.size();

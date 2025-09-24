@@ -24,7 +24,7 @@ public class PingCommand {
 
     private static int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
-            String output = String.format(PurpurConfig.pingCommandOutput, player.getGameProfile().getName(), player.connection.latency());
+            String output = String.format(PurpurConfig.pingCommandOutput, player.getGameProfile().name(), player.connection.latency());
             sender.sendSuccess(output, false);
         }
         return targets.size();

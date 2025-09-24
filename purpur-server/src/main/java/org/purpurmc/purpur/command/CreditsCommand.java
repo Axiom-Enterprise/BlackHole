@@ -27,7 +27,7 @@ public class CreditsCommand {
         for (ServerPlayer player : targets) {
             ClientboundGameEventPacket packet = new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 1F);
             player.connection.send(packet);
-            String output = String.format(PurpurConfig.creditsCommandOutput, player.getGameProfile().getName());
+            String output = String.format(PurpurConfig.creditsCommandOutput, player.getGameProfile().name());
             sender.sendSuccess(output, false);
         }
         return targets.size();

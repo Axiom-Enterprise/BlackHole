@@ -35,7 +35,7 @@ public class RamBarCommand {
             Component output = MiniMessage.miniMessage().deserialize(PurpurConfig.rambarCommandOutput,
                     Placeholder.component("onoff", Component.translatable(result ? "options.on" : "options.off")
                             .color(result ? NamedTextColor.GREEN : NamedTextColor.RED)),
-                    Placeholder.parsed("target", player.getGameProfile().getName()));
+                    Placeholder.parsed("target", player.getGameProfile().name()));
 
             sender.sendSuccess(output, false);
         }

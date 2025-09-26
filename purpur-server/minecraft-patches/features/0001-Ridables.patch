@@ -18,7 +18,7 @@ index aa87e93ade4c25a575e7861fef45b70c3e4e3aeb..c92ffd8b2fe4945ccd552eb54154b7be
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 26a663063ca056059e2a858aa2a54811a766cceb..8cf7be0184df48a4ceb85df88d7bb0d30b5e2ba2 100644
+index 5fec8ac15b16050baa533b73e33c899f4b08d23e..b44d17ee11b995720d6bc68b2db094ab88c0d53c 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -1683,6 +1683,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -30,7 +30,7 @@ index 26a663063ca056059e2a858aa2a54811a766cceb..8cf7be0184df48a4ceb85df88d7bb0d3
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index bf0b110a0b5b4eaca85ee42445c666b122715385..9d5a4c9e3bd918d48b37968f307c0564742a6518 100644
+index 187fd32cdc6a37974cb9e55997dfdda57f7cbfa5..5fe9976ccd113eddd94e328b37946ef0fb7f0b09 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -224,6 +224,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -2127,7 +2127,7 @@ index 9ad94aca22a100dddaded5833763f9acd2a0ce56..96c98f032b1b3aec32aba38244ee8b45
      protected void addAdditionalSaveData(ValueOutput output) {
          super.addAdditionalSaveData(output);
 diff --git a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
-index fb1f8b8c39e01403a98c436525cc3ef73ade9715..c71d46cdc6da21902c77d4416d4d2f6c0e5dbf2b 100644
+index facc49cb9a6aa7dddfbbf9733391fc9cf656f0ce..292c9a82028503566c8d3b50b87d09f79619aa7d 100644
 --- a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
 +++ b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
 @@ -185,6 +185,7 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
@@ -4704,10 +4704,10 @@ index 4feaa6167d82278a104a37c3b10257e24b299e6c..44ad3bbcfdf8615d6e5a896fb923685c
          profilerFiller.pop();
          this.updateActivity();
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index e320d34b8fb1e34408eff9f5be4e2e5b67c82942..e63328db6af1e2a52c9ebfeefbceda1afd5edfcd 100644
+index a3b8bdacfde77963efba4a7e475031598c44e82f..1aeea30498e089d686b845f31b44aef0ff994c60 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
-@@ -103,11 +103,30 @@ public class Zombie extends Monster {
+@@ -102,11 +102,30 @@ public class Zombie extends Monster {
          this(EntityType.ZOMBIE, level);
      }
  

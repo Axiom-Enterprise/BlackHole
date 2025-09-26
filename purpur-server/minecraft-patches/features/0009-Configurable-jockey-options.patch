@@ -61,10 +61,10 @@ index 4a617bb6bc3675d8cb42be0b5ae19befd4b3176f..557b2d684936c15299d7082a92ec8b08
          EntityType<Husk> entityType, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
      ) {
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index 4bad786bee142bd1bc8fc76606829496ce44a455..604653d7748cc0f499071e04d396fef295bbdf9f 100644
+index 4f5d19c19887dc543c336bb72dac76c82503f792..73b6ffd6a1f27a5d49125b51d3396df5d84493f6 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
-@@ -128,6 +128,20 @@ public class Zombie extends Monster {
+@@ -127,6 +127,20 @@ public class Zombie extends Monster {
      }
      // Purpur end - Configurable entity base attributes
  
@@ -85,7 +85,7 @@ index 4bad786bee142bd1bc8fc76606829496ce44a455..604653d7748cc0f499071e04d396fef2
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
-@@ -557,19 +571,18 @@ public class Zombie extends Monster {
+@@ -556,19 +570,18 @@ public class Zombie extends Monster {
          }
  
          if (spawnGroupData instanceof Zombie.ZombieGroupData zombieGroupData) {
@@ -111,7 +111,7 @@ index 4bad786bee142bd1bc8fc76606829496ce44a455..604653d7748cc0f499071e04d396fef2
                          Chicken chicken1 = EntityType.CHICKEN.create(this.level(), EntitySpawnReason.JOCKEY);
                          if (chicken1 != null) {
                              chicken1.snapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-@@ -578,6 +591,7 @@ public class Zombie extends Monster {
+@@ -577,6 +590,7 @@ public class Zombie extends Monster {
                              this.startRiding(chicken1, false, false);
                              level.addFreshEntity(chicken1, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.MOUNT); // CraftBukkit
                          }
@@ -120,7 +120,7 @@ index 4bad786bee142bd1bc8fc76606829496ce44a455..604653d7748cc0f499071e04d396fef2
                  }
              }
 diff --git a/net/minecraft/world/entity/monster/ZombieVillager.java b/net/minecraft/world/entity/monster/ZombieVillager.java
-index 5a1ba4b80c104806ea8cff4242416951751ee919..04748820e2c78a6d0faa6c4fb4901c7d8b2a8760 100644
+index 706c0cc803ede18f0790e94cfc989f0676199e7a..1d01131dae3900280d5c9ce9899f4afa09acfd46 100644
 --- a/net/minecraft/world/entity/monster/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/ZombieVillager.java
 @@ -102,6 +102,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {

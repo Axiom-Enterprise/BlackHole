@@ -23,7 +23,7 @@ index 1896f91e10a5e17332836d5354813a18a4dfe6dc..1c446cec71aa163374ab9832c961a6b4
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/ambient/Bat.java b/net/minecraft/world/entity/ambient/Bat.java
-index c817947dcba66004216ac8f3b2cdd1e940ee6d03..eac9b5bcb5cfaa1fe4d1944a0e192a9e86f6f0d3 100644
+index c5d2997629db6da1bb883e9b778d9da34e57430f..7b6caaeb34c297f22206d0da0293a56594654657 100644
 --- a/net/minecraft/world/entity/ambient/Bat.java
 +++ b/net/minecraft/world/entity/ambient/Bat.java
 @@ -111,6 +111,13 @@ public class Bat extends AmbientCreature {
@@ -41,7 +41,7 @@ index c817947dcba66004216ac8f3b2cdd1e940ee6d03..eac9b5bcb5cfaa1fe4d1944a0e192a9e
      public boolean isFlapping() {
          return !this.isResting() && this.tickCount % 10.0F == 0.0F;
 diff --git a/net/minecraft/world/entity/animal/Bee.java b/net/minecraft/world/entity/animal/Bee.java
-index a5e0edd6da8675643f3a4d63199e8cd865a6d836..57e465cea9da02af055ab99bd3ff41cc13939d47 100644
+index 68fecbd75d0243706f052f6f4cd654cf411a0782..980d3255d6dc7913fdb5437dafb702c2eff5d56f 100644
 --- a/net/minecraft/world/entity/animal/Bee.java
 +++ b/net/minecraft/world/entity/animal/Bee.java
 @@ -184,7 +184,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -441,7 +441,7 @@ index 966f21d90996a9c162e3f60ff53edb53507645b3..6a52e549257582d09af824f4067c9113
          this.homePos = homePos;
      }
 diff --git a/net/minecraft/world/entity/animal/axolotl/Axolotl.java b/net/minecraft/world/entity/animal/axolotl/Axolotl.java
-index a56ff850de466a592855a9bf2bc395c2e4b97c17..ac56f22dc069ec7c4832024083b242f965c51c58 100644
+index a6145a24bffc1f56406cb9e57b15631ba82afe6a..4932668448a7346758983b647f4e508061297ba2 100644
 --- a/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 +++ b/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 @@ -153,6 +153,13 @@ public class Axolotl extends Animal implements Bucketable {
@@ -459,7 +459,7 @@ index a56ff850de466a592855a9bf2bc395c2e4b97c17..ac56f22dc069ec7c4832024083b242f9
      public float getWalkTargetValue(BlockPos pos, LevelReader level) {
          return 0.0F;
 diff --git a/net/minecraft/world/entity/animal/goat/Goat.java b/net/minecraft/world/entity/animal/goat/Goat.java
-index 52d35093b9fc84e27b4c4e62883a7e581e8c0f5b..c6a03e6f223010dbcf56719197f2dcc62916649b 100644
+index 0ec325f198d877057a9b497e667d1f3be40e683e..4e93554170d9c91a7d704b161b91ca28b19be73b 100644
 --- a/net/minecraft/world/entity/animal/goat/Goat.java
 +++ b/net/minecraft/world/entity/animal/goat/Goat.java
 @@ -138,6 +138,13 @@ public class Goat extends Animal {
@@ -1025,7 +1025,7 @@ index 6f4aaeb645d9638764c3516d2f1501661ac56170..51714029d4ea5033014dcefd25f74cc0
      protected void registerGoals() {
          this.friendsGoal = new Silverfish.SilverfishWakeUpFriendsGoal(this);
 diff --git a/net/minecraft/world/entity/monster/Skeleton.java b/net/minecraft/world/entity/monster/Skeleton.java
-index 430d9f67d76c5d4b8f0221ccbe6a8bc75dbbbbcf..cad46630ea1da0f77779f14a7882ae2f78700c51 100644
+index dc9a946b102e93a024130967b1eb1d5e78070b4d..4c625007fdfc7525036ec0c761400b07facbb43a 100644
 --- a/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/net/minecraft/world/entity/monster/Skeleton.java
 @@ -49,6 +49,13 @@ public class Skeleton extends AbstractSkeleton {
@@ -1209,10 +1209,10 @@ index f1d42c8ee4a23ba3485477632b51dd9bcf9db926..5ed357158eccc48b2d1e25e06c35b743
      protected Brain.Provider<Zoglin> brainProvider() {
          return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index 604653d7748cc0f499071e04d396fef295bbdf9f..3c520bc7f53685d7a38238a35b0589aaf68e7906 100644
+index 73b6ffd6a1f27a5d49125b51d3396df5d84493f6..452fcb94b5d31e04bf3c96bd1b07ff9b54101595 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
-@@ -142,6 +142,13 @@ public class Zombie extends Monster {
+@@ -141,6 +141,13 @@ public class Zombie extends Monster {
      }
      // Purpur end -  Configurable jockey options
  
@@ -1227,7 +1227,7 @@ index 604653d7748cc0f499071e04d396fef295bbdf9f..3c520bc7f53685d7a38238a35b0589aa
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
 diff --git a/net/minecraft/world/entity/monster/ZombieVillager.java b/net/minecraft/world/entity/monster/ZombieVillager.java
-index 04748820e2c78a6d0faa6c4fb4901c7d8b2a8760..a75452d77c48a09e9cea2ca2e94745d02e618a12 100644
+index 1d01131dae3900280d5c9ce9899f4afa09acfd46..31d8feaf5e2b84bee72796fd96502a862e573f52 100644
 --- a/net/minecraft/world/entity/monster/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/ZombieVillager.java
 @@ -119,6 +119,13 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
@@ -1263,7 +1263,7 @@ index 325d0f32fd8824dc1c7067eb9c303bdfc122c706..3e262c6919287ad981b1d36b7f96dd14
      public void setPersistentAngerTarget(@Nullable UUID target) {
          this.persistentAngerTarget = target;
 diff --git a/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index b19717af413f739abf632050409db25e2e85e0c6..55a802d5a4480b09f8564949b4b04fb8e43fe8bd 100644
+index 05cfdeb5afaad609ae873bb31ca411c4d6759a3f..a98de218d58361cce3f0cde21fbffbe9c1584701 100644
 --- a/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 @@ -127,6 +127,13 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
@@ -1281,7 +1281,7 @@ index b19717af413f739abf632050409db25e2e85e0c6..55a802d5a4480b09f8564949b4b04fb8
      public void setTimeInOverworld(int timeInOverworld) {
          this.timeInOverworld = timeInOverworld;
 diff --git a/net/minecraft/world/entity/monster/piglin/Piglin.java b/net/minecraft/world/entity/monster/piglin/Piglin.java
-index 033e619f91fe3010a8056974d812351494c65f72..f9247771363ed1ccca775f23212eb402612c896d 100644
+index 1d9dc37055a2a9f41945b39812e1be15a8eb57e5..6eb4a5d752835110b7ff7c817bb31f027074c6db 100644
 --- a/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/net/minecraft/world/entity/monster/piglin/Piglin.java
 @@ -161,6 +161,13 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
@@ -1317,7 +1317,7 @@ index f52aba35ee7e202074cda8fb4dfd6a7d9ded1f09..f4893cc54d7f144025da0057beedb3a9
          return Monster.createMonsterAttributes()
              .add(Attributes.MAX_HEALTH, 50.0)
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index 23f7032a044c61b7d541fbe7609449ecede23258..5919135e4766e5e252aa07f9ff1170d92b9d839f 100644
+index 9f8fd64a3812e6d6bfefb21dd793aae9ad2bcd94..08f6c4ca51177290bc80103d8ebd7087c41be954 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -281,6 +281,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

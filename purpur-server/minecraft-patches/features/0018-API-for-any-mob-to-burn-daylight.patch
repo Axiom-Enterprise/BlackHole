@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 0dc4962cae6fa15b4cfbfa2938e271f5303cf2bb..c5bf15d4c526e9eebaf3485baf9ac34dd1d1d806 100644
+index ef77be60df1cf44088e684c21dbcaf3032bb3ad6..92292ae5a313e85a3238427e7ab19c73e31f0ecb 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -544,6 +544,24 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
@@ -35,7 +35,7 @@ index 0dc4962cae6fa15b4cfbfa2938e271f5303cf2bb..c5bf15d4c526e9eebaf3485baf9ac34d
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index de18e6ac0c4336b089a2c40660256488c9d042d5..b758b62ea666b18cf2a8d52651901173410abac6 100644
+index 7113d74f4684313d67d64a9449424c6e6243ce1f..173647156cf97a476931fc8b59be4c988b7107ce 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -287,6 +287,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -96,7 +96,7 @@ index de18e6ac0c4336b089a2c40660256488c9d042d5..b758b62ea666b18cf2a8d52651901173
  
      protected void applyInput() {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index b43145dad28a5ee58eaa4559ac5bd462466c114d..e7b29ba441b16661ad4d5f535b481980408ac2e2 100644
+index 8f58641132231f450d0fb0c1fa61559c6cef8dcf..b9659c11204f632f42bc776453fcf5ce1eb09073 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -1589,19 +1589,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -280,10 +280,10 @@ index e0193db5ce783b4ab2b8afaeaeffde8ac8bc8a71..aa292ec60655cc9419da2a744c8cb841
      }
  
 diff --git a/net/minecraft/world/entity/monster/Zombie.java b/net/minecraft/world/entity/monster/Zombie.java
-index 3c520bc7f53685d7a38238a35b0589aaf68e7906..fab34ee698752b4f0c79f143efac98f134b5276b 100644
+index 452fcb94b5d31e04bf3c96bd1b07ff9b54101595..6e3ae67dbb9a60177f26d075d42aacce580ff956 100644
 --- a/net/minecraft/world/entity/monster/Zombie.java
 +++ b/net/minecraft/world/entity/monster/Zombie.java
-@@ -92,11 +92,12 @@ public class Zombie extends Monster {
+@@ -91,11 +91,12 @@ public class Zombie extends Monster {
      private boolean canBreakDoors = false;
      private int inWaterTime = 0;
      public int conversionTime;
@@ -297,7 +297,7 @@ index 3c520bc7f53685d7a38238a35b0589aaf68e7906..fab34ee698752b4f0c79f143efac98f1
      }
  
      public Zombie(Level level) {
-@@ -293,29 +294,7 @@ public class Zombie extends Monster {
+@@ -292,29 +293,7 @@ public class Zombie extends Monster {
  
      @Override
      public void aiStep() {
@@ -328,7 +328,7 @@ index 3c520bc7f53685d7a38238a35b0589aaf68e7906..fab34ee698752b4f0c79f143efac98f1
          super.aiStep();
      }
  
-@@ -374,6 +353,7 @@ public class Zombie extends Monster {
+@@ -373,6 +352,7 @@ public class Zombie extends Monster {
          // CraftBukkit end
      }
  
@@ -336,7 +336,7 @@ index 3c520bc7f53685d7a38238a35b0589aaf68e7906..fab34ee698752b4f0c79f143efac98f1
      public boolean isSunSensitive() {
          return this.shouldBurnInDay; // Paper - Add more Zombie API
      }
-@@ -511,7 +491,7 @@ public class Zombie extends Monster {
+@@ -510,7 +490,7 @@ public class Zombie extends Monster {
          output.putBoolean("CanBreakDoors", this.canBreakDoors());
          output.putInt("InWaterTime", this.isInWater() ? this.inWaterTime : -1);
          output.putInt("DrownedConversionTime", this.isUnderWaterConverting() ? this.conversionTime : -1);
@@ -345,7 +345,7 @@ index 3c520bc7f53685d7a38238a35b0589aaf68e7906..fab34ee698752b4f0c79f143efac98f1
      }
  
      @Override
-@@ -526,7 +506,7 @@ public class Zombie extends Monster {
+@@ -525,7 +505,7 @@ public class Zombie extends Monster {
          } else {
              this.getEntityData().set(DATA_DROWNED_CONVERSION_ID, false);
          }

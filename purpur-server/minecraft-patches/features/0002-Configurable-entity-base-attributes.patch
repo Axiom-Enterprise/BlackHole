@@ -23,10 +23,10 @@ index 8e8ddab59de508c84c4182e105a11554387dcce0..1896f91e10a5e17332836d5354813a18
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 634c8ee07d27985743d2b8774ed923f0ff63dca2..5f61e79f07c408197ed92707a7b14b588477e438 100644
+index fdf197b040b87468fe89d86f21688c7c07bef853..41d0bab1a046fdfd1a266883e2b522cf63b87157 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -292,6 +292,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -291,6 +291,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
      protected LivingEntity(EntityType<? extends LivingEntity> entityType, Level level) {
          super(entityType, level);
          this.attributes = new AttributeMap(DefaultAttributes.getSupplier(entityType), this); // Purpur - Ridables
@@ -34,7 +34,7 @@ index 634c8ee07d27985743d2b8774ed923f0ff63dca2..5f61e79f07c408197ed92707a7b14b58
          this.craftAttributes = new org.bukkit.craftbukkit.attribute.CraftAttributeMap(this.attributes); // CraftBukkit
          // CraftBukkit - this.setHealth(this.getMaxHealth()) inlined and simplified to skip the instanceof check for Player, as getBukkitEntity() is not initialized in constructor
          this.entityData.set(LivingEntity.DATA_HEALTH_ID, this.getMaxHealth());
-@@ -316,6 +317,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -315,6 +316,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          return new EntityEquipment();
      }
  

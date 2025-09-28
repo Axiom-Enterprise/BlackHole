@@ -125,7 +125,7 @@
      @Override
      public void displayClientMessage(Component chatComponent, boolean actionBar) {
          this.sendSystemMessage(chatComponent, actionBar);
-@@ -2325,6 +_,20 @@
+@@ -2327,6 +_,20 @@
          );
      }
  
@@ -146,7 +146,7 @@
      public void sendSystemMessage(Component mesage) {
          this.sendSystemMessage(mesage, false);
      }
-@@ -2463,7 +_,67 @@
+@@ -2465,7 +_,67 @@
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -215,7 +215,7 @@
  
      public ServerStatsCounter getStats() {
          return this.stats;
-@@ -3105,4 +_,56 @@
+@@ -3107,4 +_,56 @@
          return (org.bukkit.craftbukkit.entity.CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end

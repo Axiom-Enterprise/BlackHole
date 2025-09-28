@@ -35,18 +35,18 @@ index ef77be60df1cf44088e684c21dbcaf3032bb3ad6..92292ae5a313e85a3238427e7ab19c73
          this.type = entityType;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 7113d74f4684313d67d64a9449424c6e6243ce1f..173647156cf97a476931fc8b59be4c988b7107ce 100644
+index 7c65124b4c10166d57ac3c0e8435be06bf05efef..6eb4efd8220be4a06ae3306595b64a94f23538c3 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -287,6 +287,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -286,6 +286,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+     public org.bukkit.craftbukkit.entity.CraftLivingEntity getBukkitLivingEntity() { return (org.bukkit.craftbukkit.entity.CraftLivingEntity) super.getBukkitEntity(); } // Paper
      public boolean silentDeath = false; // Paper - mark entity as dying silently for cancellable death event
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
-     public int shieldBlockingDelay = this.level().paperConfig().misc.shieldBlockingDelay; // Paper - Make shield blocking delay configurable
 +    protected boolean shouldBurnInDay = false; public boolean shouldBurnInDay() { return this.shouldBurnInDay; } public void setShouldBurnInDay(boolean shouldBurnInDay) { this.shouldBurnInDay = shouldBurnInDay; } // Purpur - API for any mob to burn daylight
      // CraftBukkit end
  
      protected LivingEntity(EntityType<? extends LivingEntity> entityType, Level level) {
-@@ -796,6 +797,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -795,6 +796,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.getSleepingPos().ifPresent(blockPos -> output.store("sleeping_pos", BlockPos.CODEC, blockPos));
          DataResult<Dynamic<?>> dataResult = this.brain.serializeStart(NbtOps.INSTANCE).map(tag -> new Dynamic<>(NbtOps.INSTANCE, tag));
          dataResult.resultOrPartial(LOGGER::error).ifPresent(dynamic -> output.store("Brain", Codec.PASSTHROUGH, (Dynamic<?>)dynamic));
@@ -54,7 +54,7 @@ index 7113d74f4684313d67d64a9449424c6e6243ce1f..173647156cf97a476931fc8b59be4c98
          if (this.lastHurtByPlayer != null) {
              this.lastHurtByPlayer.store(output, "last_hurt_by_player");
              output.putInt("last_hurt_by_player_memory_time", this.lastHurtByPlayerMemoryTime);
-@@ -922,6 +924,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -921,6 +923,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
              } // Paper - The sleeping pos will always also set the actual pos, so a desync suggests something is wrong
          }, this::clearSleepingPos);
          input.read("Brain", Codec.PASSTHROUGH).ifPresent(dynamic -> this.brain = this.makeBrain((Dynamic<?>)dynamic));
@@ -62,7 +62,7 @@ index 7113d74f4684313d67d64a9449424c6e6243ce1f..173647156cf97a476931fc8b59be4c98
          this.lastHurtByPlayer = EntityReference.read(input, "last_hurt_by_player");
          this.lastHurtByPlayerMemoryTime = input.getIntOr("last_hurt_by_player_memory_time", 0);
          this.lastHurtByMob = EntityReference.read(input, "last_hurt_by_mob");
-@@ -3712,6 +3715,32 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3711,6 +3714,32 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
              this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
          }

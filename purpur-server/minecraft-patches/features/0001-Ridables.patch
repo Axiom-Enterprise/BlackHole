@@ -18,7 +18,7 @@ index aa87e93ade4c25a575e7861fef45b70c3e4e3aeb..c92ffd8b2fe4945ccd552eb54154b7be
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 5fec8ac15b16050baa533b73e33c899f4b08d23e..b44d17ee11b995720d6bc68b2db094ab88c0d53c 100644
+index 9dffc51f3651169e81e1617bce4562faf35c12f6..5f86c3024a857d5ec3ac39a4ef1d2a77b452c2bb 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -1683,6 +1683,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -42,7 +42,7 @@ index 187fd32cdc6a37974cb9e55997dfdda57f7cbfa5..5fe9976ccd113eddd94e328b37946ef0
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index abdf441ee5ac0586afe7ca60066163e64fb6a5fc..b405e129cb2a5dba3ea4db29823e8f6964255f3b 100644
+index 5477fd9bc0a30b0d566d982b86b737cb6392b030..8c0cdb6aaf2f546b90d7d6b0d9dfc1c053479de7 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -774,6 +774,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
@@ -62,7 +62,7 @@ index abdf441ee5ac0586afe7ca60066163e64fb6a5fc..b405e129cb2a5dba3ea4db29823e8f69
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 3c5c7006dc68377a97682b1e73e5b45cface045c..726f2d5471cf536b1ba042dcb7f0120f8526d1d5 100644
+index 8813b9d09b0ffaf235516cada788df92a7730eaa..c643f0546613e8f4783d1e0830f7267570de7ea7 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2862,6 +2862,8 @@ public class ServerGamePacketListenerImpl
@@ -177,7 +177,7 @@ index f0c452ddc4b299a930de261722cc41a89aa78eeb..8e8ddab59de508c84c4182e105a11554
      protected ParticleOptions getInkParticle() {
          return ParticleTypes.GLOW_SQUID_INK;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 59e6a2c3e1a02b8778fb31e49fdc19fa14594085..634c8ee07d27985743d2b8774ed923f0ff63dca2 100644
+index d6540b82ce0f7c8fde596c6af24212bac1ef54bd..fdf197b040b87468fe89d86f21688c7c07bef853 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -239,9 +239,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -193,7 +193,7 @@ index 59e6a2c3e1a02b8778fb31e49fdc19fa14594085..634c8ee07d27985743d2b8774ed923f0
      protected InterpolationHandler interpolation = new InterpolationHandler(this);
      protected double lerpYHeadRot;
      protected int lerpHeadSteps;
-@@ -291,7 +291,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -290,7 +290,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
  
      protected LivingEntity(EntityType<? extends LivingEntity> entityType, Level level) {
          super(entityType, level);
@@ -202,7 +202,7 @@ index 59e6a2c3e1a02b8778fb31e49fdc19fa14594085..634c8ee07d27985743d2b8774ed923f0
          this.craftAttributes = new org.bukkit.craftbukkit.attribute.CraftAttributeMap(this.attributes); // CraftBukkit
          // CraftBukkit - this.setHealth(this.getMaxHealth()) inlined and simplified to skip the instanceof check for Player, as getBukkitEntity() is not initialized in constructor
          this.entityData.set(LivingEntity.DATA_HEALTH_ID, this.getMaxHealth());
-@@ -371,6 +371,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -370,6 +370,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
              .add(Attributes.CAMERA_DISTANCE)
              .add(Attributes.WAYPOINT_TRANSMIT_RANGE);
      }
@@ -210,7 +210,7 @@ index 59e6a2c3e1a02b8778fb31e49fdc19fa14594085..634c8ee07d27985743d2b8774ed923f0
  
      @Override
      protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-@@ -3058,6 +3059,20 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3057,6 +3058,20 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
              this.move(MoverType.SELF, this.getDeltaMovement());
              this.setDeltaMovement(this.getDeltaMovement().scale(0.5));
          } else {
@@ -231,7 +231,7 @@ index 59e6a2c3e1a02b8778fb31e49fdc19fa14594085..634c8ee07d27985743d2b8774ed923f0
              this.moveRelative(amount, relative);
              this.move(MoverType.SELF, this.getDeltaMovement());
              this.setDeltaMovement(this.getDeltaMovement().scale(0.91F));
-@@ -3661,8 +3676,10 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3660,8 +3675,10 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.pushEntities();
          profilerFiller.pop();
          // Paper start - Add EntityMoveEvent
@@ -244,7 +244,7 @@ index 59e6a2c3e1a02b8778fb31e49fdc19fa14594085..634c8ee07d27985743d2b8774ed923f0
                  Location from = new Location(this.level().getWorld(), this.xo, this.yo, this.zo, this.yRotO, this.xRotO);
                  Location to = new Location(this.level().getWorld(), this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                  io.papermc.paper.event.entity.EntityMoveEvent event = new io.papermc.paper.event.entity.EntityMoveEvent(this.getBukkitLivingEntity(), from, to.clone());
-@@ -3672,6 +3689,21 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3671,6 +3688,21 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                      this.absSnapTo(event.getTo().getX(), event.getTo().getY(), event.getTo().getZ(), event.getTo().getYaw(), event.getTo().getPitch());
                  }
              }

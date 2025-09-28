@@ -5,10 +5,10 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index a8de0e01547d94db3588f2a90309bfa0bccf509c..b1dcb5d8849a1b5e93b01f883f1519aaebba82da 100644
+index 41d0bab1a046fdfd1a266883e2b522cf63b87157..f48c543287a99d4281de4085e7a65f128bd2dc4a 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -3745,7 +3745,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3744,7 +3744,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                          .filter(equipmentSlot1 -> canGlideUsing(this.getItemBySlot(equipmentSlot1), equipmentSlot1))
                          .toList();
                      EquipmentSlot equipmentSlot = Util.getRandom(list, this.random);
@@ -51,7 +51,7 @@ index f86b0579e707ecfa5c2074ea22bbe383b5e11841..43a6d9bd3a2e301e3957e9933663c3af
                          itemInHand.shrink(1); // Moved up from below
                      } else {
 diff --git a/net/minecraft/world/item/ItemStack.java b/net/minecraft/world/item/ItemStack.java
-index c473caf0d333512524eb724340000dcc9f4fc042..84a4c79fd1ac92c10d6605e1c20a066b04a06dd5 100644
+index 2d9fbd3173df397e7debd9c08d4c8c5e760246e6..358d69bdca0aa46d1952d3ef9bf9b65dc39a3338 100644
 --- a/net/minecraft/world/item/ItemStack.java
 +++ b/net/minecraft/world/item/ItemStack.java
 @@ -697,6 +697,14 @@ public final class ItemStack implements DataComponentHolder {

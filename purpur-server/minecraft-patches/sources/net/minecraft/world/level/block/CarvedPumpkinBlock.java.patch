@@ -18,18 +18,31 @@
                  return;
              }
          }
-@@ -112,6 +_,16 @@
+@@ -93,7 +_,7 @@
+         if (blockPatternMatch2 != null) {
+             CopperGolem copperGolem = EntityType.COPPER_GOLEM.create(level, EntitySpawnReason.TRIGGERED);
+             if (copperGolem != null) {
+-                spawnGolemInWorld(level, blockPatternMatch2, copperGolem, blockPatternMatch2.getBlock(0, 0, 0).getPos());
++                spawnGolemInWorld(level, blockPatternMatch2, copperGolem, blockPatternMatch2.getBlock(0, 0, 0).getPos(), this.placer); // Purpur - Summoner API
+                 this.replaceCopperBlockWithChest(level, blockPatternMatch2);
+                 copperGolem.spawn(this.getWeatherStateFromPattern(blockPatternMatch2));
+             }
+@@ -111,7 +_,20 @@
+                 .getAge();
      }
  
++    @io.papermc.paper.annotation.DoNotUse
      private static void spawnGolemInWorld(Level level, BlockPattern.BlockPatternMatch patternMatch, Entity golem, BlockPos pos) {
 +        // Purpur start - Summoner API
 +        spawnGolemInWorld(level, patternMatch, golem, pos, null);
 +    }
 +    private static void spawnGolemInWorld(Level level, BlockPattern.BlockPatternMatch patternMatch, Entity golem, BlockPos pos, net.minecraft.world.entity.LivingEntity placer) {
-+        if (golem instanceof SnowGolem snowGolem) {
-+            snowGolem.setSummoner(placer == null ? null : placer.getUUID());
-+        } else if (golem instanceof IronGolem ironGolem) {
-+            ironGolem.setSummoner(placer == null ? null : placer.getUUID());
++        java.util.UUID summoner = placer == null ? null : placer.getUUID();
++        switch (golem) {
++            case SnowGolem snowGolem -> snowGolem.setSummoner(summoner);
++            case IronGolem ironGolem -> ironGolem.setSummoner(summoner);
++            case CopperGolem copperGolem -> copperGolem.setSummoner(summoner);
++            default -> throw new IllegalStateException("Unexpected value: " + golem);
 +        }
 +        // Purpur end - Summoner API
          // clearPatternBlocks(level, patternMatch); // Paper - moved down

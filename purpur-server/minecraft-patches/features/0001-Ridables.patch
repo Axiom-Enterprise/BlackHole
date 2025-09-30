@@ -2127,10 +2127,10 @@ index 9ad94aca22a100dddaded5833763f9acd2a0ce56..96c98f032b1b3aec32aba38244ee8b45
      protected void addAdditionalSaveData(ValueOutput output) {
          super.addAdditionalSaveData(output);
 diff --git a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
-index facc49cb9a6aa7dddfbbf9733391fc9cf656f0ce..292c9a82028503566c8d3b50b87d09f79619aa7d 100644
+index f9c3a33a7c5efc30a97f1ce74b94f5e6213298fe..82c2ff4ba05921a102d21e8fe547adb82fe9a445 100644
 --- a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
 +++ b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
-@@ -185,6 +185,7 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
+@@ -199,6 +199,7 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
      protected void customServerAiStep(ServerLevel level) {
          ProfilerFiller profilerFiller = Profiler.get();
          profilerFiller.push("copperGolemBrain");

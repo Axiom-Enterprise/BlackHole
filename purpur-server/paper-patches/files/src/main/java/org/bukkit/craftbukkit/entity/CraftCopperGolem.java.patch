@@ -1,8 +1,8 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftCopperGolem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftCopperGolem.java
-@@ -13,4 +_,17 @@
-     public net.minecraft.world.entity.animal.coppergolem.CopperGolem getHandle() {
-         return (net.minecraft.world.entity.animal.coppergolem.CopperGolem) this.entity;
+@@ -55,4 +_,17 @@
+             default -> throw new IllegalStateException("Unexpected value: " + oxidizing);
+         }
      }
 +
 +    // Purpur start - Summoner API

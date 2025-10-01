@@ -2127,10 +2127,39 @@ index 9ad94aca22a100dddaded5833763f9acd2a0ce56..96c98f032b1b3aec32aba38244ee8b45
      protected void addAdditionalSaveData(ValueOutput output) {
          super.addAdditionalSaveData(output);
 diff --git a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
-index f9c3a33a7c5efc30a97f1ce74b94f5e6213298fe..82c2ff4ba05921a102d21e8fe547adb82fe9a445 100644
+index f9c3a33a7c5efc30a97f1ce74b94f5e6213298fe..20d2f081fa2576ea946489d3e717b389092abaef 100644
 --- a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
 +++ b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
-@@ -199,6 +199,7 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
+@@ -109,6 +109,28 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
+     }
+     // Purpur end - Summoner API
+ 
++    // Purpur start - Ridables
++    @Override
++    public boolean isRidable() {
++        return level().purpurConfig.copperGolemRidable;
++    }
++
++    @Override
++    public boolean dismountsUnderwater() {
++        return level().purpurConfig.useDismountsUnderwaterTag ? super.dismountsUnderwater() : !level().purpurConfig.copperGolemRidableInWater;
++    }
++
++    @Override
++    public boolean isControllable() {
++        return level().purpurConfig.copperGolemControllable;
++    }
++
++    @Override
++    protected void registerGoals() {
++        this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
++    }
++    // Purpur end - Ridables
++
+     public static AttributeSupplier.Builder createAttributes() {
+         return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.STEP_HEIGHT, 1.0).add(Attributes.MAX_HEALTH, 12.0);
+     }
+@@ -199,6 +221,7 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
      protected void customServerAiStep(ServerLevel level) {
          ProfilerFiller profilerFiller = Profiler.get();
          profilerFiller.push("copperGolemBrain");
@@ -2138,6 +2167,24 @@ index f9c3a33a7c5efc30a97f1ce74b94f5e6213298fe..82c2ff4ba05921a102d21e8fe547adb8
          this.getBrain().tick(level, this);
          profilerFiller.pop();
          profilerFiller.push("copperGolemActivityUpdate");
+@@ -238,7 +261,7 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
+                 java.util.List<ItemStack> drops = this.generateDefaultDrops(serverLevel, itemInHand);
+                 org.bukkit.event.player.PlayerShearEntityEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerShearEntityEvent(player, this, itemInHand, hand, drops);
+                 if (event != null) {
+-                    if (event.isCancelled()) return InteractionResult.PASS;
++                    if (event.isCancelled()) return tryRide(player, hand); // Purpur - Ridables
+                     drops = org.bukkit.craftbukkit.inventory.CraftItemStack.asNMSCopy(event.getDrops());
+                 }
+                 this.shear(serverLevel, SoundSource.PLAYERS, itemInHand, drops);
+@@ -274,6 +297,8 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
+                 }
+             }
+ 
++            if (level().purpurConfig.villagerRidable && itemInHand.isEmpty()) return tryRide(player, hand); // Purpur - Ridables
++
+             return super.mobInteract(player, hand);
+         }
+     }
 diff --git a/net/minecraft/world/entity/animal/frog/Frog.java b/net/minecraft/world/entity/animal/frog/Frog.java
 index 7d63881ec187f11544947a487fd0445561228247..e451e604b37f078cb94f3204ebb25dbc153d2551 100644
 --- a/net/minecraft/world/entity/animal/frog/Frog.java

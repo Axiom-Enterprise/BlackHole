@@ -458,6 +458,24 @@ index a6145a24bffc1f56406cb9e57b15631ba82afe6a..4932668448a7346758983b647f4e5080
      @Override
      public float getWalkTargetValue(BlockPos pos, LevelReader level) {
          return 0.0F;
+diff --git a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
+index 0597de19bcb1dc21cc7d07bb9b69dfb6967bba6f..19d02efdd82f370d0edc62abdbb7be3a062f8706 100644
+--- a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
++++ b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
+@@ -141,6 +141,13 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
+     }
+     // Purpur end - Configurable entity base attributes
+ 
++    // Purpur start - Toggle for water sensitive mob damage
++    @Override
++    public boolean isSensitiveToWater() {
++        return this.level().purpurConfig.copperGolemTakeDamageFromWater;
++    }
++    // Purpur end - Toggle for water sensitive mob damage
++
+     public static AttributeSupplier.Builder createAttributes() {
+         return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.STEP_HEIGHT, 1.0).add(Attributes.MAX_HEALTH, 12.0);
+     }
 diff --git a/net/minecraft/world/entity/animal/goat/Goat.java b/net/minecraft/world/entity/animal/goat/Goat.java
 index 0ec325f198d877057a9b497e667d1f3be40e683e..4e93554170d9c91a7d704b161b91ca28b19be73b 100644
 --- a/net/minecraft/world/entity/animal/goat/Goat.java

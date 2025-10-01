@@ -595,6 +595,27 @@ index 96c98f032b1b3aec32aba38244ee8b45aca9078c..3a794ff3d68c86b4e5ef93ff8f5cedfa
      @Override
      public SoundEvent getAmbientSound() {
          return SoundEvents.CAMEL_AMBIENT;
+diff --git a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
+index 20d2f081fa2576ea946489d3e717b389092abaef..0597de19bcb1dc21cc7d07bb9b69dfb6967bba6f 100644
+--- a/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
++++ b/net/minecraft/world/entity/animal/coppergolem/CopperGolem.java
+@@ -131,6 +131,16 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
+     }
+     // Purpur end - Ridables
+ 
++    // Purpur start - Configurable entity base attributes
++    @Override
++    public void initAttributes() {
++        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.copperGolemMaxHealth);
++        this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(this.level().purpurConfig.copperGolemStepHeight);
++        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.level().purpurConfig.copperGolemMovementSpeed);
++        this.getAttribute(Attributes.SCALE).setBaseValue(this.level().purpurConfig.copperGolemScale);
++    }
++    // Purpur end - Configurable entity base attributes
++
+     public static AttributeSupplier.Builder createAttributes() {
+         return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.STEP_HEIGHT, 1.0).add(Attributes.MAX_HEALTH, 12.0);
+     }
 diff --git a/net/minecraft/world/entity/animal/horse/AbstractHorse.java b/net/minecraft/world/entity/animal/horse/AbstractHorse.java
 index b528bd7cc2001a3c0ec1cf615a4c306a9cd7e9f1..387f6bb134a766ce7b72cf2d4a56509f51687308 100644
 --- a/net/minecraft/world/entity/animal/horse/AbstractHorse.java

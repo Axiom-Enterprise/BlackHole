@@ -10,6 +10,6 @@
 +    }
 +    // Purpur end
 +
-     @ApiStatus.Internal
-     class DummyVersionFetcher implements VersionFetcher {
- 
+     /**
+      * @hidden
+      */

@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/entity/ai/behavior/TransportItemsBetweenContainers.java
++++ b/net/minecraft/world/entity/ai/behavior/TransportItemsBetweenContainers.java
+@@ -287,7 +_,7 @@
+             LevelChunk chunkNow = level.getChunkSource().getChunkNow(chunkPos.x, chunkPos.z);
+             if (chunkNow != null) {
+                 for (BlockEntity blockEntity : chunkNow.getBlockEntities().values()) {
+-                    if (blockEntity instanceof ChestBlockEntity chestBlockEntity) {
++                    if (blockEntity instanceof net.minecraft.world.level.block.entity.BaseContainerBlockEntity chestBlockEntity) { // Purpur - copper golem can place items in barrels option
+                         double d1 = chestBlockEntity.getBlockPos().distToCenterSqr(mob.position());
+                         if (d1 < d) {
+                             TransportItemsBetweenContainers.TransportItemTarget transportItemTarget1 = this.isTargetValidToPick(
+@@ -446,7 +_,7 @@
+     }
+ 
+     private boolean isWantedBlock(PathfinderMob mob, BlockState state) {
+-        return isPickingUpItems(mob) ? this.sourceBlockType.test(state) : this.destinationBlockType.test(state);
++        return isPickingUpItems(mob) ? this.sourceBlockType.test(state) : (mob.level().purpurConfig.copperGolemCanOpenBarrel && state.is(net.minecraft.world.level.block.Blocks.BARREL)) || this.destinationBlockType.test(state); // Purpur - copper golem can place items in barrels option
+     }
+ 
+     private static double getInteractionRange(PathfinderMob mob) {

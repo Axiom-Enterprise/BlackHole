@@ -1514,6 +1514,7 @@ public class PurpurWorldConfig {
     public double copperGolemScale = 1.0D;
     public boolean copperGolemTakeDamageFromWater = false;
     public boolean copperGolemAlwaysDropExp = false;
+    public boolean copperGolemCanOpenBarrel = false;
     private void copperGolemSettings() {
         copperGolemRidable = getBoolean("mobs.copper_golem.ridable", copperGolemRidable);
         copperGolemRidableInWater = getBoolean("mobs.copper_golem.ridable-in-water", copperGolemRidableInWater);
@@ -1525,6 +1526,7 @@ public class PurpurWorldConfig {
         copperGolemScale = Mth.clamp(getDouble("mobs.copper_golem.attributes.scale", copperGolemScale), 0.0625D, 16.0D);
         copperGolemTakeDamageFromWater = getBoolean("mobs.copper_golem.takes-damage-from-water", copperGolemTakeDamageFromWater);
         copperGolemAlwaysDropExp = getBoolean("mobs.copper_golem.always-drop-exp", copperGolemAlwaysDropExp);
+        copperGolemCanOpenBarrel = getBoolean("mobs.copper_golem.can-open-barrel", copperGolemCanOpenBarrel);
     }
 
     public boolean cowRidable = false;

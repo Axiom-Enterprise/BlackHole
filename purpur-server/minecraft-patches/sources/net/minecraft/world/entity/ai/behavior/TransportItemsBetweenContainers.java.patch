@@ -9,7 +9,7 @@
                          double d1 = chestBlockEntity.getBlockPos().distToCenterSqr(mob.position());
                          if (d1 < d) {
                              TransportItemsBetweenContainers.TransportItemTarget transportItemTarget1 = this.isTargetValidToPick(
-@@ -446,7 +_,7 @@
+@@ -449,7 +_,7 @@
      }
  
      private boolean isWantedBlock(PathfinderMob mob, BlockState state) {

@@ -79,7 +79,7 @@
  
                      // adjust ticksBehind so that it is not greater-than catchup
                      if (ticksBehind > catchup) {
-@@ -1729,7 +_,7 @@
+@@ -1730,7 +_,7 @@
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -88,7 +88,7 @@
                      continue;
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
-@@ -1901,7 +_,7 @@
+@@ -1902,7 +_,7 @@
  
      @DontObfuscate
      public String getServerModName() {

@@ -18,10 +18,10 @@ index aa87e93ade4c25a575e7861fef45b70c3e4e3aeb..c92ffd8b2fe4945ccd552eb54154b7be
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index adfe166ed59ac976f15cd7ad550f002a8e41cf07..ae9182e3588b757105e5d131ddaad25a48676dc0 100644
+index 5ab5eed1a72c90a34f866f98b0ac0734eeeb943c..dfc8c9f97400f85dbcf141b3c6427d39fe735ee9 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1775,6 +1775,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1776,6 +1776,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              serverLevel.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              serverLevel.updateLagCompensationTick(); // Paper - lag compensation
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = serverLevel.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers

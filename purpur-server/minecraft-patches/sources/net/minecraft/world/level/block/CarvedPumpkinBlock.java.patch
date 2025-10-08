@@ -24,10 +24,10 @@
              if (copperGolem != null) {
 -                spawnGolemInWorld(level, blockPatternMatch2, copperGolem, blockPatternMatch2.getBlock(0, 0, 0).getPos());
 +                spawnGolemInWorld(level, blockPatternMatch2, copperGolem, blockPatternMatch2.getBlock(0, 0, 0).getPos(), this.placer); // Purpur - Summoner API
+                 if (!copperGolem.valid) return; // Paper - entityspawnevent - entity was not added to the world so prevent world mutation
                  this.replaceCopperBlockWithChest(level, blockPatternMatch2);
                  copperGolem.spawn(this.getWeatherStateFromPattern(blockPatternMatch2));
-             }
-@@ -111,7 +_,20 @@
+@@ -112,7 +_,20 @@
                  .getAge();
      }
  

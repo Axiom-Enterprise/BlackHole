@@ -18,10 +18,10 @@ index aa87e93ade4c25a575e7861fef45b70c3e4e3aeb..c92ffd8b2fe4945ccd552eb54154b7be
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index ba649b7fca84faffe10ea5653c7d0b9af34da7d6..65bbd7781bf23ad0e076b4c144282f5da879e01a 100644
+index cb3b20e3dfc69da4ea371b0068d001312065a4b5..7ffcd79602a39d7168e049a058d940244c1f3d28 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1776,6 +1776,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1792,6 +1792,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              serverLevel.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              serverLevel.updateLagCompensationTick(); // Paper - lag compensation
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = serverLevel.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
@@ -30,7 +30,7 @@ index ba649b7fca84faffe10ea5653c7d0b9af34da7d6..65bbd7781bf23ad0e076b4c144282f5d
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 23fcffa4990d56aa1a20ad949907b50fadb0edcb..51d88bd54d2aac5619dd8d09e2e84d18078e8067 100644
+index 1650e1c9d7a9fc2bcd61eba79f7d09ffa17bb02c..e4d9bf14564d5984da64b1ecefc589c740817c47 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -224,6 +224,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -42,7 +42,7 @@ index 23fcffa4990d56aa1a20ad949907b50fadb0edcb..51d88bd54d2aac5619dd8d09e2e84d18
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index c2c0bc198a26430d8ba7458905cf24e053d36ec6..cebc07cfe97c15431a0823bf5f12ab089b97e5c4 100644
+index 306ff1cf578526dc01f602385fd7893f9cb00935..4aa64ea7ac3d7bb52bbf042eae43c0f025a2aaaf 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -774,6 +774,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
@@ -75,10 +75,10 @@ index f2765b2481305f971da5e3695f465245f398c548..ade5df8bc5ef8414f8b51d63f354d594
                                      if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 07136ef65f510cd05f2c30031ac311f23d881cba..5d0e4b720f178ec1397fe8a7df94eb7f6e8f6c2e 100644
+index 611bca1ae544f3358e77f515473679cf7ca194fa..03afc46f7f437fe2b516c7b1ec8c34e084b3f5fd 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -3357,6 +3357,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -3362,6 +3362,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
  
                  this.passengers = ImmutableList.copyOf(list);
              }
@@ -92,7 +92,7 @@ index 07136ef65f510cd05f2c30031ac311f23d881cba..5d0e4b720f178ec1397fe8a7df94eb7f
          }
      }
  
-@@ -3397,6 +3404,14 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -3402,6 +3409,14 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index 07136ef65f510cd05f2c30031ac311f23d881cba..5d0e4b720f178ec1397fe8a7df94eb7f
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5464,4 +5479,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -5469,4 +5484,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter

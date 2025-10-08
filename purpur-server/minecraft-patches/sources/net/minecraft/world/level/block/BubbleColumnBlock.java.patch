@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/BubbleColumnBlock.java
 +++ b/net/minecraft/world/level/block/BubbleColumnBlock.java
-@@ -98,9 +_,9 @@
+@@ -100,9 +_,9 @@
          if (blockState.is(Blocks.BUBBLE_COLUMN)) {
              return blockState;
          } else if (blockState.is(Blocks.SOUL_SAND)) {

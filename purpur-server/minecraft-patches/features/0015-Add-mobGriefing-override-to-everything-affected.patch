@@ -307,10 +307,10 @@ index a495789b2d21fa9a24d5dca4ecfa196ddce49466..2254493c889b8967011c09dc448ba375
                  return true;
              } else if (this.mob.getCurrentRaid().isOver()) {
 diff --git a/net/minecraft/world/level/GameRules.java b/net/minecraft/world/level/GameRules.java
-index 5b148c977efad9f312acfc0304356f70a6cb1170..0c825a849e7be4a682d59d9e12a57abe8a897c8d 100644
+index 9a7a98c0928e1b6816b5a879fd2f9d43a9fb6304..225caea92f90d2468f08b7a6603ed7fc0bfd65b6 100644
 --- a/net/minecraft/world/level/GameRules.java
 +++ b/net/minecraft/world/level/GameRules.java
-@@ -369,6 +369,13 @@ public class GameRules {
+@@ -367,6 +367,13 @@ public class GameRules {
          this.<T>getRule(key).setFrom(rule, level); // CraftBukkit - per-world
      }
  
@@ -325,12 +325,12 @@ index 5b148c977efad9f312acfc0304356f70a6cb1170..0c825a849e7be4a682d59d9e12a57abe
          return this.getRule(key).get();
      }
 diff --git a/net/minecraft/world/level/block/CropBlock.java b/net/minecraft/world/level/block/CropBlock.java
-index b370b955ac8636275dfada4f38a7ca10297f7dac..d345235db5a8d5f1ebbeb5bbb5e7924cb1a75518 100644
+index 5f6b423dd1dabf9bd3dec551f4bd86a44f6c120d..6f0544b2c77c6555f2d376cbe6190f54646c91d8 100644
 --- a/net/minecraft/world/level/block/CropBlock.java
 +++ b/net/minecraft/world/level/block/CropBlock.java
 @@ -169,7 +169,7 @@ public class CropBlock extends VegetationBlock implements BonemealableBlock {
      @Override
-     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean flag) {
          if (!new io.papermc.paper.event.entity.EntityInsideBlockEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.block.CraftBlock.at(level, pos)).callEvent()) { return; } // Paper - Add EntityInsideBlockEvent
 -        if (level instanceof ServerLevel serverLevel && entity instanceof Ravager && serverLevel.purpurConfig.ravagerGriefableBlocks.contains(serverLevel.getBlockState(pos).getBlock()) && org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), !serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))) { // CraftBukkit // Purpur - Configurable ravager griefable blocks list
 +        if (level instanceof ServerLevel serverLevel && entity instanceof Ravager && serverLevel.purpurConfig.ravagerGriefableBlocks.contains(serverLevel.getBlockState(pos).getBlock()) && org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.AIR.defaultBlockState(), !serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING, serverLevel.purpurConfig.ravagerMobGriefingOverride))) { // CraftBukkit // Purpur - Configurable ravager griefable blocks list // Purpur - Add mobGriefing override to everything affected
@@ -351,7 +351,7 @@ index 9883e6d1a1b76155c8ba1817fda6615b4742e18e..dc1ad33f801c308871931d271f97ff91
                  // CraftBukkit start - Interact soil
                  org.bukkit.event.Cancellable cancellable;
 diff --git a/net/minecraft/world/level/block/PowderSnowBlock.java b/net/minecraft/world/level/block/PowderSnowBlock.java
-index 90e613b28e0f293f3cb09ba93e41589de5b54fe3..03ec0eeca0f6e18e91918142a43d857412642f8a 100644
+index c6dc40b72c7bd6e0e65262fc4eb5573caa635bd3..7e1129eaf50ea43872b2b7eb4278e7ee3c858594 100644
 --- a/net/minecraft/world/level/block/PowderSnowBlock.java
 +++ b/net/minecraft/world/level/block/PowderSnowBlock.java
 @@ -96,7 +96,7 @@ public class PowderSnowBlock extends Block implements BucketPickup {

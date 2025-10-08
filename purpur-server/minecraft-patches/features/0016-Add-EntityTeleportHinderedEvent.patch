@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 diff --git a/net/minecraft/world/level/block/EndGatewayBlock.java b/net/minecraft/world/level/block/EndGatewayBlock.java
-index c70401544b4764518e62e42e3284ea185e4d997d..27e929b69db5b625fb566ec69162b7d3d482f9ab 100644
+index b52fef8f15fe4789be161ae6c22f0f27ac6a27fc..294ac7dbdd4c3ab80af3de2dc15ce8f5e18851dc 100644
 --- a/net/minecraft/world/level/block/EndGatewayBlock.java
 +++ b/net/minecraft/world/level/block/EndGatewayBlock.java
 @@ -99,6 +99,13 @@ public class EndGatewayBlock extends BaseEntityBlock implements Portal {
@@ -35,11 +35,11 @@ index c70401544b4764518e62e42e3284ea185e4d997d..27e929b69db5b625fb566ec69162b7d3
              TheEndGatewayBlockEntity.triggerCooldown(level, pos, state, theEndGatewayBlockEntity);
          }
 diff --git a/net/minecraft/world/level/block/EndPortalBlock.java b/net/minecraft/world/level/block/EndPortalBlock.java
-index cbd8c06f5bf4319dd2470c289442237c465cff57..3edc2b4a195103f617a8d211a96cfb1cfa5ab9db 100644
+index c001b94efb4b5077c97ace11920a4c1b81e03848..b42203825222fb252f8bdd9d98c5e23bb37505db 100644
 --- a/net/minecraft/world/level/block/EndPortalBlock.java
 +++ b/net/minecraft/world/level/block/EndPortalBlock.java
 @@ -61,6 +61,13 @@ public class EndPortalBlock extends BaseEntityBlock implements Portal {
-     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean flag) {
          if (!new io.papermc.paper.event.entity.EntityInsideBlockEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.block.CraftBlock.at(level, pos)).callEvent()) { return; } // Paper - Add EntityInsideBlockEvent
          if (entity.canUsePortal(false)) {
 +            // Purpur start - Add EntityTeleportHinderedEvent
@@ -53,11 +53,11 @@ index cbd8c06f5bf4319dd2470c289442237c465cff57..3edc2b4a195103f617a8d211a96cfb1c
              org.bukkit.event.entity.EntityPortalEnterEvent event = new org.bukkit.event.entity.EntityPortalEnterEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.util.CraftLocation.toBukkit(pos, level), org.bukkit.PortalType.ENDER); // Paper - add portal type
              level.getCraftServer().getPluginManager().callEvent(event);
 diff --git a/net/minecraft/world/level/block/NetherPortalBlock.java b/net/minecraft/world/level/block/NetherPortalBlock.java
-index a9eda5185b9cb9fe81c6fe0e494b9266b0bef585..47b422f4901ea305b7211721a5e54bcd646a112f 100644
+index 807cc0d489b752c71f4e4ba03622af2815859282..774dc449eae37c13fb4c3160409300f947282cd5 100644
 --- a/net/minecraft/world/level/block/NetherPortalBlock.java
 +++ b/net/minecraft/world/level/block/NetherPortalBlock.java
 @@ -113,6 +113,13 @@ public class NetherPortalBlock extends Block implements Portal {
-     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean flag) {
          if (!new io.papermc.paper.event.entity.EntityInsideBlockEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.block.CraftBlock.at(level, pos)).callEvent()) { return; } // Paper - Add EntityInsideBlockEvent
          if (entity.canUsePortal(false)) {
 +            // Purpur start - Add EntityTeleportHinderedEvent

@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/entity/LivingEntity.java
 +++ b/src/main/java/org/bukkit/entity/LivingEntity.java
-@@ -1474,4 +_,20 @@
+@@ -1494,4 +_,20 @@
       */
      @ApiStatus.Experimental
      @NotNull CombatTracker getCombatTracker();

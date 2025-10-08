@@ -18,10 +18,10 @@ index 3412b6dcc2d65986a4f657a6efd7b9fee63d5f8b..d2c5cf955cf8eb534f7bf0afebded9fd
          this.drops.add(new DefaultDrop(itemStack, stack -> Block.popResource(this.level(), this.blockPosition(), stack))); // CraftBukkit - add to drops // Paper - Restore vanilla drops behavior
          return this.brokenByAnything(level, damageSource); // Paper
 diff --git a/net/minecraft/world/entity/decoration/ItemFrame.java b/net/minecraft/world/entity/decoration/ItemFrame.java
-index 56582d74b9420f688cc6a1abf31a644cb365b797..7346e1f49cc89fbc96bb5f903c2a043e71d0d1c9 100644
+index e6012d2cfe9b84782c8d5a0ba424eeda98086c09..6bf12f09c189ccaf45552f76d50f6743d93db0c3 100644
 --- a/net/minecraft/world/entity/decoration/ItemFrame.java
 +++ b/net/minecraft/world/entity/decoration/ItemFrame.java
-@@ -239,7 +239,11 @@ public class ItemFrame extends HangingEntity {
+@@ -246,7 +246,11 @@ public class ItemFrame extends HangingEntity {
                  this.removeFramedMap(item);
              } else {
                  if (dropItem) {

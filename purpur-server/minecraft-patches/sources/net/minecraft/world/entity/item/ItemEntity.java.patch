@@ -11,8 +11,8 @@
 +    public boolean immuneToLightning = false;
 +    // Purpur end - Item entity immunities
  
-     public ItemEntity(EntityType<? extends ItemEntity> entityType, Level level) {
-         super(entityType, level);
+     public ItemEntity(EntityType<? extends ItemEntity> type, Level level) {
+         super(type, level);
 @@ -333,7 +_,16 @@
  
      @Override

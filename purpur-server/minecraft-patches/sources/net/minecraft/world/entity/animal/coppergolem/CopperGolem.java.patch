@@ -6,8 +6,8 @@
      public static final EquipmentSlot EQUIPMENT_SLOT_ANTENNA = EquipmentSlot.SADDLE;
 +    @Nullable private UUID summoner; // Purpur - Summoner API
  
-     public CopperGolem(EntityType<? extends AbstractGolem> entityType, Level level) {
-         super(entityType, level);
+     public CopperGolem(EntityType<? extends AbstractGolem> type, Level level) {
+         super(type, level);
 @@ -97,6 +_,17 @@
          this.getBrain().setMemory(MemoryModuleType.TRANSPORT_ITEMS_COOLDOWN_TICKS, this.getRandom().nextInt(60, 100));
      }

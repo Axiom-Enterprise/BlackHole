@@ -7,8 +7,8 @@
 +    private boolean isLobotomized = false; public boolean isLobotomized() { return this.isLobotomized; } // Purpur - Lobotomize stuck villagers
 +    private int notLobotomizedCount = 0; // Purpur - Lobotomize stuck villagers
  
-     public Villager(EntityType<? extends Villager> entityType, Level level) {
-         this(entityType, level, VillagerType.PLAINS);
+     public Villager(EntityType<? extends Villager> type, Level level) {
+         this(type, level, VillagerType.PLAINS);
 @@ -196,6 +_,57 @@
          this.setVillagerData(this.getVillagerData().withType(villagerType).withProfession(level.registryAccess(), VillagerProfession.NONE));
      }
@@ -121,11 +121,11 @@
 @@ -922,6 +_,7 @@
      }
  
-     public void spawnGolemIfNeeded(ServerLevel serverLevel, long gameTime, int minVillagerAmount) {
-+        if (serverLevel.purpurConfig.villagerSpawnIronGolemRadius > 0 && serverLevel.getEntitiesOfClass(net.minecraft.world.entity.animal.IronGolem.class, getBoundingBox().inflate(serverLevel.purpurConfig.villagerSpawnIronGolemRadius)).size() > serverLevel.purpurConfig.villagerSpawnIronGolemLimit) return; // Purpur - Implement configurable search radius for villagers to spawn iron golems
+     public void spawnGolemIfNeeded(ServerLevel level, long gameTime, int minVillagerAmount) {
++        if (level.purpurConfig.villagerSpawnIronGolemRadius > 0 && level.getEntitiesOfClass(net.minecraft.world.entity.animal.IronGolem.class, getBoundingBox().inflate(level.purpurConfig.villagerSpawnIronGolemRadius)).size() > level.purpurConfig.villagerSpawnIronGolemLimit) return; // Purpur - Implement configurable search radius for villagers to spawn iron golems
          if (this.wantsToSpawnGolem(gameTime)) {
              AABB aabb = this.getBoundingBox().inflate(10.0, 10.0, 10.0);
-             List<Villager> entitiesOfClass = serverLevel.getEntitiesOfClass(Villager.class, aabb);
+             List<Villager> entitiesOfClass = level.getEntitiesOfClass(Villager.class, aabb);
 @@ -989,6 +_,12 @@
  
      @Override

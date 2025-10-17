@@ -6,8 +6,8 @@
      private Component name;
 +    private int lapis = 0; // Purpur - Enchantment Table Persists Lapis
  
-     public EnchantingTableBlockEntity(BlockPos pos, BlockState state) {
-         super(BlockEntityType.ENCHANTING_TABLE, pos, state);
+     public EnchantingTableBlockEntity(BlockPos pos, BlockState blockState) {
+         super(BlockEntityType.ENCHANTING_TABLE, pos, blockState);
 @@ -40,12 +_,14 @@
      protected void saveAdditional(ValueOutput output) {
          super.saveAdditional(output);

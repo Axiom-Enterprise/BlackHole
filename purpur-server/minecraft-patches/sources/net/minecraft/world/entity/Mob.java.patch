@@ -6,8 +6,8 @@
      public net.kyori.adventure.util.TriState despawnInPeacefulOverride = net.kyori.adventure.util.TriState.NOT_SET; // Paper - allow changing despawnInPeaceful
 +    public int ticksSinceLastInteraction; // Purpur - Entity lifespan
  
-     protected Mob(EntityType<? extends Mob> entityType, Level level) {
-         super(entityType, level);
+     protected Mob(EntityType<? extends Mob> type, Level level) {
+         super(type, level);
 @@ -295,6 +_,7 @@
                  target = null;
              }
@@ -44,7 +44,7 @@
 +    // Purpur end - Entity lifespan
  
      @Override
-     protected void playHurtSound(DamageSource source) {
+     protected void playHurtSound(DamageSource damageSource) {
 @@ -443,6 +_,7 @@
              output.putString("Paper.DespawnInPeacefulOverride", this.despawnInPeacefulOverride.name());
          }

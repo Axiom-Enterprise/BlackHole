@@ -6,8 +6,8 @@
      public int life = 0;
 +    private boolean isPlayerSpawned; // Purpur - Add back player spawned endermite API
  
-     public Endermite(EntityType<? extends Endermite> entityType, Level level) {
-         super(entityType, level);
+     public Endermite(EntityType<? extends Endermite> type, Level level) {
+         super(type, level);
          this.xpReward = 3;
      }
  

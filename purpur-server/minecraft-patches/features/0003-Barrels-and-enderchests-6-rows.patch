@@ -5,10 +5,10 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
-index b99b09118707ab94406fc0472420449e7e88f2ac..042861f45c7ee423614122387ac652d60dfc2852 100644
+index 1d6f77ade1456fd4ffc425e0c75ea98e86be7a42..72d24ebbbcd7d6db849190ca646ecdaf1053d0bb 100644
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -931,6 +931,27 @@ public abstract class PlayerList {
+@@ -929,6 +929,27 @@ public abstract class PlayerList {
          player.getBukkitEntity().recalculatePermissions(); // CraftBukkit
          this.server.getCommands().sendCommands(player);
          } // Paper - Add sendOpLevel API
@@ -37,7 +37,7 @@ index b99b09118707ab94406fc0472420449e7e88f2ac..042861f45c7ee423614122387ac652d6
  
      // Paper start - whitelist verify event / login event
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index 3c1641a906f301dbfb0f30a597479fb727f4639c..76d84cb829a7f9b88689986d04497fbfd9d65b87 100644
+index 2c0b158c6e666941a073295e9b112f64ad5b6d90..21e0bd539188352c9db551c96af37a6a87a089d2 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -182,6 +182,7 @@ public abstract class Player extends Avatar implements ContainerUser {
@@ -49,7 +49,7 @@ index 3c1641a906f301dbfb0f30a597479fb727f4639c..76d84cb829a7f9b88689986d04497fbf
      // CraftBukkit start
      public boolean fauxSleeping;
 diff --git a/net/minecraft/world/inventory/ChestMenu.java b/net/minecraft/world/inventory/ChestMenu.java
-index 0fffa384f928ab84451331380968fb4650eafe26..0399092c9f7a43ac100c11505176ade6d95a39da 100644
+index 1fb3a34ea872dec73658fac59743e46ef8db5151..4c3b8d7ba777916ffc5ad0feccffbc7634bffe8d 100644
 --- a/net/minecraft/world/inventory/ChestMenu.java
 +++ b/net/minecraft/world/inventory/ChestMenu.java
 @@ -66,10 +66,30 @@ public class ChestMenu extends AbstractContainerMenu {
@@ -108,7 +108,7 @@ index 8cf089874a75735be690ab72a01264bac5ff793d..611f78f93b70674b53c025d9151dacb5
          this.activeChest = enderChestBlockEntity;
      }
 diff --git a/net/minecraft/world/level/block/EnderChestBlock.java b/net/minecraft/world/level/block/EnderChestBlock.java
-index 1518e035c4b6fdfc68b77fc42b043dd27f680767..a7b20c0781b0372a36e67c7b5a3eae90476f83e0 100644
+index 4fe246e457bd9befcdcb6e2301bd55e949322d6f..5189125f4a66590b7842d19cd940de659d24c6a4 100644
 --- a/net/minecraft/world/level/block/EnderChestBlock.java
 +++ b/net/minecraft/world/level/block/EnderChestBlock.java
 @@ -85,8 +85,8 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i

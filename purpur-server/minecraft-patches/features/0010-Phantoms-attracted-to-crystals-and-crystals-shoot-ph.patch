@@ -5,7 +5,7 @@ Subject: [PATCH] Phantoms attracted to crystals and crystals shoot phantoms
 
 
 diff --git a/net/minecraft/world/entity/boss/enderdragon/EndCrystal.java b/net/minecraft/world/entity/boss/enderdragon/EndCrystal.java
-index 5bff703ae4f95091620dec5347246d7c0cbe5d5e..220a828717e1933a44c5282b56713ba0053d2440 100644
+index 9503ec9d44a6c0811639b7d0cf504d32fefff58d..ab878a0f789fa0dc3713eedac1bbcebcfc1a7fa5 100644
 --- a/net/minecraft/world/entity/boss/enderdragon/EndCrystal.java
 +++ b/net/minecraft/world/entity/boss/enderdragon/EndCrystal.java
 @@ -27,6 +27,12 @@ public class EndCrystal extends Entity {
@@ -19,8 +19,8 @@ index 5bff703ae4f95091620dec5347246d7c0cbe5d5e..220a828717e1933a44c5282b56713ba0
 +    private int idleCooldown = 0;
 +    // Purpur end - Phantoms attracted to crystals and crystals shoot phantoms
  
-     public EndCrystal(EntityType<? extends EndCrystal> entityType, Level level) {
-         super(entityType, level);
+     public EndCrystal(EntityType<? extends EndCrystal> type, Level level) {
+         super(type, level);
 @@ -95,6 +101,49 @@ public class EndCrystal extends Entity {
          // Paper end - Fix invulnerable end crystals
          if (this.level().purpurConfig.endCrystalCramming > 0 && this.level().getEntitiesOfClass(EndCrystal.class, getBoundingBox()).size() > this.level().purpurConfig.endCrystalCramming) this.hurt(this.damageSources().cramming(), 6.0F); // Purpur - End Crystal Cramming
@@ -72,7 +72,7 @@ index 5bff703ae4f95091620dec5347246d7c0cbe5d5e..220a828717e1933a44c5282b56713ba0
  
      @Override
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 958f0c86986a155f56d3995a87882f83df66043f..3e0df2669e567094ad52ff8c59037e3fb5c96f30 100644
+index ba9368c601f0b720cc665b96f392be1370fb9556..81f7223d49eac01899c877ba7e47515c17269151 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -49,6 +49,7 @@ public class Phantom extends Mob implements Enemy {

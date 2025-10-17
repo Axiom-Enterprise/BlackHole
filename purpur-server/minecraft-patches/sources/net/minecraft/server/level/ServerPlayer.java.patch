@@ -123,8 +123,8 @@
 +    // Purpur end - Component related conveniences
 +
      @Override
-     public void displayClientMessage(Component chatComponent, boolean actionBar) {
-         this.sendSystemMessage(chatComponent, actionBar);
+     public void displayClientMessage(Component message, boolean overlay) {
+         this.sendSystemMessage(message, overlay);
 @@ -2327,6 +_,20 @@
          );
      }
@@ -143,8 +143,8 @@
 +    }
 +    // Purpur end - Component related conveniences
 +
-     public void sendSystemMessage(Component mesage) {
-         this.sendSystemMessage(mesage, false);
+     public void sendSystemMessage(Component message) {
+         this.sendSystemMessage(message, false);
      }
 @@ -2465,7 +_,67 @@
  
@@ -215,7 +215,7 @@
  
      public ServerStatsCounter getStats() {
          return this.stats;
-@@ -3107,4 +_,56 @@
+@@ -3109,4 +_,56 @@
          return (org.bukkit.craftbukkit.entity.CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end

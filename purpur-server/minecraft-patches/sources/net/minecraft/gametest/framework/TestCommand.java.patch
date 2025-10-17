@@ -1,6 +1,6 @@
 --- a/net/minecraft/gametest/framework/TestCommand.java
 +++ b/net/minecraft/gametest/framework/TestCommand.java
-@@ -452,7 +_,7 @@
+@@ -443,7 +_,7 @@
                              )
                      )
              );

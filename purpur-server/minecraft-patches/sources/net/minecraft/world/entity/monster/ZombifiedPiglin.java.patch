@@ -19,10 +19,10 @@
          }
 +
 +        // Purpur start - Toggle for Zombified Piglin death always counting as player kill when angry
-+        if (livingEntity instanceof Player player && this.level().purpurConfig.zombifiedPiglinCountAsPlayerKillWhenAngry) {
++        if (target instanceof Player player && this.level().purpurConfig.zombifiedPiglinCountAsPlayerKillWhenAngry) {
 +            this.setLastHurtByPlayer(player, this.tickCount);
 +        }
 +        // Purpur end - Toggle for Zombified Piglin death always counting as player kill when angry
  
-         return super.setTarget(livingEntity, reason); // CraftBukkit
+         return super.setTarget(target, reason); // CraftBukkit
      }

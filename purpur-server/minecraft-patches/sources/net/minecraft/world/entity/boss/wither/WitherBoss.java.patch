@@ -6,8 +6,8 @@
      private static final TargetingConditions TARGETING_CONDITIONS = TargetingConditions.forCombat().range(20.0).selector(LIVING_ENTITY_SELECTOR);
 +    @Nullable private java.util.UUID summoner; // Purpur - Summoner API
  
-     public WitherBoss(EntityType<? extends WitherBoss> entityType, Level level) {
-         super(entityType, level);
+     public WitherBoss(EntityType<? extends WitherBoss> type, Level level) {
+         super(type, level);
 @@ -87,6 +_,17 @@
          this.xpReward = 50;
      }

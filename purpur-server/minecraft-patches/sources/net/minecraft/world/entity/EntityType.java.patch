@@ -17,7 +17,7 @@
      public static ResourceLocation getKey(EntityType<?> entityType) {
          return BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
      }
-@@ -1442,6 +_,16 @@
+@@ -1444,6 +_,16 @@
          return this.category;
      }
  
@@ -34,7 +34,7 @@
      public String getDescriptionId() {
          return this.descriptionId;
      }
-@@ -1501,7 +_,11 @@
+@@ -1503,7 +_,11 @@
                  entity.load(input);
              },
              // Paper end - Don't fire sync event during generation

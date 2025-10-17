@@ -5,7 +5,7 @@ Subject: [PATCH] Cows naturally aggressive to players chance
 
 
 diff --git a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index 9251693b3caa2d77b093064b6599db1078cd06d0..99458462d99f0b503ccb55444f4930515c7c641c 100644
+index 48be4530b25d273032ff1a055406c7cca928d678..65f48ced39fe3bffaea34b1f8d83374bfd5cc1c8 100644
 --- a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 @@ -131,7 +131,7 @@ public class DefaultAttributes {
@@ -18,7 +18,7 @@ index 9251693b3caa2d77b093064b6599db1078cd06d0..99458462d99f0b503ccb55444f493051
          .put(EntityType.OCELOT, Ocelot.createAttributes().build())
          .put(EntityType.PANDA, Panda.createAttributes().build())
 diff --git a/net/minecraft/world/entity/animal/Cow.java b/net/minecraft/world/entity/animal/Cow.java
-index d584ffe3cc8dfb5fd4ce352b1da18af6a143d575..09ee10a17e15431a2937cf753e670dc000a2e36f 100644
+index a71b6c8a0c48d9c7121e7d29cff6d388cb2df09f..150ba89fee07dcb67550165597203f572d901f04 100644
 --- a/net/minecraft/world/entity/animal/Cow.java
 +++ b/net/minecraft/world/entity/animal/Cow.java
 @@ -23,6 +23,8 @@ import net.minecraft.world.level.storage.ValueInput;
@@ -29,7 +29,7 @@ index d584ffe3cc8dfb5fd4ce352b1da18af6a143d575..09ee10a17e15431a2937cf753e670dc0
 +
      private static final EntityDataAccessor<Holder<CowVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(Cow.class, EntityDataSerializers.COW_VARIANT);
  
-     public Cow(EntityType<? extends Cow> entityType, Level level) {
+     public Cow(EntityType<? extends Cow> type, Level level) {
 @@ -49,8 +51,9 @@ public class Cow extends AbstractCow {
      // Purpur start - Configurable entity base attributes
      @Override

@@ -1,7 +1,7 @@
 --- a/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/net/minecraft/world/entity/npc/WanderingTrader.java
 @@ -60,6 +_,13 @@
-         super(entityType, level);
+         super(type, level);
      }
  
 +    // Purpur start - Allow leashing villagers

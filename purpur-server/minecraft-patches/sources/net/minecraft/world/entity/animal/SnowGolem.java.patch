@@ -6,8 +6,8 @@
      private static final boolean DEFAULT_PUMPKIN = true;
 +    @Nullable private java.util.UUID summoner; // Purpur - Summoner API
  
-     public SnowGolem(EntityType<? extends SnowGolem> entityType, Level level) {
-         super(entityType, level);
+     public SnowGolem(EntityType<? extends SnowGolem> type, Level level) {
+         super(type, level);
      }
  
 +    // Purpur start - Summoner API

@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/inventory/ItemCombinerMenu.java
 +++ b/net/minecraft/world/inventory/ItemCombinerMenu.java
-@@ -156,7 +_,9 @@
+@@ -155,7 +_,9 @@
                  return ItemStack.EMPTY;
              }
  

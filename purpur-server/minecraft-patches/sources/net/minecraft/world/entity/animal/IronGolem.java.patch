@@ -6,8 +6,8 @@
      private UUID persistentAngerTarget;
 +    @Nullable private UUID summoner; // Purpur - Summoner API
  
-     public IronGolem(EntityType<? extends IronGolem> entityType, Level level) {
-         super(entityType, level);
+     public IronGolem(EntityType<? extends IronGolem> type, Level level) {
+         super(type, level);
      }
  
 +    // Purpur start - Summoner API

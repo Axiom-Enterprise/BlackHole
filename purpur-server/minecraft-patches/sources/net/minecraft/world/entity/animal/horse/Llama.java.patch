@@ -3,12 +3,12 @@
 @@ -78,6 +_,7 @@
      private Llama caravanHead;
      @Nullable
-     public Llama caravanTail; // Paper
+     public Llama caravanTail; // Paper - public
 +    public boolean shouldJoinCaravan = true; // Purpur - Llama API
  
-     public Llama(EntityType<? extends Llama> entityType, Level level) {
-         super(entityType, level);
-@@ -112,6 +_,7 @@
+     public Llama(EntityType<? extends Llama> type, Level level) {
+         super(type, level);
+@@ -107,6 +_,7 @@
          super.addAdditionalSaveData(output);
          output.store("Variant", Llama.Variant.LEGACY_CODEC, this.getVariant());
          output.putInt("Strength", this.getStrength());
@@ -16,7 +16,7 @@
      }
  
      @Override
-@@ -119,6 +_,7 @@
+@@ -114,6 +_,7 @@
          this.setStrength(input.getIntOr("Strength", 0));
          super.readAdditionalSaveData(input);
          this.setVariant(input.read("Variant", Llama.Variant.LEGACY_CODEC).orElse(Llama.Variant.DEFAULT));
@@ -24,7 +24,7 @@
      }
  
      @Override
-@@ -400,6 +_,7 @@
+@@ -395,6 +_,7 @@
  
      public void leaveCaravan() {
          if (this.caravanHead != null) {
@@ -32,7 +32,7 @@
              this.caravanHead.caravanTail = null;
          }
  
-@@ -407,6 +_,7 @@
+@@ -402,6 +_,7 @@
      }
  
      public void joinCaravan(Llama caravanHead) {

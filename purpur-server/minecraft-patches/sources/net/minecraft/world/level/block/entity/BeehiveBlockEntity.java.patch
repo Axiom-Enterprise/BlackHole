@@ -44,7 +44,7 @@
      public void clearBees() {
          this.stored.clear();
 @@ -397,8 +_,8 @@
-         registration.register(DebugSubscriptions.BEE_HIVES, () -> DebugHiveInfo.pack(this));
+         registrar.register(DebugSubscriptions.BEE_HIVES, () -> DebugHiveInfo.pack(this));
      }
  
 -    static class BeeData {

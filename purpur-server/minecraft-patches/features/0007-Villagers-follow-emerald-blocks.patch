@@ -5,7 +5,7 @@ Subject: [PATCH] Villagers follow emerald blocks
 
 
 diff --git a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index c23d6edeaca324bcfd60c6e96ec4038f6ef595a9..9251693b3caa2d77b093064b6599db1078cd06d0 100644
+index d9aefe5777fa545d67621bc1ce2ef6a11ca9b27c..48be4530b25d273032ff1a055406c7cca928d678 100644
 --- a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 @@ -167,7 +167,7 @@ public class DefaultAttributes {
@@ -31,7 +31,7 @@ index dae935cc68e2e571d50e56ac8913c099a11cf771..a805c9426630c2c46db9d0dd536f1d16
  
      @Override
 diff --git a/net/minecraft/world/entity/npc/AbstractVillager.java b/net/minecraft/world/entity/npc/AbstractVillager.java
-index cf4703cb909aa5906fdd689082208ea4dd77fc0f..8eceba09d1a410aaf359c71a2a0e5d44471e67b6 100644
+index 6bb17ecbd93f6ced5436cf75f3695f44eedd4bd9..e60387c4ef2aa0fc35a559d75b1a7c1539dda57b 100644
 --- a/net/minecraft/world/entity/npc/AbstractVillager.java
 +++ b/net/minecraft/world/entity/npc/AbstractVillager.java
 @@ -35,6 +35,7 @@ import net.minecraft.world.level.storage.ValueOutput;
@@ -43,7 +43,7 @@ index cf4703cb909aa5906fdd689082208ea4dd77fc0f..8eceba09d1a410aaf359c71a2a0e5d44
      public static final int VILLAGER_SLOT_OFFSET = 300;
      private static final int VILLAGER_INVENTORY_SIZE = 8;
 diff --git a/net/minecraft/world/entity/npc/Villager.java b/net/minecraft/world/entity/npc/Villager.java
-index b5dc02822ce6a82eb69fd7341c317fb1f7ee0a7f..4b076b9eeeb3614df3a024f16fecb287bed72ec7 100644
+index 05d748a7de077694b1035d3e73f35f1f98419902..b7b290e9870f8f51af7e44f71b1e04ce9c552626 100644
 --- a/net/minecraft/world/entity/npc/Villager.java
 +++ b/net/minecraft/world/entity/npc/Villager.java
 @@ -268,6 +268,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -72,10 +72,10 @@ index b5dc02822ce6a82eb69fd7341c317fb1f7ee0a7f..4b076b9eeeb3614df3a024f16fecb287
  
      public boolean assignProfessionWhenSpawned() {
 diff --git a/net/minecraft/world/entity/npc/WanderingTrader.java b/net/minecraft/world/entity/npc/WanderingTrader.java
-index 0eeda11b37cd17122183d5e22d02d9cd61f2b4e5..e9a98a7009555128cb5118093add3fb331a7d485 100644
+index b06ea793e0008c68d85d8112415fbc011131984d..e5a6cc63d29be742be039053c39f983ed9c6a1e1 100644
 --- a/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -88,9 +88,16 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -88,9 +88,16 @@ public class WanderingTrader extends AbstractVillager implements Consumable.Over
      @Override
      public void initAttributes() {
          this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.wanderingTraderMaxHealth);
@@ -92,7 +92,7 @@ index 0eeda11b37cd17122183d5e22d02d9cd61f2b4e5..e9a98a7009555128cb5118093add3fb3
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new FloatGoal(this));
-@@ -125,6 +132,7 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -125,6 +132,7 @@ public class WanderingTrader extends AbstractVillager implements Consumable.Over
          this.goalSelector.addGoal(1, new PanicGoal(this, 0.5));
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0, 0.35));

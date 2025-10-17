@@ -2,12 +2,12 @@
 +++ b/net/minecraft/world/entity/monster/Creeper.java
 @@ -56,6 +_,7 @@
      public int explosionRadius = 3;
-     private boolean droppedSkulls;
+     public boolean droppedSkulls;
      public @Nullable Entity entityIgniter; // CraftBukkit
 +    private boolean exploding = false; // Purpur - Config to make Creepers explode on death
  
-     public Creeper(EntityType<? extends Creeper> entityType, Level level) {
-         super(entityType, level);
+     public Creeper(EntityType<? extends Creeper> type, Level level) {
+         super(type, level);
 @@ -159,6 +_,27 @@
          return false; // CraftBukkit
      }

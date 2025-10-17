@@ -15,7 +15,7 @@
          this.server = server;
 -        this.customSpawners = customSpawners;
 +        this.customSpawners = new ArrayList<>(); // Purpur - Allow toggling special MobSpawners per world
-         this.serverLevelData = levelData;
+         this.serverLevelData = serverLevelData;
 +        // Purpur start - Allow toggling special MobSpawners per world
 +        if (purpurConfig.phantomSpawning) {
 +            this.customSpawners.add(new net.minecraft.world.level.levelgen.PhantomSpawner());
@@ -145,14 +145,14 @@
                  } else {
                      org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockFormEvent(this, heightmapPos, Blocks.SNOW.defaultBlockState(), 3, null); // CraftBukkit
 @@ -1050,7 +_,7 @@
-                 holder -> holder.is(PoiTypes.LIGHTNING_ROD),
-                 blockPos -> blockPos.getY() == this.getHeight(Heightmap.Types.WORLD_SURFACE, blockPos.getX(), blockPos.getZ()) - 1,
+                 poiType -> poiType.is(PoiTypes.LIGHTNING_ROD),
+                 pos1 -> pos1.getY() == this.getHeight(Heightmap.Types.WORLD_SURFACE, pos1.getX(), pos1.getZ()) - 1,
                  pos,
 -                128,
 +                org.purpurmc.purpur.PurpurConfig.lightningRodRange, // Purpur - Make lightning rod range configurable
                  PoiManager.Occupancy.ANY
              );
-         return optional.map(blockPos -> blockPos.above(1));
+         return optional.map(pos1 -> pos1.above(1));
 @@ -1099,8 +_,26 @@
                  int _int = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
                  Component component;
@@ -196,7 +196,7 @@
          this.serverLevelData.setThundering(false, org.bukkit.event.weather.ThunderChangeEvent.Cause.SLEEP); // Paper - Add cause to Weather/ThunderChangeEvents
          // CraftBukkit start
          // If we stop due to everyone sleeping we should reset the weather duration to some other random value.
-@@ -2804,7 +_,7 @@
+@@ -2794,7 +_,7 @@
              // Spigot start
              if (entity.getBukkitEntity() instanceof org.bukkit.inventory.InventoryHolder && (!(entity instanceof ServerPlayer) || entity.getRemovalReason() != Entity.RemovalReason.KILLED)) { // SPIGOT-6876: closeInventory clears death message
                  // Paper start - Fix merchant inventory not closing on entity removal

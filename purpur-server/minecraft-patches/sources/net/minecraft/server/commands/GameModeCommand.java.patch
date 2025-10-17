@@ -3,11 +3,11 @@
 @@ -53,6 +_,18 @@
      }
  
-     private static int setMode(CommandContext<CommandSourceStack> source, Collection<ServerPlayer> players, GameType gameType) {
+     private static int setMode(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> players, GameType gameType) {
 +        // Purpur start - Gamemode extra permissions
 +        if (org.purpurmc.purpur.PurpurConfig.commandGamemodeRequiresPermission) {
 +            String gamemode = gameType.getName();
-+            CommandSourceStack sender = source.getSource();
++            CommandSourceStack sender = context.getSource();
 +            if (!sender.testPermission(2, "minecraft.command.gamemode." + gamemode)) {
 +                return 0;
 +            }

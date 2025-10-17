@@ -5,7 +5,7 @@ Subject: [PATCH] Phantoms burn in light
 
 
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 3e0df2669e567094ad52ff8c59037e3fb5c96f30..bf2330068d43f52a9a21d73180ef5a83697444ea 100644
+index 81f7223d49eac01899c877ba7e47515c17269151..42089b34a1a1927247953b54cdc3300e1b600a90 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -55,6 +55,7 @@ public class Phantom extends Mob implements Enemy {
@@ -14,8 +14,8 @@ index 3e0df2669e567094ad52ff8c59037e3fb5c96f30..bf2330068d43f52a9a21d73180ef5a83
      // Paper end
 +    private static final net.minecraft.world.item.crafting.Ingredient TORCH = net.minecraft.world.item.crafting.Ingredient.of(net.minecraft.world.item.Items.TORCH, net.minecraft.world.item.Items.SOUL_TORCH); // Purpur - Phantoms burn in light
  
-     public Phantom(EntityType<? extends Phantom> entityType, Level level) {
-         super(entityType, level);
+     public Phantom(EntityType<? extends Phantom> type, Level level) {
+         super(type, level);
 @@ -238,7 +239,11 @@ public class Phantom extends Mob implements Enemy {
  
      @Override

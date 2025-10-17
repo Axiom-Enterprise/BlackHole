@@ -1,7 +1,7 @@
 --- a/net/minecraft/world/entity/animal/PolarBear.java
 +++ b/net/minecraft/world/entity/animal/PolarBear.java
 @@ -65,6 +_,29 @@
-         super(entityType, level);
+         super(type, level);
      }
  
 +    // Purpur start - Breedable Polar Bears
@@ -29,7 +29,7 @@
 +
      @Nullable
      @Override
-     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob partner) {
 @@ -73,7 +_,7 @@
  
      @Override

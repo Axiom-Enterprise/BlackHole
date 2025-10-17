@@ -6,8 +6,8 @@
      public BlockPos treasurePos;
 +    private boolean isNaturallyAggressiveToPlayers; // Purpur - Dolphins naturally aggressive to players chance
  
-     public Dolphin(EntityType<? extends Dolphin> entityType, Level level) {
-         super(entityType, level);
+     public Dolphin(EntityType<? extends Dolphin> type, Level level) {
+         super(type, level);
 @@ -90,6 +_,7 @@
          this.setAirSupply(this.getMaxAirSupply());
          this.setXRot(0.0F);

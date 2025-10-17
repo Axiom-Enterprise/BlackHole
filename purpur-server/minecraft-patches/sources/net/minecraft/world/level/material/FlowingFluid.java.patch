@@ -20,5 +20,5 @@
 +    }
 +    // Purpur end - Implement infinite liquids
  
-     protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState blockState, Direction direction, FluidState fluidState) {
-         if (blockState.getBlock() instanceof LiquidBlockContainer liquidBlockContainer) {
+     protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
+         if (state.getBlock() instanceof LiquidBlockContainer liquidBlockContainer) {

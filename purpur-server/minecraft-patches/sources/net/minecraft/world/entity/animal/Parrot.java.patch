@@ -44,7 +44,7 @@
  
      @Nullable
      @Override
-     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob partner) {
 -        return null;
 +        return level.purpurConfig.parrotBreedable ? EntityType.PARROT.create(level, EntitySpawnReason.BREEDING) : null; // Purpur - Breedable parrots
      }

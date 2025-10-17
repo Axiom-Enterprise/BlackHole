@@ -1,7 +1,7 @@
 --- a/net/minecraft/world/entity/GlowSquid.java
 +++ b/net/minecraft/world/entity/GlowSquid.java
 @@ -27,6 +_,13 @@
-         super(entityType, level);
+         super(type, level);
      }
  
 +    // Purpur start - Flying squids! Oh my!

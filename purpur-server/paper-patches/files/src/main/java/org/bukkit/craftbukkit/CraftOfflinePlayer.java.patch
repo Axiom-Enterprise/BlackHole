@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
-@@ -337,6 +_,12 @@
+@@ -342,6 +_,12 @@
  
      @Override
      public Location getLocation() {
@@ -13,7 +13,7 @@
          CompoundTag data = this.getData();
          if (data == null) {
              return null;
-@@ -574,4 +_,183 @@
+@@ -579,4 +_,183 @@
              manager.save();
          }
      }

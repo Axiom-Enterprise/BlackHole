@@ -1,14 +1,14 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -5,6 +_,7 @@
- import paper.libs.com.google.gson.annotations.SerializedName
+@@ -2,6 +_,7 @@
+ import io.papermc.paperweight.attribute.DevBundleOutput
+ import io.papermc.paperweight.util.*
  import java.time.Instant
- import kotlin.io.path.readText
 +import kotlin.io.path.writeText
  
  plugins {
      `java-library`
-@@ -26,6 +_,18 @@
+@@ -23,6 +_,18 @@
      minecraftVersion = providers.gradleProperty("mcVersion")
      gitFilePatches = false
  
@@ -27,7 +27,7 @@
      spigot {
          enabled = true
          buildDataRef = "42d18d4c4653ffc549778dbe223f6994a031d69e"
-@@ -107,7 +_,21 @@
+@@ -104,7 +_,21 @@
      }
  }
  
@@ -50,7 +50,7 @@
  configurations.named(log4jPlugins.compileClasspathConfigurationName) {
      extendsFrom(configurations.compileClasspath.get())
  }
-@@ -130,7 +_,7 @@
+@@ -127,7 +_,7 @@
  }
  
  dependencies {
@@ -59,7 +59,7 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.5")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -156,6 +_,10 @@
+@@ -153,6 +_,10 @@
      implementation("org.ow2.asm:asm-commons:9.8")
      implementation("org.spongepowered:configurate-yaml:4.2.0")
  
@@ -70,7 +70,7 @@
      // Deps that were previously in the API but have now been moved here for backwards compat, eventually to be removed
      runtimeOnly("commons-lang:commons-lang:2.6")
      runtimeOnly("org.xerial:sqlite-jdbc:3.49.1.0")
-@@ -200,14 +_,14 @@
+@@ -197,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -90,7 +90,7 @@
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,
-@@ -266,7 +_,7 @@
+@@ -263,7 +_,7 @@
      jvmArgumentProviders.add(provider)
  }
  
@@ -99,7 +99,7 @@
  idea {
      module {
          generatedSourceDirs.add(generatedDir.toFile())
-@@ -358,7 +_,7 @@
+@@ -355,7 +_,7 @@
      mainClass.set(null as String?)
  }
  
@@ -108,7 +108,7 @@
      project("paper")
      versionFamily(paperweight.minecraftVersion.map { it.split(".", "-").takeWhile { part -> part.toIntOrNull() != null }.take(2).joinToString(".") })
      version(paperweight.minecraftVersion)
-@@ -373,4 +_,44 @@
+@@ -370,4 +_,44 @@
              }
          }
      }

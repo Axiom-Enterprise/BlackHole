@@ -196,6 +196,15 @@
          this.serverLevelData.setThundering(false, org.bukkit.event.weather.ThunderChangeEvent.Cause.SLEEP); // Paper - Add cause to Weather/ThunderChangeEvents
          // CraftBukkit start
          // If we stop due to everyone sleeping we should reset the weather duration to some other random value.
+@@ -1917,7 +_,7 @@
+         Explosion.BlockInteraction blockInteraction = switch (explosionInteraction) {
+             case NONE -> Explosion.BlockInteraction.KEEP;
+             case BLOCK -> this.getDestroyType(GameRules.RULE_BLOCK_EXPLOSION_DROP_DECAY);
+-            case MOB -> this.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
++            case MOB -> (source instanceof net.minecraft.world.entity.projectile.LargeFireball && this.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING, this.purpurConfig.fireballsMobGriefingOverride)) || this.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) // Purpur - Add mobGriefing override to everything affected
+                 ? this.getDestroyType(GameRules.RULE_MOB_EXPLOSION_DROP_DECAY)
+                 : Explosion.BlockInteraction.KEEP;
+             case TNT -> this.getDestroyType(GameRules.RULE_TNT_EXPLOSION_DROP_DECAY);
 @@ -2794,7 +_,7 @@
              // Spigot start
              if (entity.getBukkitEntity() instanceof org.bukkit.inventory.InventoryHolder && (!(entity instanceof ServerPlayer) || entity.getRemovalReason() != Entity.RemovalReason.KILLED)) { // SPIGOT-6876: closeInventory clears death message

@@ -5,10 +5,10 @@ Subject: [PATCH] Ridables
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 15686e234b7e1a2833c0962fbead94c0cfd0a1e4..a80003a07834a9eafa554afd13afa13a3eac1c30 100644
+index bf3674f8984dd0ee441e04f92b747f908d629953..132e045f3885146a9a6510c6ed51fcb85e1c47ce 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1348,4 +1348,26 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1342,4 +1342,26 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return this.entity.get(io.papermc.paper.datacomponent.PaperDataComponentType.bukkitToMinecraft(type)) != null;
      }
  
@@ -36,10 +36,10 @@ index 15686e234b7e1a2833c0962fbead94c0cfd0a1e4..a80003a07834a9eafa554afd13afa13a
 +    // Purpur end - Ridables
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index cc108383fa62b3ea5781c1ac58f9f8a24412e6c3..0b536e4ee904cba3a724d98d491185cfded3d723 100644
+index 00af7ce338ea49375ce1a5e95d01fb24b1c43de8..691c7e393ff6a0d4b132f25b6de2b346b97f7169 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -517,6 +517,15 @@ public class CraftEventFactory {
+@@ -521,6 +521,15 @@ public class CraftEventFactory {
          }
          craftServer.getPluginManager().callEvent(event);
  
@@ -55,7 +55,7 @@ index cc108383fa62b3ea5781c1ac58f9f8a24412e6c3..0b536e4ee904cba3a724d98d491185cf
          return event;
      }
  
-@@ -1049,6 +1058,7 @@ public class CraftEventFactory {
+@@ -1053,6 +1062,7 @@ public class CraftEventFactory {
          EntityDamageEvent event;
          if (damager != null) {
              event = new EntityDamageByEntityEvent(damager.getBukkitEntity(), damagee.getBukkitEntity(), cause, bukkitDamageSource, modifiers, modifierFunctions, critical);

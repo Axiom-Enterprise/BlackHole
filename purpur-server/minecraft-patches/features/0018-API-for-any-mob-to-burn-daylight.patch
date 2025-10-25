@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 75039c43a1f7d6f22fdebd1bac56a028354d1527..906848dce743c66b18899c21d408d28ad6dc642c 100644
+index 1c318158e1cc016cf7f26d352519f45bc244cee8..1b9f3e94206cc5627ca6c98f142766d4aaa7f4d7 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -544,6 +544,24 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -543,6 +543,24 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
      }
      // Purpur end - Add canSaveToDisk to Entity
  

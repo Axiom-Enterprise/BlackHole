@@ -1161,7 +1161,7 @@ index 70cf903d95d35b539e9a299a4035c8ddde5e4b97..a5243b7969fec5d60b94368caf5e962c
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/Ghast.java b/net/minecraft/world/entity/monster/Ghast.java
-index 1d888ebabecfd1beebdf718c5d771b312070245a..fdbf14ff7e62d8db023b3d3bdf4ae685b5f085a8 100644
+index efe4ed636d85624e4122880f95c634ffa7a3891a..9e4048d55a386aad22f2054632dff457b10f1068 100644
 --- a/net/minecraft/world/entity/monster/Ghast.java
 +++ b/net/minecraft/world/entity/monster/Ghast.java
 @@ -74,6 +74,14 @@ public class Ghast extends Mob implements Enemy {
@@ -1201,7 +1201,7 @@ index dcbe6bbce0baa4fad7fe180944beeb6ca4026f7d..416bb85fc87b5f9e372f33df8fe27f12
          return Monster.createMonsterAttributes()
              .add(Attributes.MAX_HEALTH, 100.0)
 diff --git a/net/minecraft/world/entity/monster/Guardian.java b/net/minecraft/world/entity/monster/Guardian.java
-index 339c81d0a9833e762ca4fc63430d22266f95627d..c59f2dd8661d7a6bd35aaa1933a60a47f795bdd1 100644
+index 3c20818bf6f86cb34666d12084caf13d409a35ca..70fbfe1d4d100d742712d19daf69c6b93891dab6 100644
 --- a/net/minecraft/world/entity/monster/Guardian.java
 +++ b/net/minecraft/world/entity/monster/Guardian.java
 @@ -90,6 +90,14 @@ public class Guardian extends Monster {
@@ -1264,7 +1264,7 @@ index 162986914c6718438b7e1d5408bdbe5a4d3e3a68..b6872c94d769346ed2a8bb2406fc2b39
      protected void registerGoals() {
          super.registerGoals();
 diff --git a/net/minecraft/world/entity/monster/MagmaCube.java b/net/minecraft/world/entity/monster/MagmaCube.java
-index 9be4861fc5cf5e9f8f562785eb3e857b6c1d3585..f39611741c4dacec2b1ad2d25ca9b7d47c188049 100644
+index 8b58e0a76c9651cacacb503391ef9b6a53a3ddbc..db9e4dff83640b1e499db944a0c1cf3b869bc314 100644
 --- a/net/minecraft/world/entity/monster/MagmaCube.java
 +++ b/net/minecraft/world/entity/monster/MagmaCube.java
 @@ -46,6 +46,28 @@ public class MagmaCube extends Slime {
@@ -1442,7 +1442,7 @@ index c39072d9265b2640e3bd701dacb54aa629f3b230..8d1f83ba8042435a0dc1e6e1fb987317
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/monster/Slime.java b/net/minecraft/world/entity/monster/Slime.java
-index 3b9c4f2623ddecf54b139e032d8056a7ec0d59c0..beb504f9a5de48d9631585648a98cd3d2d682d76 100644
+index e46fd8c9f9966dab8b27004db0bc7028e95dedf2..5af9f8182fa8bc3720cf30ed073ecc8050a76b43 100644
 --- a/net/minecraft/world/entity/monster/Slime.java
 +++ b/net/minecraft/world/entity/monster/Slime.java
 @@ -101,6 +101,39 @@ public class Slime extends Mob implements Enemy {
@@ -1700,7 +1700,7 @@ index f9c119d38c2812cfeeb775e728f6c751bf748c85..1de823b94ee0e53109b4dd3e726f721e
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
          super.defineSynchedData(builder);
 diff --git a/net/minecraft/world/entity/monster/ZombifiedPiglin.java b/net/minecraft/world/entity/monster/ZombifiedPiglin.java
-index d52e83ee890ab278440a69972ad83d4dd2f972a6..819faafec711edc6e837a2f52a318910f4ef0a5c 100644
+index d4f036c7d4b6652c5585f1ce5af9b26f9ed5b856..b78ba21e6aa753e3df6545432038daa0070fa7b7 100644
 --- a/net/minecraft/world/entity/monster/ZombifiedPiglin.java
 +++ b/net/minecraft/world/entity/monster/ZombifiedPiglin.java
 @@ -81,6 +81,14 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
@@ -1718,7 +1718,7 @@ index d52e83ee890ab278440a69972ad83d4dd2f972a6..819faafec711edc6e837a2f52a318910
      @Override
      public void setPersistentAngerTarget(@Nullable UUID target) {
          this.persistentAngerTarget = target;
-@@ -261,7 +269,7 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
+@@ -266,7 +274,7 @@ public class ZombifiedPiglin extends Zombie implements NeutralMob {
  
      @Override
      protected void randomizeReinforcementsChance() {
@@ -1747,7 +1747,7 @@ index c3c4dfb89c807020c4147140bc23ba1ce5cfe888..f31a29531cc7d63bed5a4bcbe3986bcc
      protected BodyRotationControl createBodyControl() {
          return new Creaking.CreakingBodyRotationControl(this);
 diff --git a/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index d852f8cff28e3ff2189896d713d37a3400b0a70b..1062df067d6b98ffba27864450d8a867446aae79 100644
+index f304dea5ee2216b5b239dc5ce145f0aa425f5938..b468ad62723c20b9961c8b4b9c0c34a9518d98ea 100644
 --- a/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 @@ -112,6 +112,14 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
@@ -1766,7 +1766,7 @@ index d852f8cff28e3ff2189896d713d37a3400b0a70b..1062df067d6b98ffba27864450d8a867
      public void setTimeInOverworld(int timeInOverworld) {
          this.timeInOverworld = timeInOverworld;
 diff --git a/net/minecraft/world/entity/monster/piglin/Piglin.java b/net/minecraft/world/entity/monster/piglin/Piglin.java
-index 0dc2d7f71c06ba575c2ac97a4be6b2466d5407d9..19211c0d78113da7827a071fd510b4f36e63a9f2 100644
+index a74268846a160aa2e2e8688b1562216c2e248726..471d4d375eb437a42361f60e27919c209221d743 100644
 --- a/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/net/minecraft/world/entity/monster/piglin/Piglin.java
 @@ -153,6 +153,14 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento

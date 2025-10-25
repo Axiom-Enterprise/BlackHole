@@ -7,8 +7,8 @@
 +    public static javax.script.ScriptEngine scriptEngine = new javax.script.ScriptEngineManager().getEngineByName("rhino"); // Purpur - Configurable entity base attributes
      // CraftBukkit start
      private static final int CURRENT_LEVEL = 2;
-     public boolean preserveMotion = true; // Paper - Fix Entity Teleportation and cancel velocity if teleported; keep initial motion on first snapTo
-@@ -282,8 +_,9 @@
+     static boolean isLevelAtLeast(ValueInput input, int level) {
+@@ -281,8 +_,9 @@
      public double xOld;
      public double yOld;
      public double zOld;
@@ -19,7 +19,7 @@
      public int tickCount;
      private int remainingFireTicks;
      public boolean wasTouchingWater;
-@@ -317,8 +_,8 @@
+@@ -316,8 +_,8 @@
      public PortalProcessor portalProcess;
      public int portalCooldown;
      private boolean invulnerable;
@@ -30,7 +30,7 @@
      private boolean hasGlowingTag;
      private final Set<String> tags = new io.papermc.paper.util.SizeLimitedSet<>(new it.unimi.dsi.fastutil.objects.ObjectOpenHashSet<>(), MAX_ENTITY_TAG_COUNT); // Paper - fully limit tag size - replace set impl
      private final double[] pistonDeltas = new double[]{0.0, 0.0, 0.0};
-@@ -373,6 +_,7 @@
+@@ -372,6 +_,7 @@
      public long activatedTick = Integer.MIN_VALUE;
      public boolean isTemporarilyActive;
      public long activatedImmunityTick = Integer.MIN_VALUE;
@@ -38,7 +38,7 @@
  
      public void inactiveTick() {
      }
-@@ -535,10 +_,21 @@
+@@ -534,10 +_,21 @@
      }
      // Paper end - optimise entity tracker
  
@@ -60,7 +60,7 @@
          this.position = Vec3.ZERO;
          this.blockPosition = BlockPos.ZERO;
          this.chunkPosition = ChunkPos.ZERO;
-@@ -917,6 +_,7 @@
+@@ -916,6 +_,7 @@
              && this.level.paperConfig().environment.netherCeilingVoidDamageHeight.test(v -> this.getY() >= v)
              && (!(this instanceof Player player) || !player.getAbilities().invulnerable))) {
              // Paper end - Configurable nether ceiling damage
@@ -68,7 +68,7 @@
              this.onBelowWorld();
          }
      }
-@@ -1942,7 +_,7 @@
+@@ -1941,7 +_,7 @@
      }
  
      public boolean fireImmune() {
@@ -77,7 +77,7 @@
      }
  
      public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
-@@ -2642,6 +_,11 @@
+@@ -2634,6 +_,11 @@
                  output.putBoolean("Paper.FreezeLock", true);
              }
              // Paper end
@@ -89,7 +89,7 @@
          } catch (Throwable var7) {
              CrashReport crashReport = CrashReport.forThrowable(var7, "Saving entity NBT");
              CrashReportCategory crashReportCategory = crashReport.addCategory("Entity being saved");
-@@ -2762,6 +_,9 @@
+@@ -2754,6 +_,9 @@
              }
              freezeLocked = input.getBooleanOr("Paper.FreezeLock", false);
              // Paper end
@@ -99,7 +99,7 @@
          } catch (Throwable var7) {
              CrashReport crashReport = CrashReport.forThrowable(var7, "Loading entity NBT");
              CrashReportCategory crashReportCategory = crashReport.addCategory("Entity being loaded");
-@@ -3034,6 +_,7 @@
+@@ -3026,6 +_,7 @@
              if (this.isAlive() && this instanceof Leashable leashable2) {
                  if (leashable2.getLeashHolder() == player) {
                      if (!this.level().isClientSide()) {
@@ -107,7 +107,7 @@
                          // Paper start - EntityUnleashEvent
                          if (!org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerUnleashEntityEvent(
                              leashable2, player, hand, !player.hasInfiniteMaterials(), true
-@@ -3458,15 +_,18 @@
+@@ -3450,15 +_,18 @@
          return Vec3.directionFromRotation(this.getRotationVector());
      }
  
@@ -127,7 +127,7 @@
              }
          }
      }
-@@ -3671,7 +_,7 @@
+@@ -3663,7 +_,7 @@
      }
  
      public int getMaxAirSupply() {
@@ -136,8 +136,8 @@
      }
  
      public int getAirSupply() {
-@@ -4233,7 +_,7 @@
-     // CraftBukkit end
+@@ -4200,7 +_,7 @@
+     }
  
      public boolean canUsePortal(boolean allowPassengers) {
 -        return (allowPassengers || !this.isPassenger()) && this.isAlive();
@@ -145,7 +145,7 @@
      }
  
      public boolean canTeleport(Level fromLevel, Level toLevel) {
-@@ -4748,6 +_,12 @@
+@@ -4715,6 +_,12 @@
          return Mth.lerp(partialTick, this.yRotO, this.yRot);
      }
  
@@ -158,7 +158,7 @@
      // Paper start - optimise collisions
      public boolean updateFluidHeightAndDoFluidPushing(final TagKey<Fluid> fluid, final double flowScale) {
          if (this.touchingUnloadedChunk()) {
-@@ -5165,7 +_,7 @@
+@@ -5132,7 +_,7 @@
      }
  
      public float maxUpStep() {

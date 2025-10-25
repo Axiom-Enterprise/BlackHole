@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -572,10 +_,15 @@
+@@ -571,10 +_,15 @@
  
      @Override
      public void setPlayerListName(String name) {
@@ -17,7 +17,7 @@
          if (this.getHandle().connection == null) return; // Paper - Updates are possible before the player has fully joined
          for (ServerPlayer player : this.server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
-@@ -978,6 +_,80 @@
+@@ -977,6 +_,80 @@
          }
      }
  
@@ -98,7 +98,7 @@
      @Override
      public void sendBlockDamage(Location loc, float progress, org.bukkit.entity.Entity source) {
          Preconditions.checkArgument(source != null, "source must not be null");
-@@ -2590,6 +_,28 @@
+@@ -2475,6 +_,28 @@
      public float getWalkSpeed() {
          return this.getHandle().getAbilities().walkingSpeed * 2f;
      }
@@ -110,7 +110,7 @@
 +    }
 +
 +    @Override
-+    public boolean teleportOffline(Location destination, PlayerTeleportEvent.TeleportCause cause) {
++    public boolean teleportOffline(Location destination, org.bukkit.event.player.PlayerTeleportEvent.TeleportCause cause) {
 +        return this.teleport(destination, cause);
 +    }
 +
@@ -120,7 +120,7 @@
 +    }
 +
 +    @Override
-+    public java.util.concurrent.CompletableFuture<Boolean> teleportOfflineAsync(Location destination, PlayerTeleportEvent.TeleportCause cause) {
++    public java.util.concurrent.CompletableFuture<Boolean> teleportOfflineAsync(Location destination, org.bukkit.event.player.PlayerTeleportEvent.TeleportCause cause) {
 +        return this.teleportAsync(destination, cause);
 +    }
 +    // Purpur end - OfflinePlayer API

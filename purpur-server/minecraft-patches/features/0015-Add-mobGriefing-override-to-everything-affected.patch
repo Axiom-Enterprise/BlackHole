@@ -227,10 +227,10 @@ index 23722456ce82dcc6b571b96e5c9b0d70005f9c2e..97662c39001b4433601f46ef83f28c0e
                                      continue;
                                  }
 diff --git a/net/minecraft/world/entity/monster/piglin/Piglin.java b/net/minecraft/world/entity/monster/piglin/Piglin.java
-index 19211c0d78113da7827a071fd510b4f36e63a9f2..4e1a7b6caf8c0a3721a3a799261d7b63301c3b29 100644
+index 471d4d375eb437a42361f60e27919c209221d743..de65ff0bf3de1d20360bc0ebb1cd3dc48c5560fe 100644
 --- a/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/net/minecraft/world/entity/monster/piglin/Piglin.java
-@@ -438,7 +438,7 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
+@@ -443,7 +443,7 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
  
      @Override
      public boolean wantsToPickUp(ServerLevel level, ItemStack stack) {

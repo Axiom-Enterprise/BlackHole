@@ -28,7 +28,7 @@
 +
 +    @Override
 +    public void sendBlockHighlight(Location location, int duration, String text, int argb) {
-+        // Purpur - TODO: fix block highlight API
++        // Purpur - TODO: NOOP until further notice
 +        //net.minecraft.network.protocol.game.DebugPackets.sendGameTestAddMarker(getHandle(), org.bukkit.craftbukkit.util.CraftLocation.toBlockPosition(location), text, argb, duration);
 +    }
 +
@@ -45,7 +45,7 @@
 +
 +    @Override
 +    public void clearBlockHighlights() {
-+        // Purpur - TODO: fix block highlight API
++        // Purpur - TODO: NOOP until further notice
 +        //net.minecraft.network.protocol.game.DebugPackets.sendGameTestClearPacket(getHandle());
 +    }
 +    // Purpur end - Debug Marker API

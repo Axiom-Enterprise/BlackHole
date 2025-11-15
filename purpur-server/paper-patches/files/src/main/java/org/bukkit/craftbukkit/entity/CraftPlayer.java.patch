@@ -64,7 +64,7 @@
 +    @Override
 +    public void sendBlockHighlight(Location location, int duration, String text, int argb) {
 +        if (this.getHandle().connection == null) return;
-+        // Purpur - TODO: fix block highlight API
++        // Purpur - TODO: NOOP until further notice
 +        //this.getHandle().connection.send(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new net.minecraft.network.protocol.common.custom.GameTestAddMarkerDebugPayload(org.bukkit.craftbukkit.util.CraftLocation.toBlockPosition(location), argb, text, duration)));
 +    }
 +
@@ -82,7 +82,7 @@
 +    @Override
 +    public void clearBlockHighlights() {
 +        if (this.getHandle().connection == null) return;
-+        // Purpur - TODO: fix block highlight API
++        // Purpur - TODO: NOOP until further notice
 +        //this.getHandle().connection.send(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(new net.minecraft.network.protocol.common.custom.GameTestClearMarkersDebugPayload()));
 +    }
 +    // Purpur end - Debug Marker API

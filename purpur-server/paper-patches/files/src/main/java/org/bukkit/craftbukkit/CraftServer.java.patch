@@ -99,7 +99,7 @@
 +
 +    @Override
 +    public void clearBlockHighlights() {
-+        this.worlds.forEach((name, world) -> clearBlockHighlights());
++        this.worlds.forEach((name, world) -> world.clearBlockHighlights());
 +    }
 +    // Purpur end - Debug Marker API
 +

@@ -10,8 +10,10 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Fired when an entity is hindered from teleporting.
+ * @deprecated no longer needed
  */
 @NullMarked
+@Deprecated(since = "1.21.10")
 public class EntityTeleportHinderedEvent extends EntityEvent {
   private static final HandlerList handlers = new HandlerList();
 
@@ -21,7 +23,7 @@ public class EntityTeleportHinderedEvent extends EntityEvent {
 
   private boolean retry = false;
 
-    @ApiStatus.Internal
+  @ApiStatus.Internal
   public EntityTeleportHinderedEvent(Entity what, Reason reason, @Nullable TeleportCause teleportCause) {
     super(what);
     this.reason = reason;

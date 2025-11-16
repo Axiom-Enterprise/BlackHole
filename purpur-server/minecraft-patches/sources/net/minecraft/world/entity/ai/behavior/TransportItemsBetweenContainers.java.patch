@@ -9,6 +9,15 @@
                          double d1 = chestBlockEntity.getBlockPos().distToCenterSqr(mob.position());
                          if (d1 < d) {
                              TransportItemsBetweenContainers.TransportItemTarget transportItemTarget1 = this.isTargetValidToPick(
+@@ -338,7 +_,7 @@
+ 
+     private boolean hasValidTarget(Level level, PathfinderMob mob) {
+         boolean flag = this.target != null && this.isWantedBlock(mob, this.target.state) && this.targetHasNotChanged(level, this.target);
+-        if (flag && !this.isTargetBlocked(level, this.target)) {
++        if (flag && (mob.level().purpurConfig.copperGolemCanOpenBarrel && this.target.state.is(net.minecraft.world.level.block.Blocks.BARREL) || !this.isTargetBlocked(level, this.target))) { // Purpur - copper golem can place items in barrels option
+             if (!this.state.equals(TransportItemsBetweenContainers.TransportItemState.TRAVELLING)) {
+                 return true;
+             }
 @@ -449,7 +_,7 @@
      }
  

@@ -98,7 +98,7 @@
      @Override
      public void sendBlockDamage(Location loc, float progress, org.bukkit.entity.Entity source) {
          Preconditions.checkArgument(source != null, "source must not be null");
-@@ -2483,6 +_,28 @@
+@@ -2492,6 +_,28 @@
      public float getWalkSpeed() {
          return this.getHandle().getAbilities().walkingSpeed * 2f;
      }

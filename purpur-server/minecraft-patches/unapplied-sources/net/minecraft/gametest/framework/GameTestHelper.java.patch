@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/gametest/framework/GameTestHelper.java b/net/minecraft/gametest/framework/GameTestHelper.java
+index be306c0b3346d1226e2c6d70ebfd83120f4bc124..6c452f195055afb489f828bfac9f23217ba7653d 100644
+--- a/net/minecraft/gametest/framework/GameTestHelper.java
++++ b/net/minecraft/gametest/framework/GameTestHelper.java
+@@ -312,6 +312,8 @@ public class GameTestHelper {
+                 return gameType;
+             }
+ 
++            public void setAfk(final boolean afk) {} // Purpur - AFK API
++
+             @Override
+             public boolean isClientAuthoritative() {
+                 return false;

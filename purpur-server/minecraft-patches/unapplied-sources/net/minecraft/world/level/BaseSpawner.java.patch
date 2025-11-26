@@ -1,0 +1,18 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/BaseSpawner.java b/net/minecraft/world/level/BaseSpawner.java
+index 8a46a80f93ae817c72dfcb8f1c1ed29c1ae95f7b..77b0a2705460b71f6ec293d3af009a1eddc63857 100644
+--- a/net/minecraft/world/level/BaseSpawner.java
++++ b/net/minecraft/world/level/BaseSpawner.java
+@@ -62,6 +62,7 @@ public abstract class BaseSpawner {
+     }
+ 
+     public boolean isNearPlayer(Level level, BlockPos pos) {
++        if (level.purpurConfig.spawnerDeactivateByRedstone && level.hasNeighborSignal(pos)) return false; // Purpur - Redstone deactivates spawners
+         return level.hasNearbyAlivePlayerThatAffectsSpawning(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, this.requiredPlayerRange); // Paper - Affects Spawning API
+     }
+ 

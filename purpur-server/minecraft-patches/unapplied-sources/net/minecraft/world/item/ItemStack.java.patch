@@ -1,0 +1,66 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/item/ItemStack.java b/net/minecraft/world/item/ItemStack.java
+index 47862c00e9e01c7cdd5fcd808cc1b76740b85a57..b367b94ba6977b94c7f46c9f02ed6c3fc5284185 100644
+--- a/net/minecraft/world/item/ItemStack.java
++++ b/net/minecraft/world/item/ItemStack.java
+@@ -451,6 +451,7 @@ public final class ItemStack implements DataComponentHolder {
+                     // revert back all captured blocks
+                     for (org.bukkit.block.BlockState blockstate : blocks) {
+                         ((org.bukkit.craftbukkit.block.CraftBlockState) blockstate).revertPlace();
++                        ((org.bukkit.craftbukkit.block.CraftBlock) blockstate.getBlock()).getNMS().getBlock().forgetPlacer(); // Purpur - Store placer on Block when placed
+                     }
+ 
+                     SignItem.openSign = null; // SPIGOT-6758 - Reset on early return
+@@ -474,6 +475,7 @@ public final class ItemStack implements DataComponentHolder {
+                         if (!(block.getBlock() instanceof net.minecraft.world.level.block.BaseEntityBlock)) { // Containers get placed automatically
+                             block.onPlace(serverLevel, newPos, oldBlock, true, context);
+                         }
++                        block.getBlock().forgetPlacer(); // Purpur - Store placer on Block when placed
+ 
+                         serverLevel.notifyAndUpdatePhysics(newPos, null, oldBlock, block, serverLevel.getBlockState(newPos), updateFlags, net.minecraft.world.level.block.Block.UPDATE_LIMIT); // send null chunk as chunk.k() returns false by this point
+                     }
+@@ -594,6 +596,26 @@ public final class ItemStack implements DataComponentHolder {
+         return this.isDamageableItem() && this.getDamageValue() > 0;
+     }
+ 
++    // Purpur start - Add option to mend the most damaged equipment first
++    public float getDamagePercent() {
++        if (this.has(DataComponents.UNBREAKABLE)) {
++            return 0.0F;
++        }
++
++        final int maxDamage = this.getOrDefault(DataComponents.MAX_DAMAGE, 0);
++        if (maxDamage == 0) {
++            return 0.0F;
++        }
++
++        final int damage = this.getOrDefault(DataComponents.DAMAGE, 0);
++        if (damage == 0) {
++            return 0.0F;
++        }
++
++        return (float) damage / maxDamage;
++    }
++    // Purpur end - Add option to mend the most damaged equipment first
++
+     public int getDamageValue() {
+         return Mth.clamp(this.getOrDefault(DataComponents.DAMAGE, 0), 0, this.getMaxDamage());
+     }
+@@ -1210,6 +1232,12 @@ public final class ItemStack implements DataComponentHolder {
+         return !this.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty();
+     }
+ 
++    // Purpur start - Config to allow unsafe enchants
++    public boolean hasEnchantment(Holder<Enchantment> enchantment) {
++        return this.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(enchantment) > 0;
++    }
++    // Purpur end - Config to allow unsafe enchants
++
+     public ItemEnchantments getEnchantments() {
+         return this.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+     }

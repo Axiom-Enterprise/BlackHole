@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/server/gui/StatsComponent.java b/net/minecraft/server/gui/StatsComponent.java
+index 35fd539eb2bfe60ad17ab1e558a01273666acc54..103ff139dae918c991413ce9df61da3e22ee458a 100644
+--- a/net/minecraft/server/gui/StatsComponent.java
++++ b/net/minecraft/server/gui/StatsComponent.java
+@@ -43,7 +43,7 @@ public class StatsComponent extends JComponent {
+         }
+         this.msgs[0] = "Memory use: " + l / 1024L / 1024L + " mb (" + Runtime.getRuntime().freeMemory() * 100L / Runtime.getRuntime().maxMemory() + "% free)";
+         this.msgs[1] = "Avg tick: " + DECIMAL_FORMAT.format((double)this.server.getAverageTickTimeNanos() / TimeUtil.NANOSECONDS_PER_MILLISECOND) + " ms";
+-        this.msgs[2] = "TPS from last 1m, 5m, 15m: " + String.join(", ", tpsAvg);
++        this.msgs[2] = "TPS from last 5s, 1m, 5m, 15m: " + String.join(", ", tpsAvg); // Purpur - Add 5 second tps average in /tps
+         // Paper end - Improve ServerGUI
+         this.values[this.vp++ & 0xFF] = (int)(l * 100L / Runtime.getRuntime().maxMemory());
+         this.repaint();

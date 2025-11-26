@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/BigDripleafBlock.java b/net/minecraft/world/level/block/BigDripleafBlock.java
+index b0b18ec7038509cca2d4647cf277ea544eb45f35..24599a3ef75fda6feb94de8e895920f1eab1d08e 100644
+--- a/net/minecraft/world/level/block/BigDripleafBlock.java
++++ b/net/minecraft/world/level/block/BigDripleafBlock.java
+@@ -254,7 +254,7 @@ public class BigDripleafBlock extends HorizontalDirectionalBlock implements Bone
+             playTiltSound(level, pos, sound);
+         }
+ 
+-        int _int = DELAY_UNTIL_NEXT_TILT_STATE.getInt(tilt);
++        int _int = level.purpurConfig.bigDripleafTiltDelay.getOrDefault(tilt, -1); // Purpur - Big dripleaf tilt delay
+         if (_int != -1) {
+             level.scheduleTick(pos, this, _int);
+         }

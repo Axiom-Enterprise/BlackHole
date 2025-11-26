@@ -1,0 +1,29 @@
+From 4ac95b5cb1309ac8afeb535aa9db757d9c315ec2 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
+index 723a8e659485850632adf173e52669e6e4f3fcc0..6317c2208fd842d4453f96a9c5dbc13ece0961f8 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftWolf.java
+@@ -90,6 +90,18 @@ public class CraftWolf extends CraftTameableAnimal implements Wolf {
+         this.getHandle().setSoundVariant(CraftSoundVariant.bukkitToMinecraftHolder(soundVariant));
+     }
+ 
++    // Purpur start - Configurable chance for wolves to spawn rabid
++    @Override
++    public boolean isRabid() {
++        return getHandle().isRabid();
++    }
++
++    @Override
++    public void setRabid(boolean isRabid) {
++        getHandle().setRabid(isRabid);
++    }
++    // Purpur end - Configurable chance for wolves to spawn rabid
++
+     public static class CraftVariant extends HolderableBase<WolfVariant> implements Variant {
+ 
+         public static Variant minecraftToBukkit(WolfVariant minecraft) {

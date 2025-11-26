@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/ai/behavior/AcquirePoi.java b/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
+index ffc960a4e66ed03a358b363a4ce1dcee0b29ac36..21046cde1bd1ede8e7851eb4ea414e33628aa4a9 100644
+--- a/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
++++ b/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
+@@ -85,7 +85,7 @@ public class AcquirePoi {
+                             };
+                             // Paper start - optimise POI access
+                             final java.util.List<Pair<Holder<PoiType>, BlockPos>> poiposes = new java.util.ArrayList<>();
+-                            io.papermc.paper.util.PoiAccess.findNearestPoiPositions(poiManager, acquirablePois, predicate1, mob.blockPosition(), 48, 48*48, PoiManager.Occupancy.HAS_SPACE, false, 5, poiposes);
++                            io.papermc.paper.util.PoiAccess.findNearestPoiPositions(poiManager, acquirablePois, predicate1, mob.blockPosition(), level.purpurConfig.villagerAcquirePoiSearchRadius, level.purpurConfig.villagerAcquirePoiSearchRadius*level.purpurConfig.villagerAcquirePoiSearchRadius, PoiManager.Occupancy.HAS_SPACE, false, 5, poiposes); // Purpur - Configurable villager search radius
+                             final Set<Pair<Holder<PoiType>, BlockPos>> set = new java.util.HashSet<>(poiposes.size());
+                             for (final Pair<Holder<PoiType>, BlockPos> poiPose : poiposes) {
+                                 if (predicate.test(level, poiPose.getSecond())) {

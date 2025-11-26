@@ -1,0 +1,34 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/animal/Cat.java b/net/minecraft/world/entity/animal/Cat.java
+index e1f12787a83458fd51dae6a907bbb81e3e522254..f6912836026638900fa5929b9550386a004fef11 100644
+--- a/net/minecraft/world/entity/animal/Cat.java
++++ b/net/minecraft/world/entity/animal/Cat.java
+@@ -355,6 +355,14 @@ public class Cat extends TamableAnimal {
+         return this.isTame() && otherAnimal instanceof Cat cat && cat.isTame() && super.canMate(otherAnimal);
+     }
+ 
++    // Purpur start - Configurable default collar color
++    @Override
++    public void tame(Player player) {
++        setCollarColor(level().purpurConfig.catDefaultCollarColor);
++        super.tame(player);
++    }
++    // Purpur end - Configurable default collar color
++
+     @Nullable
+     @Override
+     public SpawnGroupData finalizeSpawn(
+@@ -453,7 +461,7 @@ public class Cat extends TamableAnimal {
+     }
+ 
+     private void tryToTame(Player player) {
+-        if (this.random.nextInt(3) == 0 && !org.bukkit.craftbukkit.event.CraftEventFactory.callEntityTameEvent(this, player).isCancelled()) { // CraftBukkit
++        if (((this.level().purpurConfig.alwaysTameInCreative && player.hasInfiniteMaterials()) || this.random.nextInt(3) == 0) && !org.bukkit.craftbukkit.event.CraftEventFactory.callEntityTameEvent(this, player).isCancelled()) { // CraftBukkit // Purpur - Config to always tame in Creative
+             this.tame(player);
+             this.setOrderedToSit(true);
+             this.level().broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);

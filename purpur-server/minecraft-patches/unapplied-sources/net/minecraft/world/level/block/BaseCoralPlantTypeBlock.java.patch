@@ -1,0 +1,18 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/BaseCoralPlantTypeBlock.java b/net/minecraft/world/level/block/BaseCoralPlantTypeBlock.java
+index fb6e9194440b85487660f91aea7e34fdf086187b..2653ae5bf66f2b117f86e4df04d9cc307ba09011 100644
+--- a/net/minecraft/world/level/block/BaseCoralPlantTypeBlock.java
++++ b/net/minecraft/world/level/block/BaseCoralPlantTypeBlock.java
+@@ -39,6 +39,7 @@ public abstract class BaseCoralPlantTypeBlock extends Block implements SimpleWat
+     }
+ 
+     protected static boolean scanForWater(BlockState state, BlockGetter level, BlockPos pos) {
++        if (!((net.minecraft.world.level.LevelAccessor) level).getMinecraftWorld().purpurConfig.coralDieOutsideWater) return true; // Purpur - Config to not let coral die
+         if (state.getValue(WATERLOGGED)) {
+             return true;
+         } else {

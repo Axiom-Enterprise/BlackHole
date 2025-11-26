@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/item/SnowballItem.java b/net/minecraft/world/item/SnowballItem.java
+index bef1a8faa8e9567c9707ffb2b34c278c75581e35..fa3a9501134226f269882a14900b924df7d25046 100644
+--- a/net/minecraft/world/item/SnowballItem.java
++++ b/net/minecraft/world/item/SnowballItem.java
+@@ -26,7 +26,7 @@ public class SnowballItem extends Item implements ProjectileItem {
+         // CraftBukkit start - moved down
+         if (level instanceof ServerLevel serverLevel) {
+             // Paper start - PlayerLaunchProjectileEvent
+-            final Projectile.Delayed<Snowball> snowball = Projectile.spawnProjectileFromRotationDelayed(Snowball::new, serverLevel, itemInHand, player, 0.0F, SnowballItem.PROJECTILE_SHOOT_POWER, 1.0F);
++            final Projectile.Delayed<Snowball> snowball = Projectile.spawnProjectileFromRotationDelayed(Snowball::new, serverLevel, itemInHand, player, 0.0F, SnowballItem.PROJECTILE_SHOOT_POWER, (float) serverLevel.purpurConfig.snowballProjectileOffset); // Purpur - Projectile offset config
+             com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent event = new com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent((org.bukkit.entity.Player) player.getBukkitEntity(), org.bukkit.craftbukkit.inventory.CraftItemStack.asCraftMirror(itemInHand), (org.bukkit.entity.Projectile) snowball.projectile().getBukkitEntity());
+             if (event.callEvent() && snowball.attemptSpawn()) {
+                 player.awardStat(Stats.ITEM_USED.get(this));

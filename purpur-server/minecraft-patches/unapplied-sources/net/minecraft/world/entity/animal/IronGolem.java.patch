@@ -1,0 +1,61 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/animal/IronGolem.java b/net/minecraft/world/entity/animal/IronGolem.java
+index 6ba3d1f1019af2b2dde3804635a278e8d2c33dc8..838cc49d1a8b1b9758121c07de9e483966eef245 100644
+--- a/net/minecraft/world/entity/animal/IronGolem.java
++++ b/net/minecraft/world/entity/animal/IronGolem.java
+@@ -59,13 +59,26 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
+     private int remainingPersistentAngerTime;
+     @Nullable
+     private UUID persistentAngerTarget;
++    @Nullable private UUID summoner; // Purpur - Summoner API
+ 
+     public IronGolem(EntityType<? extends IronGolem> type, Level level) {
+         super(type, level);
+     }
+ 
++    // Purpur start - Summoner API
++    @Nullable
++    public UUID getSummoner() {
++        return summoner;
++    }
++
++    public void setSummoner(@Nullable UUID summoner) {
++        this.summoner = summoner;
++    }
++    // Purpur end - Summoner API
++
+     @Override
+     protected void registerGoals() {
++        if (this.level().purpurConfig.ironGolemPoppyCalm) this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.ReceiveFlower(this)); // Purpur - Iron golem calm anger options
+         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0, true));
+         this.goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.9, 32.0F));
+         this.goalSelector.addGoal(2, new MoveBackToVillageGoal(this, 0.6, false));
+@@ -143,6 +156,7 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
+     protected void addAdditionalSaveData(ValueOutput output) {
+         super.addAdditionalSaveData(output);
+         output.putBoolean("PlayerCreated", this.isPlayerCreated());
++        output.storeNullable("Purpur.Summoner", net.minecraft.core.UUIDUtil.CODEC, getSummoner()); // Purpur - Summoner API
+         this.addPersistentAngerSaveData(output);
+     }
+ 
+@@ -150,6 +164,7 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
+     protected void readAdditionalSaveData(ValueInput input) {
+         super.readAdditionalSaveData(input);
+         this.setPlayerCreated(input.getBooleanOr("PlayerCreated", false));
++        this.setSummoner(input.read("Purpur.Summoner", net.minecraft.core.UUIDUtil.CODEC).orElse(null)); // Purpur - Summoner API
+         this.readPersistentAngerSaveData(this.level(), input);
+     }
+ 
+@@ -269,6 +284,7 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
+                 float f = 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
+                 this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0F, f);
+                 itemInHand.consume(1, player);
++                if (this.level().purpurConfig.ironGolemHealCalm && isAngry() && getHealth() == getMaxHealth()) stopBeingAngry(); // Purpur - Iron golem calm anger options
+                 return InteractionResult.SUCCESS;
+             }
+         }

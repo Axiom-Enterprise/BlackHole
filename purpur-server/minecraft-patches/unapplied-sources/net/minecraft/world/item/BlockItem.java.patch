@@ -1,0 +1,44 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/item/BlockItem.java b/net/minecraft/world/item/BlockItem.java
+index 10530a630e4dbb100eef195944dd3bee7a4e70e1..47a73c71396c7302175257670d4a7a5c5d8d20af 100644
+--- a/net/minecraft/world/item/BlockItem.java
++++ b/net/minecraft/world/item/BlockItem.java
+@@ -143,7 +143,16 @@ public class BlockItem extends Item {
+     }
+ 
+     protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, @Nullable Player player, ItemStack stack, BlockState state) {
+-        return updateCustomBlockEntityTag(level, player, pos, stack);
++        // Purpur start - Persistent BlockEntity Lore and DisplayName
++        boolean handled = updateCustomBlockEntityTag(level, player, pos, stack);
++        if (level.purpurConfig.persistentTileEntityLore) {
++            BlockEntity blockEntity1 = level.getBlockEntity(pos);
++            if (blockEntity1 != null) {
++                blockEntity1.setPersistentLore(stack.getOrDefault(DataComponents.LORE, net.minecraft.world.item.component.ItemLore.EMPTY));
++            }
++        }
++        return handled;
++        // Purpur end - Persistent BlockEntity Lore and DisplayName
+     }
+ 
+     @Nullable
+@@ -205,6 +214,7 @@ public class BlockItem extends Item {
+                     }
+ 
+                     if (!type.onlyOpCanSetNbt() || player != null && (player.canUseGameMasterBlocks() || (player.getAbilities().instabuild && player.getBukkitEntity().hasPermission("minecraft.nbt.place")))) { // Spigot - add permission
++                        if (!(level.purpurConfig.silkTouchEnabled && blockEntity instanceof net.minecraft.world.level.block.entity.SpawnerBlockEntity && player.getBukkitEntity().hasPermission("purpur.drop.spawners"))) // Purpur - Silk touch spawners
+                         return typedEntityData.loadInto(blockEntity, level.registryAccess());
+                     }
+ 
+@@ -245,6 +255,7 @@ public class BlockItem extends Item {
+     public void onDestroyed(ItemEntity itemEntity) {
+         ItemContainerContents itemContainerContents = itemEntity.getItem().set(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+         if (itemContainerContents != null) {
++            if (itemEntity.level().purpurConfig.shulkerBoxItemDropContentsWhenDestroyed && this.getBlock() instanceof ShulkerBoxBlock) // Purpur - option to disable shulker box items from dropping contents when destroyed
+             ItemUtils.onContainerDestroyed(itemEntity, itemContainerContents.nonEmptyItemsCopy());
+         }
+     }

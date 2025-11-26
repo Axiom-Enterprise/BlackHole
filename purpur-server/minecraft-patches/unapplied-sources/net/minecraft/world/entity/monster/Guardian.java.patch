@@ -1,0 +1,22 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/monster/Guardian.java b/net/minecraft/world/entity/monster/Guardian.java
+index c907feb2ab6862d980f89f6341402131a8a966f2..cd802866af8ed2d0ebd5f8dabe170848cbf4638a 100644
+--- a/net/minecraft/world/entity/monster/Guardian.java
++++ b/net/minecraft/world/entity/monster/Guardian.java
+@@ -315,6 +315,11 @@ public class Guardian extends Monster {
+     public static boolean checkGuardianSpawnRules(
+         EntityType<? extends Guardian> entityType, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random
+     ) {
++        // Purpur start - Config to disable hostile mob spawn on ice
++        if (canSpawnInBlueAndPackedIce(level, pos)) {
++            return false;
++        }
++        // Purpur end - Config to disable hostile mob spawn on ice
+         return (random.nextInt(20) == 0 || !level.canSeeSkyFromBelowWater(pos))
+             && level.getDifficulty() != Difficulty.PEACEFUL
+             && (EntitySpawnReason.isSpawner(spawnReason) || level.getFluidState(pos).is(FluidTags.WATER))

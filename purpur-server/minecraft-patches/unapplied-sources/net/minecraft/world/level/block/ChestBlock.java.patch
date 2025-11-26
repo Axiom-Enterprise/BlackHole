@@ -1,0 +1,18 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/ChestBlock.java b/net/minecraft/world/level/block/ChestBlock.java
+index 3cce87fd6e1d9d65d6b28bf44dd218541e815788..bf75ac5cd4074a13581baaa87e93463c83cca2e6 100644
+--- a/net/minecraft/world/level/block/ChestBlock.java
++++ b/net/minecraft/world/level/block/ChestBlock.java
+@@ -369,6 +369,7 @@ public class ChestBlock extends AbstractChestBlock<ChestBlockEntity> implements
+     }
+ 
+     public static boolean isBlockedChestByBlock(BlockGetter level, BlockPos pos) {
++        if (level instanceof Level level1 && level1.purpurConfig.chestOpenWithBlockOnTop) return false; // Purpur - Option for chests to open even with a solid block on top
+         BlockPos blockPos = pos.above();
+         return level.getBlockState(blockPos).isRedstoneConductor(level, blockPos);
+     }

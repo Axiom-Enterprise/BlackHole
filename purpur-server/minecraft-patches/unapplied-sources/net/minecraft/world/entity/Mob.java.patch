@@ -1,0 +1,88 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
+index f2a321d94ddc9247a3820d42f4a04290ea3ce6f6..7d98c5aaf29d2204ed43f221f95913ac749419db 100644
+--- a/net/minecraft/world/entity/Mob.java
++++ b/net/minecraft/world/entity/Mob.java
+@@ -150,6 +150,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+     private int homeRadius = -1;
+     public boolean aware = true; // CraftBukkit
+     public net.kyori.adventure.util.TriState despawnInPeacefulOverride = net.kyori.adventure.util.TriState.NOT_SET; // Paper - allow changing despawnInPeaceful
++    public int ticksSinceLastInteraction; // Purpur - Entity lifespan
+ 
+     protected Mob(EntityType<? extends Mob> type, Level level) {
+         super(type, level);
+@@ -295,6 +296,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+                 target = null;
+             }
+         }
++        if (target instanceof net.minecraft.server.level.ServerPlayer) this.ticksSinceLastInteraction = 0; // Purpur - Entity lifespan
+         this.target = target;
+         return true;
+         // CraftBukkit end
+@@ -338,8 +340,28 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+         }
+ 
+         profilerFiller.pop();
++        incrementTicksSinceLastInteraction(); // Purpur - Entity lifespan
+     }
+ 
++    // Purpur start - Entity lifespan
++    private void incrementTicksSinceLastInteraction() {
++        ++this.ticksSinceLastInteraction;
++        if (getRider() != null) {
++            this.ticksSinceLastInteraction = 0;
++            return;
++        }
++        if (this.level().purpurConfig.entityLifeSpan <= 0) {
++            return; // feature disabled
++        }
++        if (!this.removeWhenFarAway(0) || isPersistenceRequired() || requiresCustomPersistence() || hasCustomName()) {
++            return; // mob persistent
++        }
++        if (this.ticksSinceLastInteraction > this.level().purpurConfig.entityLifeSpan) {
++            this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
++        }
++    }
++    // Purpur end - Entity lifespan
++
+     @Override
+     protected void playHurtSound(DamageSource damageSource) {
+         this.resetAmbientSoundTime();
+@@ -443,6 +465,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+             output.putString("Paper.DespawnInPeacefulOverride", this.despawnInPeacefulOverride.name());
+         }
+         // Paper end - allow changing despawnInPeaceful
++        output.putInt("Purpur.ticksSinceLastInteraction", this.ticksSinceLastInteraction); // Purpur - Entity lifespan
+     }
+ 
+     @Override
+@@ -470,6 +493,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+         this.lootTableSeed = input.getLongOr("DeathLootTableSeed", 0L);
+         this.setNoAi(input.getBooleanOr("NoAI", false));
+         this.aware = input.getBooleanOr("Bukkit.Aware", true); // CraftBukkit
++        this.ticksSinceLastInteraction = input.getIntOr("Purpur.ticksSinceLastInteraction", 0); // Purpur- Entity lifespan
+         // Paper start - allow changing despawnInPeaceful
+         this.despawnInPeacefulOverride = readDespawnInPeacefulOverride(input);
+     }
+@@ -1210,7 +1234,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+             );
+         }
+ 
+-        this.setLeftHanded(random.nextFloat() < 0.05F);
++        this.setLeftHanded(random.nextFloat() < level.getLevel().purpurConfig.entityLeftHandedChance); // Purpur - Changeable Mob Left Handed Chance
+         return spawnGroupData;
+     }
+ 
+@@ -1557,6 +1581,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+             this.playAttackSound();
+         }
+ 
++        if (target instanceof net.minecraft.server.level.ServerPlayer) this.ticksSinceLastInteraction = 0; // Purpur - Entity lifespan
+         return flag;
+     }
+ 

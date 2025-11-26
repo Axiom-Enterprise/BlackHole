@@ -1,0 +1,20 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/inventory/ItemCombinerMenu.java b/net/minecraft/world/inventory/ItemCombinerMenu.java
+index 2cc21a907aa4acba408478842bcbdefb3dd4dffc..08d5f00712810a16a49aaa0fffec1fdf524b1b95 100644
+--- a/net/minecraft/world/inventory/ItemCombinerMenu.java
++++ b/net/minecraft/world/inventory/ItemCombinerMenu.java
+@@ -155,7 +155,9 @@ public abstract class ItemCombinerMenu extends AbstractContainerMenu {
+                 return ItemStack.EMPTY;
+             }
+ 
++            this.activeQuickItem = itemStack; // Purpur - Anvil API
+             slot.onTake(player, item);
++            this.activeQuickItem = null; // Purpur - Anvil API
+         }
+ 
+         return itemStack;

@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/inventory/ArmorSlot.java b/net/minecraft/world/inventory/ArmorSlot.java
+index 0a440ea37d14cd840cf87a99264ace5ccde7c073..dec920727401de7f5bcc6c7e50f9dd325367ee90 100644
+--- a/net/minecraft/world/inventory/ArmorSlot.java
++++ b/net/minecraft/world/inventory/ArmorSlot.java
+@@ -47,7 +47,7 @@ class ArmorSlot extends Slot {
+     @Override
+     public boolean mayPickup(Player player) {
+         ItemStack item = this.getItem();
+-        return (item.isEmpty() || player.isCreative() || !EnchantmentHelper.has(item, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE))
++        return (item.isEmpty() || player.isCreative() || (!EnchantmentHelper.has(item, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE) || player.level().purpurConfig.playerRemoveBindingWithWeakness && player.hasEffect(net.minecraft.world.effect.MobEffects.WEAKNESS))) // Purpur - Config to remove curse of binding with weakness
+             && super.mayPickup(player);
+     }
+ 

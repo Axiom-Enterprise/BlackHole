@@ -1,0 +1,34 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/item/SpawnEggItem.java b/net/minecraft/world/item/SpawnEggItem.java
+index ea79f2d579763ed8a5116c40e1d3f70fce5f043f..646fb8131e33a1368ef1b2a6ae72d89b6fdba937 100644
+--- a/net/minecraft/world/item/SpawnEggItem.java
++++ b/net/minecraft/world/item/SpawnEggItem.java
+@@ -69,6 +69,23 @@ public class SpawnEggItem extends Item {
+                     return InteractionResult.FAIL;
+                 } else {
+                     if (level.paperConfig().entities.spawning.disableMobSpawnerSpawnEggTransformation) return InteractionResult.FAIL; // Paper - Allow disabling mob spawner spawn egg transformation
++                    // Purpur start - PlayerSetSpawnerTypeWithEggEvent
++                    if (spawner instanceof net.minecraft.world.level.block.entity.SpawnerBlockEntity) {
++                        org.bukkit.block.Block bukkitBlock = level.getWorld().getBlockAt(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ());
++                        org.purpurmc.purpur.event.PlayerSetSpawnerTypeWithEggEvent event = new org.purpurmc.purpur.event.PlayerSetSpawnerTypeWithEggEvent((org.bukkit.entity.Player) context.getPlayer().getBukkitEntity(), bukkitBlock, (org.bukkit.block.CreatureSpawner) bukkitBlock.getState(), org.bukkit.entity.EntityType.fromName(type.getName()));
++                        if (!event.callEvent()) {
++                            return InteractionResult.FAIL;
++                        }
++                        type = EntityType.getFromBukkitType(event.getEntityType());
++                    } else if (spawner instanceof net.minecraft.world.level.block.entity.TrialSpawnerBlockEntity) {
++                        org.bukkit.block.Block bukkitBlock = level.getWorld().getBlockAt(clickedPos.getX(), clickedPos.getY(), clickedPos.getZ());
++                        org.purpurmc.purpur.event.PlayerSetTrialSpawnerTypeWithEggEvent event = new org.purpurmc.purpur.event.PlayerSetTrialSpawnerTypeWithEggEvent((org.bukkit.entity.Player) context.getPlayer().getBukkitEntity(), bukkitBlock, (org.bukkit.block.TrialSpawner) bukkitBlock.getState(), org.bukkit.entity.EntityType.fromName(type.getName()));
++                        if (!event.callEvent()) {
++                            return InteractionResult.FAIL;
++                        }
++                        type = EntityType.getFromBukkitType(event.getEntityType());
++                    }
++                    // Purpur end - PlayerSetSpawnerTypeWithEggEvent
+                     spawner.setEntityId(type, level.getRandom());
+                     level.sendBlockUpdated(clickedPos, blockState, blockState, Block.UPDATE_ALL);
+                     level.gameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, clickedPos);

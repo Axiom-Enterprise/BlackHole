@@ -1,0 +1,37 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/BedBlock.java b/net/minecraft/world/level/block/BedBlock.java
+index 63768a73c04060fbc4aceb734ba32bc203514017..7111d6f2693efc1628d4c09e9717604a84ae0e52 100644
+--- a/net/minecraft/world/level/block/BedBlock.java
++++ b/net/minecraft/world/level/block/BedBlock.java
+@@ -98,7 +98,7 @@ public class BedBlock extends HorizontalDirectionalBlock implements EntityBlock
+                 }
+ 
+                 Vec3 center = pos.getCenter();
+-                level.explode(null, level.damageSources().badRespawnPointExplosion(center), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK);
++                if (level.purpurConfig.bedExplode) level.explode(null, level.damageSources().badRespawnPointExplosion(center), null, center, (float) level.purpurConfig.bedExplosionPower, level.purpurConfig.bedExplosionFire, level.purpurConfig.bedExplosionEffect); // Purpur - Implement bed explosion options
+                 return InteractionResult.SUCCESS_SERVER;
+             } else if (state.getValue(OCCUPIED)) {
+                 if (!BedBlock.canSetSpawn(level)) return this.explodeBed(state, level, pos); // Paper - check explode first
+@@ -146,7 +146,7 @@ public class BedBlock extends HorizontalDirectionalBlock implements EntityBlock
+         }
+ 
+         Vec3 center = pos.getCenter();
+-        level.explode(null, level.damageSources().badRespawnPointExplosion(center).causingBlockSnapshot(blockState), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK); // CraftBukkit - add state
++        if (level.purpurConfig.bedExplode) level.explode(null, level.damageSources().badRespawnPointExplosion(center).causingBlockSnapshot(blockState), null, center, (float) level.purpurConfig.bedExplosionPower, level.purpurConfig.bedExplosionFire, level.purpurConfig.bedExplosionEffect); // CraftBukkit - add state // Purpur - Implement bed explosion options
+         return InteractionResult.SUCCESS_SERVER;
+      }
+     // CraftBukkit end
+@@ -167,7 +167,7 @@ public class BedBlock extends HorizontalDirectionalBlock implements EntityBlock
+ 
+     @Override
+     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
+-        super.fallOn(level, state, pos, entity, fallDistance * 0.5);
++        super.fallOn(level, state, pos, entity, fallDistance); // Purpur - Configurable block fall damage modifiers
+     }
+ 
+     @Override

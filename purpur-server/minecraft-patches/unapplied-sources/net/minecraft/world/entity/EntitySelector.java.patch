@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/EntitySelector.java b/net/minecraft/world/entity/EntitySelector.java
+index 67d95236e135c2b44845cfd5cbfb7e553b8e31f2..b94b3a5aabd44b0158d535c7a4dc006e6f6f4689 100644
+--- a/net/minecraft/world/entity/EntitySelector.java
++++ b/net/minecraft/world/entity/EntitySelector.java
+@@ -28,6 +28,8 @@ public final class EntitySelector {
+         return net.minecraft.util.Mth.clamp(serverPlayer.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE) >= playerInsomniaTicks;
+     };
+     // Paper end - Ability to control player's insomnia and phantoms
++    public static Predicate<Player> notAfk = (player) -> !player.isAfk(); // Purpur - AFK API
++
+     // Paper start - Affects Spawning API
+     public static final Predicate<Entity> PLAYER_AFFECTS_SPAWNING = (entity) -> {
+         return !entity.isSpectator() && entity.isAlive() && entity instanceof Player player && player.affectsSpawning;

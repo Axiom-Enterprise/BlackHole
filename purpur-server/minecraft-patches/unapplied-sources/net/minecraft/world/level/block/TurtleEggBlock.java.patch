@@ -1,0 +1,56 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/TurtleEggBlock.java b/net/minecraft/world/level/block/TurtleEggBlock.java
+index b176633c58e3e0a0e898ca8d59948fd3ad2bbcdc..6fd922a7cf1c9679344af91e817469350b01de17 100644
+--- a/net/minecraft/world/level/block/TurtleEggBlock.java
++++ b/net/minecraft/world/level/block/TurtleEggBlock.java
+@@ -156,7 +156,7 @@ public class TurtleEggBlock extends Block {
+ 
+     private boolean shouldUpdateHatchLevel(Level level) {
+         float timeOfDay = level.getTimeOfDay(1.0F);
+-        return timeOfDay < 0.69 && timeOfDay > 0.65 || level.random.nextInt(500) == 0;
++        return timeOfDay < 0.69 && timeOfDay > 0.65 || level.random.nextInt(level.purpurConfig.turtleEggsRandomTickCrackChance) == 0; // Purpur - Turtle eggs random tick crack chance
+     }
+ 
+     @Override
+@@ -189,9 +189,32 @@ public class TurtleEggBlock extends Block {
+     }
+ 
+     private boolean canDestroyEgg(ServerLevel level, Entity entity) {
+-        return !(entity instanceof Turtle)
+-            && !(entity instanceof Bat)
+-            && entity instanceof LivingEntity
+-            && (entity instanceof Player || level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING));
++        // Purpur start - Add turtle egg block options
++        if (entity instanceof Turtle || entity instanceof Bat) {
++            return false;
++        }
++        if (level.purpurConfig.turtleEggsBreakFromExpOrbs && entity instanceof net.minecraft.world.entity.ExperienceOrb) {
++            return true;
++        }
++        if (level.purpurConfig.turtleEggsBreakFromItems && entity instanceof net.minecraft.world.entity.item.ItemEntity) {
++            return true;
++        }
++        if (level.purpurConfig.turtleEggsBreakFromMinecarts && entity instanceof net.minecraft.world.entity.vehicle.AbstractMinecart) {
++            return true;
++        }
++        if (!(entity instanceof LivingEntity)) {
++            return false;
++        }
++        // Purpur start - Option to disable turtle egg trampling with feather falling
++        if (level.purpurConfig.turtleEggsTramplingFeatherFalling) {
++            net.minecraft.world.item.ItemStack bootsItem = ((net.minecraft.world.entity.LivingEntity) entity).getItemBySlot(net.minecraft.world.entity.EquipmentSlot.FEET);
++
++            return bootsItem != net.minecraft.world.item.ItemStack.EMPTY || net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.FEATHER_FALLING, bootsItem) < (int) entity.fallDistance;
++        }
++        // Purpur end - Option to disable turtle egg trampling with feather falling
++        if (entity instanceof Player) return true;
++
++        return level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
++        // Purpur end - Add turtle egg block options
+     }
+ }

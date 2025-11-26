@@ -1,0 +1,44 @@
+From 4ac95b5cb1309ac8afeb535aa9db757d9c315ec2 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur paperServer File Patches
+
+
+diff --git a/src/test/java/io/papermc/paper/permissions/MinecraftCommandPermissionsTest.java b/src/test/java/io/papermc/paper/permissions/MinecraftCommandPermissionsTest.java
+index fe08e446e86d53cef6eecc33cd484e93adc42871..54fff448fded12cd6110583f0c255f2ca86388da 100644
+--- a/src/test/java/io/papermc/paper/permissions/MinecraftCommandPermissionsTest.java
++++ b/src/test/java/io/papermc/paper/permissions/MinecraftCommandPermissionsTest.java
+@@ -46,6 +46,7 @@ public class MinecraftCommandPermissionsTest {
+         Set<String> foundPerms = new HashSet<>();
+         for (CommandNode<CommandSourceStack> child : root.getChildren()) {
+             final String vanillaPerm = VanillaCommandWrapper.getPermission(child);
++            if (TO_SKIP.contains(vanillaPerm)) continue; // Purpur - Skip junit tests for purpur commands
+             if (!perms.contains(vanillaPerm)) {
+                 missing.add("Missing permission for " + child.getName() + " (" + vanillaPerm + ") command");
+             } else {
+@@ -58,6 +59,25 @@ public class MinecraftCommandPermissionsTest {
+     }
+ 
+     private static final List<String> TO_SKIP = List.of(
++        // Purpur start - Skip junit tests for purpur commands
++        "minecraft.command.compass",
++        "minecraft.command.credits",
++        "minecraft.command.demo",
++        "minecraft.command.ping",
++        "minecraft.command.ram",
++        "minecraft.command.rambar",
++        "minecraft.command.tpsbar",
++        "minecraft.command.uptime",
++        "minecraft.command.debug",
++        "minecraft.command.gamemode.adventure",
++        "minecraft.command.gamemode.adventure.other",
++        "minecraft.command.gamemode.creative",
++        "minecraft.command.gamemode.creative.other",
++        "minecraft.command.gamemode.spectator",
++        "minecraft.command.gamemode.spectator.other",
++        "minecraft.command.gamemode.survival",
++        "minecraft.command.gamemode.survival.other",
++        // Purpur end - Skip junit tests for purpur commands
+         "minecraft.command.selector"
+     );
+ 

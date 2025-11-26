@@ -1,0 +1,28 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/IceBlock.java b/net/minecraft/world/level/block/IceBlock.java
+index f3b649b9c4d949910c38bc59a3d4316fb73a481b..080c1f7a3e54481cad4ff0bd71cae2cb54e5e260 100644
+--- a/net/minecraft/world/level/block/IceBlock.java
++++ b/net/minecraft/world/level/block/IceBlock.java
+@@ -40,7 +40,7 @@ public class IceBlock extends HalfTransparentBlock {
+     public void afterDestroy(Level level, BlockPos pos, ItemStack stack) {
+         // Paper end - Improve Block#breakNaturally API
+         if (!EnchantmentHelper.hasTag(stack, EnchantmentTags.PREVENTS_ICE_MELTING)) {
+-            if (level.dimensionType().ultraWarm()) {
++            if (level.isNether() || (level.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) { // Purpur - Add allow water in end world option
+                 level.removeBlock(pos, false);
+                 return;
+             }
+@@ -65,7 +65,7 @@ public class IceBlock extends HalfTransparentBlock {
+             return;
+         }
+         // CraftBukkit end
+-        if (level.dimensionType().ultraWarm()) {
++        if (level.isNether() || (level.isTheEnd() && !org.purpurmc.purpur.PurpurConfig.allowWaterPlacementInTheEnd)) { // Purpur - Add allow water in end world option
+             level.removeBlock(pos, false);
+         } else {
+             level.setBlockAndUpdate(pos, meltsInto());

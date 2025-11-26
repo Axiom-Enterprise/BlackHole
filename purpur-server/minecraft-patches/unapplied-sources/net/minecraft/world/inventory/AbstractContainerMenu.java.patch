@@ -1,0 +1,18 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/inventory/AbstractContainerMenu.java b/net/minecraft/world/inventory/AbstractContainerMenu.java
+index 670090c4466d6472a83263e1769f19e3e491c927..276b5e6ac82e6e55e0a19c25a7c966501aeaba44 100644
+--- a/net/minecraft/world/inventory/AbstractContainerMenu.java
++++ b/net/minecraft/world/inventory/AbstractContainerMenu.java
+@@ -65,6 +65,7 @@ public abstract class AbstractContainerMenu {
+     @Nullable
+     private ContainerSynchronizer synchronizer;
+     private boolean suppressRemoteUpdates;
++    @Nullable protected ItemStack activeQuickItem = null; // Purpur - Anvil API
+     // CraftBukkit start
+     public boolean checkReachable = true;
+     public abstract org.bukkit.inventory.InventoryView getBukkitView();

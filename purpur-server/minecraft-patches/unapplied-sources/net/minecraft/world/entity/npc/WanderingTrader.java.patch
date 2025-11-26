@@ -1,0 +1,44 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/npc/WanderingTrader.java b/net/minecraft/world/entity/npc/WanderingTrader.java
+index 4c7287c4a081b4e1f0049c8c9bdf6a42b51e8274..4032215d5907b926d1a8e08a8b0852c1388b51c5 100644
+--- a/net/minecraft/world/entity/npc/WanderingTrader.java
++++ b/net/minecraft/world/entity/npc/WanderingTrader.java
+@@ -60,6 +60,13 @@ public class WanderingTrader extends AbstractVillager implements Consumable.Over
+         super(type, level);
+     }
+ 
++    // Purpur start - Allow leashing villagers
++    @Override
++    public boolean canBeLeashed() {
++        return level().purpurConfig.wanderingTraderCanBeLeashed;
++    }
++    // Purpur end - Allow leashing villagers
++
+     @Override
+     protected void registerGoals() {
+         this.goalSelector.addGoal(0, new FloatGoal(this));
+@@ -80,7 +87,7 @@ public class WanderingTrader extends AbstractVillager implements Consumable.Over
+                     this,
+                     new ItemStack(Items.MILK_BUCKET),
+                     SoundEvents.WANDERING_TRADER_REAPPEARED,
+-                    wanderingTrader -> this.canDrinkMilk && this.level().isBrightOutside() && wanderingTrader.isInvisible() // Paper - Add more WanderingTrader API
++                    wanderingTrader -> level().purpurConfig.milkClearsBeneficialEffects && this.canDrinkMilk && this.level().isBrightOutside() && wanderingTrader.isInvisible() // Paper - Add more WanderingTrader API // // Purpur - Milk Keeps Beneficial Effects
+                 )
+             );
+         this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
+@@ -124,8 +131,10 @@ public class WanderingTrader extends AbstractVillager implements Consumable.Over
+                     return InteractionResult.CONSUME;
+                 }
+ 
++                if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
+                 this.setTradingPlayer(player);
+                 this.openTradingScreen(player, this.getDisplayName(), 1);
++                } // Purpur - Add config for villager trading
+             }
+ 
+             return InteractionResult.SUCCESS;

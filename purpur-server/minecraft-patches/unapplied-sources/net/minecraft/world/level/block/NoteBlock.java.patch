@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/NoteBlock.java b/net/minecraft/world/level/block/NoteBlock.java
+index 99cee267b12497b76beb17cbf02f099dac18c0e9..b73340e78fc3a6bc9481ee5395e34b7c55b8f429 100644
+--- a/net/minecraft/world/level/block/NoteBlock.java
++++ b/net/minecraft/world/level/block/NoteBlock.java
+@@ -101,7 +101,7 @@ public class NoteBlock extends Block {
+     }
+ 
+     private void playNote(@Nullable Entity entity, BlockState state, Level level, BlockPos pos) {
+-        if (state.getValue(INSTRUMENT).worksAboveNoteBlock() || level.getBlockState(pos.above()).isAir()) {
++        if (level.purpurConfig.noteBlockIgnoreAbove || state.getValue(INSTRUMENT).worksAboveNoteBlock() || level.getBlockState(pos.above()).isAir()) { // Purpur - Config to allow Note Block sounds when blocked
+             level.blockEvent(pos, this, 0, 0);
+             level.gameEvent(entity, GameEvent.NOTE_BLOCK_PLAY, pos);
+         }

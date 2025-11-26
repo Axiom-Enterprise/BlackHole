@@ -1,0 +1,21 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/phys/AABB.java b/net/minecraft/world/phys/AABB.java
+index cffb3b7d480f72cdb9ed535f362fa60f30597523..529bd339441fde279ed81573ca5339a0837b3b87 100644
+--- a/net/minecraft/world/phys/AABB.java
++++ b/net/minecraft/world/phys/AABB.java
+@@ -476,4 +476,10 @@ public class AABB {
+             return new AABB(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
+         }
+     }
++
++    // Purpur start - Stop squids floating on top of water - tuinity added method
++    public final AABB offsetY(double dy) {
++        return new AABB(this.minX, this.minY + dy, this.minZ, this.maxX, this.maxY + dy, this.maxZ);
++    }
++    // Purpur end - Stop squids floating on top of water
+ }

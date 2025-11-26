@@ -1,0 +1,18 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/item/MapItem.java b/net/minecraft/world/item/MapItem.java
+index c64e2abefb8319c16d142ee44479c4965a47d98f..27efca58d7ebe5df8f117160c0e809ec50dd78d3 100644
+--- a/net/minecraft/world/item/MapItem.java
++++ b/net/minecraft/world/item/MapItem.java
+@@ -194,6 +194,7 @@ public class MapItem extends Item {
+     public static void renderBiomePreviewMap(ServerLevel level, ItemStack stack) {
+         MapItemSavedData savedData = getSavedData(stack, level);
+         if (savedData != null) {
++            savedData.isExplorerMap = true; // Purpur - Explorer Map API
+             if (level.dimension() == savedData.dimension) {
+                 int i = 1 << savedData.scale;
+                 int i1 = savedData.centerX;

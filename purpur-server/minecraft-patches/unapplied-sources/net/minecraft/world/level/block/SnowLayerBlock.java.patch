@@ -1,0 +1,18 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/SnowLayerBlock.java b/net/minecraft/world/level/block/SnowLayerBlock.java
+index a419b295579c17b012cf3a8718d3fac96684c89b..a7cfe611171b82c4dc0fffb254fa891f1393df7c 100644
+--- a/net/minecraft/world/level/block/SnowLayerBlock.java
++++ b/net/minecraft/world/level/block/SnowLayerBlock.java
+@@ -76,6 +76,7 @@ public class SnowLayerBlock extends Block {
+     @Override
+     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+         BlockState blockState = level.getBlockState(pos.below());
++        if (blockState.is(Blocks.BLUE_ICE) && !level.getWorldBorder().world.purpurConfig.snowOnBlueIce) return false; // Purpur - Add config for snow on blue ice
+         return !blockState.is(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON)
+             && (
+                 blockState.is(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON)

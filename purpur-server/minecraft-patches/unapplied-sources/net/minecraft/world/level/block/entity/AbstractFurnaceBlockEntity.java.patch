@@ -1,0 +1,41 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
+index d8176f1f36f12fe179b5a63e6bf8f290a7a7461d..3dfd539f4453d9c47c99af36e7ba64400fc89a5c 100644
+--- a/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
++++ b/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
+@@ -187,6 +187,21 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+         }
+ 
+         ItemStack itemStack = furnace.items.get(1);
++        // Purpur start - Furnace uses lava from underneath
++        boolean usedLavaFromUnderneath = false;
++        if (level.purpurConfig.furnaceUseLavaFromUnderneath && !furnace.isLit() && itemStack.isEmpty() && !furnace.items.get(0).isEmpty() && level.getGameTime() % 20 == 0) {
++            BlockPos below = furnace.getBlockPos().below();
++            BlockState belowState = level.getBlockStateIfLoaded(below);
++            if (belowState != null && belowState.is(Blocks.LAVA)) {
++                net.minecraft.world.level.material.FluidState fluidState = belowState.getFluidState();
++                if (fluidState != null && fluidState.isSource()) {
++                    level.setBlock(below, Blocks.AIR.defaultBlockState(), 3);
++                    itemStack = Items.LAVA_BUCKET.getDefaultInstance();
++                    usedLavaFromUnderneath = true;
++                }
++            }
++        }
++        // Purpur end - Furnace uses lava from underneath
+         ItemStack itemStack1 = furnace.items.get(0);
+         boolean flag1 = !itemStack1.isEmpty();
+         boolean flag2 = !itemStack.isEmpty();
+@@ -270,6 +285,8 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+         if (flag) {
+             setChanged(level, pos, state);
+         }
++
++        if (usedLavaFromUnderneath) furnace.items.set(1, ItemStack.EMPTY); // Purpur - Furnace uses lava from underneath
+     }
+ 
+     private static boolean canBurn(

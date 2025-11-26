@@ -1,0 +1,28 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/NetherPortalBlock.java b/net/minecraft/world/level/block/NetherPortalBlock.java
+index d3f0a61c0c91d3a6a1dc4e59d57743ba89a9c19a..094d2031f9a184c06c7bdcc1d1d8a72ced462358 100644
+--- a/net/minecraft/world/level/block/NetherPortalBlock.java
++++ b/net/minecraft/world/level/block/NetherPortalBlock.java
+@@ -67,7 +67,7 @@ public class NetherPortalBlock extends Block implements Portal {
+     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+         if (level.spigotConfig.enableZombiePigmenPortalSpawns && level.dimensionType().natural() // Spigot
+             && level.isSpawningMonsters()
+-            && random.nextInt(2000) < level.getDifficulty().getId()
++            && random.nextInt(level.purpurConfig.piglinPortalSpawnModifier) < level.getDifficulty().getId() // Purpur - Piglin portal spawn modifier
+             && level.anyPlayerCloseEnoughForSpawning(pos)) {
+             while (level.getBlockState(pos).is(this)) {
+                 pos = pos.below();
+@@ -125,7 +125,7 @@ public class NetherPortalBlock extends Block implements Portal {
+     @Override
+     public int getPortalTransitionTime(ServerLevel level, Entity entity) {
+         return entity instanceof Player player
+-            ? Math.max(
++            ? player.canPortalInstant ? 1 : Math.max( // Purpur - Add portal permission bypass
+                 0,
+                 level.getGameRules()
+                     .getInt(

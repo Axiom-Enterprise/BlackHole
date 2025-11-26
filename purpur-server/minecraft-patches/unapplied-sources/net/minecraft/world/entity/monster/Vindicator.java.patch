@@ -1,0 +1,22 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/monster/Vindicator.java b/net/minecraft/world/entity/monster/Vindicator.java
+index 714ebce87550e3d36cb269fcb5653975113671db..29482ed26387e5d6f04d59deda5990d24b7a07a9 100644
+--- a/net/minecraft/world/entity/monster/Vindicator.java
++++ b/net/minecraft/world/entity/monster/Vindicator.java
+@@ -131,6 +131,11 @@ public class Vindicator extends AbstractIllager {
+         RandomSource random = level.getRandom();
+         this.populateDefaultEquipmentSlots(random, difficulty);
+         this.populateDefaultEquipmentEnchantments(level, random, difficulty);
++        // Purpur start - Special mobs naturally spawn
++        if (level().purpurConfig.vindicatorJohnnySpawnChance > 0D && random.nextDouble() <= level().purpurConfig.vindicatorJohnnySpawnChance) {
++            setCustomName(Component.translatable("Johnny"));
++        }
++        // Purpur end - Special mobs naturally spawn
+         return spawnGroupData1;
+     }
+ 

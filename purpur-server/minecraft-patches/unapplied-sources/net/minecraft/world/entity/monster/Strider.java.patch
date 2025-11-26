@@ -1,0 +1,29 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/monster/Strider.java b/net/minecraft/world/entity/monster/Strider.java
+index 402723c86ffb8da0f4ed5529a762d2eed151e73e..312564fcaf91280d70e379994bd9d8fcb54b0a40 100644
+--- a/net/minecraft/world/entity/monster/Strider.java
++++ b/net/minecraft/world/entity/monster/Strider.java
+@@ -393,6 +393,18 @@ public class Strider extends Animal implements ItemSteerable {
+     @Override
+     public InteractionResult mobInteract(Player player, InteractionHand hand) {
+         boolean isFood = this.isFood(player.getItemInHand(hand));
++        // Purpur start
++        if (level().purpurConfig.striderGiveSaddleBack && player.isSecondaryUseActive() && !isFood && isSaddled() && !isVehicle()) {
++            this.setItemSlot(EquipmentSlot.SADDLE, ItemStack.EMPTY);
++            if (!player.getAbilities().instabuild) {
++                ItemStack saddle = new ItemStack(Items.SADDLE);
++                if (!player.getInventory().add(saddle)) {
++                    player.drop(saddle, false);
++                }
++            }
++            return InteractionResult.SUCCESS;
++        }
++        // Purpur end
+         if (!isFood && this.isSaddled() && !this.isVehicle() && !player.isSecondaryUseActive()) {
+             if (!this.level().isClientSide()) {
+                 player.startRiding(this);

@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/gametest/framework/TestCommand.java b/net/minecraft/gametest/framework/TestCommand.java
+index f2c97bb3c849dce59964d51633c47a982d1aa164..32338e6b2e5066b22111fab618a7205139a66536 100644
+--- a/net/minecraft/gametest/framework/TestCommand.java
++++ b/net/minecraft/gametest/framework/TestCommand.java
+@@ -443,7 +443,7 @@ public class TestCommand {
+                             )
+                     )
+             );
+-        if (SharedConstants.IS_RUNNING_IN_IDE) {
++        if (org.purpurmc.purpur.PurpurConfig.registerMinecraftDebugCommands || SharedConstants.IS_RUNNING_IN_IDE) { // Purpur - register minecraft debug commands
+             literalArgumentBuilder = literalArgumentBuilder.then(
+                     Commands.literal("export")
+                         .then(

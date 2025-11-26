@@ -1,0 +1,24 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/GlowSquid.java b/net/minecraft/world/entity/GlowSquid.java
+index ae11fa15dc14f2b828cde4e3abfac330828c597e..70790f4e813bb950e103314644bd1d767edb4123 100644
+--- a/net/minecraft/world/entity/GlowSquid.java
++++ b/net/minecraft/world/entity/GlowSquid.java
+@@ -27,6 +27,13 @@ public class GlowSquid extends Squid {
+         super(type, level);
+     }
+ 
++    // Purpur start - Flying squids! Oh my!
++    @Override
++    public boolean canFly() {
++        return this.level().purpurConfig.glowSquidsCanFly;
++    }
++    // Purpur end - Flying squids! Oh my!
++
+     @Override
+     protected ParticleOptions getInkParticle() {
+         return ParticleTypes.GLOW_SQUID_INK;

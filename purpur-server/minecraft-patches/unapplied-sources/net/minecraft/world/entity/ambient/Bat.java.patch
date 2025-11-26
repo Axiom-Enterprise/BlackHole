@@ -1,0 +1,27 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/ambient/Bat.java b/net/minecraft/world/entity/ambient/Bat.java
+index c0198c0b6d00667c9591a5cd254b0bfedc3fb627..acb402027bbb16a1b590415b2358cf03147119c0 100644
+--- a/net/minecraft/world/entity/ambient/Bat.java
++++ b/net/minecraft/world/entity/ambient/Bat.java
+@@ -234,7 +234,7 @@ public class Bat extends AmbientCreature {
+         } else {
+             int maxLocalRawBrightness = level.getMaxLocalRawBrightness(pos);
+             int i = 4;
+-            if (isHalloween()) {
++            if (Bat.isHalloweenSeason(level.getMinecraftWorld())) { // Purpur - Halloween options and optimizations
+                 i = 7;
+             } else if (randomSource.nextBoolean()) {
+                 return false;
+@@ -246,6 +246,7 @@ public class Bat extends AmbientCreature {
+         }
+     }
+ 
++    public static boolean isHalloweenSeason(Level level) { return level.purpurConfig.forceHalloweenSeason || isHalloween(); } // Purpur - Halloween options and optimizations
+     private static boolean isHalloween() {
+         LocalDate localDate = LocalDate.now();
+         int i = localDate.get(ChronoField.DAY_OF_MONTH);

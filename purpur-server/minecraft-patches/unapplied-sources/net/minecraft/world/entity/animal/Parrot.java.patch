@@ -1,0 +1,60 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/entity/animal/Parrot.java b/net/minecraft/world/entity/animal/Parrot.java
+index 55d66e13d74f0ed3b4260b806eae03c0ef5053da..f5bd84355cd57b7a8c3ccd0f9ed2f714ff21233b 100644
+--- a/net/minecraft/world/entity/animal/Parrot.java
++++ b/net/minecraft/world/entity/animal/Parrot.java
+@@ -160,6 +160,7 @@ public class Parrot extends ShoulderRidingEntity implements FlyingAnimal {
+     protected void registerGoals() {
+         this.goalSelector.addGoal(0, new TamableAnimal.TamableAnimalPanicGoal(1.25));
+         this.goalSelector.addGoal(0, new FloatGoal(this));
++        if (this.level().purpurConfig.parrotBreedable) this.goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.BreedGoal(this, 1.0D)); // Purpur - Breedable parrots
+         this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
+         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
+         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0, 5.0F, 1.0F));
+@@ -265,7 +266,7 @@ public class Parrot extends ShoulderRidingEntity implements FlyingAnimal {
+             }
+ 
+             if (!this.level().isClientSide()) {
+-                if (this.random.nextInt(10) == 0 && !org.bukkit.craftbukkit.event.CraftEventFactory.callEntityTameEvent(this, player).isCancelled()) { // CraftBukkit
++                if (((this.level().purpurConfig.alwaysTameInCreative && player.hasInfiniteMaterials()) || this.random.nextInt(10) == 0) && !org.bukkit.craftbukkit.event.CraftEventFactory.callEntityTameEvent(this, player).isCancelled()) { // CraftBukkit // Purpur - Config to always tame in Creative
+                     this.tame(player);
+                     this.level().broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);
+                 } else {
+@@ -273,6 +274,7 @@ public class Parrot extends ShoulderRidingEntity implements FlyingAnimal {
+                 }
+             }
+ 
++            if (this.level().purpurConfig.parrotBreedable) return super.mobInteract(player, hand); // Purpur - Breedable parrots
+             return InteractionResult.SUCCESS;
+         } else if (!itemInHand.is(ItemTags.PARROT_POISONOUS_FOOD)) {
+             if (!this.isFlying() && this.isTame() && this.isOwnedBy(player)) {
+@@ -297,7 +299,7 @@ public class Parrot extends ShoulderRidingEntity implements FlyingAnimal {
+ 
+     @Override
+     public boolean isFood(ItemStack stack) {
+-        return false;
++        return this.level().purpurConfig.parrotBreedable && stack.is(ItemTags.PARROT_FOOD); // Purpur - Breedable parrots
+     }
+ 
+     public static boolean checkParrotSpawnRules(
+@@ -312,13 +314,13 @@ public class Parrot extends ShoulderRidingEntity implements FlyingAnimal {
+ 
+     @Override
+     public boolean canMate(Animal otherAnimal) {
+-        return false;
++        return super.canMate(otherAnimal); // Purpur - Breedable parrots
+     }
+ 
+     @Nullable
+     @Override
+     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob partner) {
+-        return null;
++        return level.purpurConfig.parrotBreedable ? EntityType.PARROT.create(level, EntitySpawnReason.BREEDING) : null; // Purpur - Breedable parrots
+     }
+ 
+     @Nullable

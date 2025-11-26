@@ -1,0 +1,19 @@
+From 73b67b6fc4ab1a46cb7c1113a4648915bf072f56 Mon Sep 17 00:00:00 2001
+From: File <noreply+automated@papermc.io>
+Date: Sun, 20 Apr 1997 05:37:42 -0800
+Subject: [PATCH] purpur File Patches
+
+
+diff --git a/net/minecraft/world/level/block/CampfireBlock.java b/net/minecraft/world/level/block/CampfireBlock.java
+index d6aaebacfb9b713dafb718d1e7ade8da8111ebb5..6129f48418532c5b4b4d5515bc75cffb85073984 100644
+--- a/net/minecraft/world/level/block/CampfireBlock.java
++++ b/net/minecraft/world/level/block/CampfireBlock.java
+@@ -124,7 +124,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
+         return this.defaultBlockState()
+             .setValue(WATERLOGGED, flag)
+             .setValue(SIGNAL_FIRE, this.isSmokeSource(level.getBlockState(clickedPos.below())))
+-            .setValue(LIT, !flag)
++            .setValue(LIT, level.getMinecraftWorld().purpurConfig.campFireLitWhenPlaced && !flag) // Purpur - Campfire option for lit when placed
+             .setValue(FACING, context.getHorizontalDirection());
+     }
+ 

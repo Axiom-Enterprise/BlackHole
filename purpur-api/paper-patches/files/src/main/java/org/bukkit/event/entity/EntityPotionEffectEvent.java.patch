@@ -11,5 +11,5 @@
 +        NETHERITE_ARMOR,
 +        // Purpur end
          /**
-          * When a player gets bad omen after killing a patrol captain.
-          *
+          * When the entity gets the effect from a nautilus.
+          */

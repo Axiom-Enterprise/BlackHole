@@ -9,17 +9,6 @@
          this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
          this.setPathfindingMalus(PathType.COCOA, -1.0F);
          this.setPathfindingMalus(PathType.FENCE, -1.0F);
-@@ -367,6 +_,10 @@
-         }
-     }
- 
-+    /*public static boolean isNightOrRaining(Level level) {
-+        return level.dimensionType().hasSkyLight() && (level.isDarkOutside() && !level.purpurConfig.beeCanWorkAtNight || level.isRaining() && !level.purpurConfig.beeCanWorkInRain); // Purpur - Bee can work when raining or at night
-+    }*/
-+
-     public void setStayOutOfHiveCountdown(int stayOutOfHiveCountdown) {
-         this.stayOutOfHiveCountdown = stayOutOfHiveCountdown;
-     }
 @@ -387,7 +_,7 @@
      @Override
      protected void customServerAiStep(ServerLevel level) {

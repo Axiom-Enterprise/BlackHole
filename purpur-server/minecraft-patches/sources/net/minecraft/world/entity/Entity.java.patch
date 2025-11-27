@@ -103,7 +103,7 @@
              if (this.isAlive() && this instanceof Leashable leashable2) {
                  if (leashable2.getLeashHolder() == player) {
                      if (!this.level().isClientSide()) {
-+                        if (hand == InteractionHand.OFF_HAND && (level().purpurConfig.villagerCanBeLeashed || level().purpurConfig.wanderingTraderCanBeLeashed) && this instanceof net.minecraft.world.entity.npc.AbstractVillager) return InteractionResult.CONSUME; // Purpur - Allow leashing villagers
++                        if (hand == InteractionHand.OFF_HAND && (level().purpurConfig.villagerCanBeLeashed || level().purpurConfig.wanderingTraderCanBeLeashed) && this instanceof net.minecraft.world.entity.npc.villager.AbstractVillager) return InteractionResult.CONSUME; // Purpur - Allow leashing villagers
                          // Paper start - EntityUnleashEvent
                          if (!org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerUnleashEntityEvent(
                              leashable2, player, hand, !player.hasInfiniteMaterials(), true

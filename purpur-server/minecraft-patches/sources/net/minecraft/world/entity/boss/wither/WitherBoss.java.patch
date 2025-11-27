@@ -4,21 +4,20 @@
      private static final TargetingConditions.Selector LIVING_ENTITY_SELECTOR = (entity, level) -> !entity.getType().is(EntityTypeTags.WITHER_FRIENDS)
          && entity.attackable();
      private static final TargetingConditions TARGETING_CONDITIONS = TargetingConditions.forCombat().range(20.0).selector(LIVING_ENTITY_SELECTOR);
-+    @Nullable private java.util.UUID summoner; // Purpur - Summoner API
++    private java.util.@Nullable UUID summoner; // Purpur - Summoner API
  
      public WitherBoss(EntityType<? extends WitherBoss> type, Level level) {
          super(type, level);
-@@ -88,6 +_,17 @@
+@@ -88,6 +_,16 @@
          this.xpReward = 50;
      }
  
 +    // Purpur start - Summoner API
-+    @Nullable
-+    public java.util.UUID getSummoner() {
++    public java.util.@Nullable UUID getSummoner() {
 +        return summoner;
 +    }
 +
-+    public void setSummoner(@Nullable java.util.UUID summoner) {
++    public void setSummoner(java.util.@Nullable UUID summoner) {
 +        this.summoner = summoner;
 +    }
 +    // Purpur end - Summoner API

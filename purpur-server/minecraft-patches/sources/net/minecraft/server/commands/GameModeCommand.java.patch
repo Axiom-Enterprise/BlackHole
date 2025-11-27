@@ -8,10 +8,10 @@
 +        if (org.purpurmc.purpur.PurpurConfig.commandGamemodeRequiresPermission) {
 +            String gamemode = gameType.getName();
 +            CommandSourceStack sender = context.getSource();
-+            if (!sender.testPermission(2, "minecraft.command.gamemode." + gamemode)) {
++            if (!sender.testPermission(Permissions.COMMANDS_GAMEMASTER, "minecraft.command.gamemode." + gamemode)) {
 +                return 0;
 +            }
-+            if (sender.getEntity() instanceof ServerPlayer player && (players.size() > 1 || !players.contains(player)) && !sender.testPermission(2, "minecraft.command.gamemode." + gamemode + ".other")) {
++            if (sender.getEntity() instanceof ServerPlayer player && (players.size() > 1 || !players.contains(player)) && !sender.testPermission(Permissions.COMMANDS_GAMEMASTER, "minecraft.command.gamemode." + gamemode + ".other")) {
 +                return 0;
 +            }
 +        }

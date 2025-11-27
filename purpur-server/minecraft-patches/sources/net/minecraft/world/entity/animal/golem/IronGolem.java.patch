@@ -1,22 +1,21 @@
 --- a/net/minecraft/world/entity/animal/golem/IronGolem.java
 +++ b/net/minecraft/world/entity/animal/golem/IronGolem.java
-@@ -58,13 +_,26 @@
+@@ -58,13 +_,25 @@
      private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
      private long persistentAngerEndTime;
      private @Nullable EntityReference<LivingEntity> persistentAngerTarget;
-+    @Nullable private UUID summoner; // Purpur - Summoner API
++    private java.util.@Nullable UUID summoner; // Purpur - Summoner API
  
      public IronGolem(EntityType<? extends IronGolem> type, Level level) {
          super(type, level);
      }
  
 +    // Purpur start - Summoner API
-+    @Nullable
-+    public UUID getSummoner() {
++    public java.util.@Nullable UUID getSummoner() {
 +        return summoner;
 +    }
 +
-+    public void setSummoner(@Nullable UUID summoner) {
++    public void setSummoner(java.util.@Nullable UUID summoner) {
 +        this.summoner = summoner;
 +    }
 +    // Purpur end - Summoner API

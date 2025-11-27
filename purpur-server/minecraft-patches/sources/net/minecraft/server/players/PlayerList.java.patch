@@ -27,7 +27,7 @@
 +        }
 +    }
 +
-+    public void broadcastMessage(@Nullable net.kyori.adventure.text.Component message, boolean overlay) {
++    public void broadcastMessage(net.kyori.adventure.text.@Nullable Component message, boolean overlay) {
 +        if (message != null) {
 +            this.broadcastSystemMessage(io.papermc.paper.adventure.PaperAdventure.asVanilla(message), overlay);
 +        }

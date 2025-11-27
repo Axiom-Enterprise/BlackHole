@@ -1,22 +1,21 @@
 --- a/net/minecraft/world/entity/animal/golem/SnowGolem.java
 +++ b/net/minecraft/world/entity/animal/golem/SnowGolem.java
-@@ -46,15 +_,27 @@
+@@ -46,15 +_,26 @@
      private static final EntityDataAccessor<Byte> DATA_PUMPKIN_ID = SynchedEntityData.defineId(SnowGolem.class, EntityDataSerializers.BYTE);
      private static final byte PUMPKIN_FLAG = 16;
      private static final boolean DEFAULT_PUMPKIN = true;
-+    @Nullable private java.util.UUID summoner; // Purpur - Summoner API
++    private java.util.@Nullable UUID summoner; // Purpur - Summoner API
  
      public SnowGolem(EntityType<? extends SnowGolem> type, Level level) {
          super(type, level);
      }
  
 +    // Purpur start - Summoner API
-+    @Nullable
-+    public java.util.UUID getSummoner() {
++    public java.util.@Nullable UUID getSummoner() {
 +        return summoner;
 +    }
 +
-+    public void setSummoner(@Nullable java.util.UUID summoner) {
++    public void setSummoner(java.util.@Nullable UUID summoner) {
 +        this.summoner = summoner;
 +    }
 +    // Purpur end - Summoner API

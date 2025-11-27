@@ -23,14 +23,13 @@
      }
  
      public final CompoundTag saveWithFullMetadata(HolderLookup.Provider registries) {
-@@ -400,4 +_,17 @@
+@@ -400,4 +_,16 @@
              return this.blockEntity.getNameForReporting() + "@" + this.blockEntity.getBlockPos();
          }
      }
 +
 +    // Purpur start - Persistent BlockEntity Lore and DisplayName
-+    @Nullable
-+    private net.minecraft.world.item.component.ItemLore persistentLore = null;
++    private net.minecraft.world.item.component.@Nullable ItemLore persistentLore = null;
 +
 +    public void setPersistentLore(net.minecraft.world.item.component.ItemLore lore) {
 +        this.persistentLore = lore;

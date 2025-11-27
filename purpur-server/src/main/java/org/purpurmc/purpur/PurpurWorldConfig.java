@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Shulker;
@@ -262,7 +262,7 @@ public class PurpurWorldConfig {
     public List<Item> itemImmuneToFire = new ArrayList<>();
     public List<Item> itemImmuneToLightning = new ArrayList<>();
     public boolean dontRunWithScissors = false;
-    public ResourceLocation dontRunWithScissorsItemModelReference = ResourceLocation.parse("purpurmc:scissors");
+    public Identifier dontRunWithScissorsItemModelReference = Identifier.parse("purpurmc:scissors");
     public boolean ignoreScissorsInWater = false;
     public boolean ignoreScissorsInLava = false;
     public double scissorsRunningDamage = 1D;
@@ -283,7 +283,7 @@ public class PurpurWorldConfig {
                 BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToCactus.add(item));
                 return;
             }
-            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
+            Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
             if (item != Items.AIR) itemImmuneToCactus.add(item);
         });
         itemImmuneToExplosion.clear();
@@ -292,7 +292,7 @@ public class PurpurWorldConfig {
                 BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToExplosion.add(item));
                 return;
             }
-            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
+            Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
             if (item != Items.AIR) itemImmuneToExplosion.add(item);
         });
         itemImmuneToFire.clear();
@@ -301,7 +301,7 @@ public class PurpurWorldConfig {
                 BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToFire.add(item));
                 return;
             }
-            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
+            Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
             if (item != Items.AIR) itemImmuneToFire.add(item);
         });
         itemImmuneToLightning.clear();
@@ -310,11 +310,11 @@ public class PurpurWorldConfig {
                 BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToLightning.add(item));
                 return;
             }
-            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
+            Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
             if (item != Items.AIR) itemImmuneToLightning.add(item);
         });
         dontRunWithScissors = getBoolean("gameplay-mechanics.item.shears.damage-if-sprinting", dontRunWithScissors);
-        dontRunWithScissorsItemModelReference = ResourceLocation.parse(getString("gameplay-mechanics.item.shears.damage-if-sprinting-item-model", "purpurmc:scissors"));
+        dontRunWithScissorsItemModelReference = Identifier.parse(getString("gameplay-mechanics.item.shears.damage-if-sprinting-item-model", "purpurmc:scissors"));
         ignoreScissorsInWater = getBoolean("gameplay-mechanics.item.shears.ignore-in-water", ignoreScissorsInWater);
         ignoreScissorsInLava = getBoolean("gameplay-mechanics.item.shears.ignore-in-lava", ignoreScissorsInLava);
         scissorsRunningDamage = getDouble("gameplay-mechanics.item.shears.sprinting-damage", scissorsRunningDamage);
@@ -382,7 +382,7 @@ public class PurpurWorldConfig {
         ConfigurationSection section = getConfigurationSection("gameplay-mechanics.minecart.controllable.block-speed");
         if (section != null) {
             for (String key : section.getKeys(false)) {
-                Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(key));
+                Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(key));
                 if (block != Blocks.AIR) {
                     minecartControllableBlockSpeeds.put(block, section.getDouble(key, minecartControllableBaseSpeed));
                 }
@@ -523,7 +523,7 @@ public class PurpurWorldConfig {
                 "minecraft:diamond_pickaxe",
                 "minecraft:netherite_pickaxe"
         )).forEach(key -> {
-            Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(key.toString()));
+            Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
             if (item != Items.AIR) silkTouchTools.add(item);
         });
     }
@@ -714,17 +714,17 @@ public class PurpurWorldConfig {
                 Map.entry("minecraft:bamboo_block", Map.of("into", "minecraft:stripped_bamboo_block", "drops", new HashMap<String, Double>()))
             )
         ).forEach((blockId, obj) -> {
-            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockId));
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(blockId));
             if (block == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.axe.strippables`: " + blockId); return; }
             if (!(obj instanceof Map<?, ?> map)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.axe.strippables." + blockId + "`"); return; }
             String intoId = (String) map.get("into");
-            Block into = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(intoId));
+            Block into = BuiltInRegistries.BLOCK.getValue(Identifier.parse(intoId));
             if (into == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.axe.strippables." + blockId + ".into`: " + intoId); return; }
             Object dropsObj = map.get("drops");
             if (!(dropsObj instanceof Map<?, ?> dropsMap)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.axe.strippables." + blockId + ".drops`"); return; }
             Map<Item, Double> drops = new HashMap<>();
             dropsMap.forEach((itemId, chance) -> {
-                Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(itemId.toString()));
+                Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(itemId.toString()));
                 if (item == Items.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid item for `tools.axe.strippables." + blockId + ".drops`: " + itemId); return; }
                 drops.put(item, (double) chance);
             });
@@ -792,17 +792,17 @@ public class PurpurWorldConfig {
                 Map.entry("minecraft:waxed_weathered_copper_lantern", Map.of("into", "minecraft:weathered_copper_lantern", "drops", new HashMap<String, Double>())),
                 Map.entry("minecraft:waxed_oxidized_copper_lantern", Map.of("into", "minecraft:oxidized_copper_lantern", "drops", new HashMap<String, Double>())))
         ).forEach((blockId, obj) -> {
-            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockId));
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(blockId));
             if (block == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.axe.waxables`: " + blockId); return; }
             if (!(obj instanceof Map<?, ?> map)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.axe.waxables." + blockId + "`"); return; }
             String intoId = (String) map.get("into");
-            Block into = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(intoId));
+            Block into = BuiltInRegistries.BLOCK.getValue(Identifier.parse(intoId));
             if (into == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.axe.waxables." + blockId + ".into`: " + intoId); return; }
             Object dropsObj = map.get("drops");
             if (!(dropsObj instanceof Map<?, ?> dropsMap)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.axe.waxables." + blockId + ".drops`"); return; }
             Map<Item, Double> drops = new HashMap<>();
             dropsMap.forEach((itemId, chance) -> {
-                Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(itemId.toString()));
+                Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(itemId.toString()));
                 if (item == Items.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid item for `tools.axe.waxables." + blockId + ".drops`: " + itemId); return; }
                 drops.put(item, (double) chance);
             });
@@ -855,17 +855,17 @@ public class PurpurWorldConfig {
                 Map.entry("minecraft:weathered_copper_lantern", Map.of("into", "minecraft:exposed_copper_lantern", "drops", new HashMap<String, Double>())),
                 Map.entry("minecraft:oxidized_copper_lantern", Map.of("into", "minecraft:weathered_copper_lantern", "drops", new HashMap<String, Double>())))
         ).forEach((blockId, obj) -> {
-            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockId));
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(blockId));
             if (block == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.axe.weatherables`: " + blockId); return; }
             if (!(obj instanceof Map<?, ?> map)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.axe.weatherables." + blockId + "`"); return; }
             String intoId = (String) map.get("into");
-            Block into = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(intoId));
+            Block into = BuiltInRegistries.BLOCK.getValue(Identifier.parse(intoId));
             if (into == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.axe.weatherables." + blockId + ".into`: " + intoId); return; }
             Object dropsObj = map.get("drops");
             if (!(dropsObj instanceof Map<?, ?> dropsMap)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.axe.weatherables." + blockId + ".drops`"); return; }
             Map<Item, Double> drops = new HashMap<>();
             dropsMap.forEach((itemId, chance) -> {
-                Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(itemId.toString()));
+                Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(itemId.toString()));
                 if (item == Items.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid item for `tools.axe.weatherables." + blockId + ".drops`: " + itemId); return; }
                 drops.put(item, (double) chance);
             });
@@ -878,20 +878,20 @@ public class PurpurWorldConfig {
                 Map.entry("minecraft:coarse_dirt", Map.of("condition", "air_above", "into", "minecraft:dirt", "drops", new HashMap<String, Double>())),
                 Map.entry("minecraft:rooted_dirt", Map.of("condition", "always", "into", "minecraft:dirt", "drops", Map.of("minecraft:hanging_roots", 1.0D))))
         ).forEach((blockId, obj) -> {
-            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockId));
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(blockId));
             if (block == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.hoe.tillables`: " + blockId); return; }
             if (!(obj instanceof Map<?, ?> map)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.hoe.tillables." + blockId + "`"); return; }
             String conditionId = (String) map.get("condition");
             Tillable.Condition condition = Tillable.Condition.get(conditionId);
             if (condition == null) { PurpurConfig.log(Level.SEVERE, "Invalid condition for `tools.hoe.tillables." + blockId + ".condition`: " + conditionId); return; }
             String intoId = (String) map.get("into");
-            Block into = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(intoId));
+            Block into = BuiltInRegistries.BLOCK.getValue(Identifier.parse(intoId));
             if (into == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.hoe.tillables." + blockId + ".into`: " + intoId); return; }
             Object dropsObj = map.get("drops");
             if (!(dropsObj instanceof Map<?, ?> dropsMap)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.hoe.tillables." + blockId + ".drops`"); return; }
             Map<Item, Double> drops = new HashMap<>();
             dropsMap.forEach((itemId, chance) -> {
-                Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(itemId.toString()));
+                Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(itemId.toString()));
                 if (item == Items.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid item for `tools.hoe.tillables." + blockId + ".drops`: " + itemId); return; }
                 drops.put(item, (double) chance);
             });
@@ -905,17 +905,17 @@ public class PurpurWorldConfig {
                 Map.entry("minecraft:mycelium", Map.of("into", "minecraft:dirt_path", "drops", new HashMap<String, Double>())),
                 Map.entry("minecraft:rooted_dirt", Map.of("into", "minecraft:dirt_path", "drops", new HashMap<String, Double>())))
         ).forEach((blockId, obj) -> {
-            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockId));
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(blockId));
             if (block == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.shovel.flattenables`: " + blockId); return; }
             if (!(obj instanceof Map<?, ?> map)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.shovel.flattenables." + blockId + "`"); return; }
             String intoId = (String) map.get("into");
-            Block into = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(intoId));
+            Block into = BuiltInRegistries.BLOCK.getValue(Identifier.parse(intoId));
             if (into == Blocks.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid block for `tools.shovel.flattenables." + blockId + ".into`: " + intoId); return; }
             Object dropsObj = map.get("drops");
             if (!(dropsObj instanceof Map<?, ?> dropsMap)) { PurpurConfig.log(Level.SEVERE, "Invalid yaml for `tools.shovel.flattenables." + blockId + ".drops`"); return; }
             Map<Item, Double> drops = new HashMap<>();
             dropsMap.forEach((itemId, chance) -> {
-                Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(itemId.toString()));
+                Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(itemId.toString()));
                 if (item == Items.AIR) { PurpurConfig.log(Level.SEVERE, "Invalid item for `tools.shovel.flattenables." + blockId + ".drops`: " + itemId); return; }
                 drops.put(item, (double) chance);
             });
@@ -1040,7 +1040,7 @@ public class PurpurWorldConfig {
     public List<Block> doorRequiresRedstone = new ArrayList<>();
     private void doorSettings() {
         getList("blocks.door.requires-redstone", new ArrayList<String>()).forEach(key -> {
-            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(key.toString()));
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(key.toString()));
             if (!block.defaultBlockState().isAir()) {
                 doorRequiresRedstone.add(block);
             }
@@ -2642,7 +2642,7 @@ public class PurpurWorldConfig {
         polarBearMaxHealth = getDouble("mobs.polar_bear.attributes.max_health", polarBearMaxHealth);
         polarBearScale = Mth.clamp(getDouble("mobs.polar_bear.attributes.scale", polarBearScale), 0.0625D, 16.0D);
         polarBearBreedableItemString = getString("mobs.polar_bear.breedable-item", polarBearBreedableItemString);
-        Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(polarBearBreedableItemString));
+        Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(polarBearBreedableItemString));
         if (item != Items.AIR) polarBearBreedableItem = item;
         polarBearBreedingTicks = getInt("mobs.polar_bear.breeding-delay-ticks", polarBearBreedingTicks);
         polarBearTakeDamageFromWater = getBoolean("mobs.polar_bear.takes-damage-from-water", polarBearTakeDamageFromWater);
@@ -2765,7 +2765,7 @@ public class PurpurWorldConfig {
             set("mobs.ravager.griefable-blocks", new ArrayList<>(set));
         }
         getList("mobs.ravager.griefable-blocks", defaultRavagerGriefableBlocks).forEach(key -> {
-            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(key.toString()));
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(key.toString()));
             if (!block.defaultBlockState().isAir()) {
                 ravagerGriefableBlocks.add(block);
             }
@@ -3699,7 +3699,7 @@ public class PurpurWorldConfig {
             add("minecraft:sea_lantern");
             add("minecraft:dark_prismarine");
         }}).forEach(key -> {
-            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(key.toString()));
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(key.toString()));
             if (!block.defaultBlockState().isAir()) {
                 conduitBlockList.add(block);
             }

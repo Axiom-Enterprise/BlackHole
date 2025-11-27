@@ -44,7 +44,7 @@
          } else {
 +            // Purpur start - Add boat fall damage config
 +            if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_FALL)) {
-+                if (getRootVehicle() instanceof net.minecraft.world.entity.vehicle.Boat && !level().purpurConfig.boatsDoFallDamage) {
++                if (getRootVehicle() instanceof net.minecraft.world.entity.vehicle.boat.Boat && !level().purpurConfig.boatsDoFallDamage) {
 +                    return false;
 +                }
 +            }
@@ -109,7 +109,7 @@
 +        }
 +    }
 +
-+    public void sendActionBarMessage(@Nullable net.kyori.adventure.text.Component message) {
++    public void sendActionBarMessage(net.kyori.adventure.text.@Nullable Component message) {
 +        if (message != null) {
 +            sendActionBarMessage(io.papermc.paper.adventure.PaperAdventure.asVanilla(message));
 +        }
@@ -136,7 +136,7 @@
 +        }
 +    }
 +
-+    public void sendMessage(@Nullable net.kyori.adventure.text.Component message) {
++    public void sendMessage(net.kyori.adventure.text.@Nullable Component message) {
 +        if (message != null) {
 +            this.sendSystemMessage(io.papermc.paper.adventure.PaperAdventure.asVanilla(message));
 +        }

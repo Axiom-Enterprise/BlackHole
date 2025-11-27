@@ -14,7 +14,7 @@
  
 +    // Purpur start - Special mobs naturally spawn
 +    @Override
-+    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.EntitySpawnReason spawnReason, @Nullable net.minecraft.world.entity.SpawnGroupData entityData) {
++    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.EntitySpawnReason spawnReason, net.minecraft.world.entity.@Nullable SpawnGroupData entityData) {
 +        double chance = world.getLevel().purpurConfig.creeperChargedChance;
 +        if (chance > 0D && random.nextDouble() <= chance) {
 +            setPowered(true);
@@ -51,7 +51,7 @@
              // CraftBukkit end
              this.dead = true;
 -            serverLevel.explode(this, this.getX(), this.getY(), this.getZ(), event.getRadius(), event.getFire(), Level.ExplosionInteraction.MOB); // CraftBukkit // Paper - fix DamageSource API (revert to vanilla, no, just no, don't change this)
-+            serverLevel.explode(this, this.getX(), this.getY(), this.getZ(), event.getRadius(), event.getFire(), serverLevel.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING) && level().purpurConfig.creeperAllowGriefing ? Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE); // CraftBukkit // Paper - fix DamageSource API (revert to vanilla, no, just no, don't change this) // Purpur - Add enderman and creeper griefing controls
++            serverLevel.explode(this, this.getX(), this.getY(), this.getZ(), event.getRadius(), event.getFire(), serverLevel.getGameRules().get(net.minecraft.world.level.gamerules.GameRules.MOB_GRIEFING) && level().purpurConfig.creeperAllowGriefing ? Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE); // CraftBukkit // Paper - fix DamageSource API (revert to vanilla, no, just no, don't change this) // Purpur - Add enderman and creeper griefing controls
              this.spawnLingeringCloud();
              this.triggerOnDeathMobEffects(serverLevel, Entity.RemovalReason.KILLED);
              this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.EXPLODE); // CraftBukkit - add Bukkit remove cause

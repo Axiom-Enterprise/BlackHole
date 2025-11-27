@@ -5,8 +5,8 @@
      // CraftBukkit end
  
 +    // Purpur start - Gamemode extra permissions
-+    public boolean testPermission(int i, String bukkitPermission) {
-+        if (hasPermission(i, bukkitPermission)) {
++    public boolean testPermission(net.minecraft.server.permissions.Permission permission, String bukkitPermission) {
++        if (hasPermission(permission, bukkitPermission)) {
 +            return true;
 +        }
 +        net.kyori.adventure.text.Component permissionMessage = getLevel().getServer().server.permissionMessage();
@@ -37,11 +37,11 @@
 +        sendSuccess(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(message), broadcastToOps);
 +    }
 +
-+    public void sendSuccess(@Nullable net.kyori.adventure.text.Component message) {
++    public void sendSuccess(net.kyori.adventure.text.@Nullable Component message) {
 +        sendSuccess(message, false);
 +    }
 +
-+    public void sendSuccess(@Nullable net.kyori.adventure.text.Component message, boolean broadcastToOps) {
++    public void sendSuccess(net.kyori.adventure.text.@Nullable Component message, boolean broadcastToOps) {
 +        if (message == null) {
 +            return;
 +        }

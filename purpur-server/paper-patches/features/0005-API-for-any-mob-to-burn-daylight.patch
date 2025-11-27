@@ -6,10 +6,10 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 132e045f3885146a9a6510c6ed51fcb85e1c47ce..6ac0f9d208c41182b7c596ab809de41f07f265a9 100644
+index da588e4622aac635ecc2205ea09ceb9722cd59c9..d04ff11b293c458fd4f18f04336421e5e183c3f4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -125,6 +125,13 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -126,6 +126,13 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
      }
      // Purpur end - Fire Immunity API
  
@@ -24,7 +24,7 @@ index 132e045f3885146a9a6510c6ed51fcb85e1c47ce..6ac0f9d208c41182b7c596ab809de41f
          Preconditions.checkArgument(entity != null, "Unknown entity");
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 3feb3ee939ce3814aec289841bae7f928893b83e..a0f514ed2ddf450a78811bc918a594c30e759081 100644
+index d9129420acaf992c36e171d1b6d399a4b322fea6..d64c10a86a63dac5ce9babcd826e2ecc83b08423 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -1088,4 +1088,16 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {

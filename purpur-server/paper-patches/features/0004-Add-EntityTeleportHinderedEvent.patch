@@ -17,10 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 29c08d097b487b177426ec2ea78f8fe79d987bdc..b615c03d73071c923e0a3d1123810e110419318b 100644
+index 047bac50db20918ea71f5ccc0ec8c814647bdcde..8bee90c2757698249997520d8a9fe085aa0ee0a4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1390,6 +1390,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+@@ -1392,6 +1392,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
          // Minecraft does not currently support teleporting players between worlds with passengers.
          // It causes them to be dismounted, and causes weird behavior.
          if (location.getWorld() != this.getWorld() && !this.getHandle().passengers.isEmpty()) {

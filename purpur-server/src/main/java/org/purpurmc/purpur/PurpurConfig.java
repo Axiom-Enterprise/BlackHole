@@ -468,11 +468,6 @@ public class PurpurConfig {
         if (endermanShortHeight) EntityType.ENDERMAN.dimensions = EntityDimensions.scalable(0.6F, 1.9F);
     }
 
-    public static boolean allowWaterPlacementInTheEnd = true;
-    private static void allowWaterPlacementInEnd() {
-        allowWaterPlacementInTheEnd = getBoolean("settings.allow-water-placement-in-the-end", allowWaterPlacementInTheEnd);
-    }
-
     public static boolean beeCountPayload = false;
     private static void beeCountPayload() {
         beeCountPayload = getBoolean("settings.bee-count-payload", beeCountPayload);

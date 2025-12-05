@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable entity base attributes
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 63e847182bb030322e1e4b17b5f886ef58d975bb..a2879705bf847dfc1453206746377895beac5b4b 100644
+index be73b3c4c071e4094e55b30bc10278fdcee21ba7..983aea0bb8c581f06030adf74f0f7962f99c3c2a 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -295,6 +295,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -675,7 +675,7 @@ index d8a3b7d329757bb84ee4d53671c89f211e8581ab..ab44bc401438d589696d9f25ebaca0fc
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
 diff --git a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
-index 805efd86b09b2d1dbb5f2d51f3f5bfe67a1c0387..7f45de1bbabc711eaf9d9c33afac47687b75da45 100644
+index 0a75d3790a4bf4812e4f3b27ec50d67fdccf812d..cd888e070a72ff46d35a4425a0013c617b31e159 100644
 --- a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 @@ -133,6 +133,19 @@ public class HappyGhast extends Animal {
@@ -760,10 +760,10 @@ index 6a4d170cd1e4dde2af30895f9fbac9dd599d0602..7480a491533a47882eaf4b36c320adf4
      public @Nullable SpawnGroupData finalizeSpawn(
          ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData
 diff --git a/net/minecraft/world/entity/animal/pig/Pig.java b/net/minecraft/world/entity/animal/pig/Pig.java
-index afae5546eae084bafaa164705d4e6f09af3bc43a..55a862844907d7663323fb9c8de823aff5109c30 100644
+index 2a3fc6ad3a12a3cc9815b66b659e3c9ce2afa7a8..aeb9e57db2233bff20fa5208a679ac9bcb8d5026 100644
 --- a/net/minecraft/world/entity/animal/pig/Pig.java
 +++ b/net/minecraft/world/entity/animal/pig/Pig.java
-@@ -84,6 +84,14 @@ public class Pig extends Animal implements ItemSteerable {
+@@ -80,6 +80,14 @@ public class Pig extends Animal implements ItemSteerable {
      }
      // Purpur end - Ridables
  
@@ -1753,10 +1753,10 @@ index b2d322bee9343079c0c21cc7b47493df9cfd861e..d873ca9873e95f3a5869cb63a93b0643
  
      class ZombieAttackTurtleEggGoal extends RemoveBlockGoal {
 diff --git a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-index 65fa64cc24b6968c6f09a78d5f00750587bf9ef0..8c7eb8518a845efb344eba02e9fe804a5dcd5cb5 100644
+index d91a1aec302a93326a357311f1743fa87ec92fa3..0a02684ec00540b91a2a68e5787e51d15b3743a7 100644
 --- a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-@@ -89,6 +89,18 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+@@ -102,6 +102,18 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
      }
      // Purpur end - Ridables
  

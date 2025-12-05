@@ -455,7 +455,7 @@ index 0fe7f18390490ccf4e944ac3378150ebcc53991d..846b1a064398b455dbb2f05521870b45
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
 diff --git a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
-index bba0dc5e0fd28ce05adb2d4edb9c0c4366dd580e..ababd0d6b83963f8a9129c1a4de801dcf966db1a 100644
+index 828793aaa2992fd1077040309154f814b302476a..8034ce67266b6baab35c72eaebf5ad67fc1a29c6 100644
 --- a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 @@ -160,6 +160,13 @@ public class HappyGhast extends Animal {
@@ -509,10 +509,10 @@ index e97782bc8232120d4e7d1feeb8ca87fd37a1fcf9..bbe3977939004b7d77e38b14d48c9c26
      public @Nullable SpawnGroupData finalizeSpawn(
          ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData
 diff --git a/net/minecraft/world/entity/animal/pig/Pig.java b/net/minecraft/world/entity/animal/pig/Pig.java
-index 8d3ab29cd3eff0cbe08742201836382ba75ad50e..5b1ff534815217ba2a235df0f33f5fbfcd34bb10 100644
+index 020932539727739b54ed2f7899cbf11ad940f4df..45142ce558ef28455f9b74ca81d51b3ecdb7a458 100644
 --- a/net/minecraft/world/entity/animal/pig/Pig.java
 +++ b/net/minecraft/world/entity/animal/pig/Pig.java
-@@ -106,6 +106,13 @@ public class Pig extends Animal implements ItemSteerable {
+@@ -102,6 +102,13 @@ public class Pig extends Animal implements ItemSteerable {
      }
      // Purpur end - Toggle for water sensitive mob damage
  
@@ -1265,10 +1265,10 @@ index d32a831ba76f65c4719c2672ffaec81a861cc7e6..f14fc03577a94dc6bd6e536e819a32c2
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
 diff --git a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-index 8ed04b75cc0a2fa0d18eb7929be8f14dc5fb38b8..d5c6db7e598bf03ae1d61ecbf6a003372b96a1db 100644
+index 3da4f757d879f8b855c5d36688f1f5dd50fc88a0..a9a04a4c9cedf33b68c99b2aec12289e63fa156b 100644
 --- a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-@@ -125,6 +125,13 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+@@ -138,6 +138,13 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
      }
      // Purpur end - Toggle for water sensitive mob damage
  

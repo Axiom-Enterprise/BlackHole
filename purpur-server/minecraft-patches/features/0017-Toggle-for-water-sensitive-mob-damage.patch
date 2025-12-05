@@ -459,7 +459,7 @@ index f011369a67809d54230984a22a909bfea44f47f3..0fe7f18390490ccf4e944ac3378150eb
  
      @Override
 diff --git a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
-index d1b6f627860163b3e977e794720dbf36fcd83001..bba0dc5e0fd28ce05adb2d4edb9c0c4366dd580e 100644
+index 30204224ed83f6d3cfd64640b332b23cb74d379f..828793aaa2992fd1077040309154f814b302476a 100644
 --- a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 @@ -153,6 +153,13 @@ public class HappyGhast extends Animal {
@@ -513,10 +513,10 @@ index 0d62046cb33ed750ab27229fe4f0b43c3a1dd5f4..e97782bc8232120d4e7d1feeb8ca87fd
      public @Nullable SpawnGroupData finalizeSpawn(
          ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData
 diff --git a/net/minecraft/world/entity/animal/pig/Pig.java b/net/minecraft/world/entity/animal/pig/Pig.java
-index 824704bdf2412f142dd260633bc8e56f079f5ea4..8d3ab29cd3eff0cbe08742201836382ba75ad50e 100644
+index 0cb09a058c2d21b10677482792b230464ed9f951..020932539727739b54ed2f7899cbf11ad940f4df 100644
 --- a/net/minecraft/world/entity/animal/pig/Pig.java
 +++ b/net/minecraft/world/entity/animal/pig/Pig.java
-@@ -99,6 +99,13 @@ public class Pig extends Animal implements ItemSteerable {
+@@ -95,6 +95,13 @@ public class Pig extends Animal implements ItemSteerable {
      }
      // Purpur end - Make entity breeding times configurable
  
@@ -1299,10 +1299,10 @@ index 638642628c3dc9fa25d25c589029219c23d1e602..dfdf9ee98a25ec1f7a1f41326c981551
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
 diff --git a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-index a80788fc6c537fb0d1f400819c7910d11aeda8d5..8ed04b75cc0a2fa0d18eb7929be8f14dc5fb38b8 100644
+index 62f55763d95e496da8b8fcf7d95752777e323b48..3da4f757d879f8b855c5d36688f1f5dd50fc88a0 100644
 --- a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-@@ -118,6 +118,13 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+@@ -131,6 +131,13 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
      }
      // Purpur end - Configurable jockey options
  

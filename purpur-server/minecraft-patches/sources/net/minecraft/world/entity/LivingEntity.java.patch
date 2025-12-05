@@ -173,7 +173,7 @@
                  this.hurt(this.damageSources().flyIntoWall(), f);
              }
          }
-@@ -4671,6 +_,12 @@
+@@ -4666,6 +_,12 @@
              ? slot == EquipmentSlot.MAINHAND && this.canUseSlot(EquipmentSlot.MAINHAND)
              : slot == equippable.slot() && this.canUseSlot(equippable.slot()) && equippable.canBeEquippedBy(this.getType());
      }

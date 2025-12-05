@@ -120,10 +120,10 @@ index d873ca9873e95f3a5869cb63a93b0643a9c867dc..638642628c3dc9fa25d25c589029219c
                  }
              }
 diff --git a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-index 8c7eb8518a845efb344eba02e9fe804a5dcd5cb5..a80788fc6c537fb0d1f400819c7910d11aeda8d5 100644
+index 0a02684ec00540b91a2a68e5787e51d15b3743a7..62f55763d95e496da8b8fcf7d95752777e323b48 100644
 --- a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-@@ -101,6 +101,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+@@ -114,6 +114,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
      }
      // Purpur end - Configurable entity base attributes
  

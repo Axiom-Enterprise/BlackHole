@@ -18,19 +18,19 @@ index 05eb0c3273ffa1b5a1ebd8f8ae42c11830d755c7..49d3154afe2ca5789e63bdf972c79196
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 2b18da0e98ff30a81e88d0e99baa67acb339e4e5..c494e06e040f9335806279abd336564fe0f5e5f3 100644
+index fb65832d3d820aa48bb8fc0efecfd659bb8e2755..cf817b5bab8e936bd40477d40359c35f2bf1d5fc 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1831,6 +1831,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-             serverLevel.hasPhysicsEvent = org.bukkit.event.block.BlockPhysicsEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - BlockPhysicsEvent
+@@ -1832,6 +1832,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              serverLevel.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              serverLevel.updateLagCompensationTick(); // Paper - lag compensation
+             net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = serverLevel.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
 +            serverLevel.hasRidableMoveEvent = org.purpurmc.purpur.event.entity.RidableMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Purpur - Ridables
              profilerFiller.push(() -> serverLevel + " " + serverLevel.dimension().identifier());
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 008053d564869f208823f4d107823fed5fbaab66..6f86d2d29afa79ebe5c29d1d062089f1769b7767 100644
+index 394e5baaec5ae7730833d07cc4140ac498d7e4b1..f8fece07c5e1a721cfc826b48b0b4944b4859be9 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -230,6 +230,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -42,10 +42,10 @@ index 008053d564869f208823f4d107823fed5fbaab66..6f86d2d29afa79ebe5c29d1d062089f1
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index fba5c4e2ea656df6f487644f1c76e4245b0ba4ca..8d32717e8cc3c6880cb9ff10904114269dff7d67 100644
+index 9ec896ad8e95d7822095c42054e76e7a5db91481..2eba1b0ac8b4a0bb34d04b81c4c279db6e716b3b 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -767,6 +767,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -772,6 +772,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          this.trackEnteredOrExitedLavaOnVehicle();
          this.updatePlayerAttributes();
          this.advancements.flushDirty(this, true);
@@ -75,10 +75,10 @@ index 4b4a4698673725b058072034fb525eeb941c0489..b89c73e74216333f5ac70ee9c80bdbea
                                      if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 4100869ad757a784a1096c1997707b1b8715ce0b..56a066c5452ee9fc16d176df46ecfbd9584a3783 100644
+index c133b6796c0251500801b2e41df9ae4b38d111a1..468df93a0302f200c2bd5e9bc65feccdd8649bf3 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -3369,6 +3369,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -3371,6 +3371,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
  
                  this.passengers = ImmutableList.copyOf(list);
              }
@@ -92,7 +92,7 @@ index 4100869ad757a784a1096c1997707b1b8715ce0b..56a066c5452ee9fc16d176df46ecfbd9
          }
      }
  
-@@ -3409,6 +3416,14 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -3411,6 +3418,14 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index 4100869ad757a784a1096c1997707b1b8715ce0b..56a066c5452ee9fc16d176df46ecfbd9
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5460,4 +5475,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -5462,4 +5477,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
@@ -153,7 +153,7 @@ index 4100869ad757a784a1096c1997707b1b8715ce0b..56a066c5452ee9fc16d176df46ecfbd9
 +    // Purpur end - Ridables
  }
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index cc5d69971d56b3f78284a03b885e3539b228a10a..63e847182bb030322e1e4b17b5f886ef58d975bb 100644
+index 64e15642d556700b1ff4c6ab3a4acea48b3d8edd..be73b3c4c071e4094e55b30bc10278fdcee21ba7 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -244,9 +244,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -2025,7 +2025,7 @@ index c474b69dd4e2c7893d51627403425e9fd38042ef..d8a3b7d329757bb84ee4d53671c89f21
      }
  
 diff --git a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
-index ba31826f81d91d0c2d1a377d4e855a0be4206d7b..805efd86b09b2d1dbb5f2d51f3f5bfe67a1c0387 100644
+index 5a4a96895c1d2f7538bf644dd133645bc831b582..0a75d3790a4bf4812e4f3b27ec50d67fdccf812d 100644
 --- a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 @@ -126,6 +126,13 @@ public class HappyGhast extends Animal {
@@ -2222,10 +2222,10 @@ index 0337ddcd664cd0329d98286214d1aa4daf83e1ea..6a4d170cd1e4dde2af30895f9fbac9dd
          this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
          this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0, 5.0F, 1.0F));
 diff --git a/net/minecraft/world/entity/animal/pig/Pig.java b/net/minecraft/world/entity/animal/pig/Pig.java
-index 481d365f6f1f60ca0870a8de2ffc25d4fac11059..afae5546eae084bafaa164705d4e6f09af3bc43a 100644
+index 943bd459554e9f3374978e595ba369a479d44941..2a3fc6ad3a12a3cc9815b66b659e3c9ce2afa7a8 100644
 --- a/net/minecraft/world/entity/animal/pig/Pig.java
 +++ b/net/minecraft/world/entity/animal/pig/Pig.java
-@@ -67,9 +67,27 @@ public class Pig extends Animal implements ItemSteerable {
+@@ -63,9 +63,27 @@ public class Pig extends Animal implements ItemSteerable {
          super(type, level);
      }
  
@@ -5020,10 +5020,10 @@ index c86fb77485a038b600877432c828dc7940cf26f4..b2d322bee9343079c0c21cc7b47493df
      }
  
 diff --git a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-index ffcf14288d40b9bbff7f1d1d4c2e19a88e248365..65fa64cc24b6968c6f09a78d5f00750587bf9ef0 100644
+index c73419613c67685dd78d7aa0a959267b4b9c1ae8..d91a1aec302a93326a357311f1743fa87ec92fa3 100644
 --- a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-@@ -72,6 +72,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
+@@ -85,6 +85,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
          super(type, level);
      }
  

@@ -22,10 +22,10 @@ index 35aec6c3aa2f09f13954fda67902b3c975f566e3..fff139abc9341f3ab2dac568a922235d
              // CraftBukkit end - call EntityBreedEvent
              level.broadcastEntityEvent(breedOffspring, EntityEvent.LOVE_HEARTS);
 diff --git a/net/minecraft/world/entity/animal/Animal.java b/net/minecraft/world/entity/animal/Animal.java
-index ad90b0cce0e0a3e30d882c24a7286b9892ba4214..56979ad8fd7ebb15a6fc4e2144a8bfade4ca2969 100644
+index 2e7e7c1913f5cbc20ce116c5ae3e185fc83094c0..53d04c412d36015a30ae2680f61651db6acbf2f2 100644
 --- a/net/minecraft/world/entity/animal/Animal.java
 +++ b/net/minecraft/world/entity/animal/Animal.java
-@@ -40,6 +40,7 @@ public abstract class Animal extends AgeableMob {
+@@ -46,6 +46,7 @@ public abstract class Animal extends AgeableMob {
      public int inLove = 0;
      public @Nullable EntityReference<ServerPlayer> loveCause;
      public @Nullable ItemStack breedItem; // CraftBukkit - Add breedItem variable
@@ -33,7 +33,7 @@ index ad90b0cce0e0a3e30d882c24a7286b9892ba4214..56979ad8fd7ebb15a6fc4e2144a8bfad
  
      protected Animal(EntityType<? extends Animal> type, Level level) {
          super(type, level);
-@@ -265,8 +266,10 @@ public abstract class Animal extends AgeableMob {
+@@ -271,8 +272,10 @@ public abstract class Animal extends AgeableMob {
              player.awardStat(Stats.ANIMALS_BRED);
              CriteriaTriggers.BRED_ANIMALS.trigger(player, this, animal, baby);
          } // Paper - Call EntityBreedEvent
@@ -402,7 +402,7 @@ index 6e4d611c959960e8d13f79704c176b41ea5c12c4..07ba57ae845024e0f2fa03a68e126ec7
      protected Brain.Provider<Goat> brainProvider() {
          return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
 diff --git a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
-index 7f45de1bbabc711eaf9d9c33afac47687b75da45..d1b6f627860163b3e977e794720dbf36fcd83001 100644
+index cd888e070a72ff46d35a4425a0013c617b31e159..30204224ed83f6d3cfd64640b332b23cb74d379f 100644
 --- a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 +++ b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
 @@ -146,6 +146,13 @@ public class HappyGhast extends Animal {
@@ -456,10 +456,10 @@ index 7480a491533a47882eaf4b36c320adf45ebfb190..0d62046cb33ed750ab27229fe4f0b43c
      public @Nullable SpawnGroupData finalizeSpawn(
          ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData
 diff --git a/net/minecraft/world/entity/animal/pig/Pig.java b/net/minecraft/world/entity/animal/pig/Pig.java
-index 55a862844907d7663323fb9c8de823aff5109c30..824704bdf2412f142dd260633bc8e56f079f5ea4 100644
+index aeb9e57db2233bff20fa5208a679ac9bcb8d5026..0cb09a058c2d21b10677482792b230464ed9f951 100644
 --- a/net/minecraft/world/entity/animal/pig/Pig.java
 +++ b/net/minecraft/world/entity/animal/pig/Pig.java
-@@ -92,6 +92,13 @@ public class Pig extends Animal implements ItemSteerable {
+@@ -88,6 +88,13 @@ public class Pig extends Animal implements ItemSteerable {
      }
      // Purpur end - Configurable entity base attributes
  

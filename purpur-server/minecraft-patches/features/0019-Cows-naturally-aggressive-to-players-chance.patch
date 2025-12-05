@@ -5,24 +5,24 @@ Subject: [PATCH] Cows naturally aggressive to players chance
 
 
 diff --git a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index 48be4530b25d273032ff1a055406c7cca928d678..65f48ced39fe3bffaea34b1f8d83374bfd5cc1c8 100644
+index 9bc35ca825e300e82d2d108de70622f8f453bff6..2db06c40b4a1841e96d02e3d90e2c98a6f709d30 100644
 --- a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-@@ -131,7 +131,7 @@ public class DefaultAttributes {
+@@ -135,7 +135,7 @@ public class DefaultAttributes {
          .put(EntityType.LLAMA, Llama.createAttributes().build())
          .put(EntityType.MAGMA_CUBE, MagmaCube.createAttributes().build())
          .put(EntityType.MANNEQUIN, LivingEntity.createLivingAttributes().build())
 -        .put(EntityType.MOOSHROOM, Cow.createAttributes().build())
 +        .put(EntityType.MOOSHROOM, net.minecraft.world.entity.animal.AbstractCow.createAttributes().build()) // Purpur - Cows naturally aggressive to players chance
          .put(EntityType.MULE, AbstractChestedHorse.createBaseChestedHorseAttributes().build())
+         .put(EntityType.NAUTILUS, Nautilus.createAttributes().build())
          .put(EntityType.OCELOT, Ocelot.createAttributes().build())
-         .put(EntityType.PANDA, Panda.createAttributes().build())
-diff --git a/net/minecraft/world/entity/animal/Cow.java b/net/minecraft/world/entity/animal/Cow.java
-index a71b6c8a0c48d9c7121e7d29cff6d388cb2df09f..150ba89fee07dcb67550165597203f572d901f04 100644
---- a/net/minecraft/world/entity/animal/Cow.java
-+++ b/net/minecraft/world/entity/animal/Cow.java
-@@ -23,6 +23,8 @@ import net.minecraft.world.level.storage.ValueInput;
- import net.minecraft.world.level.storage.ValueOutput;
+diff --git a/net/minecraft/world/entity/animal/cow/Cow.java b/net/minecraft/world/entity/animal/cow/Cow.java
+index bb8c75d20e6a1300d68ae75233962bdc26736c77..9fa18b190091bbfcb9a65d8d35f68fc7375f504f 100644
+--- a/net/minecraft/world/entity/animal/cow/Cow.java
++++ b/net/minecraft/world/entity/animal/cow/Cow.java
+@@ -23,6 +23,8 @@ import net.minecraft.world.level.storage.ValueOutput;
+ import org.jspecify.annotations.Nullable;
  
  public class Cow extends AbstractCow {
 +    private boolean isNaturallyAggressiveToPlayers; // Purpur - Cows naturally aggressive to players chance
@@ -69,7 +69,7 @@ index a71b6c8a0c48d9c7121e7d29cff6d388cb2df09f..150ba89fee07dcb67550165597203f57
      @Override
      protected void readAdditionalSaveData(ValueInput input) {
          super.readAdditionalSaveData(input);
-@@ -101,6 +117,7 @@ public class Cow extends AbstractCow {
+@@ -100,6 +116,7 @@ public class Cow extends AbstractCow {
      public SpawnGroupData finalizeSpawn(
          ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData
      ) {

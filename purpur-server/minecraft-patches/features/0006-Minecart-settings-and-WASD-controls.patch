@@ -5,10 +5,10 @@ Subject: [PATCH] Minecart settings and WASD controls
 
 
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 3624c08509131b1acbeaffc8c90f8b52d16d8d52..eb234fa15325d865ccd7c91026f83911a2c422d5 100644
+index 8d32717e8cc3c6880cb9ff10904114269dff7d67..9cb83c71cb0afa8dc862d06ae9da643874ce2c95 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -1314,6 +1314,11 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1306,6 +1306,11 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          } else {
              // Purpur start - Add boat fall damage config
              if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_FALL)) {
@@ -17,14 +17,14 @@ index 3624c08509131b1acbeaffc8c90f8b52d16d8d52..eb234fa15325d865ccd7c91026f83911
 +                    return false;
 +                }
 +                // Purpur end - Minecart settings and WASD controls
-                 if (getRootVehicle() instanceof net.minecraft.world.entity.vehicle.Boat && !level().purpurConfig.boatsDoFallDamage) {
+                 if (getRootVehicle() instanceof net.minecraft.world.entity.vehicle.boat.Boat && !level().purpurConfig.boatsDoFallDamage) {
                      return false;
                  }
-diff --git a/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-index 3454506b2d7ada401600e2adccd462a15bd86723..0c7e3e821183eddce764f066fb8f34f9908623b5 100644
---- a/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-+++ b/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-@@ -102,6 +102,10 @@ public abstract class AbstractMinecart extends VehicleEntity {
+diff --git a/net/minecraft/world/entity/vehicle/minecart/AbstractMinecart.java b/net/minecraft/world/entity/vehicle/minecart/AbstractMinecart.java
+index 1123ec0038552e0b40774f4a433ff325695ea071..48099ae66045b6e78ec52832e3b972ac9c9bc246 100644
+--- a/net/minecraft/world/entity/vehicle/minecart/AbstractMinecart.java
++++ b/net/minecraft/world/entity/vehicle/minecart/AbstractMinecart.java
+@@ -105,6 +105,10 @@ public abstract class AbstractMinecart extends VehicleEntity {
      private double flyingY = 0.95;
      private double flyingZ = 0.95;
      public @Nullable Double maxSpeed;
@@ -35,7 +35,7 @@ index 3454506b2d7ada401600e2adccd462a15bd86723..0c7e3e821183eddce764f066fb8f34f9
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
      // CraftBukkit end
  
-@@ -110,8 +114,13 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -113,8 +117,13 @@ public abstract class AbstractMinecart extends VehicleEntity {
          this.blocksBuilding = true;
          if (useExperimentalMovement(level)) {
              this.behavior = new NewMinecartBehavior(this);
@@ -49,7 +49,7 @@ index 3454506b2d7ada401600e2adccd462a15bd86723..0c7e3e821183eddce764f066fb8f34f9
          }
      }
  
-@@ -276,6 +285,14 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -278,6 +287,14 @@ public abstract class AbstractMinecart extends VehicleEntity {
  
      @Override
      public void tick() {
@@ -64,7 +64,7 @@ index 3454506b2d7ada401600e2adccd462a15bd86723..0c7e3e821183eddce764f066fb8f34f9
          // CraftBukkit start
          double prevX = this.getX();
          double prevY = this.getY();
-@@ -389,15 +406,61 @@ public abstract class AbstractMinecart extends VehicleEntity {
+@@ -392,15 +409,61 @@ public abstract class AbstractMinecart extends VehicleEntity {
          this.behavior.moveAlongTrack(level);
      }
  
@@ -127,7 +127,7 @@ index 3454506b2d7ada401600e2adccd462a15bd86723..0c7e3e821183eddce764f066fb8f34f9
          this.move(MoverType.SELF, this.getDeltaMovement());
          if (!this.onGround()) {
 diff --git a/net/minecraft/world/item/MinecartItem.java b/net/minecraft/world/item/MinecartItem.java
-index e116ba0c2a1335ad009abc75675bd339dc034bd2..19fb2091ed57f10af52116519a5ac31dd4e9aeb0 100644
+index 3b511139985ea1646661ae0a6bcd1f0e386561e7..3a65e1a0b914d113feb727833803ece8f3b2e020 100644
 --- a/net/minecraft/world/item/MinecartItem.java
 +++ b/net/minecraft/world/item/MinecartItem.java
 @@ -30,8 +30,9 @@ public class MinecartItem extends Item {

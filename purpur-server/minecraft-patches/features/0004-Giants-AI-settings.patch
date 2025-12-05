@@ -5,7 +5,7 @@ Subject: [PATCH] Giants AI settings
 
 
 diff --git a/net/minecraft/world/entity/monster/Giant.java b/net/minecraft/world/entity/monster/Giant.java
-index e673f488bfab9648075857bc40e1339f974a903c..f5565d314ded2145219debc446c7ddcb93b660e9 100644
+index 416bb85fc87b5f9e372f33df8fe27f12e83834b9..e6fb01e4e2146d6c6971d80af0f101d20c03950a 100644
 --- a/net/minecraft/world/entity/monster/Giant.java
 +++ b/net/minecraft/world/entity/monster/Giant.java
 @@ -30,8 +30,25 @@ public class Giant extends Monster {

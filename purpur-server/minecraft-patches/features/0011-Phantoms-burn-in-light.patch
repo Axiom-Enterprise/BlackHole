@@ -4,32 +4,35 @@ Date: Sun, 12 Apr 2020 20:41:59 -0700
 Subject: [PATCH] Phantoms burn in light
 
 
+diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
+index d8faed1fc3ead010f0abd8ffdf3428881472a25c..a3569262099dce237c3feb5e29d24bf47f4c1e38 100644
+--- a/net/minecraft/world/entity/Mob.java
++++ b/net/minecraft/world/entity/Mob.java
+@@ -581,7 +581,10 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+     }
+ 
+     private void burnUndead() {
+-        if (this.isAlive() && this.isSunBurnTick()) {
++        // Purpur start - Phantoms burn in light
++        boolean burnFromLightSource = this.level().purpurConfig.phantomBurnInLight > 0 && this instanceof net.minecraft.world.entity.monster.Phantom && this.level().getMaxLocalRawBrightness(blockPosition()) >= this.level().purpurConfig.phantomBurnInLight;
++        if (this.isAlive() && (this.isSunBurnTick() || burnFromLightSource)) {
++            // Purpur end - Phantoms burn in light
+             EquipmentSlot equipmentSlot = this.sunProtectionSlot();
+             ItemStack itemBySlot = this.getItemBySlot(equipmentSlot);
+             if (!itemBySlot.isEmpty()) {
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index 824b100154c82d8579833a4bebd7481934ba428a..8ebe339c91d61166078291dc9f5f70dd596cc58f 100644
+index 7077beafe2251fcc4e37578091bfaa02714268b9..e55470432cebddec43a7d63230eb4391a3d42f8e 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
-@@ -56,6 +56,7 @@ public class Phantom extends Mob implements Enemy {
-     public java.util.UUID spawningEntity;
+@@ -54,6 +54,7 @@ public class Phantom extends Mob implements Enemy {
+     public java.util.@Nullable UUID spawningEntity;
      public boolean shouldBurnInDay = true;
      // Paper end
 +    private static final net.minecraft.world.item.crafting.Ingredient TORCH = net.minecraft.world.item.crafting.Ingredient.of(net.minecraft.world.item.Items.TORCH, net.minecraft.world.item.Items.SOUL_TORCH); // Purpur - Phantoms burn in light
  
      public Phantom(EntityType<? extends Phantom> type, Level level) {
          super(type, level);
-@@ -239,7 +240,11 @@ public class Phantom extends Mob implements Enemy {
- 
-     @Override
-     public void aiStep() {
--        if (this.isAlive() && this.shouldBurnInDay && this.isSunBurnTick()) { // Paper - shouldBurnInDay API
-+        // Purpur start - Phantoms burn in light
-+        boolean burnFromDaylight = this.shouldBurnInDay && this.isSunBurnTick() && this.level().purpurConfig.phantomBurnInDaylight;
-+        boolean burnFromLightSource = this.level().purpurConfig.phantomBurnInLight > 0 && this.level().getMaxLocalRawBrightness(blockPosition()) >= this.level().purpurConfig.phantomBurnInLight;
-+        if (this.isAlive() && (burnFromDaylight || burnFromLightSource)) { // Paper - shouldBurnInDay API
-+        // Purpur end - Phantoms burn in light
-             if (getRider() == null || !this.isControllable()) // Purpur - Ridables
-             this.igniteForSeconds(8.0F);
-         }
-@@ -371,6 +376,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -366,6 +367,7 @@ public class Phantom extends Mob implements Enemy {
                  List<Player> nearbyPlayers = serverLevel.getNearbyPlayers(
                      this.attackTargeting, Phantom.this, Phantom.this.getBoundingBox().inflate(16.0, 64.0, 16.0)
                  );
@@ -37,7 +40,7 @@ index 824b100154c82d8579833a4bebd7481934ba428a..8ebe339c91d61166078291dc9f5f70dd
                  if (!nearbyPlayers.isEmpty()) {
                      nearbyPlayers.sort(Comparator.<Player, Double>comparing(Entity::getY).reversed());
  
-@@ -741,6 +747,12 @@ public class Phantom extends Mob implements Enemy {
+@@ -736,6 +738,12 @@ public class Phantom extends Mob implements Enemy {
                  return false;
              } else if (!target.isAlive()) {
                  return false;

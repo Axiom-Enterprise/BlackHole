@@ -5,10 +5,10 @@ Subject: [PATCH] Barrels and enderchests 6 rows
 
 
 diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
-index 0c3451caa323ce2553c0d7ee00e7bf8cc8766b2c..1328cc6402134042d5890bedaaacf6e9807eb5ec 100644
+index 80986de9222010f01982cfdab58649429d457778..22f768d805bfc1c6e6e50449e1d275c3195036ad 100644
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -883,6 +883,27 @@ public abstract class PlayerList {
+@@ -887,6 +887,27 @@ public abstract class PlayerList {
          player.getBukkitEntity().recalculatePermissions(); // CraftBukkit
          this.server.getCommands().sendCommands(player);
          } // Paper - Add sendOpLevel API
@@ -37,10 +37,10 @@ index 0c3451caa323ce2553c0d7ee00e7bf8cc8766b2c..1328cc6402134042d5890bedaaacf6e9
  
      // Paper start - whitelist verify event / login event
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index f279a628d6627080743d9f4c49ff8bfd13494fed..f30cb0815e757b54ba98ac1b226cf657448512e0 100644
+index 4bf98783e7199bc5c7c05c953729523b0b75b2b5..c4039b1ba46ea72c7cd1cbed9e8edbffc5d5e1cc 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
-@@ -183,6 +183,7 @@ public abstract class Player extends Avatar implements ContainerUser {
+@@ -181,6 +181,7 @@ public abstract class Player extends Avatar implements ContainerUser {
      public net.kyori.adventure.util.TriState flyingFallDamage = net.kyori.adventure.util.TriState.NOT_SET; // Paper - flying fall damage
      public int burpDelay = 0; // Purpur - Burp delay
      public boolean canPortalInstant = false; // Purpur - Add portal permission bypass
@@ -84,10 +84,10 @@ index 1fb3a34ea872dec73658fac59743e46ef8db5151..4c3b8d7ba777916ffc5ad0feccffbc76
          return new ChestMenu(MenuType.GENERIC_9x6, containerId, playerInventory, container, 6);
      }
 diff --git a/net/minecraft/world/inventory/PlayerEnderChestContainer.java b/net/minecraft/world/inventory/PlayerEnderChestContainer.java
-index 8cf089874a75735be690ab72a01264bac5ff793d..611f78f93b70674b53c025d9151dacb54af3e803 100644
+index 9749909b8253b432bb2f7fba2cd8ff17a8579b30..2c65c6428cb5925f8505cb0836b359f7e18c64eb 100644
 --- a/net/minecraft/world/inventory/PlayerEnderChestContainer.java
 +++ b/net/minecraft/world/inventory/PlayerEnderChestContainer.java
-@@ -27,11 +27,18 @@ public class PlayerEnderChestContainer extends SimpleContainer {
+@@ -26,11 +26,18 @@ public class PlayerEnderChestContainer extends SimpleContainer {
      }
  
      public PlayerEnderChestContainer(Player owner) {
@@ -108,7 +108,7 @@ index 8cf089874a75735be690ab72a01264bac5ff793d..611f78f93b70674b53c025d9151dacb5
          this.activeChest = enderChestBlockEntity;
      }
 diff --git a/net/minecraft/world/level/block/EnderChestBlock.java b/net/minecraft/world/level/block/EnderChestBlock.java
-index 4fe246e457bd9befcdcb6e2301bd55e949322d6f..5189125f4a66590b7842d19cd940de659d24c6a4 100644
+index 383e8285d366c7f594b0b4ff55b367970c9b69e4..077edf449d4faa41abafb94ac41dfe822f449d04 100644
 --- a/net/minecraft/world/level/block/EnderChestBlock.java
 +++ b/net/minecraft/world/level/block/EnderChestBlock.java
 @@ -85,8 +85,8 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i

@@ -5,10 +5,10 @@ Subject: [PATCH] Implement elytra settings
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index aeaf62b438fccc628ae3e8316d7965cdbea75731..2d0b13f76c2890eeef2c701a17d535e157195b29 100644
+index a2879705bf847dfc1453206746377895beac5b4b..e04320155173caa8ce8f998477f36a6b36de935c 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -3753,7 +3753,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3883,7 +3883,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                          .filter(equipmentSlot1 -> canGlideUsing(this.getItemBySlot(equipmentSlot1), equipmentSlot1))
                          .toList();
                      EquipmentSlot equipmentSlot = Util.getRandom(list, this.random);
@@ -29,10 +29,10 @@ index aeaf62b438fccc628ae3e8316d7965cdbea75731..2d0b13f76c2890eeef2c701a17d535e1
  
                  this.gameEvent(GameEvent.ELYTRA_GLIDE);
 diff --git a/net/minecraft/world/item/FireworkRocketItem.java b/net/minecraft/world/item/FireworkRocketItem.java
-index f86b0579e707ecfa5c2074ea22bbe383b5e11841..43a6d9bd3a2e301e3957e9933663c3aff43722d6 100644
+index 2c597e20c1ff587f2eadef600bedb9e01b999bbf..1cad4997455ab1a17fc38da06a9ca0ec5c21b062 100644
 --- a/net/minecraft/world/item/FireworkRocketItem.java
 +++ b/net/minecraft/world/item/FireworkRocketItem.java
-@@ -72,6 +72,17 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
+@@ -73,6 +73,17 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
                      if (player.dropAllLeashConnections(null)) {
                          level.playSound(null, player, SoundEvents.LEAD_BREAK, SoundSource.NEUTRAL, 1.0F, 1.0F);
                      }
@@ -51,10 +51,10 @@ index f86b0579e707ecfa5c2074ea22bbe383b5e11841..43a6d9bd3a2e301e3957e9933663c3af
                          itemInHand.shrink(1); // Moved up from below
                      } else {
 diff --git a/net/minecraft/world/item/ItemStack.java b/net/minecraft/world/item/ItemStack.java
-index b367b94ba6977b94c7f46c9f02ed6c3fc5284185..e4bcd4a3cbbc8942d52e5f3c7a4fb1572fdef91c 100644
+index 54f1ab1e63064c2b26993db5390f25be9809c5a8..70999b29944c821d8e165333b833fddba66c3f60 100644
 --- a/net/minecraft/world/item/ItemStack.java
 +++ b/net/minecraft/world/item/ItemStack.java
-@@ -697,6 +697,14 @@ public final class ItemStack implements DataComponentHolder {
+@@ -702,6 +702,14 @@ public final class ItemStack implements DataComponentHolder {
                  org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerItemBreakEvent(serverPlayer, this); // Paper - Add EntityDamageItemEvent
              }
              // CraftBukkit end
@@ -70,7 +70,7 @@ index b367b94ba6977b94c7f46c9f02ed6c3fc5284185..e4bcd4a3cbbc8942d52e5f3c7a4fb157
              onBreak.accept(item);
          }
 diff --git a/net/minecraft/world/item/TridentItem.java b/net/minecraft/world/item/TridentItem.java
-index 44b616ad2740d6ba9c8b2579ecd14edde64fffbb..8f7e6ac2ccb845133f6af69d2aac9b8674b1cc56 100644
+index b87861c089f849e855d10c15ede53fd7c9e6a47c..5dcac1c181ce0f811152bb32fd84c39fbcaf812f 100644
 --- a/net/minecraft/world/item/TridentItem.java
 +++ b/net/minecraft/world/item/TridentItem.java
 @@ -126,6 +126,17 @@ public class TridentItem extends Item implements ProjectileItem {

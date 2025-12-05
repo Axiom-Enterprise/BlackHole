@@ -87,7 +87,7 @@
 +        if (!inactive) {
 +            this.getBrain().tick(level, this); // Paper - EAR 2
 +        }
-+        else if (this.isLobotomized && shouldRestock()) restock();
++        else if (this.isLobotomized && shouldRestock(level)) restock();
 +        // Purpur end - Lobotomize stuck villagers
          profilerFiller.pop();
          if (this.assignProfessionWhenSpawned) {
@@ -122,7 +122,7 @@
      }
  
      public void spawnGolemIfNeeded(ServerLevel level, long gameTime, int minVillagerAmount) {
-+        if (level.purpurConfig.villagerSpawnIronGolemRadius > 0 && level.getEntitiesOfClass(net.minecraft.world.entity.animal.IronGolem.class, getBoundingBox().inflate(level.purpurConfig.villagerSpawnIronGolemRadius)).size() > level.purpurConfig.villagerSpawnIronGolemLimit) return; // Purpur - Implement configurable search radius for villagers to spawn iron golems
++        if (level.purpurConfig.villagerSpawnIronGolemRadius > 0 && level.getEntitiesOfClass(net.minecraft.world.entity.animal.golem.IronGolem.class, getBoundingBox().inflate(level.purpurConfig.villagerSpawnIronGolemRadius)).size() > level.purpurConfig.villagerSpawnIronGolemLimit) return; // Purpur - Implement configurable search radius for villagers to spawn iron golems
          if (this.wantsToSpawnGolem(gameTime)) {
              AABB aabb = this.getBoundingBox().inflate(10.0, 10.0, 10.0);
              List<Villager> entitiesOfClass = level.getEntitiesOfClass(Villager.class, aabb);

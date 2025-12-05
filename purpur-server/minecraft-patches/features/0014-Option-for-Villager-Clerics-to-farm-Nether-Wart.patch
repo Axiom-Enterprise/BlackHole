@@ -108,7 +108,7 @@ index bb3ac5297860c8af6e213d10fdf5144086e9474b..0e72601781235119d62fe74420153b98
          } else {
              workAtPoi = new WorkAtPoi();
 diff --git a/net/minecraft/world/entity/ai/sensing/SecondaryPoiSensor.java b/net/minecraft/world/entity/ai/sensing/SecondaryPoiSensor.java
-index 39a9e9a6f6dfddbf47a7f96150ef832efe61f89e..bcce12389c1cd290066bd86b85355292c22e921a 100644
+index 39a9e9a6f6dfddbf47a7f96150ef832efe61f89e..c268817b170bd54898bb5f8c2e2e12c0faa7eb1e 100644
 --- a/net/minecraft/world/entity/ai/sensing/SecondaryPoiSensor.java
 +++ b/net/minecraft/world/entity/ai/sensing/SecondaryPoiSensor.java
 @@ -22,6 +22,13 @@ public class SecondaryPoiSensor extends Sensor<Villager> {
@@ -117,7 +117,7 @@ index 39a9e9a6f6dfddbf47a7f96150ef832efe61f89e..bcce12389c1cd290066bd86b85355292
      protected void doTick(ServerLevel level, Villager entity) {
 +        // Purpur start - Option for Villager Clerics to farm Nether Wart - make sure clerics don't wander to soul sand when the option is off
 +        Brain<?> brain = entity.getBrain();
-+        if (!level.purpurConfig.villagerClericsFarmWarts && entity.getVillagerData().profession().is(net.minecraft.world.entity.npc.VillagerProfession.CLERIC)) {
++        if (!level.purpurConfig.villagerClericsFarmWarts && entity.getVillagerData().profession().is(net.minecraft.world.entity.npc.villager.VillagerProfession.CLERIC)) {
 +            brain.eraseMemory(MemoryModuleType.SECONDARY_JOB_SITE);
 +            return;
 +        }
@@ -135,7 +135,7 @@ index 39a9e9a6f6dfddbf47a7f96150ef832efe61f89e..bcce12389c1cd290066bd86b85355292
              brain.setMemory(MemoryModuleType.SECONDARY_JOB_SITE, list);
          } else {
 diff --git a/net/minecraft/world/entity/npc/villager/Villager.java b/net/minecraft/world/entity/npc/villager/Villager.java
-index bad2d93118b04d5b41626bf75a05cf469d6fd2e8..810f1dc6506ca037363060aec1c90b9fc1602cd8 100644
+index 02836bd2e8fda563877d3014ab839734aebc7457..ed6642023fccbc8f825d7c5c206d73ffd666f0f9 100644
 --- a/net/minecraft/world/entity/npc/villager/Villager.java
 +++ b/net/minecraft/world/entity/npc/villager/Villager.java
 @@ -315,7 +315,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

@@ -196,7 +196,7 @@
 +    public boolean isScissors(ItemStack stack) {
 +        if (!stack.is(Items.SHEARS)) return false;
 +
-+        ResourceLocation itemModelReference = stack.get(net.minecraft.core.component.DataComponents.ITEM_MODEL);
++        Identifier itemModelReference = stack.get(net.minecraft.core.component.DataComponents.ITEM_MODEL);
 +        if (itemModelReference != null && itemModelReference.equals(this.player.level().purpurConfig.dontRunWithScissorsItemModelReference)) return true;
 +
 +        return stack.getOrDefault(DataComponents.CUSTOM_MODEL_DATA, net.minecraft.world.item.component.CustomModelData.EMPTY).equals(net.minecraft.world.item.component.CustomModelData.EMPTY);

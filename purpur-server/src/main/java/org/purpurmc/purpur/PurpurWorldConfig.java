@@ -2359,6 +2359,27 @@ public class PurpurWorldConfig {
         muleAlwaysDropExp = getBoolean("mobs.mule.always-drop-exp", muleAlwaysDropExp);
     }
 
+    // public boolean nautilusRidable = false;
+    // public boolean nautilusRidableInWater = true;
+    // public boolean nautilusControllable = true;
+    // public double nautilusMaxHealth = 10.0D;
+    // public double nautilusScale = 1.0D;
+    public int nautilusBreedingTicks = 6000;
+    // public boolean nautilusTakeDamageFromWater = false;
+    // public boolean nautilusAlwaysDropExp = false;
+    // public boolean nautilusSpawnUnderSeaLevel = false;
+    private void nautilusSettings() {
+        // nautilusRidable = getBoolean("mobs.nautilus.ridable", nautilusRidable);
+        // nautilusRidableInWater = getBoolean("mobs.nautilus.ridable-in-water", nautilusRidableInWater);
+        // nautilusControllable = getBoolean("mobs.nautilus.controllable", nautilusControllable);
+        // nautilusMaxHealth = getDouble("mobs.nautilus.attributes.max_health", nautilusMaxHealth);
+        // nautilusScale = Mth.clamp(getDouble("mobs.nautilus.attributes.scale", nautilusScale), 0.0625D, 16.0D);
+        nautilusBreedingTicks = getInt("mobs.nautilus.breeding-delay-ticks", nautilusBreedingTicks);
+        // nautilusTakeDamageFromWater = getBoolean("mobs.nautilus.takes-damage-from-water", nautilusTakeDamageFromWater);
+        // nautilusAlwaysDropExp = getBoolean("mobs.nautilus.always-drop-exp", nautilusAlwaysDropExp);
+        // nautilusSpawnUnderSeaLevel = getBoolean("mobs.nautilus.spawn-below-sea-level", nautilusSpawnUnderSeaLevel);
+    }
+
     public boolean ocelotRidable = false;
     public boolean ocelotRidableInWater = true;
     public boolean ocelotControllable = true;

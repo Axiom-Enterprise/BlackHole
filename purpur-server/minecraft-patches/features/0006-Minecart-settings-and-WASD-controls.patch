@@ -5,7 +5,7 @@ Subject: [PATCH] Minecart settings and WASD controls
 
 
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 2eba1b0ac8b4a0bb34d04b81c4c279db6e716b3b..5569223c99ad6563687f67f899d43189fd81776e 100644
+index 2eba1b0ac8b4a0bb34d04b81c4c279db6e716b3b..01efe1fbd185ebd3a60c6bbb7aa2d82817506e7d 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -1311,6 +1311,11 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
@@ -13,7 +13,7 @@ index 2eba1b0ac8b4a0bb34d04b81c4c279db6e716b3b..5569223c99ad6563687f67f899d43189
              // Purpur start - Add boat fall damage config
              if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_FALL)) {
 +                // Purpur start - Minecart settings and WASD controls
-+                if (getRootVehicle() instanceof net.minecraft.world.entity.vehicle.AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) {
++                if (getRootVehicle() instanceof AbstractMinecart && level().purpurConfig.minecartControllable && !level().purpurConfig.minecartControllableFallDamage) {
 +                    return false;
 +                }
 +                // Purpur end - Minecart settings and WASD controls

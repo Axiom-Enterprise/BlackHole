@@ -201,7 +201,7 @@
              case NONE -> Explosion.BlockInteraction.KEEP;
              case BLOCK -> this.getDestroyType(GameRules.BLOCK_EXPLOSION_DROP_DECAY);
 -            case MOB -> this.getGameRules().get(GameRules.MOB_GRIEFING)
-+            case MOB -> ((source instanceof net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball) ? this.getGameRules().getBoolean(GameRules.MOB_GRIEFING, this.purpurConfig.fireballsMobGriefingOverride) : this.getGameRules().get(GameRules.MOB_GRIEFING)) // Purpur - Add mobGriefing override to everything affected
++            case MOB -> ((source instanceof net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball) ? this.getGameRules().get(GameRules.MOB_GRIEFING, this.purpurConfig.fireballsMobGriefingOverride) : this.getGameRules().get(GameRules.MOB_GRIEFING)) // Purpur - Add mobGriefing override to everything affected
                  ? this.getDestroyType(GameRules.MOB_EXPLOSION_DROP_DECAY)
                  : Explosion.BlockInteraction.KEEP;
              case TNT -> this.getDestroyType(GameRules.TNT_EXPLOSION_DROP_DECAY);

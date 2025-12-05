@@ -30,7 +30,7 @@ index fb65832d3d820aa48bb8fc0efecfd659bb8e2755..cf817b5bab8e936bd40477d40359c35f
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 394e5baaec5ae7730833d07cc4140ac498d7e4b1..f8fece07c5e1a721cfc826b48b0b4944b4859be9 100644
+index c18844ca7c9840f28fe5167d67387ebaf758a9da..c99ba8c3eba14efcf7906fe2b42e4db1c73c90fe 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -230,6 +230,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -62,7 +62,7 @@ index 9ec896ad8e95d7822095c42054e76e7a5db91481..2eba1b0ac8b4a0bb34d04b81c4c279db
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 4b4a4698673725b058072034fb525eeb941c0489..b89c73e74216333f5ac70ee9c80bdbea61cc47b5 100644
+index a7e64b698d8db843cac9e1b0ae86c9e7aa8db492..bf534674d9796a985534538301523723190a6277 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2902,6 +2902,8 @@ public class ServerGamePacketListenerImpl
@@ -3799,7 +3799,7 @@ index d26b7970490a2a108affee11c3fb74e38509d92b..64e55d48bc81d6237970e86e6e1cc719
                  Phantom.this.setYRot(Phantom.this.getYRot() + 180.0F);
                  this.speed = 0.1F;
 diff --git a/net/minecraft/world/entity/monster/Ravager.java b/net/minecraft/world/entity/monster/Ravager.java
-index ab40d05ed4c5099c57a62c5dbaa45308b2bae1c3..6fa5fc86cfb2493a8bcd0dae92be635b7c1f6fe0 100644
+index a10c693a8948d1b7c4bd06b957a08a9cea9170ad..f7807aac5a8f9c92ba77ac38c469ef14948197ac 100644
 --- a/net/minecraft/world/entity/monster/Ravager.java
 +++ b/net/minecraft/world/entity/monster/Ravager.java
 @@ -72,15 +72,40 @@ public class Ravager extends Raider {
@@ -3833,7 +3833,7 @@ index ab40d05ed4c5099c57a62c5dbaa45308b2bae1c3..6fa5fc86cfb2493a8bcd0dae92be635b
      protected void registerGoals() {
          super.registerGoals();
          this.goalSelector.addGoal(0, new FloatGoal(this));
-         if (level().purpurConfig.ravagerAvoidRabbits) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.AvoidEntityGoal<>(this, net.minecraft.world.entity.animal.Rabbit.class, 6.0F, 1.0D, 1.2D)); // Purpur - option to make ravagers afraid of rabbits
+         if (level().purpurConfig.ravagerAvoidRabbits) this.goalSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.AvoidEntityGoal<>(this, net.minecraft.world.entity.animal.rabbit.Rabbit.class, 6.0F, 1.0D, 1.2D)); // Purpur - option to make ravagers afraid of rabbits
 +        this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
          this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0, true));
          this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.4));
@@ -5076,7 +5076,7 @@ index ef6a4aff03c1a85535b15e653714751e79f61090..e2c5301a465e28cea057f9afec7e9d78
      protected void addBehaviourGoals() {
          this.goalSelector.addGoal(1, new SpearUseGoal<>(this, 1.0, 1.0, 10.0F, 2.0F));
 diff --git a/net/minecraft/world/entity/npc/villager/Villager.java b/net/minecraft/world/entity/npc/villager/Villager.java
-index 9d28818f885c9fb6cbd78073c779e46ab8a5abe2..4b4acd05ab94d5beadd20989b39b267ecb56ad8b 100644
+index e117ae1b114c7e2ca314a00335473efc41137f7f..6d4ef7b5d64639eb7fe400b2ed612c3b3552aa52 100644
 --- a/net/minecraft/world/entity/npc/villager/Villager.java
 +++ b/net/minecraft/world/entity/npc/villager/Villager.java
 @@ -250,6 +250,28 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -5116,7 +5116,7 @@ index 9d28818f885c9fb6cbd78073c779e46ab8a5abe2..4b4acd05ab94d5beadd20989b39b267e
 +        if (!inactive && (getRider() == null || !this.isControllable())) { // Purpur - Ridables
              this.getBrain().tick(level, this); // Paper - EAR 2
          }
-         else if (this.isLobotomized && shouldRestock()) restock();
+         else if (this.isLobotomized && shouldRestock(level)) restock();
 @@ -417,7 +439,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              return super.mobInteract(player, hand);
          } else if (this.isBaby()) {

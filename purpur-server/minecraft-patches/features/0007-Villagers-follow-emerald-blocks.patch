@@ -5,7 +5,7 @@ Subject: [PATCH] Villagers follow emerald blocks
 
 
 diff --git a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
-index 686776bb00560f9da8838bd5f8dd64aaddfa7a2b..9bc35ca825e300e82d2d108de70622f8f453bff6 100644
+index 686776bb00560f9da8838bd5f8dd64aaddfa7a2b..ccdd439a89b7e7e10ee960cfe1e5e119d5367799 100644
 --- a/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 +++ b/net/minecraft/world/entity/ai/attributes/DefaultAttributes.java
 @@ -173,7 +173,7 @@ public class DefaultAttributes {
@@ -13,12 +13,12 @@ index 686776bb00560f9da8838bd5f8dd64aaddfa7a2b..9bc35ca825e300e82d2d108de70622f8
          .put(EntityType.VINDICATOR, Vindicator.createAttributes().build())
          .put(EntityType.WARDEN, Warden.createAttributes().build())
 -        .put(EntityType.WANDERING_TRADER, Mob.createMobAttributes().build())
-+        .put(EntityType.WANDERING_TRADER, net.minecraft.world.entity.npc.WanderingTrader.createAttributes().build()) // Purpur - Villagers follow emerald blocks
++        .put(EntityType.WANDERING_TRADER, net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader.createAttributes().build()) // Purpur - Villagers follow emerald blocks
          .put(EntityType.WITCH, Witch.createAttributes().build())
          .put(EntityType.WITHER, WitherBoss.createAttributes().build())
          .put(EntityType.WITHER_SKELETON, AbstractSkeleton.createAttributes().build())
 diff --git a/net/minecraft/world/entity/ai/goal/TemptGoal.java b/net/minecraft/world/entity/ai/goal/TemptGoal.java
-index 18030dc04eb7d7971e457637b5320b1e41665658..1473da28222a4a1d465c5b5d0493fcdac81cd274 100644
+index 18030dc04eb7d7971e457637b5320b1e41665658..60ebd57de496eba6ad307195ffacd3b7fc4149ff 100644
 --- a/net/minecraft/world/entity/ai/goal/TemptGoal.java
 +++ b/net/minecraft/world/entity/ai/goal/TemptGoal.java
 @@ -70,7 +70,7 @@ public class TemptGoal extends Goal {
@@ -26,24 +26,24 @@ index 18030dc04eb7d7971e457637b5320b1e41665658..1473da28222a4a1d465c5b5d0493fcda
  
      private boolean shouldFollow(LivingEntity entity) {
 -        return this.items.test(entity.getMainHandItem()) || this.items.test(entity.getOffhandItem());
-+        return (this.items.test(entity.getMainHandItem()) || this.items.test(entity.getOffhandItem())) && (!(this.mob instanceof net.minecraft.world.entity.npc.Villager villager) || !villager.isSleeping()); // Purpur - Villagers follow emerald blocks
++        return (this.items.test(entity.getMainHandItem()) || this.items.test(entity.getOffhandItem())) && (!(this.mob instanceof net.minecraft.world.entity.npc.villager.Villager villager) || !villager.isSleeping()); // Purpur - Villagers follow emerald blocks
      }
  
      @Override
 diff --git a/net/minecraft/world/entity/npc/villager/AbstractVillager.java b/net/minecraft/world/entity/npc/villager/AbstractVillager.java
-index fa8f1ea38192f9ad0a961a53399f295d83af7721..397cf33790494d84d7fc69234eae50ae154b0212 100644
+index fa8f1ea38192f9ad0a961a53399f295d83af7721..05d1a859e1aee639ad9572f2369e6db3c3d7a111 100644
 --- a/net/minecraft/world/entity/npc/villager/AbstractVillager.java
 +++ b/net/minecraft/world/entity/npc/villager/AbstractVillager.java
 @@ -38,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
  import org.jspecify.annotations.Nullable;
  
  public abstract class AbstractVillager extends AgeableMob implements InventoryCarrier, Npc, Merchant {
-+    static final net.minecraft.world.item.crafting.Ingredient TEMPT_ITEMS = net.minecraft.world.item.crafting.Ingredient.of(net.minecraft.world.level.block.Blocks.EMERALD_BLOCK.asItem()); // Purpur - Villagers follow emerald blocks
++    public static final net.minecraft.world.item.crafting.Ingredient TEMPT_ITEMS = net.minecraft.world.item.crafting.Ingredient.of(net.minecraft.world.level.block.Blocks.EMERALD_BLOCK.asItem()); // Purpur - Villagers follow emerald blocks
      private static final EntityDataAccessor<Integer> DATA_UNHAPPY_COUNTER = SynchedEntityData.defineId(AbstractVillager.class, EntityDataSerializers.INT);
      public static final int VILLAGER_SLOT_OFFSET = 300;
      private static final int VILLAGER_INVENTORY_SIZE = 8;
 diff --git a/net/minecraft/world/entity/npc/villager/Villager.java b/net/minecraft/world/entity/npc/villager/Villager.java
-index 2e4e5164ee59ee45ce56e39c305c200a636d4046..bad2d93118b04d5b41626bf75a05cf469d6fd2e8 100644
+index 6f9658af51f1f30434756f871cf6ab5cd2f3a7ea..02836bd2e8fda563877d3014ab839734aebc7457 100644
 --- a/net/minecraft/world/entity/npc/villager/Villager.java
 +++ b/net/minecraft/world/entity/npc/villager/Villager.java
 @@ -269,6 +269,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

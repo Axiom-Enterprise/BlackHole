@@ -5,7 +5,7 @@ Subject: [PATCH] Giants AI settings
 
 
 diff --git a/net/minecraft/world/entity/monster/Giant.java b/net/minecraft/world/entity/monster/Giant.java
-index 416bb85fc87b5f9e372f33df8fe27f12e83834b9..e6fb01e4e2146d6c6971d80af0f101d20c03950a 100644
+index 416bb85fc87b5f9e372f33df8fe27f12e83834b9..40cf8f44a6b01d45306dab4ba4f9a7ea7c6590a9 100644
 --- a/net/minecraft/world/entity/monster/Giant.java
 +++ b/net/minecraft/world/entity/monster/Giant.java
 @@ -30,8 +30,25 @@ public class Giant extends Monster {
@@ -25,11 +25,11 @@ index 416bb85fc87b5f9e372f33df8fe27f12e83834b9..e6fb01e4e2146d6c6971d80af0f101d2
 +            if (level().purpurConfig.giantHaveHostileAI) {
 +                this.goalSelector.addGoal(2, new net.minecraft.world.entity.ai.goal.MeleeAttackGoal(this, 1.0D, false));
 +                this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
-+                this.targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal(this).setAlertOthers(ZombifiedPiglin.class));
++                this.targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal(this).setAlertOthers(net.minecraft.world.entity.monster.zombie.ZombifiedPiglin.class));
 +                this.targetSelector.addGoal(2, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.player.Player.class, true));
-+                this.targetSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.npc.Villager.class, false));
-+                this.targetSelector.addGoal(4, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.animal.IronGolem.class, true));
-+                this.targetSelector.addGoal(5, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.animal.Turtle.class, true));
++                this.targetSelector.addGoal(3, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.npc.villager.Villager.class, false));
++                this.targetSelector.addGoal(4, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.animal.golem.IronGolem.class, true));
++                this.targetSelector.addGoal(5, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.animal.turtle.Turtle.class, true));
 +            }
 +        }
 +        // Purpur end - Giants AI settings

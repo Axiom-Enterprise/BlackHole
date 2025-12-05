@@ -419,6 +419,42 @@ index cd888e070a72ff46d35a4425a0013c617b31e159..30204224ed83f6d3cfd64640b332b23c
      @Override
      protected void ageBoundaryReached() {
          if (this.isBaby()) {
+diff --git a/net/minecraft/world/entity/animal/nautilus/Nautilus.java b/net/minecraft/world/entity/animal/nautilus/Nautilus.java
+index a02a4b47cf02cd7eaa76d25af2dccb50ad884504..a941cb9843fcf8d008ae846dcab95e32d823a1b2 100644
+--- a/net/minecraft/world/entity/animal/nautilus/Nautilus.java
++++ b/net/minecraft/world/entity/animal/nautilus/Nautilus.java
+@@ -21,6 +21,13 @@ public class Nautilus extends AbstractNautilus {
+         super(type, level);
+     }
+ 
++    // Purpur start - Make entity breeding times configurable
++    @Override
++    public int getPurpurBreedTime() {
++        return this.level().purpurConfig.nautilusBreedingTicks;
++    }
++    // Purpur end - Make entity breeding times configurable
++
+     @Override
+     protected Brain.Provider<Nautilus> brainProvider() {
+         return NautilusAi.brainProvider();
+diff --git a/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java b/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java
+index 83c16a44b230efd010e06cabb428954d157cea47..9e2b703d23a044fecdbc544588079c345fd376c7 100644
+--- a/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java
++++ b/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java
+@@ -43,6 +43,13 @@ public class ZombieNautilus extends AbstractNautilus {
+         super(type, level);
+     }
+ 
++    // Purpur start - Make entity breeding times configurable
++    @Override
++    public int getPurpurBreedTime() {
++        return 6000;
++    }
++    // Purpur end - Make entity breeding times configurable
++
+     public static AttributeSupplier.Builder createAttributes() {
+         return AbstractNautilus.createAttributes().add(Attributes.MOVEMENT_SPEED, 1.1F);
+     }
 diff --git a/net/minecraft/world/entity/animal/panda/Panda.java b/net/minecraft/world/entity/animal/panda/Panda.java
 index d5060fb8e9a711e6230f2c4950521d8b4f5c01d2..163fe697f57459b36885fa3a18f41370347cab38 100644
 --- a/net/minecraft/world/entity/animal/panda/Panda.java

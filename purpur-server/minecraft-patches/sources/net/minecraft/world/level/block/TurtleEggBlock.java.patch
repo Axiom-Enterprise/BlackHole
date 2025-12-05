@@ -18,7 +18,7 @@
 +        if (level.purpurConfig.turtleEggsBreakFromItems && entity instanceof net.minecraft.world.entity.item.ItemEntity) {
 +            return true;
 +        }
-+        if (level.purpurConfig.turtleEggsBreakFromMinecarts && entity instanceof net.minecraft.world.entity.vehicle.AbstractMinecart) {
++        if (level.purpurConfig.turtleEggsBreakFromMinecarts && entity instanceof net.minecraft.world.entity.vehicle.minecart.AbstractMinecart) {
 +            return true;
 +        }
 +        if (!(entity instanceof LivingEntity)) {

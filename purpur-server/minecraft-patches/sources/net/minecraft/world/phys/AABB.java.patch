@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/phys/AABB.java
 +++ b/net/minecraft/world/phys/AABB.java
-@@ -475,4 +_,10 @@
+@@ -474,4 +_,10 @@
              return new AABB(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
          }
      }

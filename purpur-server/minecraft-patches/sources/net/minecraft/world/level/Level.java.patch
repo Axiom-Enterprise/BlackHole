@@ -65,7 +65,7 @@
          this.generator = generator;
          this.world = new CraftWorld((ServerLevel) this, generator, biomeProvider, environment);
  
-@@ -2081,4 +_,14 @@
+@@ -2091,4 +_,14 @@
          return this.moonrise$getEntityLookup().getEntityCount(); // Paper - rewrite chunk system
      }
      // Paper end - allow patching this logic

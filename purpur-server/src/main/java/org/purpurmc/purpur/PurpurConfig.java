@@ -74,8 +74,8 @@ public class PurpurConfig {
         commands = new HashMap<>();
         commands.put("purpur", new PurpurCommand("purpur"));
 
-        version = getInt("config-version", 45);
-        set("config-version", 45);
+        version = getInt("config-version", 46);
+        set("config-version", 46);
 
         readConfig(PurpurConfig.class, null);
 
@@ -609,10 +609,5 @@ public class PurpurConfig {
             }
             startupCommands.add(command);
         });
-    }
-    
-    public static boolean generateEndVoidRings = false;
-    private static void generateEndVoidRings() {
-        generateEndVoidRings = getBoolean("settings.generate-end-void-rings", generateEndVoidRings);
     }
 }

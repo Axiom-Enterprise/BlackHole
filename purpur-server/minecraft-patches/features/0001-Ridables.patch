@@ -153,7 +153,7 @@ index c133b6796c0251500801b2e41df9ae4b38d111a1..468df93a0302f200c2bd5e9bc65feccd
 +    // Purpur end - Ridables
  }
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 64e15642d556700b1ff4c6ab3a4acea48b3d8edd..be73b3c4c071e4094e55b30bc10278fdcee21ba7 100644
+index aeadca3aa7baf337aff8c8e24bf557f6a9db322a..6e0a2741db06f93f31349515d1d13181b70e08ed 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -244,9 +244,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -243,7 +243,7 @@ index 64e15642d556700b1ff4c6ab3a4acea48b3d8edd..be73b3c4c071e4094e55b30bc10278fd
          // Paper end - Add EntityMoveEvent
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index e79d46bc349d8db559086e1f563b2c0a7793b6e4..d8faed1fc3ead010f0abd8ffdf3428881472a25c 100644
+index dd0f83b9355271f7aab15eb49833f518e499595e..c519f3f501963bde3f1cadf24f88edd2a043215d 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -156,8 +156,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -4893,7 +4893,7 @@ index 3b931c6105ea14add0d2a60dc19cc3601a092a3b..4f4bf16cfa1390f19a7e8745d86e42e2
              && this.level() == entity.level()
              && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)
 diff --git a/net/minecraft/world/entity/monster/zombie/Drowned.java b/net/minecraft/world/entity/monster/zombie/Drowned.java
-index b189d8aaea16d977aef05a443b82eeabdb51715d..2c637796399a9b33e03e6e99618a28bf55f36110 100644
+index 604d5e6a4962de61fb97988a2f3de2965908bada..03c801d5982eed73fd8f56f63ccab570e83b8a53 100644
 --- a/net/minecraft/world/entity/monster/zombie/Drowned.java
 +++ b/net/minecraft/world/entity/monster/zombie/Drowned.java
 @@ -74,6 +74,23 @@ public class Drowned extends Zombie implements RangedAttackMob {
@@ -4920,7 +4920,7 @@ index b189d8aaea16d977aef05a443b82eeabdb51715d..2c637796399a9b33e03e6e99618a28bf
      @Override
      protected PathNavigation createNavigation(Level level) {
          return new AmphibiousPathNavigation(this, level);
-@@ -429,7 +446,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
+@@ -433,7 +450,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
          }
      }
  
@@ -4929,7 +4929,7 @@ index b189d8aaea16d977aef05a443b82eeabdb51715d..2c637796399a9b33e03e6e99618a28bf
          private final Drowned drowned;
  
          public DrownedMoveControl(Drowned mob) {
-@@ -438,7 +455,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
+@@ -442,7 +459,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
          }
  
          @Override
@@ -4938,7 +4938,7 @@ index b189d8aaea16d977aef05a443b82eeabdb51715d..2c637796399a9b33e03e6e99618a28bf
              LivingEntity target = this.drowned.getTarget();
              if (this.drowned.wantsToSwim() && this.drowned.isInWater()) {
                  if (target != null && target.getY() > this.drowned.getY() || this.drowned.searchingForLand) {
-@@ -458,7 +475,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
+@@ -462,7 +479,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
                  float f = (float)(Mth.atan2(d2, d) * 180.0F / (float)Math.PI) - 90.0F;
                  this.drowned.setYRot(this.rotlerp(this.drowned.getYRot(), f, 90.0F));
                  this.drowned.yBodyRot = this.drowned.getYRot();
@@ -4947,7 +4947,7 @@ index b189d8aaea16d977aef05a443b82eeabdb51715d..2c637796399a9b33e03e6e99618a28bf
                  float f2 = Mth.lerp(0.125F, this.drowned.getSpeed(), f1);
                  this.drowned.setSpeed(f2);
                  this.drowned.setDeltaMovement(this.drowned.getDeltaMovement().add(f2 * d * 0.005, f2 * d1 * 0.1, f2 * d2 * 0.005));
-@@ -467,7 +484,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
+@@ -471,7 +488,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
                      this.drowned.setDeltaMovement(this.drowned.getDeltaMovement().add(0.0, -0.008, 0.0));
                  }
  
@@ -5179,7 +5179,7 @@ index aceeb9919473f5ff1b84efe950d10aa4dbc10121..5c7da654ef967356173a9d85a8675a7d
                  if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
                  this.setTradingPlayer(player);
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index 15ff99dba0214721e781751731ea7f68482706cf..4bf98783e7199bc5c7c05c953729523b0b75b2b5 100644
+index f5d3aa7c1e008377f9ac06401e88dae8c671ec13..eee303b4e0fa22a3d037e5fb3bf31946f41744cf 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -199,6 +199,19 @@ public abstract class Player extends Avatar implements ContainerUser {

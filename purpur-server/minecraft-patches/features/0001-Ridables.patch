@@ -682,7 +682,7 @@ index 2e5291af79a04ff7ebfc533596a008b404571214..3837397563bf3d568c120ae4e4e38d1a
                  super.tick();
              }
 diff --git a/net/minecraft/world/entity/animal/bee/Bee.java b/net/minecraft/world/entity/animal/bee/Bee.java
-index c6290c732af942907413b30d49910a3e3933c71a..d1e23e50bb6b023ecf4475406e23e14d43e89aad 100644
+index 7b9280526af353c3ab1f32e5195499e773731352..bd3dc923058b884afcfad08062230182810c65a2 100644
 --- a/net/minecraft/world/entity/animal/bee/Bee.java
 +++ b/net/minecraft/world/entity/animal/bee/Bee.java
 @@ -153,6 +153,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -775,7 +775,7 @@ index c6290c732af942907413b30d49910a3e3933c71a..d1e23e50bb6b023ecf4475406e23e14d
          this.targetSelector.addGoal(1, new Bee.BeeHurtByOtherGoal(this).setAlertOthers());
          this.targetSelector.addGoal(2, new Bee.BeeBecomeAngryTargetGoal(this));
          this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, true));
-@@ -1079,15 +1129,15 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1085,15 +1135,15 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
          }
      }
  

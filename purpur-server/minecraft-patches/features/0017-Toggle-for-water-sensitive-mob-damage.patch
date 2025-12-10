@@ -41,7 +41,7 @@ index 79dfebbd72424d5a3a13d4ba89a555fdf782e703..947160c4dfc4e50bb75a1a797cb2f226
      public float getWalkTargetValue(BlockPos pos, LevelReader level) {
          return 0.0F;
 diff --git a/net/minecraft/world/entity/animal/bee/Bee.java b/net/minecraft/world/entity/animal/bee/Bee.java
-index e28128ac556a7be1c50e8c95eb68f09dca2f901d..26a25b4f294b936901765c72bfa7c5a80a7c299c 100644
+index 473aa29e3075fcab44a14c2bc14d3f222b55cbad..e57200d6560a38cbecd681a30b75409412fce170 100644
 --- a/net/minecraft/world/entity/animal/bee/Bee.java
 +++ b/net/minecraft/world/entity/animal/bee/Bee.java
 @@ -185,7 +185,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -53,7 +53,7 @@ index e28128ac556a7be1c50e8c95eb68f09dca2f901d..26a25b4f294b936901765c72bfa7c5a8
          this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
          this.setPathfindingMalus(PathType.COCOA, -1.0F);
          this.setPathfindingMalus(PathType.FENCE, -1.0F);
-@@ -486,6 +486,13 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -492,6 +492,13 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
      }
      // Purpur end - Make entity breeding times configurable
  
@@ -809,7 +809,7 @@ index 7d97c00ae49629b97104631317aa6174741cdd5e..443eb9f12d6df950c59c9d4db4853087
      protected void registerGoals() {
          this.goalSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur - Ridables
 diff --git a/net/minecraft/world/entity/monster/Giant.java b/net/minecraft/world/entity/monster/Giant.java
-index e6fb01e4e2146d6c6971d80af0f101d20c03950a..2204c729ce42e89a0b42b365e0060098afcf68f9 100644
+index 40cf8f44a6b01d45306dab4ba4f9a7ea7c6590a9..f1176f73d4468b2f39e48fe5454c5f5bf481afd9 100644
 --- a/net/minecraft/world/entity/monster/Giant.java
 +++ b/net/minecraft/world/entity/monster/Giant.java
 @@ -62,6 +62,13 @@ public class Giant extends Monster {
@@ -863,7 +863,7 @@ index e0fda9a975e00c49ba09db65d7b3fba8fa434757..1bf9d04e5e44272b02753290995795f1
          return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.2F);
      }
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index e55470432cebddec43a7d63230eb4391a3d42f8e..ffcbcf2246d739494d522a9a4fc16999655cd7ef 100644
+index 6e8fe1b694ade45ffbf0b9bb39b954deffeb2402..2fa22088ac507eceb36f3c77f24a733076641d8f 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -128,6 +128,13 @@ public class Phantom extends Mob implements Enemy {
@@ -881,7 +881,7 @@ index e55470432cebddec43a7d63230eb4391a3d42f8e..ffcbcf2246d739494d522a9a4fc16999
      public boolean isFlapping() {
          return (this.getUniqueFlapTickOffset() + this.tickCount) % TICKS_PER_FLAP == 0;
 diff --git a/net/minecraft/world/entity/monster/Ravager.java b/net/minecraft/world/entity/monster/Ravager.java
-index c1ae9826d15456762ac0c0ab7380763242fa48de..f41df50e74823b2ef13de20721a4f237f6617438 100644
+index 7c69423eee05992b9c70321d528cc9d73b3e63ea..ad2913b02ded9b5087c69ba279cebfd81d9ef75e 100644
 --- a/net/minecraft/world/entity/monster/Ravager.java
 +++ b/net/minecraft/world/entity/monster/Ravager.java
 @@ -103,6 +103,13 @@ public class Ravager extends Raider {
@@ -1245,7 +1245,7 @@ index 6a9c807ed50dab4b65787d9f7269385103fa5f26..81c500de41b11d4aa6c52dc290f132ad
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new FloatGoal(this));
 diff --git a/net/minecraft/world/entity/monster/zombie/Drowned.java b/net/minecraft/world/entity/monster/zombie/Drowned.java
-index 3b1e3e7c1218cbfdfe48db3fad15280f43fd3311..fe02f54adaaed855c5d078281207a5fe8e182087 100644
+index 327086c972423e4f73402ea2e64519a355fa7b5a..ec36b854dccae7cef905aeb2fcd4ec177828139c 100644
 --- a/net/minecraft/world/entity/monster/zombie/Drowned.java
 +++ b/net/minecraft/world/entity/monster/zombie/Drowned.java
 @@ -126,6 +126,13 @@ public class Drowned extends Zombie implements RangedAttackMob {
@@ -1335,7 +1335,7 @@ index ec39ad6740361774f9ecfda7186cab9d8fac90f2..9a1da88752b0dd708365dd41a074cc0e
      protected void addBehaviourGoals() {
          this.goalSelector.addGoal(1, new SpearUseGoal<>(this, 1.0, 1.0, 10.0F, 2.0F));
 diff --git a/net/minecraft/world/entity/npc/villager/Villager.java b/net/minecraft/world/entity/npc/villager/Villager.java
-index 810f1dc6506ca037363060aec1c90b9fc1602cd8..b8409bb066039766e0b4f680b35c3bc16e5c37d8 100644
+index ed6642023fccbc8f825d7c5c206d73ffd666f0f9..b6bfe06a2ad8e4219d99de050b30ce1ad15b8b34 100644
 --- a/net/minecraft/world/entity/npc/villager/Villager.java
 +++ b/net/minecraft/world/entity/npc/villager/Villager.java
 @@ -282,6 +282,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

@@ -1237,6 +1237,7 @@ public class PurpurWorldConfig {
     public boolean turtleEggsBreakFromItems = false;
     public boolean turtleEggsBreakFromMinecarts = false;
     public Boolean turtleEggsMobGriefingOverride = null;
+    public int turtleEggsRandomTickCrackChance = 500;
     public boolean turtleEggsTramplingFeatherFalling = false;
     private void turtleEggSettings() {
         turtleEggsBreakFromExpOrbs = getBoolean("blocks.turtle_egg.break-from-exp-orbs", turtleEggsBreakFromExpOrbs);
@@ -1248,6 +1249,7 @@ public class PurpurWorldConfig {
             set("blocks.turtle_egg.mob-griefing-override", oldVal ? true : "default");
         }
         turtleEggsMobGriefingOverride = getBooleanOrDefault("blocks.turtle_egg.mob-griefing-override", turtleEggsMobGriefingOverride);
+        turtleEggsRandomTickCrackChance = getInt("blocks.turtle_egg.random-tick-crack-chance", turtleEggsRandomTickCrackChance);
         turtleEggsTramplingFeatherFalling = getBoolean("blocks.turtle_egg.feather-fall-distance-affects-trampling", turtleEggsTramplingFeatherFalling);
     }
 
@@ -1359,6 +1361,8 @@ public class PurpurWorldConfig {
     public int beeBreedingTicks = 6000;
     public boolean beeTakeDamageFromWater = false;
     public boolean beeCanInstantlyStartDrowning = true;
+    public boolean beeCanWorkAtNight = false;
+    public boolean beeCanWorkInRain = false;
     public boolean beeAlwaysDropExp = false;
     public boolean beeDiesAfterSting = true;
     private void beeSettings() {
@@ -1378,6 +1382,8 @@ public class PurpurWorldConfig {
             set("mobs.bee.takes-damage-from-water", false);
         }
         beeTakeDamageFromWater = getBoolean("mobs.bee.takes-damage-from-water", beeTakeDamageFromWater);
+        beeCanWorkAtNight = getBoolean("mobs.bee.can-work-at-night", beeCanWorkAtNight);
+        beeCanWorkInRain = getBoolean("mobs.bee.can-work-in-rain", beeCanWorkInRain);
         beeCanInstantlyStartDrowning = getBoolean("mobs.bee.can-instantly-start-drowning", beeCanInstantlyStartDrowning);
         beeAlwaysDropExp = getBoolean("mobs.bee.always-drop-exp", beeAlwaysDropExp);
         beeDiesAfterSting = getBoolean("mobs.bee.dies-after-sting", beeDiesAfterSting);

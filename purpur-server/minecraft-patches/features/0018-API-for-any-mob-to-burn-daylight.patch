@@ -6,7 +6,7 @@ Subject: [PATCH] API for any mob to burn daylight
 Co-authored by: Encode42 <me@encode42.dev>
 
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 56a066c5452ee9fc16d176df46ecfbd9584a3783..c1d0c1d1ff1314075c16dfcdfc163c5cc71dbc20 100644
+index 468df93a0302f200c2bd5e9bc65feccdd8649bf3..663cd67250c516fa8e16fa55dd91c02131507fd0 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -544,6 +544,24 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
@@ -35,7 +35,7 @@ index 56a066c5452ee9fc16d176df46ecfbd9584a3783..c1d0c1d1ff1314075c16dfcdfc163c5c
          this.type = type;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 34d5283bbc76b4b6c335de354fc2edc1046dcfd1..9aef157abdc61a91101cc0d103524e12b08887a5 100644
+index f991e7a6988e98ec64b6af3c6c56522b19d929d2..78e68335805270ff1f942fe28e0e833adb41fd85 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -290,6 +290,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -62,7 +62,7 @@ index 34d5283bbc76b4b6c335de354fc2edc1046dcfd1..9aef157abdc61a91101cc0d103524e12
          this.lastHurtByPlayer = EntityReference.read(input, "last_hurt_by_player");
          this.lastHurtByPlayerMemoryTime = input.getIntOr("last_hurt_by_player_memory_time", 0);
          this.lastHurtByMob = EntityReference.read(input, "last_hurt_by_mob");
-@@ -3850,6 +3853,32 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3850,6 +3853,37 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
              this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
          }
@@ -71,14 +71,15 @@ index 34d5283bbc76b4b6c335de354fc2edc1046dcfd1..9aef157abdc61a91101cc0d103524e12
 +        if (this.getType().is(EntityTypeTags.BURN_IN_DAYLIGHT) && this.isAlive()) {
 +            boolean flag = this.shouldBurnInDay() && this.isSunBurnTick(); // Paper - shouldBurnInDay API // Purpur - use shouldBurnInDay() method to handle Phantoms properly - API for any mob to burn daylight
 +            if (flag) {
-+                ItemStack itemBySlot = this.getItemBySlot(EquipmentSlot.HEAD);
++                EquipmentSlot equipmentSlot = this.sunProtectionSlot();
++                ItemStack itemBySlot = this.getItemBySlot(equipmentSlot);
 +                if (!itemBySlot.isEmpty()) {
 +                    if (itemBySlot.isDamageableItem()) {
 +                        Item item = itemBySlot.getItem();
 +                        itemBySlot.setDamageValue(itemBySlot.getDamageValue() + this.random.nextInt(2));
 +                        if (itemBySlot.getDamageValue() >= itemBySlot.getMaxDamage()) {
-+                            this.onEquippedItemBroken(item, EquipmentSlot.HEAD);
-+                            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
++                            this.onEquippedItemBroken(item, equipmentSlot);
++                            this.setItemSlot(equipmentSlot, ItemStack.EMPTY);
 +                        }
 +                    }
 +
@@ -91,12 +92,16 @@ index 34d5283bbc76b4b6c335de354fc2edc1046dcfd1..9aef157abdc61a91101cc0d103524e12
 +                }
 +            }
 +        }
++    }
++
++    protected EquipmentSlot sunProtectionSlot() {
++        return net.minecraft.world.entity.EquipmentSlot.HEAD;
 +        // Purpur end - copied from Mob - API for any mob to burn daylight
      }
  
      protected void applyInput() {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 70807b4a6c94b0231eb541c7121d925d88022ac6..73b3d43d9073c8f2fe09e1f1d9d4a7a0a01eeb94 100644
+index c94a1bd594bcd3b2f7525f1541d2e55897954623..327982be3748e82a36c7a24ede989dacebfb04db 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -544,9 +544,9 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -111,8 +116,30 @@ index 70807b4a6c94b0231eb541c7121d925d88022ac6..73b3d43d9073c8f2fe09e1f1d9d4a7a0
  
          ProfilerFiller profilerFiller = Profiler.get();
          profilerFiller.push("looting");
+@@ -601,19 +601,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+     }
+ 
+     public boolean isSunBurnTick() {
+-        if (!this.level().isClientSide() && this.level().environmentAttributes().getValue(EnvironmentAttributes.MONSTERS_BURN, this.position())) {
+-            float lightLevelDependentMagicValue = this.getLightLevelDependentMagicValue();
+-            BlockPos blockPos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
+-            boolean flag = this.isInWaterOrRain() || this.isInPowderSnow || this.wasInPowderSnow;
+-            if (lightLevelDependentMagicValue > 0.5F
+-                && this.random.nextFloat() * 30.0F < (lightLevelDependentMagicValue - 0.4F) * 2.0F
+-                && !flag
+-                && this.level().canSeeSky(blockPos)) {
+-                return true;
+-            }
+-        }
+-
+-        return false;
++        // Purpur - implemented in Entity - API for any mob to burn daylight
++        return super.isSunBurnTick();
+     }
+ 
+     protected Vec3i getPickupReach() {
 diff --git a/net/minecraft/world/entity/monster/Phantom.java b/net/minecraft/world/entity/monster/Phantom.java
-index ffcbcf2246d739494d522a9a4fc16999655cd7ef..e7e3949e4ccea1f5160fc687c2ff2704c1be3b2d 100644
+index 2fa22088ac507eceb36f3c77f24a733076641d8f..ff944ad57d4e9e4a910cd63282e5e7594626365e 100644
 --- a/net/minecraft/world/entity/monster/Phantom.java
 +++ b/net/minecraft/world/entity/monster/Phantom.java
 @@ -52,7 +52,7 @@ public class Phantom extends Mob implements Enemy {
@@ -132,22 +159,7 @@ index ffcbcf2246d739494d522a9a4fc16999655cd7ef..e7e3949e4ccea1f5160fc687c2ff2704
      }
  
      // Purpur start - Ridables
-@@ -243,12 +244,12 @@ public class Phantom extends Mob implements Enemy {
-         }
-     }
- 
--    // Paper start
-+    /*// Paper start // Purpur start - implemented in LivingEntity - API for any mob to burn daylight
-     @Override
-     public boolean isSunBurnTick() {
-         return this.shouldBurnInDay && super.isSunBurnTick();
-     }
--    // Paper end
-+    */// Paper end // Purpur end - implemented in LivingEntity - API for any mob to burn daylight
- 
-     @Override
-     protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-@@ -293,7 +294,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -297,7 +298,7 @@ public class Phantom extends Mob implements Enemy {
          this.setPhantomSize(input.getIntOr("size", 0));
          // Paper start
          this.spawningEntity = input.read("Paper.SpawningEntity", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
@@ -156,7 +168,7 @@ index ffcbcf2246d739494d522a9a4fc16999655cd7ef..e7e3949e4ccea1f5160fc687c2ff2704
          // Paper end
      }
  
-@@ -304,7 +305,7 @@ public class Phantom extends Mob implements Enemy {
+@@ -308,7 +309,7 @@ public class Phantom extends Mob implements Enemy {
          output.putInt("size", this.getPhantomSize());
          // Paper start
          output.storeNullable("Paper.SpawningEntity", net.minecraft.core.UUIDUtil.CODEC, this.spawningEntity);

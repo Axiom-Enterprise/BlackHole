@@ -83,10 +83,10 @@ index 3f9e15685ba52a5b9bd4282ba6de6751296975bf..79dfebbd72424d5a3a13d4ba89a555fd
      public float getWalkTargetValue(BlockPos pos, LevelReader level) {
          return 0.0F;
 diff --git a/net/minecraft/world/entity/animal/bee/Bee.java b/net/minecraft/world/entity/animal/bee/Bee.java
-index b7d6dc9c2e12a51b1e63947d7b32d592a8c84ebb..e28128ac556a7be1c50e8c95eb68f09dca2f901d 100644
+index 7d7ab4c5092ac085e8cd6d3a432feb683db5a282..473aa29e3075fcab44a14c2bc14d3f222b55cbad 100644
 --- a/net/minecraft/world/entity/animal/bee/Bee.java
 +++ b/net/minecraft/world/entity/animal/bee/Bee.java
-@@ -479,6 +479,13 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -485,6 +485,13 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
      }
      // Purpur end - Configurable entity base attributes
  

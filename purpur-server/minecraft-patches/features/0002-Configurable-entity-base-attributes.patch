@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable entity base attributes
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index be73b3c4c071e4094e55b30bc10278fdcee21ba7..983aea0bb8c581f06030adf74f0f7962f99c3c2a 100644
+index 6e0a2741db06f93f31349515d1d13181b70e08ed..42dcad656dff5ba1e7fa8aced86628ac28f300af 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -295,6 +295,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -109,10 +109,10 @@ index 3837397563bf3d568c120ae4e4e38d1a6dc7a8b2..3f9e15685ba52a5b9bd4282ba6de6751
      public float getWalkTargetValue(BlockPos pos, LevelReader level) {
          return 0.0F;
 diff --git a/net/minecraft/world/entity/animal/bee/Bee.java b/net/minecraft/world/entity/animal/bee/Bee.java
-index d1e23e50bb6b023ecf4475406e23e14d43e89aad..b7d6dc9c2e12a51b1e63947d7b32d592a8c84ebb 100644
+index bd3dc923058b884afcfad08062230182810c65a2..7d7ab4c5092ac085e8cd6d3a432feb683db5a282 100644
 --- a/net/minecraft/world/entity/animal/bee/Bee.java
 +++ b/net/minecraft/world/entity/animal/bee/Bee.java
-@@ -471,6 +471,14 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -477,6 +477,14 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
          return beehiveBlockEntity != null && beehiveBlockEntity.isFireNearby();
      }
  
@@ -1212,7 +1212,7 @@ index 64e55d48bc81d6237970e86e6e1cc719831902fd..046d6d3b665d0dbb5403ebe91d18503e
      public void tick() {
          super.tick();
 diff --git a/net/minecraft/world/entity/monster/Ravager.java b/net/minecraft/world/entity/monster/Ravager.java
-index 6fa5fc86cfb2493a8bcd0dae92be635b7c1f6fe0..c3546b0841aff52ef758b0e8e48c9a70726f412d 100644
+index f7807aac5a8f9c92ba77ac38c469ef14948197ac..86c55955ff6c0a411cde34999c7bd6ad07be5d4e 100644
 --- a/net/minecraft/world/entity/monster/Ravager.java
 +++ b/net/minecraft/world/entity/monster/Ravager.java
 @@ -95,6 +95,14 @@ public class Ravager extends Raider {
@@ -1678,7 +1678,7 @@ index 7a8b9c83490a05629e4996844a575ba4c7e9f156..6a9c807ed50dab4b65787d9f72693851
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new FloatGoal(this));
 diff --git a/net/minecraft/world/entity/monster/zombie/Drowned.java b/net/minecraft/world/entity/monster/zombie/Drowned.java
-index 2c637796399a9b33e03e6e99618a28bf55f36110..0b6d2bcec8506686eb6e0aaeb14870c14bd84e9d 100644
+index 03c801d5982eed73fd8f56f63ccab570e83b8a53..b5d3bfb68d8f167e5d6439d15024597d7d2a40a7 100644
 --- a/net/minecraft/world/entity/monster/zombie/Drowned.java
 +++ b/net/minecraft/world/entity/monster/zombie/Drowned.java
 @@ -96,6 +96,19 @@ public class Drowned extends Zombie implements RangedAttackMob {
@@ -1804,7 +1804,7 @@ index e2c5301a465e28cea057f9afec7e9d78090e1c9e..3ff8c95075f9d25c3a2e4160ee6d1805
  
      @Override
 diff --git a/net/minecraft/world/entity/npc/villager/Villager.java b/net/minecraft/world/entity/npc/villager/Villager.java
-index 4b4acd05ab94d5beadd20989b39b267ecb56ad8b..2e4e5164ee59ee45ce56e39c305c200a636d4046 100644
+index 6d4ef7b5d64639eb7fe400b2ed612c3b3552aa52..6f9658af51f1f30434756f871cf6ab5cd2f3a7ea 100644
 --- a/net/minecraft/world/entity/npc/villager/Villager.java
 +++ b/net/minecraft/world/entity/npc/villager/Villager.java
 @@ -272,6 +272,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

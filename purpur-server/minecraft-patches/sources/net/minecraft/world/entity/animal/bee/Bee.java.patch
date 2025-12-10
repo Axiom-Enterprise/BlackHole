@@ -9,6 +9,27 @@
          this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
          this.setPathfindingMalus(PathType.COCOA, -1.0F);
          this.setPathfindingMalus(PathType.FENCE, -1.0F);
+@@ -360,13 +_,19 @@
+         if (this.stayOutOfHiveCountdown <= 0 && !this.beePollinateGoal.isPollinating() && !this.hasStung() && this.getTarget() == null) {
+             boolean flag = this.hasNectar()
+                 || this.isTiredOfLookingForNectar()
+-                || this.level().environmentAttributes().getValue(EnvironmentAttributes.BEES_STAY_IN_HIVE, this.position());
++                || this.level().environmentAttributes().getValue(EnvironmentAttributes.BEES_STAY_IN_HIVE, this.position()) || isNightOrRaining(this.level()); // Purpur - Bee can work when raining or at night
+             return flag && !this.isHiveNearFire();
+         } else {
+             return false;
+         }
+     }
+ 
++    // Purpur start - Bee can work when raining or at night
++    public static boolean isNightOrRaining(Level level) {
++        return level.dimensionType().hasSkyLight() && (level.isDarkOutside() && !level.purpurConfig.beeCanWorkAtNight || level.isRaining() && !level.purpurConfig.beeCanWorkInRain); // Purpur - Bee can work when raining or at night
++    }
++    // Purpur end - Bee can work when raining or at night
++
+     public void setStayOutOfHiveCountdown(int stayOutOfHiveCountdown) {
+         this.stayOutOfHiveCountdown = stayOutOfHiveCountdown;
+     }
 @@ -387,7 +_,7 @@
      @Override
      protected void customServerAiStep(ServerLevel level) {

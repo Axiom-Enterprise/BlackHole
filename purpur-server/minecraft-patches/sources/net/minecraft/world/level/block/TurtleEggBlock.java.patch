@@ -1,5 +1,14 @@
 --- a/net/minecraft/world/level/block/TurtleEggBlock.java
 +++ b/net/minecraft/world/level/block/TurtleEggBlock.java
+@@ -156,7 +_,7 @@
+     }
+ 
+     private boolean shouldUpdateHatchLevel(Level level, BlockPos pos) {
+-        float value = level.environmentAttributes().getValue(EnvironmentAttributes.TURTLE_EGG_HATCH_CHANCE, pos);
++        float value = level.purpurConfig.turtleEggsRandomTickCrackChance == 500 ? level.environmentAttributes().getValue(EnvironmentAttributes.TURTLE_EGG_HATCH_CHANCE, pos) : level.purpurConfig.turtleEggsRandomTickCrackChance; // Purpur - Turtle eggs random tick crack chance
+         return value > 0.0F && level.random.nextFloat() < value;
+     }
+ 
 @@ -189,9 +_,32 @@
      }
  

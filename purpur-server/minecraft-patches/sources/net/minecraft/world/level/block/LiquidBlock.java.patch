@@ -14,7 +14,7 @@
          RandomSource random
      ) {
 -        if (state.getFluidState().isSource() || neighborState.getFluidState().isSource()) {
-+        if (level.getWorldBorder().world.purpurConfig.tickFluids && state.getFluidState().isSource() || neighborState.getFluidState().isSource()) { // Purpur - Tick fluids config
++        if ((level.getWorldBorder().world == null || level.getWorldBorder().world.purpurConfig.tickFluids) && state.getFluidState().isSource() || neighborState.getFluidState().isSource()) { // Purpur - Tick fluids config
              scheduledTickAccess.scheduleTick(pos, state.getFluidState().getType(), this.fluid.getTickDelay(level));
          }
  

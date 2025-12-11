@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/ServerExplosion.java
 +++ b/net/minecraft/world/level/ServerExplosion.java
-@@ -636,6 +_,23 @@
+@@ -637,6 +_,23 @@
          this.directMappedBlockCache = new ca.spottedleaf.moonrise.patches.collisions.ExplosionBlockCache[BLOCK_EXPLOSION_CACHE_WIDTH * BLOCK_EXPLOSION_CACHE_WIDTH * BLOCK_EXPLOSION_CACHE_WIDTH];
          this.mutablePos = new BlockPos.MutableBlockPos();
          // Paper end - collision optimisations

@@ -2365,25 +2365,21 @@ public class PurpurWorldConfig {
         muleAlwaysDropExp = getBoolean("mobs.mule.always-drop-exp", muleAlwaysDropExp);
     }
 
-    // public boolean nautilusRidable = false;
-    // public boolean nautilusRidableInWater = true;
-    // public boolean nautilusControllable = true;
-    // public double nautilusMaxHealth = 10.0D;
-    // public double nautilusScale = 1.0D;
+    public double nautilusMaxHealth = 15.0D;
+    public double nautilusMovementSpeed = 1.0D;
+    public double nautilusAttackDamage = 3.0D;
+    public double nautilusKnockbackResistance = 0.3D;
+    public double nautilusScale = 1.0D;
     public int nautilusBreedingTicks = 6000;
-    // public boolean nautilusTakeDamageFromWater = false;
-    // public boolean nautilusAlwaysDropExp = false;
-    // public boolean nautilusSpawnUnderSeaLevel = false;
+    public boolean nautilusAlwaysDropExp = false;
     private void nautilusSettings() {
-        // nautilusRidable = getBoolean("mobs.nautilus.ridable", nautilusRidable);
-        // nautilusRidableInWater = getBoolean("mobs.nautilus.ridable-in-water", nautilusRidableInWater);
-        // nautilusControllable = getBoolean("mobs.nautilus.controllable", nautilusControllable);
-        // nautilusMaxHealth = getDouble("mobs.nautilus.attributes.max_health", nautilusMaxHealth);
-        // nautilusScale = Mth.clamp(getDouble("mobs.nautilus.attributes.scale", nautilusScale), 0.0625D, 16.0D);
+        nautilusMaxHealth = getDouble("mobs.nautilus.attributes.max_health", nautilusMaxHealth);
+        nautilusMovementSpeed = getDouble("mobs.nautilus.attributes.movement_speed", nautilusMovementSpeed);
+        nautilusAttackDamage = getDouble("mobs.nautilus.attributes.attack_damage", nautilusAttackDamage);
+        nautilusKnockbackResistance = getDouble("mobs.nautilus.attributes.knockback_resistance", nautilusKnockbackResistance);
+        nautilusScale = Mth.clamp(getDouble("mobs.nautilus.attributes.scale", nautilusScale), 0.0625D, 16.0D);
         nautilusBreedingTicks = getInt("mobs.nautilus.breeding-delay-ticks", nautilusBreedingTicks);
-        // nautilusTakeDamageFromWater = getBoolean("mobs.nautilus.takes-damage-from-water", nautilusTakeDamageFromWater);
-        // nautilusAlwaysDropExp = getBoolean("mobs.nautilus.always-drop-exp", nautilusAlwaysDropExp);
-        // nautilusSpawnUnderSeaLevel = getBoolean("mobs.nautilus.spawn-below-sea-level", nautilusSpawnUnderSeaLevel);
+        nautilusAlwaysDropExp = getBoolean("mobs.nautilus.always-drop-exp", nautilusAlwaysDropExp);
     }
 
     public boolean ocelotRidable = false;
@@ -3633,6 +3629,21 @@ public class PurpurWorldConfig {
         zombieHorseSpawnChance = getDouble("mobs.zombie_horse.spawn-chance", zombieHorseSpawnChance);
         zombieHorseTakeDamageFromWater = getBoolean("mobs.zombie_horse.takes-damage-from-water", zombieHorseTakeDamageFromWater);
         zombieHorseAlwaysDropExp = getBoolean("mobs.zombie_horse.always-drop-exp", zombieHorseAlwaysDropExp);
+    }
+
+    public double zombieNautilusMaxHealth = 15.0D;
+    public double zombieNautilusMovementSpeed = 1.1D;
+    public double zombieNautilusAttackDamage = 3.0D;
+    public double zombieNautilusKnockbackResistance = 0.3D;
+    public double zombieNautilusScale = 1.0D;
+    public boolean zombieNautilusAlwaysDropExp = false;
+    private void zombieNautilusSettings() {
+        zombieNautilusMaxHealth = getDouble("mobs.zombie_nautilus.attributes.max_health", zombieNautilusMaxHealth);
+        zombieNautilusMovementSpeed = getDouble("mobs.zombie_nautilus.attributes.movement_speed", zombieNautilusMovementSpeed);
+        zombieNautilusAttackDamage = getDouble("mobs.zombie_nautilus.attributes.attack_damage", zombieNautilusAttackDamage);
+        zombieNautilusKnockbackResistance = getDouble("mobs.zombie_nautilus.attributes.knockback_resistance", zombieNautilusKnockbackResistance);
+        zombieNautilusScale = Mth.clamp(getDouble("mobs.zombie_nautilus.attributes.scale", zombieNautilusScale), 0.0625D, 16.0D);
+        zombieNautilusAlwaysDropExp = getBoolean("mobs.zombie_nautilus.always-drop-exp", zombieNautilusAlwaysDropExp);
     }
 
     public boolean zombieVillagerRidable = false;

@@ -707,6 +707,50 @@ index 0a75d3790a4bf4812e4f3b27ec50d67fdccf812d..cd888e070a72ff46d35a4425a0013c61
      }
  
      @Override
+diff --git a/net/minecraft/world/entity/animal/nautilus/Nautilus.java b/net/minecraft/world/entity/animal/nautilus/Nautilus.java
+index a02a4b47cf02cd7eaa76d25af2dccb50ad884504..a32ac3907883f65c2a00173128a4a011fd552932 100644
+--- a/net/minecraft/world/entity/animal/nautilus/Nautilus.java
++++ b/net/minecraft/world/entity/animal/nautilus/Nautilus.java
+@@ -21,6 +21,17 @@ public class Nautilus extends AbstractNautilus {
+         super(type, level);
+     }
+ 
++    // Purpur start - Configurable entity base attributes
++    @Override
++    public void initAttributes() {
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.nautilusMaxHealth);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).setBaseValue(this.level().purpurConfig.nautilusMovementSpeed);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).setBaseValue(this.level().purpurConfig.nautilusAttackDamage);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE).setBaseValue(this.level().purpurConfig.nautilusKnockbackResistance);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE).setBaseValue(this.level().purpurConfig.nautilusScale);
++    }
++    // Purpur end - Configurable entity base attributes
++
+     @Override
+     protected Brain.Provider<Nautilus> brainProvider() {
+         return NautilusAi.brainProvider();
+diff --git a/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java b/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java
+index 83c16a44b230efd010e06cabb428954d157cea47..7ef4a15ba2b315a41480484572a6c6898340466b 100644
+--- a/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java
++++ b/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java
+@@ -43,6 +43,17 @@ public class ZombieNautilus extends AbstractNautilus {
+         super(type, level);
+     }
+ 
++    // Purpur start - Configurable entity base attributes
++    @Override
++    public void initAttributes() {
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(this.level().purpurConfig.zombieNautilusMaxHealth);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).setBaseValue(this.level().purpurConfig.zombieNautilusMovementSpeed);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).setBaseValue(this.level().purpurConfig.zombieNautilusAttackDamage);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE).setBaseValue(this.level().purpurConfig.zombieNautilusKnockbackResistance);
++        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE).setBaseValue(this.level().purpurConfig.zombieNautilusScale);
++    }
++    // Purpur end - Configurable entity base attributes
++
+     public static AttributeSupplier.Builder createAttributes() {
+         return AbstractNautilus.createAttributes().add(Attributes.MOVEMENT_SPEED, 1.1F);
+     }
 diff --git a/net/minecraft/world/entity/animal/panda/Panda.java b/net/minecraft/world/entity/animal/panda/Panda.java
 index 93503f6b4eea2cb2ae6c01279e847c307920c35d..d5060fb8e9a711e6230f2c4950521d8b4f5c01d2 100644
 --- a/net/minecraft/world/entity/animal/panda/Panda.java

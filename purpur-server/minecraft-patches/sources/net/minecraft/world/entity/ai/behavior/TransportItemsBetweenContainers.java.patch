@@ -31,3 +31,12 @@
      }
  
      private static double getInteractionRange(PathfinderMob mob) {
+@@ -528,7 +_,7 @@
+         int i = 0;
+ 
+         for (ItemStack itemStack : container) {
+-            if (!itemStack.isEmpty()) {
++            if (!itemStack.isEmpty() && (!(container instanceof net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity) || !itemStack.is(net.minecraft.tags.ItemTags.SHULKER_BOXES))) { // Purpur - copper golem can place items in barrels or shulkers option
+                 int min = Math.min(itemStack.getCount(), 16);
+                 return container.removeItem(i, min);
+             }

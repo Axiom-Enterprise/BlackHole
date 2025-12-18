@@ -75,10 +75,10 @@ index cd7ecd971b5a0ffdf6cabeaa874f2a221431052e..e587414dd1250b14a0fecf8d1b25dd70
                                      if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index c133b6796c0251500801b2e41df9ae4b38d111a1..468df93a0302f200c2bd5e9bc65feccdd8649bf3 100644
+index 33d2e32880653713da8543c6f6dd1748464474dd..406bc2db911e06bd516f852aed1d72dbdc9ff10e 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -3371,6 +3371,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -3373,6 +3373,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
  
                  this.passengers = ImmutableList.copyOf(list);
              }
@@ -92,7 +92,7 @@ index c133b6796c0251500801b2e41df9ae4b38d111a1..468df93a0302f200c2bd5e9bc65feccd
          }
      }
  
-@@ -3411,6 +3418,14 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -3413,6 +3420,14 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index c133b6796c0251500801b2e41df9ae4b38d111a1..468df93a0302f200c2bd5e9bc65feccd
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5462,4 +5477,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -5464,4 +5479,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter

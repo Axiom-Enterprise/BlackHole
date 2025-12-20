@@ -75,7 +75,7 @@ index cd7ecd971b5a0ffdf6cabeaa874f2a221431052e..e587414dd1250b14a0fecf8d1b25dd70
                                      if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 33d2e32880653713da8543c6f6dd1748464474dd..406bc2db911e06bd516f852aed1d72dbdc9ff10e 100644
+index 1f0d0b203a476abb4a9ca223558b3639f15f4f54..497d24540273a1ab5301f4efb8ef66c912f93d8e 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3373,6 +3373,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
@@ -107,7 +107,7 @@ index 33d2e32880653713da8543c6f6dd1748464474dd..406bc2db911e06bd516f852aed1d72db
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5464,4 +5479,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -5463,4 +5478,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter

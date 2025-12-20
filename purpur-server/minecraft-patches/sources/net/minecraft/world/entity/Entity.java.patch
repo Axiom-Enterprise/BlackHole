@@ -127,7 +127,7 @@
              }
          }
      }
-@@ -3687,7 +_,7 @@
+@@ -3686,7 +_,7 @@
      }
  
      public int getMaxAirSupply() {
@@ -136,7 +136,7 @@
      }
  
      public int getAirSupply() {
-@@ -4222,7 +_,7 @@
+@@ -4221,7 +_,7 @@
      }
  
      public boolean canUsePortal(boolean allowPassengers) {
@@ -145,7 +145,7 @@
      }
  
      public boolean canTeleport(Level fromLevel, Level toLevel) {
-@@ -4741,6 +_,12 @@
+@@ -4740,6 +_,12 @@
          return Mth.lerp(partialTick, this.yRotO, this.yRot);
      }
  
@@ -158,7 +158,7 @@
      // Paper start - optimise collisions
      public boolean updateFluidHeightAndDoFluidPushing(final TagKey<Fluid> fluid, final double flowScale) {
          if (this.touchingUnloadedChunk()) {
-@@ -5161,7 +_,7 @@
+@@ -5160,7 +_,7 @@
      }
  
      public float maxUpStep() {

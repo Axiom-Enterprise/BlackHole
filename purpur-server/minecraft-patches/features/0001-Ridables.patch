@@ -18,7 +18,7 @@ index 05eb0c3273ffa1b5a1ebd8f8ae42c11830d755c7..49d3154afe2ca5789e63bdf972c79196
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index c714782f047c211443723738527f4bd019aaa322..cfd9596246713030f7c0f28a65abeed6dcc8d81b 100644
+index 6c38c89f0352ec8cccdb704775374d35e9ad09a0..18419dda298d2ab5045ad87fba19e677c556a1a0 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -1833,6 +1833,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -62,10 +62,10 @@ index 9ec896ad8e95d7822095c42054e76e7a5db91481..2eba1b0ac8b4a0bb34d04b81c4c279db
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index cd7ecd971b5a0ffdf6cabeaa874f2a221431052e..e587414dd1250b14a0fecf8d1b25dd70b20816eb 100644
+index 24b03e581e766cf5d116278175e82bbf905d7800..5ec5b742de56504674c821ccfe9f4df6880f742d 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2895,6 +2895,8 @@ public class ServerGamePacketListenerImpl
+@@ -2910,6 +2910,8 @@ public class ServerGamePacketListenerImpl
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
                                      final boolean resendData = event.isCancelled() || !ServerGamePacketListenerImpl.this.player.getItemInHand(hand).is(itemType);
  
@@ -75,7 +75,7 @@ index cd7ecd971b5a0ffdf6cabeaa874f2a221431052e..e587414dd1250b14a0fecf8d1b25dd70
                                      if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 1f0d0b203a476abb4a9ca223558b3639f15f4f54..497d24540273a1ab5301f4efb8ef66c912f93d8e 100644
+index eb1ecbd7d232b346b4d8a993033486357d2d5856..71915584f23b3c8e973c37696f5a9df008ba46a0 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3373,6 +3373,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
@@ -153,7 +153,7 @@ index 1f0d0b203a476abb4a9ca223558b3639f15f4f54..497d24540273a1ab5301f4efb8ef66c9
 +    // Purpur end - Ridables
  }
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index aeadca3aa7baf337aff8c8e24bf557f6a9db322a..6e0a2741db06f93f31349515d1d13181b70e08ed 100644
+index 88c8c1d5c56c14d534c5136dc024829dbaf57c6f..7494bd50f2ab863648de65fca0e863f576addaac 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -244,9 +244,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -186,7 +186,7 @@ index aeadca3aa7baf337aff8c8e24bf557f6a9db322a..6e0a2741db06f93f31349515d1d13181
  
      @Override
      protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-@@ -3111,6 +3112,20 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3123,6 +3124,20 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
              this.move(MoverType.SELF, this.getDeltaMovement());
              this.setDeltaMovement(this.getDeltaMovement().scale(0.5));
          } else {
@@ -207,7 +207,7 @@ index aeadca3aa7baf337aff8c8e24bf557f6a9db322a..6e0a2741db06f93f31349515d1d13181
              this.moveRelative(amount, relative);
              this.move(MoverType.SELF, this.getDeltaMovement());
              this.setDeltaMovement(this.getDeltaMovement().scale(0.91F));
-@@ -3799,8 +3814,10 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3811,8 +3826,10 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.pushEntities();
          profilerFiller.pop();
          // Paper start - Add EntityMoveEvent
@@ -220,7 +220,7 @@ index aeadca3aa7baf337aff8c8e24bf557f6a9db322a..6e0a2741db06f93f31349515d1d13181
                  Location from = new Location(this.level().getWorld(), this.xo, this.yo, this.zo, this.yRotO, this.xRotO);
                  Location to = new Location(this.level().getWorld(), this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                  io.papermc.paper.event.entity.EntityMoveEvent event = new io.papermc.paper.event.entity.EntityMoveEvent(this.getBukkitLivingEntity(), from, to.clone());
-@@ -3810,6 +3827,21 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3822,6 +3839,21 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                      this.absSnapTo(event.getTo().getX(), event.getTo().getY(), event.getTo().getZ(), event.getTo().getYaw(), event.getTo().getPitch());
                  }
              }
@@ -938,7 +938,7 @@ index ea6299e728d7c7e7a52d7c65d759407ba27c8eac..1a9f5f17e46af831bc6621c83c57e543
                      // Paper end - custom shear drops
                  }
 diff --git a/net/minecraft/world/entity/animal/dolphin/Dolphin.java b/net/minecraft/world/entity/animal/dolphin/Dolphin.java
-index 45b6707ce9944a6a69f51196c3323821648d500b..656335a3bd021efc538ab407673c09a83178ed7c 100644
+index 50b8abff1e20855ba8c8acb225c251a1223b8b58..90ad3a0115c3cee36a310505d945afd13ae2c817 100644
 --- a/net/minecraft/world/entity/animal/dolphin/Dolphin.java
 +++ b/net/minecraft/world/entity/animal/dolphin/Dolphin.java
 @@ -76,14 +76,82 @@ public class Dolphin extends AgeableWaterCreature {

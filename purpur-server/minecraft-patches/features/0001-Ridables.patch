@@ -18,7 +18,7 @@ index 05eb0c3273ffa1b5a1ebd8f8ae42c11830d755c7..49d3154afe2ca5789e63bdf972c79196
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 6c38c89f0352ec8cccdb704775374d35e9ad09a0..18419dda298d2ab5045ad87fba19e677c556a1a0 100644
+index 3b773fc2a357811cb63f48b0ae351efbcd3878b0..5acc46e0d16c365d67c14d0c2bfc4346d4f46f21 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -1833,6 +1833,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -30,7 +30,7 @@ index 6c38c89f0352ec8cccdb704775374d35e9ad09a0..18419dda298d2ab5045ad87fba19e677
              /* Drop global time updates
              if (this.tickCount % 20 == 0) {
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index c18844ca7c9840f28fe5167d67387ebaf758a9da..c99ba8c3eba14efcf7906fe2b42e4db1c73c90fe 100644
+index 5130c0067f01eec31c69b9e71d904f932943b922..853bb92c034b6361ff8c55daf52f38a226fdae2c 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -230,6 +230,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -42,7 +42,7 @@ index c18844ca7c9840f28fe5167d67387ebaf758a9da..c99ba8c3eba14efcf7906fe2b42e4db1
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 9ec896ad8e95d7822095c42054e76e7a5db91481..2eba1b0ac8b4a0bb34d04b81c4c279db6e716b3b 100644
+index ed6bbef78fef8fd21b1fabc9f8008a141e17d437..889b2a20b01949351bd4d29fc450d9ba59324066 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -772,6 +772,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
@@ -62,10 +62,10 @@ index 9ec896ad8e95d7822095c42054e76e7a5db91481..2eba1b0ac8b4a0bb34d04b81c4c279db
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 24b03e581e766cf5d116278175e82bbf905d7800..5ec5b742de56504674c821ccfe9f4df6880f742d 100644
+index 5af26990d6cce42c3c12ac6d896ed3859c3497e3..0e17b54d7c3046cc85d15956793450ff70857b3c 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2910,6 +2910,8 @@ public class ServerGamePacketListenerImpl
+@@ -2915,6 +2915,8 @@ public class ServerGamePacketListenerImpl
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
                                      final boolean resendData = event.isCancelled() || !ServerGamePacketListenerImpl.this.player.getItemInHand(hand).is(itemType);
  
@@ -75,7 +75,7 @@ index 24b03e581e766cf5d116278175e82bbf905d7800..5ec5b742de56504674c821ccfe9f4df6
                                      if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index eb1ecbd7d232b346b4d8a993033486357d2d5856..71915584f23b3c8e973c37696f5a9df008ba46a0 100644
+index b4a69c5b17a28ccc9f79d6df21df9ac9714d36ef..902ce8a8d88df536c3194343d44bbe8c1bf7baff 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3373,6 +3373,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
@@ -153,7 +153,7 @@ index eb1ecbd7d232b346b4d8a993033486357d2d5856..71915584f23b3c8e973c37696f5a9df0
 +    // Purpur end - Ridables
  }
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 88c8c1d5c56c14d534c5136dc024829dbaf57c6f..7494bd50f2ab863648de65fca0e863f576addaac 100644
+index 527db90fa6faa6f39a80e64db16e28f1d616ce4d..23b51bcf8397a4fc9fdedbd4fcee379322477d39 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -244,9 +244,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -1490,7 +1490,7 @@ index 9a473f29931059e36a6fe8fa541c4706ababf59d..f73b3f5ae65f7793ff25145c72fb35e3
      public ItemStack getBucketItemStack() {
          return new ItemStack(Items.COD_BUCKET);
 diff --git a/net/minecraft/world/entity/animal/fish/Pufferfish.java b/net/minecraft/world/entity/animal/fish/Pufferfish.java
-index d8280671bb36d57b86a5d212d8deae9acc745bd4..1eaa5e5fb65b18e5042d69b5dbfea15a7271c0aa 100644
+index 3acbe72a1c72c83b33671eb15ac76fc7a6135998..aea7887cd88604ed7a36f414221035abf999489d 100644
 --- a/net/minecraft/world/entity/animal/fish/Pufferfish.java
 +++ b/net/minecraft/world/entity/animal/fish/Pufferfish.java
 @@ -47,6 +47,18 @@ public class Pufferfish extends AbstractFish {
@@ -1848,7 +1848,7 @@ index 566390c9258c1132c9ffa2df8ecc3e713963787f..6e4d611c959960e8d13f79704c176b41
          profilerFiller.pop();
          profilerFiller.push("goatActivityUpdate");
 diff --git a/net/minecraft/world/entity/animal/golem/CopperGolem.java b/net/minecraft/world/entity/animal/golem/CopperGolem.java
-index ad88672368b66ac99f437f8af48b9fd1dcc32c8a..4dc1ce5e07e23134cf3ed68e78a055c3b75fdc83 100644
+index 28cd2deeb5c92f599f7f1b19a2794b98994409c3..27b9abe5a2d352bdba5822e840abdccdb995b0f7 100644
 --- a/net/minecraft/world/entity/animal/golem/CopperGolem.java
 +++ b/net/minecraft/world/entity/animal/golem/CopperGolem.java
 @@ -108,6 +108,28 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
@@ -1963,7 +1963,7 @@ index 32425f0aaa748c7f80f2e5cf95ef27238fe50489..363bf7781c8785bc6fdbc65941794a5a
                  float f = 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
                  this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0F, f);
 diff --git a/net/minecraft/world/entity/animal/golem/SnowGolem.java b/net/minecraft/world/entity/animal/golem/SnowGolem.java
-index c474b69dd4e2c7893d51627403425e9fd38042ef..d8a3b7d329757bb84ee4d53671c89f211e8581ab 100644
+index 620af577fa9fa4b16f6651b427d25af93b0e02c6..9b5a531fe67cb17021d5aa1a036ffff36ecb48d5 100644
 --- a/net/minecraft/world/entity/animal/golem/SnowGolem.java
 +++ b/net/minecraft/world/entity/animal/golem/SnowGolem.java
 @@ -62,12 +62,31 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
@@ -2743,7 +2743,7 @@ index 725624f63a2fbf0bd489a92e2c5862c82d72556c..44b650de646ea605e41f39f3d99d8f55
          this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
          this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setAlertOthers());
 diff --git a/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index b7b76dd193820c9a3f22349572ba443619114d58..b8ddcc460ff1ae1cbfde70d3d8c16486bb2d3f8c 100644
+index 9c38e3b8c09caa2701a207b91761f344c5e53385..eae6f063a2148ac1ac1689d65d3f80bad79f1ae8 100644
 --- a/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 @@ -90,6 +90,7 @@ public class EnderDragon extends Mob implements Enemy {
@@ -2918,7 +2918,7 @@ index 41200efbaa29ee487c0383b261122e0701413865..871adbd10f49a4d59820c089da149a47
      protected void defineSynchedData(SynchedEntityData.Builder builder) {
      }
 diff --git a/net/minecraft/world/entity/boss/wither/WitherBoss.java b/net/minecraft/world/entity/boss/wither/WitherBoss.java
-index f170db52921583050786050cf7fdaee439117bb8..dbf3c7049fae08dc5c4ac491a5fc8141ab177a22 100644
+index be74b2f6e21e9adb1e5c96414854a5c4f07655fc..6c516b71b91cdca51d218a154c8ea9e29ec35728 100644
 --- a/net/minecraft/world/entity/boss/wither/WitherBoss.java
 +++ b/net/minecraft/world/entity/boss/wither/WitherBoss.java
 @@ -72,6 +72,7 @@ public class WitherBoss extends Monster implements RangedAttackMob {
@@ -4985,7 +4985,7 @@ index f36d92f0f62354be5f4e39e768aabb1369cfe18c..f18ac33d31ae23db02654658840b89ba
      public boolean isSunSensitive() {
          return false;
 diff --git a/net/minecraft/world/entity/monster/zombie/Zombie.java b/net/minecraft/world/entity/monster/zombie/Zombie.java
-index c86fb77485a038b600877432c828dc7940cf26f4..b2d322bee9343079c0c21cc7b47493df9cfd861e 100644
+index d80c1cd0d254c941c9f0234a3187fc530116ec01..bbc4db926930abed4948aad0af464dc8c6fd01b1 100644
 --- a/net/minecraft/world/entity/monster/zombie/Zombie.java
 +++ b/net/minecraft/world/entity/monster/zombie/Zombie.java
 @@ -103,11 +103,30 @@ public class Zombie extends Monster {
@@ -5020,7 +5020,7 @@ index c86fb77485a038b600877432c828dc7940cf26f4..b2d322bee9343079c0c21cc7b47493df
      }
  
 diff --git a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
-index c73419613c67685dd78d7aa0a959267b4b9c1ae8..d91a1aec302a93326a357311f1743fa87ec92fa3 100644
+index c6f271a921fde124df1a7c5d175cb83b420cd2e3..00c8d2cbc5acca9062d8a7029e84fdb575a9130b 100644
 --- a/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
 +++ b/net/minecraft/world/entity/monster/zombie/ZombieVillager.java
 @@ -85,6 +85,23 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
@@ -5179,7 +5179,7 @@ index aceeb9919473f5ff1b84efe950d10aa4dbc10121..5c7da654ef967356173a9d85a8675a7d
                  if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
                  this.setTradingPlayer(player);
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index f5d3aa7c1e008377f9ac06401e88dae8c671ec13..eee303b4e0fa22a3d037e5fb3bf31946f41744cf 100644
+index d4ce7052a497261e0ab139f2a434dda598fc154b..3339cb1068ab162e36c410950e83e5f32dd9b705 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -199,6 +199,19 @@ public abstract class Player extends Avatar implements ContainerUser {

@@ -38,7 +38,7 @@
  
      public void inactiveTick() {
      }
-@@ -535,10 +_,21 @@
+@@ -535,10 +_,22 @@
      }
      // Paper end - optimise entity tracker
  
@@ -52,6 +52,7 @@
          this.type = type;
          this.level = level;
          this.dimensions = type.getDimensions();
++        this.maxAirTicks = level == null ? Entity.TOTAL_AIR_SUPPLY : this.level.purpurConfig.drowningAirTicks; // Purpur - Drowning Settings
 +        // Purpur start - Add toggle for RNG manipulation
 +        this.random = level == null || level.purpurConfig.entitySharedRandom ? SHARED_RANDOM : RandomSource.create();
 +        this.uuid = Mth.createInsecureUUID(this.random);
@@ -77,6 +78,15 @@
      }
  
      public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
+@@ -2573,7 +_,7 @@
+                 output.putBoolean("Bukkit.invisible", this.persistentInvisibility);
+             }
+             // SPIGOT-6907: re-implement LivingEntity#setMaximumAir()
+-            if (this.maxAirTicks != this.getDefaultMaxAirSupply()) {
++            if (this.maxAirTicks != this.getDefaultMaxAirSupply() && this.getDefaultMaxAirSupply() != this.level().purpurConfig.drowningAirTicks) { // Purpur - Drowning Settings
+                 output.putInt("Bukkit.MaxAirSupply", this.getMaxAirSupply());
+             }
+             output.putInt("Spigot.ticksLived", this.totalEntityAge); // Paper
 @@ -2660,6 +_,11 @@
                  output.putBoolean("Paper.FreezeLock", true);
              }
@@ -127,15 +137,6 @@
              }
          }
      }
-@@ -3686,7 +_,7 @@
-     }
- 
-     public int getMaxAirSupply() {
--        return this.maxAirTicks; // CraftBukkit - SPIGOT-6907: re-implement LivingEntity#setMaximumAir()
-+        return this.level == null? this.maxAirTicks : this.level().purpurConfig.drowningAirTicks; // CraftBukkit - SPIGOT-6907: re-implement LivingEntity#setMaximumAir() // Purpur - Drowning Settings
-     }
- 
-     public int getAirSupply() {
 @@ -4221,7 +_,7 @@
      }
  

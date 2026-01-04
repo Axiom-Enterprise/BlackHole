@@ -42,7 +42,7 @@ index 5130c0067f01eec31c69b9e71d904f932943b922..853bb92c034b6361ff8c55daf52f38a2
      @Override
      public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index ed6bbef78fef8fd21b1fabc9f8008a141e17d437..889b2a20b01949351bd4d29fc450d9ba59324066 100644
+index 4d3ccd5373a75227e613c13df1d32cab5ce124bd..1423ee429d090955da06f23b0df0727359d11401 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
 @@ -772,6 +772,15 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
@@ -75,10 +75,10 @@ index 5af26990d6cce42c3c12ac6d896ed3859c3497e3..0e17b54d7c3046cc85d15956793450ff
                                      if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                                          target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index b9d78afc5f2d1f0b3cffcb50f465bd1d057820ff..09f7026f4b03deef775ce085cafde2a9da69399f 100644
+index 5efb94bf1029fdbbd48937c1f3925421d6daacfd..c8bc831c49df48c3f2ea2ea2d22a0aec5d37923c 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -3374,6 +3374,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -3373,6 +3373,13 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
  
                  this.passengers = ImmutableList.copyOf(list);
              }
@@ -92,7 +92,7 @@ index b9d78afc5f2d1f0b3cffcb50f465bd1d057820ff..09f7026f4b03deef775ce085cafde2a9
          }
      }
  
-@@ -3414,6 +3421,14 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -3413,6 +3420,14 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
                  return false;
              }
              // CraftBukkit end
@@ -107,7 +107,7 @@ index b9d78afc5f2d1f0b3cffcb50f465bd1d057820ff..09f7026f4b03deef775ce085cafde2a9
              if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
                  this.passengers = ImmutableList.of();
              } else {
-@@ -5464,4 +5479,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
+@@ -5463,4 +5478,44 @@ public abstract class Entity implements SyncedDataHolder, DebugValueSource, Name
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
@@ -243,7 +243,7 @@ index 527db90fa6faa6f39a80e64db16e28f1d616ce4d..23b51bcf8397a4fc9fdedbd4fcee3793
          // Paper end - Add EntityMoveEvent
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index dd0f83b9355271f7aab15eb49833f518e499595e..c519f3f501963bde3f1cadf24f88edd2a043215d 100644
+index cf2cbc3bf5e0000737ebeac3867f12d7e07bda01..94e7307c0d15fdef7f7dcb28473cb76661600b0e 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -156,8 +156,8 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab

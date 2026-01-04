@@ -78,7 +78,7 @@
      }
  
      public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
-@@ -2573,7 +_,7 @@
+@@ -2572,7 +_,7 @@
                  output.putBoolean("Bukkit.invisible", this.persistentInvisibility);
              }
              // SPIGOT-6907: re-implement LivingEntity#setMaximumAir()
@@ -87,7 +87,7 @@
                  output.putInt("Bukkit.MaxAirSupply", this.getMaxAirSupply());
              }
              output.putInt("Spigot.ticksLived", this.totalEntityAge); // Paper
-@@ -2660,6 +_,11 @@
+@@ -2659,6 +_,11 @@
                  output.putBoolean("Paper.FreezeLock", true);
              }
              // Paper end
@@ -99,7 +99,7 @@
          } catch (Throwable var7) {
              CrashReport crashReport = CrashReport.forThrowable(var7, "Saving entity NBT");
              CrashReportCategory crashReportCategory = crashReport.addCategory("Entity being saved");
-@@ -2780,6 +_,9 @@
+@@ -2779,6 +_,9 @@
              }
              freezeLocked = input.getBooleanOr("Paper.FreezeLock", false);
              // Paper end
@@ -109,7 +109,7 @@
          } catch (Throwable var7) {
              CrashReport crashReport = CrashReport.forThrowable(var7, "Loading entity NBT");
              CrashReportCategory crashReportCategory = crashReport.addCategory("Entity being loaded");
-@@ -3043,6 +_,7 @@
+@@ -3042,6 +_,7 @@
              if (this.isAlive() && this instanceof Leashable leashable2) {
                  if (leashable2.getLeashHolder() == player) {
                      if (!this.level().isClientSide()) {
@@ -117,7 +117,7 @@
                          // Paper start - EntityUnleashEvent
                          if (!org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerUnleashEntityEvent(
                              leashable2, player, hand, !player.hasInfiniteMaterials(), true
-@@ -3473,15 +_,18 @@
+@@ -3472,15 +_,18 @@
          return Vec3.directionFromRotation(this.getRotationVector());
      }
  
@@ -137,7 +137,7 @@
              }
          }
      }
-@@ -4221,7 +_,7 @@
+@@ -4220,7 +_,7 @@
      }
  
      public boolean canUsePortal(boolean allowPassengers) {
@@ -146,7 +146,7 @@
      }
  
      public boolean canTeleport(Level fromLevel, Level toLevel) {
-@@ -4740,6 +_,12 @@
+@@ -4739,6 +_,12 @@
          return Mth.lerp(partialTick, this.yRotO, this.yRot);
      }
  
@@ -159,7 +159,7 @@
      // Paper start - optimise collisions
      public boolean updateFluidHeightAndDoFluidPushing(final TagKey<Fluid> fluid, final double flowScale) {
          if (this.touchingUnloadedChunk()) {
-@@ -5160,7 +_,7 @@
+@@ -5159,7 +_,7 @@
      }
  
      public float maxUpStep() {

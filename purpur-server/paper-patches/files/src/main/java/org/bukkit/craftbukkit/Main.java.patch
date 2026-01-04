@@ -1,8 +1,8 @@
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -162,6 +_,14 @@
+@@ -169,6 +_,14 @@
                          .defaultsTo(new File[] {})
-                         .describedAs("Jar file");
+                         .describedAs("Plugin directory");
  
 +                // Purpur start - Purpur config files
 +                this.acceptsAll(asList("purpur", "purpur-settings"), "File for purpur settings")

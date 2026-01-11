@@ -215,7 +215,7 @@
  
      public ServerStatsCounter getStats() {
          return this.stats;
-@@ -3128,4 +_,65 @@
+@@ -3126,4 +_,65 @@
          return (org.bukkit.craftbukkit.entity.CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end

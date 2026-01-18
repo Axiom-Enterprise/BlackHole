@@ -28,7 +28,7 @@
 +        org.purpurmc.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur - Purpur config files
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
-             world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && world.getGameRules().get(GameRules.SPAWN_MONSTERS)); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
+             world.setSpawnSettings(world.isSpawningMonsters()); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
 @@ -1007,6 +_,7 @@
                  }
              }

@@ -31,6 +31,18 @@
      }
  
      private static double getInteractionRange(PathfinderMob mob) {
+@@ -488,6 +_,11 @@
+     }
+ 
+     private static boolean matchesLeavingItemsRequirement(PathfinderMob mob, Container container) {
++        // Purpur start - copper golem can place items in barrels or shulkers option
++        if (mob.level().purpurConfig.copperGolemCanOpenShulker && container instanceof net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity && mob.getMainHandItem().is(net.minecraft.tags.ItemTags.SHULKER_BOXES)) {
++            return false;
++        }
++        // Purpur end - copper golem can place items in barrels or shulkers option
+         return container.isEmpty() || hasItemMatchingHandItem(mob, container);
+     }
+ 
 @@ -525,7 +_,7 @@
          int i = 0;
  

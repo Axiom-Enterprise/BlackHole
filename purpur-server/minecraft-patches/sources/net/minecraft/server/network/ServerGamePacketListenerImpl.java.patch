@@ -222,7 +222,7 @@
                      packet.dispatch(
                          new ServerboundInteractPacket.Handler() {
                              private void performInteraction(InteractionHand hand, ServerGamePacketListenerImpl.EntityInteraction entityInteraction, PlayerInteractEntityEvent event) { // CraftBukkit
-@@ -3574,7 +_,7 @@
+@@ -3580,7 +_,7 @@
      @Override
      public void handleChangeGameMode(ServerboundChangeGameModePacket packet) {
          PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());

@@ -18,7 +18,7 @@ index 05eb0c3273ffa1b5a1ebd8f8ae42c11830d755c7..49d3154afe2ca5789e63bdf972c79196
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 8793253032e43920d9668079d5a2537ac5aec415..2717e0a1fd8a3cc7d4a6f8d18659293e86025cd0 100644
+index 21ec2d87249824a6f796833baa48b122e39157d2..cbf0f526329b0de3281795667203a6500c6aedd0 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -1836,6 +1836,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -62,10 +62,10 @@ index a16813766ad244c002a752b0c03779c550d39e75..74f1230a2a7ca443ef4dc95720695292
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 5af26990d6cce42c3c12ac6d896ed3859c3497e3..0e17b54d7c3046cc85d15956793450ff70857b3c 100644
+index 74f8f1c8a3d688fadcbc266bac126e13d9d93dc5..91f9739bf34b824c5955ad0a9ef04dcb7c2e6736 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2915,6 +2915,8 @@ public class ServerGamePacketListenerImpl
+@@ -2916,6 +2916,8 @@ public class ServerGamePacketListenerImpl
                                      ServerGamePacketListenerImpl.this.cserver.getPluginManager().callEvent(event);
                                      final boolean resendData = event.isCancelled() || !ServerGamePacketListenerImpl.this.player.getItemInHand(hand).is(itemType);
  
@@ -3378,7 +3378,7 @@ index 2d903c77017ae356eb309df3c2c43b91c4e52f2f..bd78d8c3e8c1d9b581c751d336322fbf
          } else {
              AbstractThrownPotion abstractThrownPotion1 = damageSource.getDirectEntity() instanceof AbstractThrownPotion abstractThrownPotion
 diff --git a/net/minecraft/world/entity/monster/Endermite.java b/net/minecraft/world/entity/monster/Endermite.java
-index 980ec0e45581812c027bb2ce8cd25d74e5f10663..844ba943a2a752f9b25506b644a4b4abc981b4cb 100644
+index 815649e51cc2748f8672441ce709e08365294787..06687be7b218a2a3140924f5e7216199d85d35be 100644
 --- a/net/minecraft/world/entity/monster/Endermite.java
 +++ b/net/minecraft/world/entity/monster/Endermite.java
 @@ -47,14 +47,33 @@ public class Endermite extends Monster {
@@ -3898,7 +3898,7 @@ index 6e8400c4d523da8799d586c5c9019ae78710fbcb..9647741b67e1b4b7bbff0df22fc1bf3f
              super(mob);
          }
 diff --git a/net/minecraft/world/entity/monster/Silverfish.java b/net/minecraft/world/entity/monster/Silverfish.java
-index 93b46d52d8019aef91798b796ab2f490f886a3e9..cf305d4a0a71f91caa31757dcd8ca5be84fc3f03 100644
+index 142f776ea2bfcd434d045a78d5629cd05b006b20..99b1f5009a14dab2641c1f9096d819538545989e 100644
 --- a/net/minecraft/world/entity/monster/Silverfish.java
 +++ b/net/minecraft/world/entity/monster/Silverfish.java
 @@ -38,14 +38,33 @@ public class Silverfish extends Monster {
@@ -5179,7 +5179,7 @@ index aceeb9919473f5ff1b84efe950d10aa4dbc10121..5c7da654ef967356173a9d85a8675a7d
                  if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
                  this.setTradingPlayer(player);
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index d4ce7052a497261e0ab139f2a434dda598fc154b..3339cb1068ab162e36c410950e83e5f32dd9b705 100644
+index 616c1aafcda05ae1d2a833f2f725b9eefb52cbc6..98078f38f4b24484f615fb02fe11618ad3b4a133 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -199,6 +199,19 @@ public abstract class Player extends Avatar implements ContainerUser {

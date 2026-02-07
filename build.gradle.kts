@@ -60,10 +60,6 @@ subprojects {
             events(TestLogEvent.STANDARD_OUT)
         }
     }
-    tasks.withType<AbstractArchiveTask>().configureEach {
-        isPreserveFileTimestamps = false
-        isReproducibleFileOrder = true
-    }
 
     repositories {
         mavenCentral()

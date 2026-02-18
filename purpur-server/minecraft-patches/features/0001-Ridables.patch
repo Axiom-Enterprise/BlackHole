@@ -18,10 +18,10 @@ index 05eb0c3273ffa1b5a1ebd8f8ae42c11830d755c7..49d3154afe2ca5789e63bdf972c79196
              public boolean isClientAuthoritative() {
                  return false;
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 21ec2d87249824a6f796833baa48b122e39157d2..cbf0f526329b0de3281795667203a6500c6aedd0 100644
+index 7a54f6bc2a364c1d3ac1ed58b33ecf720a305840..9f3aec24bd8aa75ea116375c1cf0a54bcc229fa2 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1836,6 +1836,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1831,6 +1831,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              serverLevel.hasEntityMoveEvent = io.papermc.paper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length > 0; // Paper - Add EntityMoveEvent
              serverLevel.updateLagCompensationTick(); // Paper - lag compensation
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = serverLevel.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
@@ -4957,7 +4957,7 @@ index 604d5e6a4962de61fb97988a2f3de2965908bada..03c801d5982eed73fd8f56f63ccab570
          }
      }
 diff --git a/net/minecraft/world/entity/monster/zombie/Husk.java b/net/minecraft/world/entity/monster/zombie/Husk.java
-index f36d92f0f62354be5f4e39e768aabb1369cfe18c..f18ac33d31ae23db02654658840b89ba03736bf3 100644
+index 93fd34d12c1b9702ff7480f434648d70638bf1a9..ee66242db5ada8e5f8ab7ddc452c2fa818ebef89 100644
 --- a/net/minecraft/world/entity/monster/zombie/Husk.java
 +++ b/net/minecraft/world/entity/monster/zombie/Husk.java
 @@ -29,6 +29,23 @@ public class Husk extends Zombie {
@@ -4985,7 +4985,7 @@ index f36d92f0f62354be5f4e39e768aabb1369cfe18c..f18ac33d31ae23db02654658840b89ba
      public boolean isSunSensitive() {
          return false;
 diff --git a/net/minecraft/world/entity/monster/zombie/Zombie.java b/net/minecraft/world/entity/monster/zombie/Zombie.java
-index d80c1cd0d254c941c9f0234a3187fc530116ec01..bbc4db926930abed4948aad0af464dc8c6fd01b1 100644
+index 34891f05809550256c07683c2d0c28d55c342758..15f2e24e8b8ef367a134d88e7c47a3377beceaea 100644
 --- a/net/minecraft/world/entity/monster/zombie/Zombie.java
 +++ b/net/minecraft/world/entity/monster/zombie/Zombie.java
 @@ -103,11 +103,30 @@ public class Zombie extends Monster {

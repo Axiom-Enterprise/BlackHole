@@ -7,8 +7,8 @@
 +    private List<String> extraInfo = List.of("", "DO NOT REPORT THIS TO PAPER! REPORT TO PURPUR INSTEAD!", ""); // Purpur - Rebrand
  
      public CrashReport(String title, Throwable exception) {
-         io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.deobfuscateThrowable(exception); // Paper
-@@ -130,7 +_,7 @@
+         this.title = title;
+@@ -129,7 +_,7 @@
      }
  
      public String getFriendlyReport(ReportType type) {
@@ -17,7 +17,7 @@
      }
  
      public @Nullable Path getSaveFile() {
-@@ -160,7 +_,7 @@
+@@ -159,7 +_,7 @@
      }
  
      public boolean saveToFile(Path path, ReportType type) {

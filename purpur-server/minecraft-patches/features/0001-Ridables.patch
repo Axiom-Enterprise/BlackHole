@@ -62,7 +62,7 @@ index 3e8a8509c0574e732c8054cc2b86f74dd47d29d4..1bd1bb805060604fbe4dca6d71a863bb
  
      private void updatePlayerAttributes() {
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 2e047b624ad238c6fa57d076415fc875d21f0048..cad78698428d40166fd5a4d177de2410e033b9b9 100644
+index ae965a1c6663ea9dd9588f010cd7831b51357fb0..8ec1aa8fdd2745d2269d73a9cfbb5f489408b91d 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -3008,6 +3008,8 @@ public class ServerGamePacketListenerImpl
@@ -75,7 +75,7 @@ index 2e047b624ad238c6fa57d076415fc875d21f0048..cad78698428d40166fd5a4d177de2410
                          if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                              target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 504361614be832c9f042a7504e1264f8625c4d87..42a87867c64ac48ec39f82951bee9b0560a1a7ef 100644
+index dd99157af3e234b0c2b3a74e964583dea2e5ba36..1ff07b2d360e42a073a6ff0f2a188f320f8376b3 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3396,6 +3396,13 @@ public abstract class Entity
@@ -153,7 +153,7 @@ index 504361614be832c9f042a7504e1264f8625c4d87..42a87867c64ac48ec39f82951bee9b05
 +    // Purpur end - Ridables
  }
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 2b5991eff4b9a19572be433c0b0f9299b8156f74..10045b734c845cb225ffadc5f63e83fda0a1615d 100644
+index 2057dacb7b48feae232d4f651104dd60ea9dc9c0..40f3e802ca9a9ca9977ce32a24bc56af971f2eaa 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -243,9 +243,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -1133,7 +1133,7 @@ index 87e34dd94340be58ade945992e26dd81ee19b0a4..d2dc51d7a8d97db64bf87f8337b10442
      protected void randomizeAttributes(final RandomSource random) {
          this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(generateMaxHealth(random::nextInt));
 diff --git a/net/minecraft/world/entity/animal/equine/Llama.java b/net/minecraft/world/entity/animal/equine/Llama.java
-index 9f7d9d3a4a7a7635cacb66b6839094c1f8d68740..cab5f2ebfdfb58ab322d81702af13a47c2276903 100644
+index 5619a7218d55c7b2ba449e9c60f4fa0160b096ee..d1049724b127c6f6307ee370ccdd4c611ec60b03 100644
 --- a/net/minecraft/world/entity/animal/equine/Llama.java
 +++ b/net/minecraft/world/entity/animal/equine/Llama.java
 @@ -81,7 +81,58 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
@@ -4807,7 +4807,7 @@ index fe82f97689305de64caa52ef648308431f4aebb1..59265f8286a32a1fe7de1986df78b441
      public boolean doHurtTarget(final ServerLevel level, final Entity target) {
          if (super.doHurtTarget(level, target)) {
 diff --git a/net/minecraft/world/entity/monster/spider/Spider.java b/net/minecraft/world/entity/monster/spider/Spider.java
-index f80bceac44eaee98cf1a0fd3fd93810d803866cd..8d70cb4a79bb64df53e6ca9f7adb79ecfe33fe2f 100644
+index 1507f340b16fd95985bfe49870e923c626833d18..546561f6b9960de22d84468a317c65f3cf406b29 100644
 --- a/net/minecraft/world/entity/monster/spider/Spider.java
 +++ b/net/minecraft/world/entity/monster/spider/Spider.java
 @@ -52,15 +52,34 @@ public class Spider extends Monster {

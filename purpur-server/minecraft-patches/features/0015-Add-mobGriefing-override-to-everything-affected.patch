@@ -18,10 +18,10 @@ index fd20156ba4319778323756485557b3dbc32b09c1..5ce6af2b5b22f439aa747d937f0baef7
                      BlockState state = Blocks.WITHER_ROSE.defaultBlockState();
                      if (this.level().getBlockState(pos).isAir() && state.canSurvive(this.level(), pos)) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 4c419772d7270dedf3d27d7147444decae2729d1..7fe31c03780625ead30d4e629da4cca3bcf5b18c 100644
+index 542ee720980f1bf8408bc150612f9a96f80a594c..6847463312a41f30cbca4116bfe5c9f2b56a451d 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -565,7 +565,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -566,7 +566,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
              && this.canPickUpLoot()
              && this.isAlive()
              && !this.dead

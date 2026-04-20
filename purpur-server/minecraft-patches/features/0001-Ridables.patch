@@ -243,7 +243,7 @@ index 2057dacb7b48feae232d4f651104dd60ea9dc9c0..40f3e802ca9a9ca9977ce32a24bc56af
          // Paper end - Add EntityMoveEvent
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 1e4f5bb32482b1e6510ab0322b42d2619f4a6c09..4c419772d7270dedf3d27d7147444decae2729d1 100644
+index f09a3510a377d749f21bef4cbb604be45cfb3090..542ee720980f1bf8408bc150612f9a96f80a594c 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -156,8 +156,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
@@ -257,7 +257,7 @@ index 1e4f5bb32482b1e6510ab0322b42d2619f4a6c09..4c419772d7270dedf3d27d7147444dec
          this.jumpControl = new JumpControl(this);
          this.bodyRotationControl = this.createBodyControl();
          this.navigation = this.createNavigation(level);
-@@ -602,6 +602,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -603,6 +603,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
                      }
                  }
              } else {
@@ -265,7 +265,7 @@ index 1e4f5bb32482b1e6510ab0322b42d2619f4a6c09..4c419772d7270dedf3d27d7147444dec
                  this.igniteForSeconds(8.0F);
              }
          }
-@@ -1366,7 +1367,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -1367,7 +1368,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
      }
  
      protected InteractionResult mobInteract(final Player player, final InteractionHand hand) {
@@ -274,7 +274,7 @@ index 1e4f5bb32482b1e6510ab0322b42d2619f4a6c09..4c419772d7270dedf3d27d7147444dec
      }
  
      protected void usePlayerItem(final Player player, final InteractionHand hand, final ItemStack itemStack) {
-@@ -1709,4 +1710,58 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -1710,4 +1711,58 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
      public float chargeSpeedModifier() {
          return 1.0F;
      }
@@ -5082,7 +5082,7 @@ index 2d294595b2d9e4daaf221482514329126d59f077..eb3ec4314603f61a041740d5b5e52165
      protected void addBehaviourGoals() {
          this.goalSelector.addGoal(1, new SpearUseGoal<>(this, 1.0, 1.0, 10.0F, 2.0F));
 diff --git a/net/minecraft/world/entity/npc/villager/Villager.java b/net/minecraft/world/entity/npc/villager/Villager.java
-index 2dfcda843aae7dbefce7fc232889f2713a2dac05..af194ac19c110b9a69967631ca189494a166b55b 100644
+index b46ce266b57670dfaaf9adb251ff32ad9e862766..c73f48509a060a05f9f9c3062dbbcbcde9b0ec71 100644
 --- a/net/minecraft/world/entity/npc/villager/Villager.java
 +++ b/net/minecraft/world/entity/npc/villager/Villager.java
 @@ -252,6 +252,28 @@ public class Villager extends AbstractVillager implements VillagerDataHolder, Re

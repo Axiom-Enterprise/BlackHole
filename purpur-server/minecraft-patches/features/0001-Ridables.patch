@@ -2340,7 +2340,7 @@ index 813247e74bddfa600b4d0bcbefd44209dfdae35c..d368954be1fc54052c29dd102e97404a
  
      public float getStandingAnimationScale(final float a) {
 diff --git a/net/minecraft/world/entity/animal/rabbit/Rabbit.java b/net/minecraft/world/entity/animal/rabbit/Rabbit.java
-index ab7e618ab8ef872d794f1ff82de881a5bca04bc5..06fbd4daa0a0a9482a5d721bbbf11c90726f4263 100644
+index ab7e618ab8ef872d794f1ff82de881a5bca04bc5..1aede74986ccd58a9066d5baf4b5f55c62b11044 100644
 --- a/net/minecraft/world/entity/animal/rabbit/Rabbit.java
 +++ b/net/minecraft/world/entity/animal/rabbit/Rabbit.java
 @@ -108,6 +108,7 @@ public class Rabbit extends Animal {
@@ -2440,7 +2440,7 @@ index ab7e618ab8ef872d794f1ff82de881a5bca04bc5..06fbd4daa0a0a9482a5d721bbbf11c90
  
      private boolean shouldPlayIdleAnimation() {
 -        return this.idleAnimationTimeout <= 0 && (this.getLeashData() == null || this.getLeashData().leashHolder == null) && !this.isNoAi();
-+        return getRider() != null && this.idleAnimationTimeout <= 0 && (this.getLeashData() == null || this.getLeashData().leashHolder == null) && !this.isNoAi(); // Purpur - Ridables
++        return getRider() == null && this.idleAnimationTimeout <= 0 && (this.getLeashData() == null || this.getLeashData().leashHolder == null) && !this.isNoAi(); // Purpur - Ridables
      }
  
      @Override

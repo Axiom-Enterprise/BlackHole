@@ -359,10 +359,10 @@ index 9293faf988be7013dbeddc9f98beb69a2dac9928..4f1e08c0e3f8ea89a55e02e8f0197fe4
      }
  }
 diff --git a/net/minecraft/world/level/gamerules/GameRules.java b/net/minecraft/world/level/gamerules/GameRules.java
-index 0d0a4008a84defbf1ea962b4e2f73776878956ec..e2fc5dc10c6ab84cb28e2adff2f87c24c8801309 100644
+index 49801f8b037913de5896d4e31a1e36d7ce597875..c333f0ca9c478f8a431fc85c50d6f97435c6d5ea 100644
 --- a/net/minecraft/world/level/gamerules/GameRules.java
 +++ b/net/minecraft/world/level/gamerules/GameRules.java
-@@ -128,6 +128,13 @@ public class GameRules {
+@@ -121,6 +121,13 @@ public class GameRules {
          return this.rules.keySet().stream();
      }
  

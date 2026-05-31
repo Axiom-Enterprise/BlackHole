@@ -153,7 +153,7 @@ index a4a0683c0287da0543a5c869163c925f899b1550..241ff14c2c27204fc8615b19700f946a
 +    // Purpur end - Ridables
  }
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index aecec886b7fc1eed340fdae1074f229fd49f06ee..bb6dc165d393a527564810e0cd2f8137e5272b9e 100644
+index 93191aa5a24f9390d0d8c7c384c700dbe18d0212..2e620309bedbd08d8791b165c6a60080c55589d8 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -243,9 +243,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -243,7 +243,7 @@ index aecec886b7fc1eed340fdae1074f229fd49f06ee..bb6dc165d393a527564810e0cd2f8137
          // Paper end - Add EntityMoveEvent
          if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 6916de6628676fc775ab4dda949ebb7facdf58b2..d9c5d2e1c638370434e52422c9643c3521f1bb42 100644
+index 8569908576be0cb8f47ec94d065736f5e0fc114e..31cb7f27dc114f347b1667a3ad7e99d4ccff8d34 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
 @@ -156,8 +156,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
@@ -257,7 +257,7 @@ index 6916de6628676fc775ab4dda949ebb7facdf58b2..d9c5d2e1c638370434e52422c9643c35
          this.jumpControl = new JumpControl(this);
          this.bodyRotationControl = this.createBodyControl();
          this.navigation = this.createNavigation(level);
-@@ -603,6 +603,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -609,6 +609,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
                      }
                  }
              } else {
@@ -265,7 +265,7 @@ index 6916de6628676fc775ab4dda949ebb7facdf58b2..d9c5d2e1c638370434e52422c9643c35
                  this.igniteForSeconds(8.0F);
              }
          }
-@@ -1362,7 +1363,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -1368,7 +1369,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
      }
  
      protected InteractionResult mobInteract(final Player player, final InteractionHand hand) {
@@ -274,7 +274,7 @@ index 6916de6628676fc775ab4dda949ebb7facdf58b2..d9c5d2e1c638370434e52422c9643c35
      }
  
      protected void usePlayerItem(final Player player, final InteractionHand hand, final ItemStack itemStack) {
-@@ -1705,4 +1706,58 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -1711,4 +1712,58 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
      public float chargeSpeedModifier() {
          return 1.0F;
      }

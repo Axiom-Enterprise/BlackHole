@@ -5,7 +5,7 @@ Subject: [PATCH] Add mobGriefing override to everything affected
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 34d122f58ff32cb47b79ab1348fee3224315d2dd..af7a1eebe6f3d9876a1a730f4ca9b0814ed57332 100644
+index 17dab3c08b4cf38b890e064b70edb9cfb2c23e73..c3bf8c3d9e34940c40a0bf453bea3ca4191b2411 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1953,7 +1953,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -18,10 +18,10 @@ index 34d122f58ff32cb47b79ab1348fee3224315d2dd..af7a1eebe6f3d9876a1a730f4ca9b081
                      BlockState state = Blocks.WITHER_ROSE.defaultBlockState();
                      if (this.level().getBlockState(pos).isAir() && state.canSurvive(this.level(), pos)) {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index d9c5d2e1c638370434e52422c9643c3521f1bb42..d5c50e5f5a850995d4636e155e5d51e190b7095c 100644
+index 31cb7f27dc114f347b1667a3ad7e99d4ccff8d34..2d74f6f2a47e5dea6b52037a8b6e3766a74f6f82 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -566,7 +566,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -572,7 +572,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
              && this.canPickUpLoot()
              && this.isAlive()
              && !this.dead

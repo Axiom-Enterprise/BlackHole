@@ -61,7 +61,7 @@
          // Paper start - allow changing despawnInPeaceful
          this.despawnInPeacefulOverride = readDespawnInPeacefulOverride(input);
      }
-@@ -1251,7 +_,7 @@
+@@ -1257,7 +_,7 @@
              );
          }
  
@@ -70,7 +70,7 @@
          return groupData;
      }
  
-@@ -1608,6 +_,7 @@
+@@ -1614,6 +_,7 @@
          }
  
          this.postPiercingAttack();

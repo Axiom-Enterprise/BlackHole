@@ -32,7 +32,7 @@ index 241ff14c2c27204fc8615b19700f946afdcfa2d1..6807b1310c70cd50bf8a0c8828a1bb62
          this.type = type;
          this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index af7a1eebe6f3d9876a1a730f4ca9b0814ed57332..76c520f115ab52b661828813cc15b698aa250021 100644
+index c3bf8c3d9e34940c40a0bf453bea3ca4191b2411..215149e07e0ae2a3b98d90336d8adf8d36e2bae0 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -291,6 +291,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -98,10 +98,10 @@ index af7a1eebe6f3d9876a1a730f4ca9b0814ed57332..76c520f115ab52b661828813cc15b698
  
      protected void applyInput() {
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index d5c50e5f5a850995d4636e155e5d51e190b7095c..9867e2ea9af7cf5d6d711742514e222fad55ce41 100644
+index 2d74f6f2a47e5dea6b52037a8b6e3766a74f6f82..65473722cf31dd7f298ec60cf0d870d8e8fbe142 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -556,9 +556,9 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -562,9 +562,9 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
      @Override
      public void aiStep() {
          super.aiStep();
@@ -113,7 +113,7 @@ index d5c50e5f5a850995d4636e155e5d51e190b7095c..9867e2ea9af7cf5d6d711742514e222f
  
          ProfilerFiller profiler = Profiler.get();
          profiler.push("looting");
-@@ -610,16 +610,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -616,16 +616,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
      }
  
      public boolean isSunBurnTick() {

@@ -5,10 +5,10 @@ Subject: [PATCH] Per mob mob_griefing loot pickup override
 
 
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 9867e2ea9af7cf5d6d711742514e222fad55ce41..3c5e2b36df50768367ecb4c97a88833d4327523f 100644
+index 65473722cf31dd7f298ec60cf0d870d8e8fbe142..d0187dea97d0a1247d2d03b089cf138035bf6d24 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -566,7 +566,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -572,7 +572,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
              && this.canPickUpLoot()
              && this.isAlive()
              && !this.dead
@@ -17,7 +17,7 @@ index 9867e2ea9af7cf5d6d711742514e222fad55ce41..3c5e2b36df50768367ecb4c97a88833d
              Vec3i pickupReach = this.getPickupReach();
  
              for (ItemEntity entity : this.level()
-@@ -585,6 +585,12 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
+@@ -591,6 +591,12 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
          profiler.pop();
      }
  

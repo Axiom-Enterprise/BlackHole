@@ -15,7 +15,7 @@
 +    public float maxUpStep; // Purpur - Add option to set armorstand step height
      public boolean noPhysics;
 -    public final RandomSource random = SHARED_RANDOM; // Paper - Share random for entities to make them more random
-+    public final RandomSource random; // Paper - Share random for entities to make them more random // Add toggle for RNG manipulation
++    public final RandomSource random; // Paper - Share random for entities to make them more random // Purpur - Add toggle for RNG manipulation
      public int tickCount;
      private int remainingFireTicks;
      private final EntityFluidInteraction fluidInteraction = new EntityFluidInteraction(Set.of(FluidTags.WATER, FluidTags.LAVA));
@@ -69,7 +69,7 @@
              this.onBelowWorld();
          }
      }
-@@ -2005,7 +_,7 @@
+@@ -2007,7 +_,7 @@
      }
  
      public boolean fireImmune() {
@@ -78,7 +78,7 @@
      }
  
      public boolean causeFallDamage(final double fallDistance, final float damageModifier, final DamageSource damageSource) {
-@@ -2591,7 +_,7 @@
+@@ -2593,7 +_,7 @@
                  output.putBoolean("Bukkit.invisible", this.persistentInvisibility);
              }
              // SPIGOT-6907: re-implement LivingEntity#setMaximumAir()
@@ -87,7 +87,7 @@
                  output.putInt("Bukkit.MaxAirSupply", this.getMaxAirSupply());
              }
              output.putInt("Spigot.ticksLived", this.totalEntityAge); // Paper
-@@ -2678,6 +_,11 @@
+@@ -2679,6 +_,11 @@
                  output.putBoolean("Paper.FreezeLock", true);
              }
              // Paper end
@@ -96,28 +96,28 @@
 +                output.putBoolean("Purpur.FireImmune", immuneToFire);
 +            }
 +            // Purpur end - Fire immune API
-         } catch (Throwable var7) {
-             CrashReport report = CrashReport.forThrowable(var7, "Saving entity NBT");
+         } catch (Throwable t) {
+             CrashReport report = CrashReport.forThrowable(t, "Saving entity NBT");
              CrashReportCategory category = report.addCategory("Entity being saved");
-@@ -2800,6 +_,9 @@
+@@ -2802,6 +_,9 @@
              }
              freezeLocked = input.getBooleanOr("Paper.FreezeLock", false);
              // Paper end
 +
 +            immuneToFire = input.read("Purpur.FireImmune", com.mojang.serialization.Codec.BOOL).orElse(null); // Purpur - Fire immune API
 +
-         } catch (Throwable var7) {
-             CrashReport report = CrashReport.forThrowable(var7, "Loading entity NBT");
+         } catch (Throwable t) {
+             CrashReport report = CrashReport.forThrowable(t, "Loading entity NBT");
              CrashReportCategory category = report.addCategory("Entity being loaded");
-@@ -3068,6 +_,7 @@
-             if (this.isAlive() && this instanceof Leashable leashablex) {
-                 if (leashablex.getLeashHolder() == player) {
+@@ -3067,6 +_,7 @@
+             if (this.isAlive() && this instanceof Leashable leashable) {
+                 if (leashable.getLeashHolder() == player) {
                      if (!this.level().isClientSide()) {
 +                        if (hand == InteractionHand.OFF_HAND && (level().purpurConfig.villagerCanBeLeashed || level().purpurConfig.wanderingTraderCanBeLeashed) && this instanceof net.minecraft.world.entity.npc.villager.AbstractVillager) return InteractionResult.CONSUME; // Purpur - Allow leashing villagers
                          // Paper start - EntityUnleashEvent
                          if (!org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerUnleashEntityEvent(
-                             leashablex, player, hand, !player.hasInfiniteMaterials(), true
-@@ -3498,15 +_,18 @@
+                             leashable, player, hand, !player.hasInfiniteMaterials(), true
+@@ -3500,15 +_,18 @@
          return Vec3.directionFromRotation(this.getRotationVector());
      }
  
@@ -137,7 +137,7 @@
              }
          }
      }
-@@ -4236,7 +_,7 @@
+@@ -4238,7 +_,7 @@
      }
  
      public boolean canUsePortal(final boolean ignorePassenger) {
@@ -146,7 +146,7 @@
      }
  
      public boolean canTeleport(final Level from, final Level to) {
-@@ -4786,6 +_,12 @@
+@@ -4788,6 +_,12 @@
          return Mth.lerp(partial, this.yRotO, this.yRot);
      }
  
@@ -159,7 +159,7 @@
      public boolean touchingUnloadedChunk() {
          AABB box = this.getBoundingBox().inflate(1.0);
          int x0 = Mth.floor(box.minX);
-@@ -5089,7 +_,7 @@
+@@ -5091,7 +_,7 @@
      }
  
      public float maxUpStep() {

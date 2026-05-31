@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
-@@ -94,6 +_,22 @@
+@@ -93,6 +_,22 @@
          this.lookControl = new Shulker.ShulkerLookControl(this);
      }
  
@@ -23,7 +23,7 @@
      @Override
      protected void registerGoals() {
          this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F, 0.02F, true));
-@@ -455,11 +_,21 @@
+@@ -454,11 +_,21 @@
      private void hitByShulkerBullet() {
          Vec3 oldPosition = this.position();
          AABB oldAabb = this.getBoundingBox();
@@ -49,7 +49,7 @@
                  if (baby != null) {
                      baby.setVariant(this.getVariant());
                      baby.snapTo(oldPosition);
-@@ -566,7 +_,7 @@
+@@ -565,7 +_,7 @@
      }
  
      public Optional<DyeColor> getVariant() {

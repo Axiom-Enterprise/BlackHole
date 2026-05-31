@@ -6,6 +6,6 @@
              if (deltaMovement.length() > 0.01) {
 -                return deltaMovement.normalize().scale(deltaMovement.length() + 0.06);
 +                return deltaMovement.normalize().scale(deltaMovement.length() + this.level().purpurConfig.poweredRailBoostModifier); // Purpur - Configurable powered rail boost modifier
-             } else {
-                 Vec3 powerDirection = this.minecart.getRedstoneDirection(pos);
-                 return powerDirection.lengthSqr() <= 0.0 ? deltaMovement : powerDirection.scale(deltaMovement.length() + 0.2);
+             }
+ 
+             Vec3 powerDirection = this.minecart.getRedstoneDirection(pos);

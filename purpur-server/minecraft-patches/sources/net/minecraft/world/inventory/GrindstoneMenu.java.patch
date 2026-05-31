@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/inventory/GrindstoneMenu.java
 +++ b/net/minecraft/world/inventory/GrindstoneMenu.java
-@@ -105,11 +_,13 @@
+@@ -92,11 +_,13 @@
              @Override
              public void onTake(final Player player, final ItemStack carried) {
                  access.execute((level, pos) -> {
@@ -15,7 +15,7 @@
                          // Paper end - Fire BlockExpEvent on grindstone use
                      }
  
-@@ -138,7 +_,7 @@
+@@ -125,7 +_,7 @@
                  for (Entry<Holder<Enchantment>> entry : enchantments.entrySet()) {
                      Holder<Enchantment> enchant = entry.getKey();
                      int lvl = entry.getIntValue();
@@ -24,7 +24,7 @@
                          amount += enchant.value().getMinCost(lvl);
                      }
                  }
-@@ -216,16 +_,76 @@
+@@ -205,16 +_,76 @@
  
              for (Entry<Holder<Enchantment>> entry : enchantments.entrySet()) {
                  Holder<Enchantment> enchant = entry.getKey();
@@ -103,7 +103,7 @@
          );
          if (item.is(Items.ENCHANTED_BOOK) && newEnchantments.isEmpty()) {
              item = item.transmuteCopy(Items.BOOK);
-@@ -238,6 +_,22 @@
+@@ -227,6 +_,22 @@
          }
  
          item.set(DataComponents.REPAIR_COST, repairCost);
@@ -126,7 +126,7 @@
          return item;
      }
  
-@@ -294,7 +_,9 @@
+@@ -283,7 +_,9 @@
                  return ItemStack.EMPTY;
              }
  

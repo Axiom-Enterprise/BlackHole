@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/gui/MinecraftServerGui.java
 +++ b/net/minecraft/server/gui/MinecraftServerGui.java
-@@ -40,6 +_,11 @@
+@@ -39,6 +_,11 @@
      private Thread logAppenderThread;
      private final Collection<Runnable> finalizers = Lists.newArrayList();
      private final AtomicBoolean isClosing = new AtomicBoolean();
@@ -12,7 +12,7 @@
  
      public static MinecraftServerGui showFrameFor(final DedicatedServer server) {
          try {
-@@ -47,7 +_,7 @@
+@@ -46,7 +_,7 @@
          } catch (Exception var3) {
          }
  
@@ -21,7 +21,7 @@
          final MinecraftServerGui gui = new MinecraftServerGui(server);
          frame.setDefaultCloseOperation(2);
          frame.add(gui);
-@@ -55,7 +_,7 @@
+@@ -54,7 +_,7 @@
          frame.setLocationRelativeTo(null);
          frame.setVisible(true);
          // Paper start - Improve ServerGUI
@@ -30,7 +30,7 @@
          try {
              frame.setIconImage(javax.imageio.ImageIO.read(java.util.Objects.requireNonNull(MinecraftServerGui.class.getClassLoader().getResourceAsStream("logo.png"))));
          } catch (java.io.IOException ignore) {
-@@ -65,7 +_,7 @@
+@@ -64,7 +_,7 @@
              @Override
              public void windowClosing(final WindowEvent event) {
                  if (!gui.isClosing.getAndSet(true)) {
@@ -39,7 +39,7 @@
                      server.halt(true);
                      gui.runFinalizers();
                  }
-@@ -113,7 +_,7 @@
+@@ -112,7 +_,7 @@
  
      private JComponent buildChatPanel() {
          JPanel panel = new JPanel(new BorderLayout());
@@ -48,7 +48,7 @@
          JScrollPane scrollPane = new JScrollPane(chatArea, 22, 30);
          chatArea.setEditable(false);
          chatArea.setFont(MONOSPACED);
-@@ -122,10 +_,43 @@
+@@ -121,10 +_,43 @@
              String text = chatField.getText().trim();
              if (!text.isEmpty()) {
                  this.server.handleConsoleInput(text, this.server.createCommandSourceStack());
@@ -90,9 +90,9 @@
 +        });
 +        // Purpur end - GUI Improvements
          chatArea.addFocusListener(new FocusAdapter() {
-             {
-                 Objects.requireNonNull(MinecraftServerGui.this);
-@@ -164,7 +_,7 @@
+             @Override
+             public void focusGained(final FocusEvent arg0) {
+@@ -159,7 +_,7 @@
      }
  
      private static final java.util.regex.Pattern ANSI = java.util.regex.Pattern.compile("\\e\\[[\\d;]*[^\\d;]"); // CraftBukkit // Paper
@@ -101,7 +101,7 @@
          if (!SwingUtilities.isEventDispatchThread()) {
              SwingUtilities.invokeLater(() -> this.print(console, scrollPane, line));
          } else {
-@@ -175,16 +_,29 @@
+@@ -170,16 +_,29 @@
                  shouldScroll = scrollBar.getValue() + scrollBar.getSize().getHeight() + MONOSPACED.getSize() * 4 > scrollBar.getMaximum();
              }
  

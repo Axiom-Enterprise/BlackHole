@@ -14,7 +14,7 @@
      }
  
      public ArmorStand(final Level level, final double x, final double y, final double z) {
-@@ -523,6 +_,7 @@
+@@ -546,6 +_,7 @@
      // Paper start - Allow ArmorStands not to tick
      @Override
      public void tick() {
@@ -22,7 +22,7 @@
          if (!this.canTick) {
              if (this.noTickEquipmentDirty) {
                  this.noTickEquipmentDirty = false;
-@@ -809,4 +_,19 @@
+@@ -832,4 +_,19 @@
          }
      }
      // Paper end

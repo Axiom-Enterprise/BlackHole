@@ -11,7 +11,7 @@
 +        // Purpur end - Config to disable hostile mob spawn on ice
          if (level.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
              return false;
-         } else {
+         }
 @@ -113,6 +_,11 @@
      public static boolean checkAnyLightMonsterSpawnRules(
          final EntityType<? extends Monster> type, final LevelAccessor level, final EntitySpawnReason spawnReason, final BlockPos pos, final RandomSource random

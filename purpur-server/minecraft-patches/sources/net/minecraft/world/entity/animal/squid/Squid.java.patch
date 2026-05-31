@@ -39,7 +39,7 @@
              if (this.tentacleMovement < Mth.PI) {
                  float tentacleScale = this.tentacleMovement / Mth.PI;
                  this.tentacleAngle = Mth.sin(tentacleScale * tentacleScale * Mth.PI) * Mth.PI * 0.25F;
-@@ -321,7 +_,7 @@
+@@ -316,7 +_,7 @@
              int noActionTime = this.squid.getNoActionTime();
              if (noActionTime > 100) {
                  this.squid.movementVector = Vec3.ZERO;

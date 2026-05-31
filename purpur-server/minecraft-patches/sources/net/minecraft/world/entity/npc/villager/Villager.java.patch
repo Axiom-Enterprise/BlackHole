@@ -92,15 +92,15 @@
          profiler.pop();
          if (this.assignProfessionWhenSpawned) {
              this.assignProfessionWhenSpawned = false;
-@@ -344,6 +_,7 @@
-                     return InteractionResult.CONSUME;
-                 }
- 
-+                if (this.level().purpurConfig.villagerAllowTrading) // Purpur - Add config for villager trading
-                 this.startTrading(player);
+@@ -347,6 +_,7 @@
+                 return InteractionResult.CONSUME;
              }
  
-@@ -485,7 +_,7 @@
++            if (this.level().purpurConfig.villagerAllowTrading) // Purpur - Add config for villager trading
+             this.startTrading(player);
+         }
+ 
+@@ -487,7 +_,7 @@
  
      public void updateDemand() {
          for (MerchantOffer offer : this.getOffers()) {
@@ -109,7 +109,7 @@
          }
      }
  
-@@ -685,7 +_,7 @@
+@@ -687,7 +_,7 @@
  
      @Override
      public boolean canBreed() {
@@ -118,7 +118,7 @@
      }
  
      private boolean hungry() {
-@@ -891,6 +_,7 @@
+@@ -893,6 +_,7 @@
      }
  
      public void spawnGolemIfNeeded(final ServerLevel level, final long timestamp, final int villagersNeededToAgree) {

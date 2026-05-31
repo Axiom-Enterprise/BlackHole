@@ -42,11 +42,11 @@
          this.readPersistentAngerSaveData(this.level(), input);
      }
  
-@@ -267,6 +_,7 @@
-                 float pitch = 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
-                 this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0F, pitch);
-                 itemStack.consume(1, player);
-+                if (this.level().purpurConfig.ironGolemHealCalm && isAngry() && getHealth() == getMaxHealth()) stopBeingAngry(); // Purpur - Iron golem calm anger options
-                 return InteractionResult.SUCCESS;
-             }
-         }
+@@ -269,6 +_,7 @@
+         float pitch = 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
+         this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0F, pitch);
+         itemStack.consume(1, player);
++        if (this.level().purpurConfig.ironGolemHealCalm && isAngry() && getHealth() == getMaxHealth()) stopBeingAngry(); // Purpur - Iron golem calm anger options
+         return InteractionResult.SUCCESS;
+     }
+ 

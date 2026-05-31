@@ -31,7 +31,7 @@
      }
  
      @Override
-@@ -1046,15 +_,33 @@
+@@ -1048,15 +_,33 @@
          }
  
          if (targetingEntity != null) {
@@ -74,40 +74,40 @@
  
          return visibilityPercent;
      }
-@@ -1101,6 +_,7 @@
-             Iterator<MobEffectInstance> iterator = this.activeEffects.values().iterator();
-             while (iterator.hasNext()) {
-                 MobEffectInstance effect = iterator.next();
-+                if (cause == EntityPotionEffectEvent.Cause.MILK && !this.level().purpurConfig.milkClearsBeneficialEffects && effect.getEffect().value().isBeneficial()) continue; // Purpur - Milk Keeps Beneficial Effects
-                 EntityPotionEffectEvent event = CraftEventFactory.callEntityPotionEffectChangeEvent(this, effect, null, cause, EntityPotionEffectEvent.Action.CLEARED);
-                 if (event.isCancelled()) {
-                     continue;
-@@ -1432,6 +_,24 @@
-                 this.stopSleeping();
-             }
+@@ -1106,6 +_,7 @@
+         Iterator<MobEffectInstance> iterator = this.activeEffects.values().iterator();
+         while (iterator.hasNext()) {
+             MobEffectInstance effect = iterator.next();
++            if (cause == EntityPotionEffectEvent.Cause.MILK && !this.level().purpurConfig.milkClearsBeneficialEffects && effect.getEffect().value().isBeneficial()) continue; // Purpur - Milk Keeps Beneficial Effects
+             EntityPotionEffectEvent event = CraftEventFactory.callEntityPotionEffectChangeEvent(this, effect, null, cause, EntityPotionEffectEvent.Action.CLEARED);
+             if (event.isCancelled()) {
+                 continue;
+@@ -1438,7 +_,23 @@
+             this.stopSleeping();
+         }
  
-+            // Purpur start - One Punch Man!
-+            if (source.getEntity() instanceof net.minecraft.world.entity.player.Player player && source.getEntity().level().purpurConfig.creativeOnePunch && !source.is(DamageTypeTags.IS_PROJECTILE)) {
-+                if (player.isCreative()) {
-+                    org.apache.commons.lang3.mutable.MutableDouble attackDamage = new org.apache.commons.lang3.mutable.MutableDouble();
-+                    player.getMainHandItem().forEachModifier(EquipmentSlot.MAINHAND, (attributeHolder, attributeModifier) -> {
-+                        if (attributeModifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
-+                            attackDamage.addAndGet(attributeModifier.amount());
-+                        }
-+                    });
-+
-+                    if (attackDamage.doubleValue() == 0.0D) {
-+                        // One punch!
-+                        damage = this.getHealth();
+-        this.noActionTime = 0;
++        // Purpur start - One Punch Man!
++        if (source.getEntity() instanceof net.minecraft.world.entity.player.Player player && source.getEntity().level().purpurConfig.creativeOnePunch && !source.is(DamageTypeTags.IS_PROJECTILE)) {
++            if (player.isCreative()) {
++                org.apache.commons.lang3.mutable.MutableDouble attackDamage = new org.apache.commons.lang3.mutable.MutableDouble();
++                player.getMainHandItem().forEachModifier(EquipmentSlot.MAINHAND, (attributeHolder, attributeModifier) -> {
++                    if (attributeModifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
++                        attackDamage.addAndGet(attributeModifier.amount());
 +                    }
++                });
++
++                if (attackDamage.doubleValue() == 0.0D) {
++                    // One punch!
++                    damage = this.getHealth();
 +                }
 +            }
-+            // Purpur end - One Punch Man!
-+
-             this.noActionTime = 0;
-             if (damage < 0.0F) {
-                 damage = 0.0F;
-@@ -1693,10 +_,10 @@
++        }
++        // Purpur end - One Punch Man!this.noActionTime = 0;
+         if (damage < 0.0F) {
+             damage = 0.0F;
+         }
+@@ -1699,10 +_,10 @@
      protected @Nullable Player resolvePlayerResponsibleForDamage(final DamageSource source) {
          Entity sourceEntity = source.getEntity();
          if (sourceEntity instanceof Player playerSource) {
@@ -120,26 +120,25 @@
              } else {
                  this.lastHurtByPlayer = null;
                  this.lastHurtByPlayerMemoryTime = 0;
-@@ -1747,6 +_,18 @@
-                 }
+@@ -1754,6 +_,17 @@
              }
+         }
  
-+            // Purpur start - Totems work in inventory
-+            if (level().purpurConfig.totemOfUndyingWorksInInventory && this instanceof ServerPlayer player && (itemStack == null || itemStack.getItem() != Items.TOTEM_OF_UNDYING) && player.getBukkitEntity().hasPermission("purpur.inventory_totem")) {
-+                for (ItemStack item : player.getInventory().getNonEquipmentItems()) {
-+                    if (item.getItem() == Items.TOTEM_OF_UNDYING) {
-+                        itemStack = item;
-+                        protectionItem = item.copy();
-+                        break;
-+                    }
++        // Purpur start - Totems work in inventory
++        if (level().purpurConfig.totemOfUndyingWorksInInventory && this instanceof ServerPlayer player && (itemStack == null || itemStack.getItem() != Items.TOTEM_OF_UNDYING) && player.getBukkitEntity().hasPermission("purpur.inventory_totem")) {
++            for (ItemStack item : player.getInventory().getNonEquipmentItems()) {
++                if (item.getItem() == Items.TOTEM_OF_UNDYING) {
++                    itemStack = item;
++                    protectionItem = item.copy();
++                    break;
 +                }
 +            }
-+            // Purpur end - Totems work in inventory
-+
-             final org.bukkit.inventory.EquipmentSlot handSlot = (usedHand != null) ? org.bukkit.craftbukkit.CraftEquipmentSlot.getHand(usedHand) : null;
-             final EntityResurrectEvent event = new EntityResurrectEvent((org.bukkit.entity.LivingEntity) this.getBukkitEntity(), handSlot);
-             event.setCancelled(protectionItem == null);
-@@ -1921,6 +_,7 @@
++        }
++        // Purpur end - Totems work in inventory
+         final org.bukkit.inventory.EquipmentSlot handSlot = (usedHand != null) ? org.bukkit.craftbukkit.CraftEquipmentSlot.getHand(usedHand) : null;
+         final EntityResurrectEvent event = new EntityResurrectEvent((org.bukkit.entity.LivingEntity) this.getBukkitEntity(), handSlot);
+         event.setCancelled(protectionItem == null);
+@@ -1927,6 +_,7 @@
          boolean playerKilled = this.lastHurtByPlayerMemoryTime > 0;
          this.dropEquipment(level); // CraftBukkit - from below
          if (this.shouldDropLoot(level)) {
@@ -147,7 +146,7 @@
              this.dropFromLootTable(level, source, playerKilled);
              // Paper start
              final boolean prev = this.clearEquipmentSlots;
-@@ -1929,6 +_,7 @@
+@@ -1935,6 +_,7 @@
              // Paper end
              this.dropCustomDeathLoot(level, source, playerKilled);
              this.clearEquipmentSlots = prev; // Paper
@@ -155,7 +154,7 @@
          }
  
          // CraftBukkit start - Call death event // Paper start - call advancement triggers with correct entity equipment
-@@ -3256,6 +_,7 @@
+@@ -3264,6 +_,7 @@
              float dmg = (float)(diff * 10.0 - 3.0);
              if (dmg > 0.0F) {
                  this.playSound(this.getFallDamageSound((int)dmg), 1.0F, 1.0F);
@@ -163,7 +162,7 @@
                  this.hurt(this.damageSources().flyIntoWall(), dmg);
              }
          }
-@@ -4740,6 +_,12 @@
+@@ -4749,6 +_,12 @@
              ? slot == EquipmentSlot.MAINHAND && this.canUseSlot(EquipmentSlot.MAINHAND)
              : slot == equippable.slot() && this.canUseSlot(equippable.slot()) && equippable.canBeEquippedBy(this.typeHolder());
      }

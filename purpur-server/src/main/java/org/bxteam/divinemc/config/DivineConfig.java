@@ -175,6 +175,14 @@ public class DivineConfig {
         return config.getStringList(key);
     }
 
+    public static boolean asyncLocator = false;
+    private static void asyncLocate() {
+        asyncLocator = getBoolean(ConfigCategory.ASYNC.key("async-locator.enabled"), asyncLocator,
+            "Whether asynchronous locator should be enabled.",
+            "Offloads /locate structure, biome and POI searches to Paper's async task pool,",
+            "so a slow locate no longer blocks the main thread. Result is sent when ready.");
+    }
+
     private static void checkExperimentalFeatures() {
         List<String> enabledExperimentalFeatures = new ArrayList<>();
 

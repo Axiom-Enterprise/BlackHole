@@ -8,6 +8,14 @@
                  new com.destroystokyo.paper.console.PaperConsole(DedicatedServer.this).start();
                  /*
                  BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+@@ -268,6 +_,7 @@
+             this.setLocalIp(properties.serverIp);
+         }
+ 
++        org.bxteam.divinemc.config.DivineConfig.init((java.io.File) options.valueOf("divinemc-settings")); // Purpur - async config (DivineMC)
+         // Spigot start
+         this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage));
+         org.spigotmc.SpigotConfig.init((java.io.File) this.options.valueOf("spigot-settings"));
 @@ -289,6 +_,15 @@
          io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
          this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark

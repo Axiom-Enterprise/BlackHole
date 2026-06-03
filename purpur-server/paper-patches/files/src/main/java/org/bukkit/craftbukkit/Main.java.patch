@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -139,6 +_,14 @@
+@@ -139,6 +_,22 @@
                          .defaultsTo(new File[] {})
                          .describedAs("Plugin directory");
  
@@ -11,6 +11,14 @@
 +                    .defaultsTo(new File("purpur.yml"))
 +                    .describedAs("Yml file");
 +                // Purpur end - Purpur config files
++
++                // Purpur start - async config (DivineMC)
++                acceptsAll(asList("divinemc", "divinemc-settings"), "File for DivineMC settings")
++                    .withRequiredArg()
++                    .ofType(File.class)
++                    .defaultsTo(new File("divinemc.yml"))
++                    .describedAs("Yml file");
++                // Purpur end - async config (DivineMC)
 +
                  this.accepts("server-name", "Name of the server")
                          .withRequiredArg()

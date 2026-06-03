@@ -183,6 +183,30 @@ public class DivineConfig {
             "so a slow locate no longer blocks the main thread. Result is sent when ready.");
     }
 
+    // Purpur start - async chunk sending (DivineMC)
+    public static class AsyncCategory {
+        // Async chunk sending settings
+        public static boolean asyncChunkSendingEnabled = false; // Purpur - default off
+        public static int asyncChunkSendingMaxThreads = 1;
+
+        public void load() {
+            asyncChunkSending();
+        }
+
+        private static void asyncChunkSending() {
+            asyncChunkSendingEnabled = getBoolean(ConfigCategory.ASYNC.key("chunk-sending.enable"), asyncChunkSendingEnabled,
+                "Makes chunk sending asynchronous, which can significantly reduce main thread load when many players are loading chunks.");
+            asyncChunkSendingMaxThreads = getInt(ConfigCategory.ASYNC.key("chunk-sending.max-threads"), asyncChunkSendingMaxThreads);
+
+            if (asyncChunkSendingMaxThreads < 0) {
+                asyncChunkSendingMaxThreads = Math.max(Runtime.getRuntime().availableProcessors() + asyncChunkSendingMaxThreads, 1);
+            } else if (asyncChunkSendingMaxThreads == 0) {
+                asyncChunkSendingMaxThreads = Math.max(Runtime.getRuntime().availableProcessors() / 4, 1);
+            }
+        }
+    }
+    // Purpur end - async chunk sending (DivineMC)
+
     private static void checkExperimentalFeatures() {
         List<String> enabledExperimentalFeatures = new ArrayList<>();
 

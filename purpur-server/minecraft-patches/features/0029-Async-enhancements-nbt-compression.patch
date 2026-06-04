@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Thu, 4 Jun 2026 08:52:48 +0200
+Subject: [PATCH] Async enhancements nbt compression
+
+
+diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
+index 9616dbe0166d30bdd813ad1d10353a4184d6c47b..5c587d5120ae4b7120de5aad135b446af8b1ab24 100644
+--- a/net/minecraft/server/MinecraftServer.java
++++ b/net/minecraft/server/MinecraftServer.java
+@@ -1136,6 +1136,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         Util.shutdownExecutors();
+         org.dreeam.leaf.async.ShutdownExecutors.shutdown(this); // Purpur - async playerdata save (Leaf) - drain pending async player I/O before exit
+         org.bxteam.divinemc.async.PlayerSaveExecutor.shutdown(); // Purpur - player-save - drain pending async player-save writes before exit
++        org.bxteam.divinemc.async.AsyncIO.shutdown(); // Purpur - async-enhancements
+         this.onServerExit();
+         // Paper end - Improved watchdog support - move final shutdown items here
+     }
+diff --git a/net/minecraft/world/level/storage/PlayerDataStorage.java b/net/minecraft/world/level/storage/PlayerDataStorage.java
+index 5f363c4647229aeaa125b22d7791b5cc8ef8d562..e0d8e0885def9164f70a667f969f6251139c2d62 100644
+--- a/net/minecraft/world/level/storage/PlayerDataStorage.java
++++ b/net/minecraft/world/level/storage/PlayerDataStorage.java
+@@ -111,6 +111,25 @@ public class PlayerDataStorage {
+             if (org.bxteam.divinemc.async.PlayerSaveExecutor.submitWrite(uniqueId, serializedBytes, dataFile)) return; // Purpur - player-save (async write only)
+             // overflow -> fall through to the inline synchronous write below
+             writeTask.run(); // Purpur - player-save (async write only)
++        } else if (async && org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncPlayerNbtCompression) { // Purpur - async-enhancements (gzip+write off-thread)
++            // Lowest-precedence tier (only reached when the two heavier tiers above are disabled).
++            // Serialize the tag to UNCOMPRESSED raw NBT bytes on this (main) thread (NbtIo.write, not
++            // writeCompressed - the tag is not thread-safe), copied into a right-sized byte[] so no
++            // trailing garbage is handed off. The pool gzips the raw bytes and writes atomically;
++            // gzip(raw) decompresses identically to NbtIo.writeCompressed, so the .dat loads back fine.
++            final byte[] raw; // Purpur - async-enhancements
++            final it.unimi.dsi.fastutil.io.FastByteArrayOutputStream rawOut = new it.unimi.dsi.fastutil.io.FastByteArrayOutputStream(65536); // Purpur - async-enhancements
++            try { // Purpur - async-enhancements
++                NbtIo.write(compoundTag, new java.io.DataOutputStream(rawOut)); // Purpur - async-enhancements - uncompressed serialize on main thread
++            } catch (Exception exception) { // Purpur - async-enhancements
++                LOGGER.warn("Failed to encode player data for {}", stringId, exception); // Purpur - async-enhancements
++                return; // Purpur - async-enhancements
++            } // Purpur - async-enhancements
++            raw = java.util.Arrays.copyOf(rawOut.array, rawOut.length); // Purpur - async-enhancements - immutable right-sized copy for the pool
++            final Path dataFile = this.playerDir.toPath().resolve(stringId + ".dat"); // Purpur - async-enhancements
++            if (org.bxteam.divinemc.async.AsyncIO.submitGzipWrite(raw, dataFile)) return; // Purpur - async-enhancements
++            // overflow -> fall through to the inline synchronous write below
++            writeTask.run(); // Purpur - async-enhancements
+         } else {
+             writeTask.run();
+         }

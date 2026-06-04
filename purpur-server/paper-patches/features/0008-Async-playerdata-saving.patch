@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Thu, 4 Jun 2026 08:21:29 +0200
+Subject: [PATCH] Async playerdata saving
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java b/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
+index 7283eb950a0d1c92c451a0379d7a409d147bb84c..953180b4d66b991ff5216784daee978482704b37 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
+@@ -752,16 +752,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
+      * @param compoundTag
+      */
+     private void save(CompoundTag compoundTag) {
+-        File playerDir = server.console.playerDataStorage.getPlayerDir();
+-        try {
+-            File tempFile = File.createTempFile(this.getUniqueId()+"-", ".dat", playerDir);
+-            net.minecraft.nbt.NbtIo.writeCompressed(compoundTag, tempFile.toPath());
+-            File playerDataFile = new File(playerDir, this.getUniqueId()+".dat");
+-            File playerDataFileOld = new File(playerDir, this.getUniqueId()+".dat_old");
+-            net.minecraft.util.Util.safeReplaceFile(playerDataFile.toPath(), tempFile.toPath(), playerDataFileOld.toPath());
+-        } catch (java.io.IOException e) {
+-            e.printStackTrace();
+-        }
++        server.console.playerDataStorage.save(this.getName(), this.getUniqueId(), this.getUniqueId().toString(), compoundTag); // Purpur - async playerdata save (Leaf)
+     }
+     // Purpur end - OfflinePlayer API
+ }

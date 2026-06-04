@@ -1,0 +1,59 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Thu, 4 Jun 2026 09:24:21 +0200
+Subject: [PATCH] Purpur - Implement chunk system algorithm (DivineMC)
+
+
+diff --git a/src/main/java/ca/spottedleaf/moonrise/common/util/MoonriseCommon.java b/src/main/java/ca/spottedleaf/moonrise/common/util/MoonriseCommon.java
+index b9f788693b0c4be48e8a923a3dec50555d135e7e..4b85f3ebab79515f80fcaa7af38eaea9ff8fc9cd 100644
+--- a/src/main/java/ca/spottedleaf/moonrise/common/util/MoonriseCommon.java
++++ b/src/main/java/ca/spottedleaf/moonrise/common/util/MoonriseCommon.java
+@@ -39,27 +39,17 @@ public final class MoonriseCommon {
+     public static final BalancedPrioritisedThreadPool.OrderedStreamGroup CLIENT_GROUP = MoonriseCommon.WORKER_POOL.createOrderedStreamGroup();
+     public static final BalancedPrioritisedThreadPool.OrderedStreamGroup SERVER_GROUP = MoonriseCommon.WORKER_POOL.createOrderedStreamGroup();
+ 
+-    public static void adjustWorkerThreads(final int configWorkerThreads, final int configIoThreads) {
+-        int defaultWorkerThreads = OSNuma.getNativeInstance().getTotalCores()  / 2;
+-        if (defaultWorkerThreads <= 4) {
+-            defaultWorkerThreads = defaultWorkerThreads <= 3 ? 1 : 2;
+-        } else {
+-            defaultWorkerThreads = defaultWorkerThreads / 2;
+-        }
+-        defaultWorkerThreads = Integer.getInteger(PlatformHooks.get().getBrand() + ".WorkerThreadCount", Integer.valueOf(defaultWorkerThreads));
+-
+-        int workerThreads = configWorkerThreads;
+-
+-        if (workerThreads <= 0) {
+-            workerThreads = defaultWorkerThreads;
+-        }
+-
+-        final int ioThreads = Math.max(1, configIoThreads);
++    public static void init(final int configWorkerThreads, final int configIoThreads) {
++        // Purpur start - chunk-system algorithm (DivineMC)
++        org.bxteam.divinemc.chunk.ChunkSystemAlgorithm algorithm = org.bxteam.divinemc.config.DivineConfig.PerformanceCategory.chunkWorkerAlgorithm;
++        int workerThreads = algorithm.evalWorkers(configWorkerThreads, configIoThreads);
++        int ioThreads = algorithm.evalIO(configWorkerThreads, configIoThreads);
++        // Purpur end - chunk-system algorithm (DivineMC)
+ 
+         WORKER_POOL.adjustThreadCount(workerThreads);
+         IO_POOL.adjustThreadCount(ioThreads);
+ 
+-        LOGGER.info(PlatformHooks.get().getBrand() + " is using " + workerThreads + " worker threads, " + ioThreads + " I/O threads");
++        LOGGER.info("{} is using {} worker threads, {} I/O threads", PlatformHooks.get().getBrand(), workerThreads, ioThreads); // Purpur - chunk-system algorithm (DivineMC) - better logging
+     }
+ 
+     public static final long IO_QUEUE_HOLD_TIME = (long)(25.0e6); // 25ms
+diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
+index 7d2b38ecf1478c9e53d033f41c4184864c8d32e4..cc007b656454f2e01f7ebe3d0d651b9328c4a5ef 100644
+--- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
+@@ -219,7 +219,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+ 
+         @PostProcess
+         private void postProcess() {
+-            ca.spottedleaf.moonrise.common.util.MoonriseCommon.adjustWorkerThreads(this.workerThreads, this.ioThreads);
++            ca.spottedleaf.moonrise.common.util.MoonriseCommon.init(this.workerThreads, this.ioThreads); // Purpur - chunk-system algorithm (DivineMC)
+         }
+     }
+ 

@@ -3,6 +3,7 @@ package org.bxteam.divinemc.config;
 import com.google.common.base.Throwables;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bxteam.divinemc.async.pathfinding.PathfindTaskRejectPolicy; // Purpur - async pathfinding (DivineMC)
 import org.bxteam.divinemc.config.annotations.Experimental;
 import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.comments.CommentType;
@@ -189,9 +190,54 @@ public class DivineConfig {
         public static boolean asyncChunkSendingEnabled = false; // Purpur - default off
         public static int asyncChunkSendingMaxThreads = 1;
 
+        // Async pathfinding settings // Purpur - async pathfinding (DivineMC)
+        public static boolean asyncPathfinding = false; // Purpur - default off
+        public static int asyncPathfindingMaxThreads = 1; // Purpur - async pathfinding (DivineMC)
+        public static int asyncPathfindingKeepalive = 60; // Purpur - async pathfinding (DivineMC)
+        public static int asyncPathfindingQueueSize = 0; // Purpur - async pathfinding (DivineMC)
+        public static PathfindTaskRejectPolicy asyncPathfindingRejectPolicy = PathfindTaskRejectPolicy.CALLER_RUNS; // Purpur - async pathfinding (DivineMC)
+
         public void load() {
             asyncChunkSending();
+            asyncPathfinding(); // Purpur - async pathfinding (DivineMC)
         }
+
+        // Purpur start - async pathfinding (DivineMC)
+        private static void asyncPathfinding() {
+            asyncPathfinding = getBoolean(ConfigCategory.ASYNC.key("pathfinding.enable"), asyncPathfinding);
+            asyncPathfindingMaxThreads = getInt(ConfigCategory.ASYNC.key("pathfinding.max-threads"), asyncPathfindingMaxThreads);
+            asyncPathfindingKeepalive = getInt(ConfigCategory.ASYNC.key("pathfinding.keepalive"), asyncPathfindingKeepalive);
+            asyncPathfindingQueueSize = getInt(ConfigCategory.ASYNC.key("pathfinding.queue-size"), asyncPathfindingQueueSize);
+
+            final int maxThreads = Runtime.getRuntime().availableProcessors();
+            if (asyncPathfindingMaxThreads < 0) {
+                asyncPathfindingMaxThreads = Math.max(maxThreads + asyncPathfindingMaxThreads, 1);
+            } else if (asyncPathfindingMaxThreads == 0) {
+                asyncPathfindingMaxThreads = Math.max(maxThreads / 4, 1);
+            }
+
+            if (!asyncPathfinding) {
+                asyncPathfindingMaxThreads = 0;
+            } else {
+                LOGGER.info("Using {} threads for Async Pathfinding", asyncPathfindingMaxThreads);
+            }
+
+            if (asyncPathfindingQueueSize <= 0) asyncPathfindingQueueSize = asyncPathfindingMaxThreads * 256;
+
+            try {
+                asyncPathfindingRejectPolicy = PathfindTaskRejectPolicy.valueOf(getString(ConfigCategory.ASYNC.key("pathfinding.reject-policy"),
+                    maxThreads >= 12 && asyncPathfindingQueueSize < 512
+                        ? PathfindTaskRejectPolicy.FLUSH_ALL.toString()
+                        : PathfindTaskRejectPolicy.CALLER_RUNS.toString(),
+                    "The policy to use when the queue is full and a new task is submitted.",
+                    "FLUSH_ALL: All pending tasks will be run on server thread.",
+                    "CALLER_RUNS: Newly submitted task will be run on server thread."));
+            } catch (IllegalArgumentException ignore) {
+                LOGGER.warn("Invalid async pathfinding reject policy, using default CALLER_RUNS");
+                asyncPathfindingRejectPolicy = PathfindTaskRejectPolicy.CALLER_RUNS;
+            }
+        }
+        // Purpur end - async pathfinding (DivineMC)
 
         private static void asyncChunkSending() {
             asyncChunkSendingEnabled = getBoolean(ConfigCategory.ASYNC.key("chunk-sending.enable"), asyncChunkSendingEnabled,

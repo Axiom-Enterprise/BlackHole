@@ -220,6 +220,11 @@ public class DivineConfig {
         public static boolean playerSaveCoalesce = true;
         // Purpur end - player-save (async auto-save write)
 
+        // Purpur start - async-enhancements (player NBT compression offload)
+        public static boolean asyncPlayerNbtCompression = false; // Purpur - default off
+        public static int ioPoolThreads = 3;
+        // Purpur end - async-enhancements (player NBT compression offload)
+
         public void load() {
             asyncChunkSending();
             asyncPathfinding(); // Purpur - async pathfinding (DivineMC)
@@ -227,6 +232,7 @@ public class DivineConfig {
             asyncMobSpawning(); // Purpur - async mob spawning (DivineMC)
             asyncPlayerDataSave(); // Purpur - async playerdata save (Leaf)
             playerSave(); // Purpur - player-save (async auto-save write)
+            asyncEnhancements(); // Purpur - async-enhancements (player NBT compression offload)
         }
 
         // Purpur start - async playerdata save (Leaf)
@@ -273,6 +279,36 @@ public class DivineConfig {
             }
         }
         // Purpur end - player-save (async auto-save write)
+
+        // Purpur start - async-enhancements (player NBT compression offload)
+        private static void asyncEnhancements() {
+            asyncPlayerNbtCompression = getBoolean(ConfigCategory.ASYNC.key("async-enhancements.async-player-nbt-compression"), asyncPlayerNbtCompression,
+                "Offloads the gzip-compression and disk-write of the periodic player auto-save to a",
+                "shared background I/O pool, keeping NBT serialization on the main thread. This is the",
+                "lightest of the three player-save offload tiers: it only moves the gzip + write off the",
+                "main thread. Player quit and server shutdown saves always stay fully synchronous so data",
+                "is flushed before the connection drops or the process exits. The write is atomic (temp",
+                "file + atomic rename) and on queue overflow falls back to a synchronous write on the",
+                "calling thread so no data is dropped.",
+                "Lowest precedence: this tier is active only when both async-playerdata-save and player-save",
+                "are disabled. It substantially overlaps those heavier tiers, so leave it OFF if either is",
+                "in use. There is a small crash-window trade-off (a save queued to the pool but not yet",
+                "flushed when the process is killed is lost), identical to the other async write tiers.");
+            ioPoolThreads = getInt(ConfigCategory.ASYNC.key("async-enhancements.io-pool-threads"), ioPoolThreads,
+                "Number of background threads in the shared I/O pool used to gzip and write player data.",
+                "Clamped to the range 1..4.");
+            ioPoolThreads = Math.max(1, Math.min(4, ioPoolThreads));
+
+            if (asyncPlayerNbtCompression) {
+                if (asyncPlayerDataSave || playerSaveEnabled) {
+                    LOGGER.warn("async.async-enhancements.async-player-nbt-compression is enabled together with a heavier player-save tier ({}); they target the same player .dat path. The heavier tier takes precedence and this feature stays inactive.",
+                        asyncPlayerDataSave ? "async-playerdata-save" : "player-save");
+                } else {
+                    org.bxteam.divinemc.async.AsyncIO.init();
+                }
+            }
+        }
+        // Purpur end - async-enhancements (player NBT compression offload)
 
         // Purpur start - async entity tracker (DivineMC)
         private static void multithreadedTracker() {

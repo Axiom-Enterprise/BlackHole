@@ -1,0 +1,55 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Thu, 4 Jun 2026 09:56:41 +0200
+Subject: [PATCH] feat: parallel world ticking - paper side (SparklyPaper)
+
+
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 5a3d675862a4a9d6efd86052d13081d6e142f7c4..79529a84b2edf92698fa3b1bcc58dbfbf45e8abc 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -2913,4 +2913,15 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     @Deprecated
+     void clearBlockHighlights();
+     // Purpur end - Debug Marker API
++
++    // Purpur start - parallel world ticking (DivineMC)
++    /**
++     * Returns whether the software has the Parallel World Ticking feature enabled
++     *
++     * @return If the Parallel World Ticking feature is enabled
++     */
++    public default boolean isParallelWorldTickingEnabled() {
++        return false;
++    }
++    // Purpur end - parallel world ticking (DivineMC)
+ }
+diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
+index 356299bafa86b90549279d4bb2f29d8bec430634..4e9cb913a3d0b5991b82a1128c55c8fe339ff524 100644
+--- a/src/main/java/org/bukkit/World.java
++++ b/src/main/java/org/bukkit/World.java
+@@ -4785,4 +4785,23 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+             }
+         }
+     }
++
++    // Purpur start - parallel world ticking (DivineMC)
++    /**
++     * Get a sample of the world last tick times (in nanos)
++     *
++     * @return A sample of the world last tick times (in nanos)
++     */
++    public default long @NotNull [] getTickTimes() {
++        return new long[0];
++    }
++    /**
++     * Get the world's average tick time (in millis)
++     *
++     * @return World's local average tick time (in millis)
++     */
++    public default double getAverageTickTime () {
++        return 0.0;
++    }
++    // Purpur end - parallel world ticking (DivineMC)
+ }

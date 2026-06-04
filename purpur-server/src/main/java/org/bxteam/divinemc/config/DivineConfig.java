@@ -248,6 +248,14 @@ public class DivineConfig {
         public static int ioPoolThreads = 3;
         // Purpur end - async-enhancements (player NBT compression offload)
 
+        // Purpur start - async target finding (Leaf)
+        public static boolean asyncTargetFinding = false; // Purpur - default off
+        public static boolean asyncTargetFindingAlertOther = true;
+        public static boolean asyncTargetFindingSearchBlock = true;
+        public static boolean asyncTargetFindingSearchEntity = true;
+        public static int asyncTargetFindingQueueSize = 4096;
+        // Purpur end - async target finding (Leaf)
+
         public void load() {
             parallelWorldTicking(); // Purpur - parallel world ticking (DivineMC)
             regionizedChunkTicking(); // Purpur - regionized chunk ticking (DivineMC)
@@ -258,7 +266,40 @@ public class DivineConfig {
             asyncPlayerDataSave(); // Purpur - async playerdata save (Leaf)
             playerSave(); // Purpur - player-save (async auto-save write)
             asyncEnhancements(); // Purpur - async-enhancements (player NBT compression offload)
+            asyncTargetFinding(); // Purpur - async target finding (Leaf)
         }
+
+        // Purpur start - async target finding (Leaf)
+        private static void asyncTargetFinding() {
+            asyncTargetFinding = getBoolean(ConfigCategory.ASYNC.key("async-target-finding.enable"), asyncTargetFinding,
+                "This moves the expensive entity and block search calculations to background thread while",
+                "keeping the actual validation on the main thread.");
+            // Disable if parallel world ticking is enabled, as they are incompatible.
+            if (asyncTargetFinding && AsyncCategory.enableParallelWorldTicking) {
+                LOGGER.warn("Async target finding is incompatible with Parallel World Ticking. Disabling Async target finding automatically.");
+                asyncTargetFinding = false;
+            }
+            asyncTargetFindingAlertOther = getBoolean(ConfigCategory.ASYNC.key("async-target-finding.alert-other"), asyncTargetFindingAlertOther,
+                "Whether to offload the 'alert nearby mobs of the same type' search to the background thread.");
+            asyncTargetFindingSearchBlock = getBoolean(ConfigCategory.ASYNC.key("async-target-finding.search-block"), asyncTargetFindingSearchBlock,
+                "Whether to offload block target searches (e.g. MoveToBlockGoal) to the background thread.");
+            asyncTargetFindingSearchEntity = getBoolean(ConfigCategory.ASYNC.key("async-target-finding.search-entity"), asyncTargetFindingSearchEntity,
+                "Whether to offload entity target searches to the background thread.");
+            asyncTargetFindingQueueSize = getInt(ConfigCategory.ASYNC.key("async-target-finding.queue-size"), asyncTargetFindingQueueSize,
+                "The size of the per-world ring buffer used to hand mobs to the background goal thread.");
+
+            if (asyncTargetFindingQueueSize <= 0) {
+                asyncTargetFindingQueueSize = 4096;
+            }
+            if (!asyncTargetFinding) {
+                asyncTargetFindingAlertOther = false;
+                asyncTargetFindingSearchEntity = false;
+                asyncTargetFindingSearchBlock = false;
+            } else {
+                LOGGER.info("Async target finding is enabled");
+            }
+        }
+        // Purpur end - async target finding (Leaf)
 
         // Purpur start - parallel world ticking (DivineMC)
         private static void parallelWorldTicking() {

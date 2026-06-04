@@ -4,6 +4,7 @@ import com.google.common.base.Throwables;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bxteam.divinemc.async.pathfinding.PathfindTaskRejectPolicy; // Purpur - async pathfinding (DivineMC)
+import org.bxteam.divinemc.chunk.ChunkSystemAlgorithm; // Purpur - chunk-system algorithm (DivineMC)
 import org.bxteam.divinemc.config.annotations.Experimental;
 import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.comments.CommentType;
@@ -399,6 +400,26 @@ public class DivineConfig {
         // Purpur end - async mob spawning (DivineMC)
     }
     // Purpur end - async chunk sending (DivineMC)
+
+    // Purpur start - chunk-system algorithm (DivineMC)
+    public static class PerformanceCategory {
+        public static ChunkSystemAlgorithm chunkWorkerAlgorithm = ChunkSystemAlgorithm.MOONRISE;
+
+        public static void load() {
+            chunkSettings();
+        }
+
+        private static void chunkSettings() {
+            chunkWorkerAlgorithm = ChunkSystemAlgorithm.valueOf(getString(ConfigCategory.PERFORMANCE.key("chunks.chunk-worker-algorithm"), chunkWorkerAlgorithm.name(),
+                "Algorithm used to determine the number of worker threads for chunk loading and generation.",
+                "",
+                "Available algorithms:",
+                " - MOONRISE: Paper's default algorithm. Conservative approach, uses fewer threads (CPU cores / 2).",
+                " - C2ME: More aggressive thread allocation than MOONRISE. Considers both CPU cores and available memory. May use more threads on high-end systems.",
+                " - C2ME_NEW: Modern C2ME algorithm. Balanced approach between MOONRISE and C2ME. Optimized for current hardware, slightly less aggressive than old C2ME."));
+        }
+    }
+    // Purpur end - chunk-system algorithm (DivineMC)
 
     private static void checkExperimentalFeatures() {
         List<String> enabledExperimentalFeatures = new ArrayList<>();

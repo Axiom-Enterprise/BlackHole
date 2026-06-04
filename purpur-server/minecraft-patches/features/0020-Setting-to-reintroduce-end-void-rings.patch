@@ -25,10 +25,10 @@ index 838898572cc30207a1b915dcea11f612254ac453..d2a5a1293f276aab3136c4563d778d0d
              while (this.running) {
                  final long tickStart = System.nanoTime(); // Paper - improve tick loop
 diff --git a/net/minecraft/server/dedicated/DedicatedServer.java b/net/minecraft/server/dedicated/DedicatedServer.java
-index caf6ce3d1ac19c05c16f52ba2b89a919fa338448..37d25ee4f7f445a977f084af87333c78598ce05d 100644
+index 8f2757663c9a3822e07b763386376cafdc3eb58f..6fd7a1f5bd96f868a950097989176eb4cdf3e235 100644
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -275,6 +275,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -274,6 +274,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          org.spigotmc.SpigotConfig.init((java.io.File) this.options.valueOf("spigot-settings"));
          org.spigotmc.SpigotConfig.registerCommands();
          // Spigot end
@@ -44,7 +44,7 @@ index caf6ce3d1ac19c05c16f52ba2b89a919fa338448..37d25ee4f7f445a977f084af87333c78
          // Paper start - initialize global and world-defaults configuration
          this.paperConfigurations.initializeGlobalConfiguration(this.registryAccess());
          this.paperConfigurations.initializeWorldDefaultsConfiguration(this.registryAccess());
-@@ -291,7 +300,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -290,7 +299,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
          this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark
          com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
@@ -53,7 +53,7 @@ index caf6ce3d1ac19c05c16f52ba2b89a919fa338448..37d25ee4f7f445a977f084af87333c78
          try {
              org.purpurmc.purpur.PurpurConfig.init((java.io.File) options.valueOf("purpur-settings"));
          } catch (Exception e) {
-@@ -299,7 +308,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -298,7 +307,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              return false;
          }
          org.purpurmc.purpur.PurpurConfig.registerCommands();

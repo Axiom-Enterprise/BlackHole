@@ -1,0 +1,68 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Thu, 4 Jun 2026 02:50:39 +0200
+Subject: [PATCH] Petal Multithreaded Tracker
+
+
+diff --git a/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java b/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
+index 7ce9ebba8ce304d1f3f21d4f15ee5f3560d7700b..accee3b051487cc37d0e536cafc7e386f24c7661 100644
+--- a/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
++++ b/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
+@@ -39,6 +39,12 @@ class PaperEventManager {
+         if (event.isAsynchronous() && this.server.isPrimaryThread()) {
+             throw new IllegalStateException(event.getEventName() + " may only be triggered asynchronously.");
+         } else if (!event.isAsynchronous() && !this.server.isPrimaryThread() && !this.server.isStopping()) {
++            // Purpur start - async entity tracker (DivineMC)
++            if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.multithreadedEnabled) {
++                net.minecraft.server.MinecraftServer.getServer().scheduleOnMain(event::callEvent);
++                return;
++            }
++            // Purpur end - async entity tracker (DivineMC)
+             throw new IllegalStateException(event.getEventName() + " may only be triggered synchronously.");
+         }
+ 
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index cc273d30cbec5cf9ae861d18be4d14073a052d06..def57b19cedd12430ae02afcb971dee1c43ac9f8 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -2714,7 +2714,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+         Iterator<AttributeInstance> iterator = collection.iterator();
+         while (iterator.hasNext()) {
+             AttributeInstance genericInstance = iterator.next();
+-            if (genericInstance.getAttribute() == Attributes.MAX_HEALTH) {
++            if (genericInstance != null && genericInstance.getAttribute() == Attributes.MAX_HEALTH) {
+                 iterator.remove();
+                 break;
+             }
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index 6c4045b842a23caa2f3f1e52cb0130a97ffc2682..7b7cb92c65826c69aa2f97d897a8bac330a76332 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -1946,6 +1946,26 @@ public class CraftEventFactory {
+     }
+ 
+     public static boolean handleBlockFormEvent(Level level, BlockPos pos, net.minecraft.world.level.block.state.BlockState state, @net.minecraft.world.level.block.Block.UpdateFlags int flags, @Nullable Entity entity, boolean checkSetResult) {
++        // Purpur start - async entity tracker (DivineMC)
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.multithreadedEnabled && Thread.currentThread() instanceof org.bxteam.divinemc.async.tracking.MultithreadedTracker.MultithreadedTrackerThread) {
++            java.util.concurrent.CompletableFuture<Boolean> future = new java.util.concurrent.CompletableFuture<>();
++            net.minecraft.server.MinecraftServer.getServer().scheduleOnMain(() -> {
++                boolean resultFlag = false;
++                CraftBlockState snapshot = CraftBlockStates.getBlockState(level, pos);
++                snapshot.setBlock(state);
++
++                BlockFormEvent event = (entity == null) ? new BlockFormEvent(snapshot.getBlock(), snapshot) : new EntityBlockFormEvent(entity.getBukkitEntity(), snapshot.getBlock(), snapshot);
++                if (event.callEvent()) {
++                    boolean result = snapshot.place(flags);
++                    resultFlag = !checkSetResult || result;
++                }
++
++                future.complete(resultFlag);
++            });
++
++            return future.join();
++        }
++        // Purpur end - async entity tracker (DivineMC)
+         CraftBlockState snapshot = CraftBlockStates.getBlockState(level, pos);
+         snapshot.setBlock(state);
+ 

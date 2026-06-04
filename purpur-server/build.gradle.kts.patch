@@ -15,7 +15,7 @@
  
 -    updatingMinecraft {
 +    // Purpur start - Rebrand
-+    val purpur = forks.register("purpur") {
++    val purpur = forks.register("axiom") {
 +        upstream.patchDir("paperServer") {
 +            upstreamPath = "paper-server"
 +            excludes = setOf("src/minecraft", "patches", "build.gradle.kts")

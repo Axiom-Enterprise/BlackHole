@@ -201,6 +201,14 @@ public class DivineConfig {
         public static boolean disableHardThrow = false;
         // Purpur end - parallel world ticking (DivineMC)
 
+        // Purpur start - regionized chunk ticking (DivineMC)
+        // Regionized chunk ticking
+        @Experimental("Regionized Chunk Ticking")
+        public static boolean enableRegionizedChunkTicking = false; // Purpur - default off
+        public static int regionizedChunkTickingExecutorThreadCount = 4;
+        public static int regionizedChunkTickingExecutorThreadPriority = Thread.NORM_PRIORITY + 2;
+        // Purpur end - regionized chunk ticking (DivineMC)
+
         // Async chunk sending settings
         public static boolean asyncChunkSendingEnabled = false; // Purpur - default off
         public static int asyncChunkSendingMaxThreads = 1;
@@ -242,6 +250,7 @@ public class DivineConfig {
 
         public void load() {
             parallelWorldTicking(); // Purpur - parallel world ticking (DivineMC)
+            regionizedChunkTicking(); // Purpur - regionized chunk ticking (DivineMC)
             asyncChunkSending();
             asyncPathfinding(); // Purpur - async pathfinding (DivineMC)
             multithreadedTracker(); // Purpur - async entity tracker (DivineMC)
@@ -263,6 +272,25 @@ public class DivineConfig {
                 "Disables annoying 'not on main thread' throws. But, THIS IS NOT RECOMMENDED because you SHOULD FIX THE ISSUES THEMSELVES instead of RISKING DATA CORRUPTION! If you lose something, take the blame on yourself.");
         }
         // Purpur end - parallel world ticking (DivineMC)
+
+        // Purpur start - regionized chunk ticking (DivineMC)
+        private static void regionizedChunkTicking() {
+            enableRegionizedChunkTicking = getBoolean(ConfigCategory.ASYNC.key("regionized-chunk-ticking.enable"), enableRegionizedChunkTicking,
+                "Enables regionized chunk ticking, similar to like Folia works.",
+                "",
+                "Read more info about this feature at https://bxteam.org/docs/divinemc/features/regionized-chunk-ticking");
+
+            regionizedChunkTickingExecutorThreadCount = getInt(ConfigCategory.ASYNC.key("regionized-chunk-ticking.executor-thread-count"), regionizedChunkTickingExecutorThreadCount,
+                "The amount of threads to allocate to regionized chunk ticking.");
+            regionizedChunkTickingExecutorThreadPriority = getInt(ConfigCategory.ASYNC.key("regionized-chunk-ticking.executor-thread-priority"), regionizedChunkTickingExecutorThreadPriority,
+                "Configures the thread priority of the executor");
+
+            if (regionizedChunkTickingExecutorThreadCount < 1 || regionizedChunkTickingExecutorThreadCount > 10) {
+                LOGGER.warn("Invalid regionized chunk ticking thread count: {}, resetting to default (4)", regionizedChunkTickingExecutorThreadCount);
+                regionizedChunkTickingExecutorThreadCount = 4;
+            }
+        }
+        // Purpur end - regionized chunk ticking (DivineMC)
 
         // Purpur start - async playerdata save (Leaf)
         private static void asyncPlayerDataSave() {

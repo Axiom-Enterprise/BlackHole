@@ -211,12 +211,29 @@ public class DivineConfig {
         public static boolean asyncNaturalSpawn = true;
         // Purpur end - async mob spawning (DivineMC)
 
+        public static boolean asyncPlayerDataSave = false; // Purpur - async playerdata save (Leaf) - default off
+
         public void load() {
             asyncChunkSending();
             asyncPathfinding(); // Purpur - async pathfinding (DivineMC)
             multithreadedTracker(); // Purpur - async entity tracker (DivineMC)
             asyncMobSpawning(); // Purpur - async mob spawning (DivineMC)
+            asyncPlayerDataSave(); // Purpur - async playerdata save (Leaf)
         }
+
+        // Purpur start - async playerdata save (Leaf)
+        private static void asyncPlayerDataSave() {
+            asyncPlayerDataSave = getBoolean(ConfigCategory.ASYNC.key("async-playerdata-save.enable"), asyncPlayerDataSave,
+                "Make PlayerData saving asynchronously.",
+                "Only the periodic auto-save is offloaded to a background I/O thread;",
+                "player quit and server shutdown saves always stay synchronous so data is",
+                "flushed before the connection drops or the process exits.");
+
+            if (asyncPlayerDataSave) {
+                org.dreeam.leaf.async.AsyncPlayerDataSaving.init();
+            }
+        }
+        // Purpur end - async playerdata save (Leaf)
 
         // Purpur start - async entity tracker (DivineMC)
         private static void multithreadedTracker() {

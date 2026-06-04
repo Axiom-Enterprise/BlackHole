@@ -213,12 +213,20 @@ public class DivineConfig {
 
         public static boolean asyncPlayerDataSave = false; // Purpur - async playerdata save (Leaf) - default off
 
+        // Purpur start - player-save (async auto-save write)
+        public static boolean playerSaveEnabled = false; // Purpur - default off
+        public static int playerSaveWorkerThreads = 2;
+        public static int playerSaveQueueCapacity = 1024;
+        public static boolean playerSaveCoalesce = true;
+        // Purpur end - player-save (async auto-save write)
+
         public void load() {
             asyncChunkSending();
             asyncPathfinding(); // Purpur - async pathfinding (DivineMC)
             multithreadedTracker(); // Purpur - async entity tracker (DivineMC)
             asyncMobSpawning(); // Purpur - async mob spawning (DivineMC)
             asyncPlayerDataSave(); // Purpur - async playerdata save (Leaf)
+            playerSave(); // Purpur - player-save (async auto-save write)
         }
 
         // Purpur start - async playerdata save (Leaf)
@@ -234,6 +242,37 @@ public class DivineConfig {
             }
         }
         // Purpur end - async playerdata save (Leaf)
+
+        // Purpur start - player-save (async auto-save write)
+        private static void playerSave() {
+            playerSaveEnabled = getBoolean(ConfigCategory.ASYNC.key("player-save.enable"), playerSaveEnabled,
+                "Offloads only the disk-write step of the periodic player auto-save to a background",
+                "I/O pool, keeping NBT serialization on the main thread. Player quit and server",
+                "shutdown saves always stay fully synchronous so data is flushed before the connection",
+                "drops or the process exits. The write is atomic (temp file + atomic rename), and on",
+                "queue overflow the write falls back to the calling thread so no data is dropped.",
+                "Mutually exclusive with async-playerdata-save: if both are enabled, async-playerdata-save",
+                "wins and player-save is disabled (a warning is logged).");
+            playerSaveWorkerThreads = getInt(ConfigCategory.ASYNC.key("player-save.worker-threads"), playerSaveWorkerThreads,
+                "Number of background threads used to write player data to disk.");
+            playerSaveQueueCapacity = getInt(ConfigCategory.ASYNC.key("player-save.queue-capacity"), playerSaveQueueCapacity,
+                "Maximum number of queued writes before overflow falls back to a synchronous",
+                "write on the main thread.");
+            playerSaveCoalesce = getBoolean(ConfigCategory.ASYNC.key("player-save.coalesce"), playerSaveCoalesce,
+                "When enabled, a newer queued snapshot for the same player supersedes an older one",
+                "still waiting in the queue, reducing redundant disk writes. In-flight and sole writes",
+                "are never dropped.");
+
+            if (playerSaveEnabled) {
+                if (asyncPlayerDataSave) {
+                    LOGGER.warn("Both async.player-save and async.async-playerdata-save are enabled; they target the same player .dat path and are mutually exclusive. async-playerdata-save takes precedence, disabling player-save.");
+                    playerSaveEnabled = false;
+                } else {
+                    org.bxteam.divinemc.async.PlayerSaveExecutor.init();
+                }
+            }
+        }
+        // Purpur end - player-save (async auto-save write)
 
         // Purpur start - async entity tracker (DivineMC)
         private static void multithreadedTracker() {

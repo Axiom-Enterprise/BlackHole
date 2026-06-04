@@ -187,6 +187,15 @@ public class DivineConfig {
 
     // Purpur start - async chunk sending (DivineMC)
     public static class AsyncCategory {
+        // Purpur start - parallel world ticking (DivineMC)
+        // Parallel world ticking settings
+        @Experimental("Parallel World Ticking")
+        public static boolean enableParallelWorldTicking = false; // Purpur - default off
+        public static int parallelThreadCount = 4;
+        public static boolean logContainerCreationStacktraces = false;
+        public static boolean disableHardThrow = false;
+        // Purpur end - parallel world ticking (DivineMC)
+
         // Async chunk sending settings
         public static boolean asyncChunkSendingEnabled = false; // Purpur - default off
         public static int asyncChunkSendingMaxThreads = 1;
@@ -227,6 +236,7 @@ public class DivineConfig {
         // Purpur end - async-enhancements (player NBT compression offload)
 
         public void load() {
+            parallelWorldTicking(); // Purpur - parallel world ticking (DivineMC)
             asyncChunkSending();
             asyncPathfinding(); // Purpur - async pathfinding (DivineMC)
             multithreadedTracker(); // Purpur - async entity tracker (DivineMC)
@@ -235,6 +245,19 @@ public class DivineConfig {
             playerSave(); // Purpur - player-save (async auto-save write)
             asyncEnhancements(); // Purpur - async-enhancements (player NBT compression offload)
         }
+
+        // Purpur start - parallel world ticking (DivineMC)
+        private static void parallelWorldTicking() {
+            enableParallelWorldTicking = getBoolean(ConfigCategory.ASYNC.key("parallel-world-ticking.enable"), enableParallelWorldTicking,
+                "Enables Parallel World Ticking, which executes each world's tick in a separate thread while ensuring that all worlds complete their tick before the next cycle begins.",
+                "",
+                "Read more info about this feature at https://bxteam.org/docs/divinemc/features/parallel-world-ticking");
+            parallelThreadCount = getInt(ConfigCategory.ASYNC.key("parallel-world-ticking.thread-count"), parallelThreadCount);
+            logContainerCreationStacktraces = getBoolean(ConfigCategory.ASYNC.key("parallel-world-ticking.log-container-creation-stacktraces"), logContainerCreationStacktraces);
+            disableHardThrow = getBoolean(ConfigCategory.ASYNC.key("parallel-world-ticking.disable-hard-throw"), disableHardThrow,
+                "Disables annoying 'not on main thread' throws. But, THIS IS NOT RECOMMENDED because you SHOULD FIX THE ISSUES THEMSELVES instead of RISKING DATA CORRUPTION! If you lose something, take the blame on yourself.");
+        }
+        // Purpur end - parallel world ticking (DivineMC)
 
         // Purpur start - async playerdata save (Leaf)
         private static void asyncPlayerDataSave() {

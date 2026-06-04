@@ -68,7 +68,9 @@ public final class RegionizedChunkTicking extends ServerChunkCache {
     protected void iterateTickingChunksFaster(final @NotNull CompletableFuture<Void> spawns) {
         final ServerLevel world = this.level;
         final int randomTickSpeed = world.getGameRules().get(GameRules.RANDOM_TICK_SPEED);
-        final LevelChunk[] raw = world.moonrise$getEntityTickingChunks().toArray(new LevelChunk[0]);
+        // Purpur - regionized chunk ticking (DivineMC) - ReferenceList has no toArray() in this tree; build an exact-size snapshot from the backing array
+        final ca.spottedleaf.moonrise.common.list.ReferenceList<LevelChunk> entityTickingChunks = world.moonrise$getEntityTickingChunks();
+        final LevelChunk[] raw = Arrays.copyOf(entityTickingChunks.getRawDataUnchecked(), entityTickingChunks.size());
         final TickPair tickPair = computePlayerRegions();
         final RegionData[] regions = tickPair.regions();
 

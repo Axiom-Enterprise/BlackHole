@@ -12,7 +12,7 @@
              this.setLocalIp(properties.serverIp);
          }
  
-+        org.bxteam.divinemc.config.DivineConfig.init((java.io.File) options.valueOf("divinemc-settings")); // Purpur - async config (DivineMC)
++        org.bxteam.divinemc.config.DivineConfig.init((java.io.File) options.valueOf("axiom-settings")); // Purpur - async config (DivineMC)
          // Spigot start
          this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage));
          org.spigotmc.SpigotConfig.init((java.io.File) this.options.valueOf("spigot-settings"));

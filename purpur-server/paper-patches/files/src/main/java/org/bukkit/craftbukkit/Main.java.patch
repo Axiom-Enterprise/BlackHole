@@ -13,10 +13,10 @@
 +                // Purpur end - Purpur config files
 +
 +                // Purpur start - async config (DivineMC)
-+                acceptsAll(asList("divinemc", "divinemc-settings"), "File for DivineMC settings")
++                acceptsAll(asList("axiom", "axiom-settings"), "File for Axiom settings")
 +                    .withRequiredArg()
 +                    .ofType(File.class)
-+                    .defaultsTo(new File("divinemc.yml"))
++                    .defaultsTo(new File("axiom.yml"))
 +                    .describedAs("Yml file");
 +                // Purpur end - async config (DivineMC)
 +

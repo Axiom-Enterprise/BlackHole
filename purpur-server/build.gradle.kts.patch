@@ -9,6 +9,17 @@
  
  plugins {
      `java-library`
+@@ -11,6 +_,10 @@
+     id("io.papermc.fill.gradle") version "1.0.11"
+ }
+ 
++base {
++    archivesName.set("axiom-server") // Axiom - rename server jar artifact
++}
++
+ val paperMavenPublicUrl = "https://repo.papermc.io/repository/maven-public/"
+ 
+ dependencies {
 @@ -22,9 +_,21 @@
      minecraftVersion = providers.gradleProperty("mcVersion")
      gitFilePatches = false

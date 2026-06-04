@@ -65,7 +65,7 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.10")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -135,6 +_,13 @@
+@@ -135,6 +_,19 @@
      implementation("org.ow2.asm:asm-commons:9.9.1")
      implementation("org.spongepowered:configurate-yaml:4.2.0")
  
@@ -74,6 +74,11 @@
 +        exclude(group = "org.yaml", module = "snakeyaml")
 +    }
 +    implementation("net.objecthunter:exp4j:0.4.8") // Purpur - chunk-system algorithm (DivineMC)
++    // Purpur start - linear region file format (DivineMC)
++    implementation("com.github.luben:zstd-jni:1.5.7-3")
++    implementation("at.yawk.lz4:lz4-java:1.10.1")
++    implementation("net.openhft:zero-allocation-hashing:0.16")
++    // Purpur end - linear region file format (DivineMC)
 +    implementation("org.mozilla:rhino-engine:1.7.14") // Purpur
 +    implementation("dev.omega24:upnp4j:1.0") // Purpur
 +

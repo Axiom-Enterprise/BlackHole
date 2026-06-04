@@ -6,6 +6,11 @@ import org.apache.logging.log4j.Logger;
 import org.bxteam.divinemc.async.pathfinding.PathfindTaskRejectPolicy; // Purpur - async pathfinding (DivineMC)
 import org.bxteam.divinemc.chunk.ChunkSystemAlgorithm; // Purpur - chunk-system algorithm (DivineMC)
 import org.bxteam.divinemc.config.annotations.Experimental;
+import org.bxteam.divinemc.region.EnumRegionFileExtension; // Purpur - linear region file format (DivineMC)
+import org.bxteam.divinemc.region.Flusher; // Purpur - linear region file format (DivineMC)
+import org.bxteam.divinemc.region.buffered.BufferedRegionFileFlusher; // Purpur - linear region file format (DivineMC)
+import org.bxteam.divinemc.region.linear.LinearImplementation; // Purpur - linear region file format (DivineMC)
+import org.bxteam.divinemc.region.linear.LinearRegionFileFlusher; // Purpur - linear region file format (DivineMC)
 import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.comments.CommentType;
 import org.simpleyaml.configuration.file.YamlFile;
@@ -443,6 +448,88 @@ public class DivineConfig {
         }
     }
     // Purpur end - chunk-system algorithm (DivineMC)
+
+    // Purpur start - linear region file format (DivineMC)
+    public static class RegionSettingsCategory {
+        // Region Format
+        public static EnumRegionFileExtension regionFileType = EnumRegionFileExtension.MCA;
+        public static int compressionLevel = 4;
+        public static int threadCount = 4;
+        public static Flusher<?> flusher = null;
+
+        // Linear region file settings
+        public static int linearIoFlushDelayMs = 10000;
+        public static LinearImplementation linearImplementation = LinearImplementation.V2;
+
+        // Buffered linear region file settings
+        public static int checkIntervalMs = 20;
+        public static int flushOfWriteTimeoutMs = 3000;
+
+        public static void load() {
+            regionFileExtension();
+            linear();
+            buffered();
+            flusher();
+        }
+
+        private static void regionFileExtension() {
+            try {
+                regionFileType = EnumRegionFileExtension.fromString(getString(ConfigCategory.REGION.key("type"), regionFileType.toString(),
+                    "The type of region file format to use for storing chunk data.",
+                    "Valid values:",
+                    " - MCA: Default Minecraft region file format",
+                    " - LINEAR: Linear region file format V2",
+                    " - B_LINEAR: Buffered region file format (just uses Zstd)"));
+            } catch (IllegalArgumentException ignore) {
+                LOGGER.warn("Invalid region file type: {}, resetting to default (MCA)", getString(ConfigCategory.REGION.key("type"), regionFileType.toString()));
+                regionFileType = EnumRegionFileExtension.MCA;
+            }
+
+            threadCount = getInt(ConfigCategory.REGION.key("thread-count"), threadCount,
+                "The number of threads to use for IO operations.");
+
+            if (threadCount < 1) {
+                LOGGER.warn("Invalid thread count: {}, resetting to default (4)", threadCount);
+                threadCount = 4;
+            }
+
+            compressionLevel = getInt(ConfigCategory.REGION.key("compression-level"), compressionLevel,
+                "The compression level to use for the either linear or buffered linear region file format.");
+
+            if (compressionLevel > 23 || compressionLevel < 1) {
+                LOGGER.warn("Invalid compression level: {}, resetting to default (4)", compressionLevel);
+                compressionLevel = 4;
+            }
+        }
+
+        private static void linear() {
+            linearIoFlushDelayMs = getInt(ConfigCategory.REGION.key("linear.io-flush-delay-ms"), linearIoFlushDelayMs,
+                "The delay in milliseconds to wait before flushing IO operations.");
+
+            linearImplementation = LinearImplementation.valueOf(getString(ConfigCategory.REGION.key("linear.implementation"), linearImplementation.name(),
+                "The implementation of the linear region file format to use.",
+                "Valid values:",
+                " - V1: Basic and default linear implementation",
+                " - V2: Introduces a grid-based compression scheme for better data management and flexibility (default)",
+                " - V3: Minor improvements over V2"));
+        }
+
+        private static void buffered() {
+            checkIntervalMs = getInt(ConfigCategory.REGION.key("b-linear.check-interval-ms"), checkIntervalMs,
+                "The interval in milliseconds to check for dirty region files to flush.");
+            flushOfWriteTimeoutMs = getInt(ConfigCategory.REGION.key("b-linear.flush-of-write-timeout-ms"), flushOfWriteTimeoutMs,
+                "The timeout in milliseconds to wait before forcing a flush of a region file that is being written to.");
+        }
+
+        private static void flusher() {
+            flusher = switch (regionFileType) {
+                case MCA -> null;
+                case LINEAR -> new LinearRegionFileFlusher(threadCount, linearIoFlushDelayMs);
+                case B_LINEAR -> new BufferedRegionFileFlusher(threadCount, checkIntervalMs, flushOfWriteTimeoutMs);
+            };
+        }
+    }
+    // Purpur end - linear region file format (DivineMC)
 
     private static void checkExperimentalFeatures() {
         List<String> enabledExperimentalFeatures = new ArrayList<>();

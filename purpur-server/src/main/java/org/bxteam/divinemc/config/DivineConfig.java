@@ -197,9 +197,15 @@ public class DivineConfig {
         public static int asyncPathfindingQueueSize = 0; // Purpur - async pathfinding (DivineMC)
         public static PathfindTaskRejectPolicy asyncPathfindingRejectPolicy = PathfindTaskRejectPolicy.CALLER_RUNS; // Purpur - async pathfinding (DivineMC)
 
+        // Purpur start - async mob spawning (DivineMC)
+        public static boolean enableAsyncSpawning = false; // Purpur - default off
+        public static boolean asyncNaturalSpawn = true;
+        // Purpur end - async mob spawning (DivineMC)
+
         public void load() {
             asyncChunkSending();
             asyncPathfinding(); // Purpur - async pathfinding (DivineMC)
+            asyncMobSpawning(); // Purpur - async mob spawning (DivineMC)
         }
 
         // Purpur start - async pathfinding (DivineMC)
@@ -250,6 +256,15 @@ public class DivineConfig {
                 asyncChunkSendingMaxThreads = Math.max(Runtime.getRuntime().availableProcessors() / 4, 1);
             }
         }
+
+        // Purpur start - async mob spawning (DivineMC)
+        private static void asyncMobSpawning() {
+            enableAsyncSpawning = getBoolean(ConfigCategory.ASYNC.key("mob-spawning.enable"), enableAsyncSpawning,
+                "Enables optimization that will offload much of the computational effort involved with spawning new mobs to a different thread.");
+            asyncNaturalSpawn = getBoolean(ConfigCategory.ASYNC.key("mob-spawning.async-natural-spawn"), asyncNaturalSpawn,
+                "Enables offloading of natural spawning to a different thread");
+        }
+        // Purpur end - async mob spawning (DivineMC)
     }
     // Purpur end - async chunk sending (DivineMC)
 

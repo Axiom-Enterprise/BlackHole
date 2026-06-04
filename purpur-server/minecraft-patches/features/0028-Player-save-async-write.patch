@@ -1,0 +1,67 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Thu, 4 Jun 2026 08:36:12 +0200
+Subject: [PATCH] Player-save async write
+
+
+diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
+index dfa3c9a419686f62f48f78cba4da812ca50f112c..9616dbe0166d30bdd813ad1d10353a4184d6c47b 100644
+--- a/net/minecraft/server/MinecraftServer.java
++++ b/net/minecraft/server/MinecraftServer.java
+@@ -1135,6 +1135,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         // Paper start - Improved watchdog support - move final shutdown items here
+         Util.shutdownExecutors();
+         org.dreeam.leaf.async.ShutdownExecutors.shutdown(this); // Purpur - async playerdata save (Leaf) - drain pending async player I/O before exit
++        org.bxteam.divinemc.async.PlayerSaveExecutor.shutdown(); // Purpur - player-save - drain pending async player-save writes before exit
+         this.onServerExit();
+         // Paper end - Improved watchdog support - move final shutdown items here
+     }
+diff --git a/net/minecraft/world/level/storage/PlayerDataStorage.java b/net/minecraft/world/level/storage/PlayerDataStorage.java
+index d5ce608448d5b022f5e5136c0b544877d74ca3a8..5f363c4647229aeaa125b22d7791b5cc8ef8d562 100644
+--- a/net/minecraft/world/level/storage/PlayerDataStorage.java
++++ b/net/minecraft/world/level/storage/PlayerDataStorage.java
+@@ -90,21 +90,29 @@ public class PlayerDataStorage {
+ 
+         // Only the periodic auto-save (async == true) is offloaded; everything else writes inline.
+         // When async saving is disabled in config, AsyncPlayerDataSaving.submit also runs inline.
+-        if (!async || !org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncPlayerDataSave) {
+-            writeTask.run();
+-            return;
+-        }
+-
+-        synchronized (PlayerDataStorage.this) {
+-            org.dreeam.leaf.async.AsyncPlayerDataSaving.submit(() -> {
+-                try {
+-                    writeTask.run();
+-                } finally {
+-                    synchronized (PlayerDataStorage.this) {
+-                        savingLocks.remove(uniqueId);
++        if (async && org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncPlayerDataSave) {
++            synchronized (PlayerDataStorage.this) {
++                org.dreeam.leaf.async.AsyncPlayerDataSaving.submit(() -> {
++                    try {
++                        writeTask.run();
++                    } finally {
++                        synchronized (PlayerDataStorage.this) {
++                            savingLocks.remove(uniqueId);
++                        }
+                     }
+-                }
+-            }).ifPresent(future -> savingLocks.put(uniqueId, future));
++                }).ifPresent(future -> savingLocks.put(uniqueId, future));
++            }
++        } else if (async && org.bxteam.divinemc.config.DivineConfig.AsyncCategory.playerSaveEnabled) { // Purpur - player-save (async write only)
++            // NBT already serialized to nbtBytes on this (main) thread above; offload only the write.
++            // Copy to a right-sized byte[] (the backing array is over-allocated) so no trailing
++            // garbage is written, then hand it to the player-save pool which writes atomically.
++            final byte[] serializedBytes = java.util.Arrays.copyOf(nbtBytes.array, nbtBytes.length); // Purpur - player-save (async write only)
++            final Path dataFile = this.playerDir.toPath().resolve(stringId + ".dat"); // Purpur - player-save (async write only)
++            if (org.bxteam.divinemc.async.PlayerSaveExecutor.submitWrite(uniqueId, serializedBytes, dataFile)) return; // Purpur - player-save (async write only)
++            // overflow -> fall through to the inline synchronous write below
++            writeTask.run(); // Purpur - player-save (async write only)
++        } else {
++            writeTask.run();
+         }
+     }
+ 

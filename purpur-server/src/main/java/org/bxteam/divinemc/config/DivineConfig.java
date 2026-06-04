@@ -197,6 +197,15 @@ public class DivineConfig {
         public static int asyncPathfindingQueueSize = 0; // Purpur - async pathfinding (DivineMC)
         public static PathfindTaskRejectPolicy asyncPathfindingRejectPolicy = PathfindTaskRejectPolicy.CALLER_RUNS; // Purpur - async pathfinding (DivineMC)
 
+        // Purpur start - async entity tracker (DivineMC)
+        // Multithreaded tracker settings
+        public static boolean multithreadedEnabled = false; // Purpur - default off
+        public static boolean multithreadedCompatModeEnabled = false;
+        public static int asyncEntityTrackerMaxThreads = 1;
+        public static int asyncEntityTrackerKeepalive = 60;
+        public static int asyncEntityTrackerQueueSize = 0;
+        // Purpur end - async entity tracker (DivineMC)
+
         // Purpur start - async mob spawning (DivineMC)
         public static boolean enableAsyncSpawning = false; // Purpur - default off
         public static boolean asyncNaturalSpawn = true;
@@ -205,8 +214,39 @@ public class DivineConfig {
         public void load() {
             asyncChunkSending();
             asyncPathfinding(); // Purpur - async pathfinding (DivineMC)
+            multithreadedTracker(); // Purpur - async entity tracker (DivineMC)
             asyncMobSpawning(); // Purpur - async mob spawning (DivineMC)
         }
+
+        // Purpur start - async entity tracker (DivineMC)
+        private static void multithreadedTracker() {
+            multithreadedEnabled = getBoolean(ConfigCategory.ASYNC.key("multithreaded-tracker.enable"), multithreadedEnabled,
+                "Make entity tracking saving asynchronously, can improve performance significantly,",
+                "especially in some massive entities in small area situations.");
+            multithreadedCompatModeEnabled = getBoolean(ConfigCategory.ASYNC.key("multithreaded-tracker.compat-mode"), multithreadedCompatModeEnabled,
+                "Enable compat mode ONLY if Citizens or NPC plugins using real entity has installed.",
+                "Compat mode fixes visible issues with player type NPCs of Citizens.",
+                "But we recommend to use packet based / virtual entity NPC plugin, e.g. ZNPC Plus, Adyeshach, Fancy NPC and etc.");
+
+            asyncEntityTrackerMaxThreads = getInt(ConfigCategory.ASYNC.key("multithreaded-tracker.max-threads"), asyncEntityTrackerMaxThreads);
+            asyncEntityTrackerKeepalive = getInt(ConfigCategory.ASYNC.key("multithreaded-tracker.keepalive"), asyncEntityTrackerKeepalive);
+            asyncEntityTrackerQueueSize = getInt(ConfigCategory.ASYNC.key("multithreaded-tracker.queue-size"), asyncEntityTrackerQueueSize);
+
+            if (asyncEntityTrackerMaxThreads < 0) {
+                asyncEntityTrackerMaxThreads = Math.max(Runtime.getRuntime().availableProcessors() + asyncEntityTrackerMaxThreads, 1);
+            } else if (asyncEntityTrackerMaxThreads == 0) {
+                asyncEntityTrackerMaxThreads = Math.max(Runtime.getRuntime().availableProcessors() / 4, 1);
+            }
+
+            if (!multithreadedEnabled) {
+                asyncEntityTrackerMaxThreads = 0;
+            } else {
+                LOGGER.info("Using {} threads for Async Entity Tracker", asyncEntityTrackerMaxThreads);
+            }
+
+            if (asyncEntityTrackerQueueSize <= 0) asyncEntityTrackerQueueSize = asyncEntityTrackerMaxThreads * 384;
+        }
+        // Purpur end - async entity tracker (DivineMC)
 
         // Purpur start - async pathfinding (DivineMC)
         private static void asyncPathfinding() {

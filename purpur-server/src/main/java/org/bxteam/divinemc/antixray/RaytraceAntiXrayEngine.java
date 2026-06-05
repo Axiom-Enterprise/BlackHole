@@ -2,21 +2,30 @@ package org.bxteam.divinemc.antixray;
 
 import dev.imanity.antixray.sdk.AntiXrayAdapter;
 import dev.imanity.antixray.sdk.AntiXraySDK;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
 import org.bxteam.divinemc.config.DivineConfig;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -36,10 +45,15 @@ import java.util.concurrent.TimeUnit;
 public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
     private static final Logger LOGGER = LogManager.getLogger("RaytraceAntiXray");
     private static final int QUEUE_CAPACITY = 1 << 16;
+    private static final int REVEAL_DEDUP_CAP = 1 << 15; // bound per-player revealed-set growth
 
     private static volatile RaytraceAntiXrayEngine instance;
 
     private final ExecutorService workers;
+    private final Set<Block> hiddenBlocks;
+    // Per-player set of already-revealed ore positions, to avoid resending each interval.
+    private final ConcurrentHashMap<UUID, LongOpenHashSet> revealed = new ConcurrentHashMap<>();
+    private long revealTick; // tick thread only
     // Diagnostics only. `submitted` has a single writer (SDK callbacks fire on the tick thread).
     // The hit counters are written from workers and are intentionally best-effort (no atomics):
     // an occasional lost increment is fine for stats and avoids CAS traffic on the hot path.
@@ -47,7 +61,8 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
     private volatile long visibleHits;
     private volatile long occludedHits;
 
-    private RaytraceAntiXrayEngine(final int threads) {
+    private RaytraceAntiXrayEngine(final int threads, final Set<Block> hiddenBlocks) {
+        this.hiddenBlocks = hiddenBlocks;
         final ThreadPoolExecutor pool = new ThreadPoolExecutor(
             threads, threads, 60L, TimeUnit.SECONDS,
             new LinkedBlockingQueue<>(QUEUE_CAPACITY),
@@ -72,7 +87,14 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
             return;
         }
         final int threads = Math.max(1, DivineConfig.PerformanceCategory.raytraceEngineThreads);
-        final RaytraceAntiXrayEngine engine = new RaytraceAntiXrayEngine(threads);
+        final Set<Block> hidden = new HashSet<>();
+        for (final Material material : DivineConfig.PerformanceCategory.raytraceHiddenBlocks) {
+            final Block block = CraftMagicNumbers.getBlock(material);
+            if (block != null) {
+                hidden.add(block);
+            }
+        }
+        final RaytraceAntiXrayEngine engine = new RaytraceAntiXrayEngine(threads, hidden);
         instance = engine;
         AntiXraySDK.setAdapter(engine);
         LOGGER.info("Raytrace AntiXray engine started ({} threads, radius {})",
@@ -87,6 +109,7 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
         if (AntiXraySDK.getAdapter() == this) {
             AntiXraySDK.setAdapter(null);
         }
+        this.revealed.clear();
         this.workers.shutdownNow();
     }
 
@@ -178,6 +201,74 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
                 this.occludedHits++; // best-effort diagnostic
             }
         });
+    }
+
+    /** Null-safe per-server-tick entry point for the movement reveal pass. */
+    public static void tickServer() {
+        final RaytraceAntiXrayEngine engine = instance;
+        if (engine != null) {
+            engine.tickReveal();
+        }
+    }
+
+    private void tickReveal() {
+        if ((++this.revealTick % DivineConfig.PerformanceCategory.raytraceRevealIntervalTicks) != 0) {
+            return;
+        }
+        final int radius = DivineConfig.PerformanceCategory.raytraceRevealRadius;
+        final Collection<? extends Player> online = Bukkit.getOnlinePlayers();
+
+        // Drop dedup state for players who logged off.
+        if (!this.revealed.isEmpty()) {
+            final Set<UUID> live = new HashSet<>(online.size());
+            for (final Player p : online) {
+                live.add(p.getUniqueId());
+            }
+            this.revealed.keySet().removeIf(uuid -> !live.contains(uuid));
+        }
+
+        for (final Player bukkitPlayer : online) {
+            if (!(bukkitPlayer.getWorld() instanceof final CraftWorld craftWorld)) {
+                continue;
+            }
+            final ServerLevel level = craftWorld.getHandle();
+            final Location eye = bukkitPlayer.getEyeLocation();
+            final double eyeX = eye.getX(), eyeY = eye.getY(), eyeZ = eye.getZ();
+            final RevealRegion region = RevealRegion.capture(level,
+                (int) Math.floor(eyeX), (int) Math.floor(eyeY), (int) Math.floor(eyeZ), radius, this.hiddenBlocks);
+            if (region == null || region.orePositions().length == 0) {
+                continue;
+            }
+            final ServerGamePacketListenerImpl connection = ((CraftPlayer) bukkitPlayer).getHandle().connection;
+            final LongOpenHashSet dedup = this.revealed.computeIfAbsent(bukkitPlayer.getUniqueId(), k -> new LongOpenHashSet());
+            this.workers.execute(() -> revealVisible(region, eyeX, eyeY, eyeZ, connection, dedup));
+        }
+    }
+
+    private void revealVisible(final RevealRegion region, final double eyeX, final double eyeY, final double eyeZ,
+                               final ServerGamePacketListenerImpl connection, final LongOpenHashSet dedup) {
+        final long[] ores = region.orePositions();
+        final BlockState[] states = region.oreStates();
+        for (int k = 0; k < ores.length; k++) {
+            final long packed = ores[k];
+            final int px = BlockPos.getX(packed);
+            final int py = BlockPos.getY(packed);
+            final int pz = BlockPos.getZ(packed);
+            if (!Raytracer.isVisible(region, eyeX, eyeY, eyeZ, px, py, pz)) {
+                this.occludedHits++; // best-effort diagnostic
+                continue;
+            }
+            synchronized (dedup) {
+                if (!dedup.add(packed)) {
+                    continue; // already revealed to this player
+                }
+                if (dedup.size() > REVEAL_DEDUP_CAP) {
+                    dedup.clear();
+                }
+            }
+            connection.send(new ClientboundBlockUpdatePacket(BlockPos.of(packed), states[k])); // reveal
+            this.visibleHits++; // best-effort diagnostic
+        }
     }
 
     public long submittedSignals() {

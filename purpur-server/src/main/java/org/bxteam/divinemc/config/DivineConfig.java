@@ -503,6 +503,8 @@ public class DivineConfig {
         public static boolean raytraceEngineEnabled = false; // DivineMC - built-in raytrace anti-xray engine - default off
         public static int raytraceEngineThreads = 2;
         public static int raytraceEngineRadius = 64;
+        public static int raytraceRevealIntervalTicks = 20;
+        public static int raytraceRevealRadius = 16;
         public static java.util.Set<org.bukkit.Material> raytraceHiddenBlocks = java.util.EnumSet.noneOf(org.bukkit.Material.class);
 
         private static final List<String> DEFAULT_HIDDEN_BLOCKS = java.util.List.of(
@@ -541,6 +543,10 @@ public class DivineConfig {
                 "Worker threads for the raytrace anti-xray engine.");
             raytraceEngineRadius = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.update-radius"), raytraceEngineRadius,
                 "Max block distance from a viewer eye at which the engine evaluates visibility.");
+            raytraceRevealIntervalTicks = Math.max(1, getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.reveal-interval-ticks"), raytraceRevealIntervalTicks,
+                "How often (server ticks) to run the movement reveal pass per online player."));
+            raytraceRevealRadius = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.reveal-radius"), raytraceRevealRadius,
+                "Block radius around each viewer scanned for ores to reveal on a clear line of sight.");
 
             final List<String> names = getStringList(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.hidden-blocks"), DEFAULT_HIDDEN_BLOCKS,
                 "Blocks the engine treats as hideable; only changes to these trigger a raytrace reveal.");

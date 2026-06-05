@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 01:31:54 +0200
+Subject: [PATCH] Raytrace AntiXray movement reveal tick hook
+
+
+diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
+index 750184c1e548281d0f6d99e78a89f5af5b8f8c67..19c6a83edef96a752c020aecbc4edfa43a0bcffb 100644
+--- a/net/minecraft/server/MinecraftServer.java
++++ b/net/minecraft/server/MinecraftServer.java
+@@ -1698,6 +1698,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         this.tickCount++;
+         this.tickRateManager.tick();
+         this.tickChildren(haveTime);
++        org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.tickServer(); // DivineMC - raytrace anti-xray movement reveal pass
+         if (nano - this.lastServerStatus >= STATUS_EXPIRE_TIME_NANOS) {
+             this.lastServerStatus = nano;
+             this.status = this.buildServerStatus();

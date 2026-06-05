@@ -1,0 +1,202 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Thu, 4 Jun 2026 02:32:09 +0200
+Subject: [PATCH] Pufferfish Optimize mob spawning
+
+
+diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
+index d2a5a1293f276aab3136c4563d778d0d79c7ff29..f4326242031af3a9a3f0e5154993e97f8d8178b4 100644
+--- a/net/minecraft/server/MinecraftServer.java
++++ b/net/minecraft/server/MinecraftServer.java
+@@ -339,6 +339,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public static final long SERVER_INIT = System.nanoTime(); // Paper - Lag compensation
+     public boolean lagging = false; // Purpur - Lagging threshold
+     protected boolean upnp = false; // Purpur - UPnP Port Forwarding
++    public gg.pufferfish.pufferfish.util.AsyncExecutor mobSpawnExecutor = new gg.pufferfish.pufferfish.util.AsyncExecutor("Mob Spawning"); // Purpur - async mob spawning (DivineMC)
+     // Paper start - improve tick loop
+     public final ca.spottedleaf.moonrise.common.time.TickData tickTimes1s  = new ca.spottedleaf.moonrise.common.time.TickData(java.util.concurrent.TimeUnit.SECONDS.toNanos(1L));
+     public final ca.spottedleaf.moonrise.common.time.TickData tickTimes5s  = new ca.spottedleaf.moonrise.common.time.TickData(java.util.concurrent.TimeUnit.SECONDS.toNanos(5L));
+diff --git a/net/minecraft/server/dedicated/DedicatedServer.java b/net/minecraft/server/dedicated/DedicatedServer.java
+index 24589ad2bf763404a61601c8fc6cc42971b7fea9..61082575924a4a7446ccf341ecb1aaa0b8c5bf56 100644
+--- a/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -453,7 +453,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+ 
+         org.purpurmc.purpur.task.BossBarTask.startAll(); // Purpur - Implement TPSBar
+         if (org.purpurmc.purpur.PurpurConfig.beeCountPayload) org.purpurmc.purpur.task.BeehiveTask.instance().register(); // Purpur - Give bee counts in beehives to Purpur clients
+-
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableAsyncSpawning) mobSpawnExecutor.start(); // Purpur - async mob spawning (DivineMC)
+         this.saveEverything(false, true, true);
+         this.notificationManager().serverStarted();
+         return true;
+diff --git a/net/minecraft/server/level/ServerChunkCache.java b/net/minecraft/server/level/ServerChunkCache.java
+index 396ab3cdcf6f726ce7133395bb39594ef4b1c011..b9ee0abeefade44ec94d8e2c98ec60c50bdcd51a 100644
+--- a/net/minecraft/server/level/ServerChunkCache.java
++++ b/net/minecraft/server/level/ServerChunkCache.java
+@@ -75,6 +75,10 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+     private final Set<ChunkHolder> chunkHoldersToBroadcast = new ReferenceOpenHashSet<>();
+     @VisibleForDebug
+     private NaturalSpawner.@Nullable SpawnState lastSpawnState;
++    // Purpur start - async mob spawning (DivineMC)
++    public boolean firstRunSpawnCounts = true;
++    public final java.util.concurrent.atomic.AtomicBoolean spawnCountsReady = new java.util.concurrent.atomic.AtomicBoolean(false);
++    // Purpur end - async mob spawning (DivineMC)
+     // Paper start
+     public final ca.spottedleaf.concurrentutil.map.concurrent.longs.ConcurrentChainedLong2ReferenceHashTable<net.minecraft.world.level.chunk.LevelChunk> fullChunks = new ca.spottedleaf.concurrentutil.map.concurrent.longs.ConcurrentChainedLong2ReferenceHashTable<>();
+     public int getFullChunksCount() {
+@@ -516,6 +520,47 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+             this.broadcastChangedChunks(profiler);
+             profiler.pop();
+         }
++
++        // Purpur start - async mob spawning (DivineMC)
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableAsyncSpawning) {
++            for (ServerPlayer player : this.level.players()) {
++                for (int ii = 0; ii < ServerPlayer.MOBCATEGORY_TOTAL_ENUMS; ii++) {
++                    player.mobCounts[ii] = 0;
++
++                    int newBackoff = Math.max(0, player.mobBackoffCounts[ii] - 1);
++                    player.mobBackoffCounts[ii] = newBackoff;
++                }
++            }
++
++            if (firstRunSpawnCounts) {
++                firstRunSpawnCounts = false;
++                spawnCountsReady.set(true);
++            }
++
++            if (spawnCountsReady.getAndSet(false)) {
++                net.minecraft.server.MinecraftServer.getServer().mobSpawnExecutor.submit(() -> {
++                    int mapped = distanceManager.getNaturalSpawnChunkCount();
++                    ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet.Iterator<Entity> objectiterator = level.entityTickList.entities.iterator(ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet.ITERATOR_FLAG_SEE_ADDITIONS);
++
++                    try {
++                        gg.pufferfish.pufferfish.util.IterableWrapper<Entity> wrappedIterator = new gg.pufferfish.pufferfish.util.IterableWrapper<>(objectiterator);
++                        LocalMobCapCalculator mobCapCalculator = !level.paperConfig().entities.spawning.perPlayerMobSpawns ? new LocalMobCapCalculator(chunkMap) : null;
++
++                        lastSpawnState = NaturalSpawner.createState(
++                            mapped,
++                            wrappedIterator,
++                            ServerChunkCache.this::getFullChunk,
++                            mobCapCalculator,
++                            level.paperConfig().entities.spawning.perPlayerMobSpawns
++                        );
++                    } finally {
++                        objectiterator.finishedIterating();
++                    }
++                    spawnCountsReady.set(true);
++                });
++            }
++        }
++        // Purpur end - async mob spawning (DivineMC)
+     }
+ 
+     private void broadcastChangedChunks(final ProfilerFiller profiler) {
+@@ -536,28 +581,31 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+         profiler.push("naturalSpawnCount");
+         int chunkCount = this.distanceManager.getNaturalSpawnChunkCount();
+         // Paper start - Optional per player mob spawns
+-        NaturalSpawner.SpawnState spawnCookie;
++        // Purpur start - async mob spawning (DivineMC)
+         if ((this.spawnFriendlies || this.spawnEnemies) && this.level.paperConfig().entities.spawning.perPlayerMobSpawns) { // don't count mobs when animals and monsters are disabled
+-            // re-set mob counts
+-            for (ServerPlayer player : this.level.players()) {
+-                // Paper start - per player mob spawning backoff
+-                for (int j = 0; j < ServerPlayer.MOBCATEGORY_TOTAL_ENUMS; j++) {
+-                    player.mobCounts[j] = 0;
+-
+-                    int newBackoff = player.mobBackoffCounts[j] - 1; // TODO make configurable bleed // TODO use nonlinear algorithm?
+-                    if (newBackoff < 0) {
+-                        newBackoff = 0;
++            if (!org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableAsyncSpawning) {
++                // re-set mob counts
++                for (ServerPlayer player : this.level.players()) {
++                    // Paper start - per player mob spawning backoff
++                    for (int j = 0; j < ServerPlayer.MOBCATEGORY_TOTAL_ENUMS; j++) {
++                        player.mobCounts[j] = 0;
++
++                        int newBackoff = player.mobBackoffCounts[j] - 1; // TODO make configurable bleed // TODO use nonlinear algorithm?
++                        if (newBackoff < 0) {
++                            newBackoff = 0;
++                        }
++                        player.mobBackoffCounts[j] = newBackoff;
+                     }
+-                    player.mobBackoffCounts[j] = newBackoff;
++                    // Paper end - per player mob spawning backoff
+                 }
+-                // Paper end - per player mob spawning backoff
++                this.lastSpawnState = NaturalSpawner.createState(chunkCount, this.level.getAllEntities(), this::getFullChunk, null, true);
+             }
+-            spawnCookie = NaturalSpawner.createState(chunkCount, this.level.getAllEntities(), this::getFullChunk, null, true);
+         } else {
+-            spawnCookie = NaturalSpawner.createState(chunkCount, this.level.getAllEntities(), this::getFullChunk, !this.level.paperConfig().entities.spawning.perPlayerMobSpawns ? new LocalMobCapCalculator(this.chunkMap) : null, false);
++            this.lastSpawnState = NaturalSpawner.createState(chunkCount, this.level.getAllEntities(), this::getFullChunk, !this.level.paperConfig().entities.spawning.perPlayerMobSpawns ? new LocalMobCapCalculator(this.chunkMap) : null, false);
++            spawnCountsReady.set(true);
+         }
++        // Purpur end - async mob spawning (DivineMC)
+         // Paper end - Optional per player mob spawns
+-        this.lastSpawnState = spawnCookie;
+         boolean doMobSpawning = this.level.getGameRules().get(GameRules.SPAWN_MOBS) && !this.level.players().isEmpty(); // CraftBukkit
+         int tickSpeed = this.level.getGameRules().get(GameRules.RANDOM_TICK_SPEED);
+         List<MobCategory> spawningCategories;
+@@ -571,7 +619,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+             }
+             // Paper end - PlayerNaturallySpawnCreaturesEvent
+             boolean spawnPersistent = this.level.ticksPerSpawnCategory.getLong(org.bukkit.entity.SpawnCategory.ANIMAL) != 0L && this.level.getGameTime() % this.level.ticksPerSpawnCategory.getLong(org.bukkit.entity.SpawnCategory.ANIMAL) == 0L; // CraftBukkit
+-            spawningCategories = NaturalSpawner.getFilteredSpawningCategories(spawnCookie, this.spawnFriendlies, this.spawnEnemies, spawnPersistent, this.level); // CraftBukkit
++            spawningCategories = NaturalSpawner.getFilteredSpawningCategories(this.lastSpawnState, this.spawnFriendlies, this.spawnEnemies, spawnPersistent, this.level); // CraftBukkit // Purpur - async mob spawning (DivineMC)
+         } else {
+             spawningCategories = List.of();
+         }
+@@ -589,7 +637,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+             profiler.popPush("tickSpawningChunks");
+ 
+             for (LevelChunk chunk : spawningChunks) {
+-                this.tickSpawningChunk(chunk, timeDiff, spawningCategories, spawnCookie);
++                this.tickSpawningChunk(chunk, timeDiff, spawningCategories, this.lastSpawnState); // Purpur - async mob spawning (DivineMC)
+             }
+         } finally {
+             spawningChunks.clear();
+@@ -614,11 +662,11 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+             this.level.tickThunder(chunk);
+         }
+ 
+-        if (!spawningCategories.isEmpty()) {
+-            if (this.level.getWorldBorder().isWithinBounds(chunkPos)) { // Paper - rewrite chunk system
+-                NaturalSpawner.spawnForChunk(this.level, chunk, spawnCookie, spawningCategories);
+-            }
++        // Purpur start - async mob spawning (DivineMC)
++        if (!spawningCategories.isEmpty() && this.level.getWorldBorder().isWithinBounds(chunkPos) && (!org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableAsyncSpawning || spawnCountsReady.get())) { // Paper - rewrite chunk system
++            NaturalSpawner.spawnForChunk(this.level, chunk, spawnCookie, spawningCategories);
+         }
++        // Purpur end - async mob spawning (DivineMC)
+     }
+ 
+     private void getFullChunk(final long chunkKey, final Consumer<LevelChunk> output) {
+diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
+index ba1dba4903c8d3c023e9555af67e5d62ac3b3f55..e832db7e1493a47a05549d40172bd13e1626f6a9 100644
+--- a/net/minecraft/server/level/ServerLevel.java
++++ b/net/minecraft/server/level/ServerLevel.java
+@@ -195,7 +195,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
+     public final ServerChunkCache chunkSource;
+     private final MinecraftServer server;
+     public final io.papermc.paper.world.saveddata.PaperLevelOverrides serverLevelData; // Paper - type
+-    private final EntityTickList entityTickList = new EntityTickList();
++    public final EntityTickList entityTickList = new EntityTickList(); // Purpur - async mob spawning (DivineMC) - needs public access for async spawn thread
+     private final ServerWaypointManager waypointManager;
+     private EnvironmentAttributeSystem environmentAttributes;
+     // Paper - rewrite chunk system
+diff --git a/net/minecraft/world/level/entity/EntityTickList.java b/net/minecraft/world/level/entity/EntityTickList.java
+index a30409eddfaded878a3ac54bb526fd2e4b887c57..3a583e598cadc9fafc3e72b06904f37604a7420c 100644
+--- a/net/minecraft/world/level/entity/EntityTickList.java
++++ b/net/minecraft/world/level/entity/EntityTickList.java
+@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
+ import org.jspecify.annotations.Nullable;
+ 
+ public class EntityTickList {
+-    private final ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet<net.minecraft.world.entity.Entity> entities = new ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet<>(); // Paper - rewrite chunk system
++    public final ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet<net.minecraft.world.entity.Entity> entities = new ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet<>(); // Paper - rewrite chunk system // Purpur - async mob spawning (DivineMC) - needs public access for async spawn thread
+ 
+     private void ensureActiveIsNotIterated() {
+         // Paper - rewrite chunk system

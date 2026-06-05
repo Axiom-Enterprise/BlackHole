@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-@@ -53,6 +_,7 @@
+@@ -53,6 +_,7 @@ public final class JavaPluginLoader implements PluginLoader {
      private final Pattern[] fileFilters = new Pattern[]{Pattern.compile("\\.jar$")};
      private final List<PluginClassLoader> loaders = new CopyOnWriteArrayList<PluginClassLoader>();
      private final LibraryLoader libraryLoader;
@@ -8,3 +8,27 @@
  
      /**
       * This class was not meant to be constructed explicitly
+@@ -329,7 +_,13 @@ public final class JavaPluginLoader implements PluginLoader {
+             try {
+                 jPlugin.setEnabled(true);
+             } catch (Throwable ex) {
++                gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
+                 server.getLogger().log(Level.SEVERE, "Error occurred while enabling " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
++                gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
++                // Paper start - Disable plugins that fail to load
++                this.server.getPluginManager().disablePlugin(jPlugin);
++                return;
++                // Paper end
+             }
+ 
+             // Perhaps abort here, rather than continue going, but as it stands,
+@@ -354,7 +_,9 @@ public final class JavaPluginLoader implements PluginLoader {
+             try {
+                 jPlugin.setEnabled(false);
+             } catch (Throwable ex) {
++                gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
+                 server.getLogger().log(Level.SEVERE, "Error occurred while disabling " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
++                gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
+             }
+ 
+             if (cloader instanceof PluginClassLoader) {

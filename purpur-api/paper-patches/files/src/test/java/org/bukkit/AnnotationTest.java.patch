@@ -1,0 +1,13 @@
+--- a/src/test/java/org/bukkit/AnnotationTest.java
++++ b/src/test/java/org/bukkit/AnnotationTest.java
+@@ -47,6 +_,10 @@ public class AnnotationTest {
+         "org/bukkit/plugin/java/PluginClassLoader",
+         // Generic functional interface
+         "org/bukkit/util/Consumer",
++        // Purpur start
++        "gg/pufferfish/pufferfish/sentry/SentryContext",
++        "gg/pufferfish/pufferfish/sentry/SentryContext$State",
++        // Purpur end
+         // Paper start
+         "io/papermc/paper/util/TransformingRandomAccessList",
+         "io/papermc/paper/util/TransformingRandomAccessList$TransformedListIterator",

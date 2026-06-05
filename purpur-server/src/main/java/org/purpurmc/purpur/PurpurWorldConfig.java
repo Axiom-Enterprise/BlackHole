@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Level;
+import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import net.kyori.adventure.key.Key;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -307,7 +308,7 @@ public class PurpurWorldConfig {
         itemImmuneToCactus.clear();
         getList("gameplay-mechanics.item.immune.cactus", new ArrayList<>()).forEach(key -> {
             if (key.toString().equals("*")) {
-                BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToCactus.add(item));
+                for (Item item : BuiltInRegistries.ITEM) { if (item != Items.AIR) itemImmuneToCactus.add(item); } // Leaf - drop stream
                 return;
             }
             Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
@@ -316,7 +317,7 @@ public class PurpurWorldConfig {
         itemImmuneToExplosion.clear();
         getList("gameplay-mechanics.item.immune.explosion", new ArrayList<>()).forEach(key -> {
             if (key.toString().equals("*")) {
-                BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToExplosion.add(item));
+                for (Item item : BuiltInRegistries.ITEM) { if (item != Items.AIR) itemImmuneToExplosion.add(item); } // Leaf - drop stream
                 return;
             }
             Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
@@ -325,7 +326,7 @@ public class PurpurWorldConfig {
         itemImmuneToFire.clear();
         getList("gameplay-mechanics.item.immune.fire", new ArrayList<>()).forEach(key -> {
             if (key.toString().equals("*")) {
-                BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToFire.add(item));
+                for (Item item : BuiltInRegistries.ITEM) { if (item != Items.AIR) itemImmuneToFire.add(item); } // Leaf - drop stream
                 return;
             }
             Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
@@ -334,7 +335,7 @@ public class PurpurWorldConfig {
         itemImmuneToLightning.clear();
         getList("gameplay-mechanics.item.immune.lightning", new ArrayList<>()).forEach(key -> {
             if (key.toString().equals("*")) {
-                BuiltInRegistries.ITEM.stream().filter(item -> item != Items.AIR).forEach((item) -> itemImmuneToLightning.add(item));
+                for (Item item : BuiltInRegistries.ITEM) { if (item != Items.AIR) itemImmuneToLightning.add(item); } // Leaf - drop stream
                 return;
             }
             Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key.toString()));
@@ -2974,7 +2975,7 @@ public class PurpurWorldConfig {
     public double skeletonHeadVisibilityPercent = 0.5D;
     public int skeletonFeedWitherRoses = 0;
     public String skeletonBowAccuracy = "14 - difficulty * 4";
-    public Map<Integer, Float> skeletonBowAccuracyMap = new HashMap<>();
+    public Int2FloatOpenHashMap skeletonBowAccuracyMap = new Int2FloatOpenHashMap(); // Purpur - skeleton bow accuracy // Leaf - fastutil: primitive int->float, no boxing on per-shot getOrDefault
     public Boolean skeletonCanPickUpLoot = null;
     private void skeletonSettings() {
         skeletonRidable = getBoolean("mobs.skeleton.ridable", skeletonRidable);

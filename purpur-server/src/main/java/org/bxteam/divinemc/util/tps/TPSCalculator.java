@@ -44,10 +44,14 @@ public class TPSCalculator {
     }
 
     public double getAverageTPS() {
-        return tpsHistory.stream()
-            .mapToDouble(Double::doubleValue)
-            .average()
-            .orElse(MAX_TPS);
+        // Leaf - avoid stream pipeline allocation on each query (monitoring path)
+        double sum = 0.0;
+        int count = 0;
+        for (final double tps : tpsHistory) {
+            sum += tps;
+            count++;
+        }
+        return count == 0 ? MAX_TPS : sum / count;
     }
 
     public double getTPS() {

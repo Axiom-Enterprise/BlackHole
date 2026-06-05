@@ -56,9 +56,11 @@ public class MultithreadedTracker {
 
         final ReferenceList<Entity> trackerEntities = entityLookup.trackerEntities;
         final Entity[] trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
+        final int size = trackerEntities.size(); // Leaf - iterate live [0,size) only; ReferenceList nulls the tail on remove, so this is equivalent to the full-array null-skip but avoids scanning the null padding each tick
 
         TRACKER_EXECUTOR.execute(() -> {
-            for (final Entity entity : trackerEntitiesRaw) {
+            for (int i = 0; i < size; i++) {
+                final Entity entity = trackerEntitiesRaw[i];
                 if (entity == null) continue;
 
                 final ChunkMap.TrackedEntity tracker = ((EntityTrackerEntity) entity).moonrise$getTrackedEntity();
@@ -80,11 +82,13 @@ public class MultithreadedTracker {
 
         final ReferenceList<Entity> trackerEntities = entityLookup.trackerEntities;
         final Entity[] trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
-        final Runnable[] sendChangesTasks = new Runnable[trackerEntitiesRaw.length];
-        final Runnable[] tickTask = new Runnable[trackerEntitiesRaw.length];
+        final int size = trackerEntities.size(); // Leaf - bound by live size (tail is null), skip padding scan
+        final Runnable[] tickTask = new Runnable[size];
+        final ChunkMap.TrackedEntity[] sendChangesTrackers = new ChunkMap.TrackedEntity[size]; // Leaf - store tracker directly instead of allocating a per-entity sendChanges lambda each tick
         int index = 0;
 
-        for (final Entity entity : trackerEntitiesRaw) {
+        for (int i = 0; i < size; i++) {
+            final Entity entity = trackerEntitiesRaw[i];
             if (entity == null) continue;
 
             final ChunkMap.TrackedEntity tracker = ((EntityTrackerEntity) entity).moonrise$getTrackedEntity();
@@ -93,7 +97,7 @@ public class MultithreadedTracker {
 
             synchronized (tracker) {
                 tickTask[index] = tracker.tickCompact(nearbyPlayers.getChunk(entity.chunkPosition()));
-                sendChangesTasks[index] = () -> tracker.serverEntity.sendChanges();
+                sendChangesTrackers[index] = tracker;
             }
             index++;
         }
@@ -104,10 +108,10 @@ public class MultithreadedTracker {
 
                 tick.run();
             }
-            for (final Runnable sendChanges : sendChangesTasks) {
-                if (sendChanges == null) continue;
+            for (final ChunkMap.TrackedEntity tracker : sendChangesTrackers) {
+                if (tracker == null) continue;
 
-                sendChanges.run();
+                tracker.serverEntity.sendChanges();
             }
         });
     }

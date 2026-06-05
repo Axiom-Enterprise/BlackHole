@@ -2,12 +2,15 @@ package org.bxteam.divinemc.antixray;
 
 import dev.imanity.antixray.sdk.AntiXrayAdapter;
 import dev.imanity.antixray.sdk.AntiXraySDK;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -241,33 +244,76 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
             }
             final ServerGamePacketListenerImpl connection = ((CraftPlayer) bukkitPlayer).getHandle().connection;
             final LongOpenHashSet dedup = this.revealed.computeIfAbsent(bukkitPlayer.getUniqueId(), k -> new LongOpenHashSet());
-            this.workers.execute(() -> revealVisible(region, eyeX, eyeY, eyeZ, connection, dedup));
+            final boolean reHide = DivineConfig.PerformanceCategory.raytraceReHide;
+            final BlockState fakeState = reHide ? fakeStateFor(bukkitPlayer.getWorld().getEnvironment()) : null;
+            this.workers.execute(() -> revealVisible(region, eyeX, eyeY, eyeZ, connection, dedup, fakeState));
         }
     }
 
+    private static BlockState fakeStateFor(final World.Environment environment) {
+        return switch (environment) {
+            case NETHER -> Blocks.NETHERRACK.defaultBlockState();
+            case THE_END -> Blocks.END_STONE.defaultBlockState();
+            default -> Blocks.STONE.defaultBlockState();
+        };
+    }
+
     private void revealVisible(final RevealRegion region, final double eyeX, final double eyeY, final double eyeZ,
-                               final ServerGamePacketListenerImpl connection, final LongOpenHashSet dedup) {
+                               final ServerGamePacketListenerImpl connection, final LongOpenHashSet dedup,
+                               final BlockState fakeState) {
         final long[] ores = region.orePositions();
         final BlockState[] states = region.oreStates();
+
+        // Determine which ores are currently visible (line of sight, in radius).
+        final LongOpenHashSet nowVisible = new LongOpenHashSet(ores.length);
         for (int k = 0; k < ores.length; k++) {
             final long packed = ores[k];
-            final int px = BlockPos.getX(packed);
-            final int py = BlockPos.getY(packed);
-            final int pz = BlockPos.getZ(packed);
-            if (!Raytracer.isVisible(region, eyeX, eyeY, eyeZ, px, py, pz)) {
+            if (Raytracer.isVisible(region, eyeX, eyeY, eyeZ,
+                BlockPos.getX(packed), BlockPos.getY(packed), BlockPos.getZ(packed))) {
+                nowVisible.add(packed);
+                this.visibleHits++; // best-effort diagnostic
+            } else {
                 this.occludedHits++; // best-effort diagnostic
-                continue;
             }
-            synchronized (dedup) {
-                if (!dedup.add(packed)) {
-                    continue; // already revealed to this player
-                }
-                if (dedup.size() > REVEAL_DEDUP_CAP) {
-                    dedup.clear();
+        }
+
+        final it.unimi.dsi.fastutil.ints.IntArrayList revealIdx = new it.unimi.dsi.fastutil.ints.IntArrayList();
+        final LongArrayList toHide = new LongArrayList();
+        synchronized (dedup) {
+            // Newly visible -> reveal (keep the index so the real state is a direct array lookup).
+            for (int k = 0; k < ores.length; k++) {
+                final long packed = ores[k];
+                if (nowVisible.contains(packed) && dedup.add(packed)) {
+                    revealIdx.add(k);
                 }
             }
-            connection.send(new ClientboundBlockUpdatePacket(BlockPos.of(packed), states[k])); // reveal
-            this.visibleHits++; // best-effort diagnostic
+            // Previously revealed but no longer visible -> re-hide (opt-in; needs base obfuscation).
+            if (fakeState != null) {
+                final LongIterator it = dedup.iterator();
+                while (it.hasNext()) {
+                    final long p = it.nextLong();
+                    if (!nowVisible.contains(p)) {
+                        toHide.add(p);
+                    }
+                }
+                for (int i = 0; i < toHide.size(); i++) {
+                    dedup.remove(toHide.getLong(i));
+                }
+            }
+            if (dedup.size() > REVEAL_DEDUP_CAP) {
+                dedup.clear();
+            }
+        }
+
+        // Network sends outside the lock.
+        for (int i = 0; i < revealIdx.size(); i++) {
+            final int k = revealIdx.getInt(i);
+            connection.send(new ClientboundBlockUpdatePacket(BlockPos.of(ores[k]), states[k])); // reveal real
+        }
+        if (fakeState != null) {
+            for (int i = 0; i < toHide.size(); i++) {
+                connection.send(new ClientboundBlockUpdatePacket(BlockPos.of(toHide.getLong(i)), fakeState)); // re-hide
+            }
         }
     }
 

@@ -505,6 +505,7 @@ public class DivineConfig {
         public static int raytraceEngineRadius = 64;
         public static int raytraceRevealIntervalTicks = 20;
         public static int raytraceRevealRadius = 16;
+        public static boolean raytraceReHide = false;
         public static java.util.Set<org.bukkit.Material> raytraceHiddenBlocks = java.util.EnumSet.noneOf(org.bukkit.Material.class);
 
         private static final List<String> DEFAULT_HIDDEN_BLOCKS = java.util.List.of(
@@ -547,6 +548,10 @@ public class DivineConfig {
                 "How often (server ticks) to run the movement reveal pass per online player."));
             raytraceRevealRadius = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.reveal-radius"), raytraceRevealRadius,
                 "Block radius around each viewer scanned for ores to reveal on a clear line of sight.");
+            raytraceReHide = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.re-hide-out-of-sight"), raytraceReHide,
+                "Re-obfuscate ores that leave a player's line of sight (send a fake block).",
+                "REQUIRES the chunk to be obfuscated already (Paper engine-mode anti-xray); otherwise",
+                "this hides real ores. Leave off unless engine-mode obfuscation is active.");
 
             final List<String> names = getStringList(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.hidden-blocks"), DEFAULT_HIDDEN_BLOCKS,
                 "Blocks the engine treats as hideable; only changes to these trigger a raytrace reveal.");

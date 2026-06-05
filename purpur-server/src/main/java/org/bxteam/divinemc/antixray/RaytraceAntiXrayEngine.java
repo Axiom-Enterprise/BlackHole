@@ -2,19 +2,20 @@ package org.bxteam.divinemc.antixray;
 
 import dev.imanity.antixray.sdk.AntiXrayAdapter;
 import dev.imanity.antixray.sdk.AntiXraySDK;
+import net.minecraft.server.level.ServerLevel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bxteam.divinemc.config.DivineConfig;
 
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Built-in multithreaded raytrace anti-xray engine. Registers itself as the
@@ -34,7 +35,12 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
     private static volatile RaytraceAntiXrayEngine instance;
 
     private final ExecutorService workers;
-    private final AtomicLong submitted = new AtomicLong();
+    // Diagnostics only. `submitted` has a single writer (SDK callbacks fire on the tick thread).
+    // The hit counters are written from workers and are intentionally best-effort (no atomics):
+    // an occasional lost increment is fine for stats and avoids CAS traffic on the hot path.
+    private volatile long submitted;
+    private volatile long visibleHits;
+    private volatile long occludedHits;
 
     private RaytraceAntiXrayEngine(final int threads) {
         final ThreadPoolExecutor pool = new ThreadPoolExecutor(
@@ -81,30 +87,61 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
 
     @Override
     public void callBlockChange(final World world, final int x, final int y, final int z, final Material material) {
-        this.submitted.incrementAndGet();
+        this.submitted++; // tick thread only
         final String worldName = world.getName();
         this.workers.execute(() -> onBlockChange(worldName, x, y, z));
     }
 
     @Override
     public void callPlayerLeftClickBlock(final World world, final Player player, final int x, final int y, final int z) {
-        this.submitted.incrementAndGet();
-        final String worldName = world.getName();
-        final UUID viewer = player.getUniqueId();
-        this.workers.execute(() -> onPlayerInteract(worldName, viewer, x, y, z));
+        this.submitted++; // tick thread only
+        if (!(world instanceof final CraftWorld craftWorld)) {
+            return;
+        }
+        final ServerLevel level = craftWorld.getHandle();
+
+        // Capture viewer eye + a bounded occlusion snapshot of the eye->target box on the TICK THREAD;
+        // the target is the clicked block (within reach), so the box is small. The raytrace itself then
+        // runs off-thread against the immutable snapshot - no live Level access on the workers.
+        final Location eye = player.getEyeLocation();
+        final double eyeX = eye.getX();
+        final double eyeY = eye.getY();
+        final double eyeZ = eye.getZ();
+
+        final int ex = (int) Math.floor(eyeX);
+        final int ey = (int) Math.floor(eyeY);
+        final int ez = (int) Math.floor(eyeZ);
+        final OcclusionSnapshot snapshot = OcclusionSnapshot.capture(level,
+            Math.min(ex, x) - 1, Math.min(ey, y) - 1, Math.min(ez, z) - 1,
+            Math.max(ex, x) + 1, Math.max(ey, y) + 1, Math.max(ez, z) + 1);
+        if (snapshot == null) {
+            return; // box too large / unloaded
+        }
+
+        this.workers.execute(() -> {
+            if (Raytracer.isVisible(snapshot, eyeX, eyeY, eyeZ, x, y, z)) {
+                this.visibleHits++; // best-effort diagnostic
+            } else {
+                this.occludedHits++; // best-effort diagnostic
+            }
+        });
     }
 
-    // --- extension points (next increment: snapshot capture -> Raytracer -> packet rewrite) ---
+    // --- extension point (next increment: section-cache snapshot -> reveal -> packet rewrite) ---
 
     private void onBlockChange(final String world, final int x, final int y, final int z) {
-        // TODO(next): mark the section dirty and schedule a reveal pass for viewers in range.
-    }
-
-    private void onPlayerInteract(final String world, final UUID viewer, final int x, final int y, final int z) {
-        // TODO(next): raytrace from the viewer eye against a captured OcclusionView and reveal hits.
+        // TODO(next): invalidate the section's cached occlusion and schedule a reveal pass for viewers.
     }
 
     public long submittedSignals() {
-        return this.submitted.get();
+        return this.submitted;
+    }
+
+    public long visibleHits() {
+        return this.visibleHits;
+    }
+
+    public long occludedHits() {
+        return this.occludedHits;
     }
 }

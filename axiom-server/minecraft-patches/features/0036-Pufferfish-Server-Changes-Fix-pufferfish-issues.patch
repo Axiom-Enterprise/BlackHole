@@ -149,7 +149,7 @@ index 68bcb8dff472c06901e0286158a9f57fac277d1e..1c88df3f5ebc43413fccbac70c509801
          final io.papermc.paper.configuration.type.number.IntOr.Disabled pageMax = io.papermc.paper.configuration.GlobalConfiguration.get().itemValidation.bookSize.pageMax;
          if (!this.cserver.isPrimaryThread() && pageMax.enabled()) {
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index b2ce8e9668e0448e25497791929d07c6d634349f..9573c1533a4cccba8fce2fdb4d72d05c9f024d96 100644
+index 297a55d659ad356b0eb24c1de968c99674ebb3d0..fd99b1c9d5819cacb1b9230c203236b11ce43b8c 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -382,6 +382,9 @@ public abstract class Entity
@@ -163,7 +163,7 @@ index b2ce8e9668e0448e25497791929d07c6d634349f..9573c1533a4cccba8fce2fdb4d72d05c
      public final io.papermc.paper.entity.activation.ActivationType activationType = io.papermc.paper.entity.activation.ActivationType.activationTypeFor(this); // Paper - EAR 2/tracking ranges
      public @Nullable Boolean immuneToFire = null; // Purpur - Fire immune API
 diff --git a/net/minecraft/world/entity/EntityType.java b/net/minecraft/world/entity/EntityType.java
-index 26640aee704e4e01dbf34df8b4454d92cd18d426..b4de5e57e44680dd7b05f8f7fdbf0ea2ae72bc39 100644
+index c2d4f6a164a18c8809d143793921567907363a17..c992c35e1b22d49bb8ec55b96cd61af16f6e5ded 100644
 --- a/net/minecraft/world/entity/EntityType.java
 +++ b/net/minecraft/world/entity/EntityType.java
 @@ -1219,6 +1219,7 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T>,
@@ -173,9 +173,9 @@ index 26640aee704e4e01dbf34df8b4454d92cd18d426..b4de5e57e44680dd7b05f8f7fdbf0ea2
 +    public boolean dabEnabled = false; // Pufferfish
      private @Nullable Component description;
      private final Optional<ResourceKey<LootTable>> lootTable;
-     private final EntityDimensions dimensions;
+     public EntityDimensions dimensions;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index b03cac4dee66585986be3a09b460cc8bbf49c46a..14d7a32cd5ef9f7c9c0475fbcce033adb3c4635f 100644
+index 46df59a6d792b7e62e6757c35de6ea82b68f6382..38ee2444cff124a656c0884d27f4e9a2492d45f2 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -439,7 +439,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin

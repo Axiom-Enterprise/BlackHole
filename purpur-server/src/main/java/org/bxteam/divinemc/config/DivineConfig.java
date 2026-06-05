@@ -503,6 +503,13 @@ public class DivineConfig {
         public static boolean raytraceEngineEnabled = false; // DivineMC - built-in raytrace anti-xray engine - default off
         public static int raytraceEngineThreads = 2;
         public static int raytraceEngineRadius = 64;
+        public static java.util.Set<org.bukkit.Material> raytraceHiddenBlocks = java.util.EnumSet.noneOf(org.bukkit.Material.class);
+
+        private static final List<String> DEFAULT_HIDDEN_BLOCKS = java.util.List.of(
+            "COAL_ORE", "DEEPSLATE_COAL_ORE", "IRON_ORE", "DEEPSLATE_IRON_ORE", "COPPER_ORE", "DEEPSLATE_COPPER_ORE",
+            "GOLD_ORE", "DEEPSLATE_GOLD_ORE", "REDSTONE_ORE", "DEEPSLATE_REDSTONE_ORE", "LAPIS_ORE", "DEEPSLATE_LAPIS_ORE",
+            "DIAMOND_ORE", "DEEPSLATE_DIAMOND_ORE", "EMERALD_ORE", "DEEPSLATE_EMERALD_ORE",
+            "NETHER_GOLD_ORE", "NETHER_QUARTZ_ORE", "ANCIENT_DEBRIS");
 
         public static void load() {
             chunkSettings();
@@ -534,6 +541,19 @@ public class DivineConfig {
                 "Worker threads for the raytrace anti-xray engine.");
             raytraceEngineRadius = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.update-radius"), raytraceEngineRadius,
                 "Max block distance from a viewer eye at which the engine evaluates visibility.");
+
+            final List<String> names = getStringList(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.hidden-blocks"), DEFAULT_HIDDEN_BLOCKS,
+                "Blocks the engine treats as hideable; only changes to these trigger a raytrace reveal.");
+            final java.util.Set<org.bukkit.Material> hidden = java.util.EnumSet.noneOf(org.bukkit.Material.class);
+            for (final String name : names) {
+                final org.bukkit.Material material = org.bukkit.Material.matchMaterial(name);
+                if (material != null) {
+                    hidden.add(material);
+                } else {
+                    LOGGER.warn("Unknown material '{}' in raytrace-antixray.engine.hidden-blocks", name);
+                }
+            }
+            raytraceHiddenBlocks = hidden;
         }
 
         private static void chunkSettings() {

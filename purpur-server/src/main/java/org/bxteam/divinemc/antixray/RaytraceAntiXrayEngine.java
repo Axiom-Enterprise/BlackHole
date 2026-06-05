@@ -2,13 +2,18 @@ package org.bxteam.divinemc.antixray;
 
 import dev.imanity.antixray.sdk.AntiXrayAdapter;
 import dev.imanity.antixray.sdk.AntiXraySDK;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.level.block.state.BlockState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bxteam.divinemc.config.DivineConfig;
 
@@ -88,8 +93,56 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
     @Override
     public void callBlockChange(final World world, final int x, final int y, final int z, final Material material) {
         this.submitted++; // tick thread only
-        final String worldName = world.getName();
-        this.workers.execute(() -> onBlockChange(worldName, x, y, z));
+        // Only hideable blocks (ores) are worth a reveal pass.
+        if (!DivineConfig.PerformanceCategory.raytraceHiddenBlocks.contains(material)) {
+            return;
+        }
+        if (!(world instanceof final CraftWorld craftWorld)) {
+            return;
+        }
+        final ServerLevel level = craftWorld.getHandle();
+        final BlockPos target = new BlockPos(x, y, z);
+        final BlockState realState = level.getBlockStateIfLoaded(target); // tick thread
+        if (realState == null) {
+            return;
+        }
+
+        final int radius = DivineConfig.PerformanceCategory.raytraceEngineRadius;
+        final long radiusSq = (long) radius * radius;
+        final double cx = x + 0.5, cy = y + 0.5, cz = z + 0.5;
+
+        // For each viewer in range, capture eye + a bounded occlusion snapshot on the TICK THREAD,
+        // then raytrace off-thread. On a clear line of sight, send the real block (reveal-on-sight).
+        // This only ever sends MORE accurate data on top of an obfuscated chunk, so it cannot break
+        // gameplay whether or not Paper's engine-mode anti-xray is active.
+        for (final Player bukkitPlayer : world.getPlayers()) {
+            final Location eye = bukkitPlayer.getEyeLocation();
+            final double eyeX = eye.getX(), eyeY = eye.getY(), eyeZ = eye.getZ();
+            final double dx = eyeX - cx, dy = eyeY - cy, dz = eyeZ - cz;
+            if (dx * dx + dy * dy + dz * dz > radiusSq) {
+                continue;
+            }
+
+            final int ex = (int) Math.floor(eyeX);
+            final int ey = (int) Math.floor(eyeY);
+            final int ez = (int) Math.floor(eyeZ);
+            final OcclusionSnapshot snapshot = OcclusionSnapshot.capture(level,
+                Math.min(ex, x) - 1, Math.min(ey, y) - 1, Math.min(ez, z) - 1,
+                Math.max(ex, x) + 1, Math.max(ey, y) + 1, Math.max(ez, z) + 1);
+            if (snapshot == null) {
+                continue; // out of capture bounds (too far) - skip
+            }
+
+            final ServerGamePacketListenerImpl connection = ((CraftPlayer) bukkitPlayer).getHandle().connection;
+            this.workers.execute(() -> {
+                if (Raytracer.isVisible(snapshot, eyeX, eyeY, eyeZ, x, y, z)) {
+                    connection.send(new ClientboundBlockUpdatePacket(target, realState)); // reveal
+                    this.visibleHits++; // best-effort diagnostic
+                } else {
+                    this.occludedHits++; // best-effort diagnostic
+                }
+            });
+        }
     }
 
     @Override
@@ -125,12 +178,6 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
                 this.occludedHits++; // best-effort diagnostic
             }
         });
-    }
-
-    // --- extension point (next increment: section-cache snapshot -> reveal -> packet rewrite) ---
-
-    private void onBlockChange(final String world, final int x, final int y, final int z) {
-        // TODO(next): invalidate the section's cached occlusion and schedule a reveal pass for viewers.
     }
 
     public long submittedSignals() {

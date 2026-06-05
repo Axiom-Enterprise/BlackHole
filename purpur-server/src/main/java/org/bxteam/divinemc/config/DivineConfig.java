@@ -499,11 +499,17 @@ public class DivineConfig {
         public static boolean fastRandom = false; // DivineMC - fast xoroshiro RandomSource for runtime hot paths - default off
 
         public static boolean antiXraySdk = false; // DivineMC - Raytrace AntiXray SDK hooks - default off
+        @Experimental("Raytrace AntiXray Engine")
+        public static boolean raytraceEngineEnabled = false; // DivineMC - built-in raytrace anti-xray engine - default off
+        public static int raytraceEngineThreads = 2;
+        public static int raytraceEngineRadius = 64;
 
         public static void load() {
             chunkSettings();
             fastRandomSettings();
             antiXraySettings();
+            antiXrayEngineSettings();
+            org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.bootstrap();
         }
 
         private static void fastRandomSettings() {
@@ -517,6 +523,17 @@ public class DivineConfig {
                 "Fire Raytrace AntiXray SDK callbacks from the server (block changes + player",
                 "left-click). Needed by the Raytrace AntiXray plugin or the built-in engine for",
                 "efficient, fork-level anti-xray. No effect unless an AntiXrayAdapter is registered.");
+        }
+
+        private static void antiXrayEngineSettings() {
+            raytraceEngineEnabled = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.enabled"), raytraceEngineEnabled,
+                "Built-in multithreaded raytrace anti-xray engine (registers as the SDK adapter).",
+                "EXPERIMENTAL foundation: computes per-player block visibility off-thread; packet",
+                "obfuscation is not yet wired, so this does not hide ores on its own yet.");
+            raytraceEngineThreads = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.threads"), raytraceEngineThreads,
+                "Worker threads for the raytrace anti-xray engine.");
+            raytraceEngineRadius = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.update-radius"), raytraceEngineRadius,
+                "Max block distance from a viewer eye at which the engine evaluates visibility.");
         }
 
         private static void chunkSettings() {

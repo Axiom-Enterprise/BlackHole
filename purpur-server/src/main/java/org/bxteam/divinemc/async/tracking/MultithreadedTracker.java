@@ -38,6 +38,14 @@ public class MultithreadedTracker {
         getRejectedPolicy()
     ) : null;
 
+    static {
+        // Leaf - core==max (see getCorePoolSize); let idle shard threads time out per keep-alive
+        // instead of being pinned for the lifetime of the server.
+        if (TRACKER_EXECUTOR != null) {
+            TRACKER_EXECUTOR.allowCoreThreadTimeOut(true);
+        }
+    }
+
     public static void tick(ServerLevel level) {
         try {
             if (!DivineConfig.AsyncCategory.multithreadedCompatModeEnabled) {
@@ -58,22 +66,34 @@ public class MultithreadedTracker {
         final Entity[] trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
         final int size = trackerEntities.size(); // Leaf - iterate live [0,size) only; ReferenceList nulls the tail on remove, so this is equivalent to the full-array null-skip but avoids scanning the null padding each tick
 
-        TRACKER_EXECUTOR.execute(() -> {
-            for (int i = 0; i < size; i++) {
-                final Entity entity = trackerEntitiesRaw[i];
-                if (entity == null) continue;
+        // Leaf start - resolve per-entity tracker + chunk on the calling (main/region) thread.
+        // Entity#chunkPosition() is mutated by setPos on the entity tick thread; reading it inside the
+        // worker raced with that write (stale/wrong NearbyPlayers chunk -> wrong viewer set). Mirror the
+        // compat path: snapshot here, defer only the heavy moonrise$tick/sendChanges to the pool. Use
+        // parallel arrays (no per-entity lambda) to keep this allocation-light.
+        final ChunkMap.TrackedEntity[] trackers = new ChunkMap.TrackedEntity[size];
+        final NearbyPlayers.TrackedChunk[] trackedChunks = new NearbyPlayers.TrackedChunk[size];
+        int index = 0;
+        for (int i = 0; i < size; i++) {
+            final Entity entity = trackerEntitiesRaw[i];
+            if (entity == null) continue;
 
-                final ChunkMap.TrackedEntity tracker = ((EntityTrackerEntity) entity).moonrise$getTrackedEntity();
+            final ChunkMap.TrackedEntity tracker = ((EntityTrackerEntity) entity).moonrise$getTrackedEntity();
+            if (tracker == null) continue;
 
-                if (tracker == null) continue;
+            trackers[index] = tracker;
+            trackedChunks[index] = nearbyPlayers.getChunk(entity.chunkPosition());
+            index++;
+        }
 
-                synchronized (tracker) {
-                    var trackedChunk = nearbyPlayers.getChunk(entity.chunkPosition());
-                    tracker.moonrise$tick(trackedChunk);
-                    tracker.serverEntity.sendChanges();
-                }
+        submitSharded(index, j -> {
+            final ChunkMap.TrackedEntity tracker = trackers[j];
+            synchronized (tracker) {
+                tracker.moonrise$tick(trackedChunks[j]);
+                tracker.serverEntity.sendChanges();
             }
         });
+        // Leaf end
     }
 
     private static void tickAsyncWithCompatMode(ServerLevel level) {
@@ -102,18 +122,15 @@ public class MultithreadedTracker {
             index++;
         }
 
-        TRACKER_EXECUTOR.execute(() -> {
-            for (final Runnable tick : tickTask) {
-                if (tick == null) continue;
-
-                tick.run();
-            }
-            for (final ChunkMap.TrackedEntity tracker : sendChangesTrackers) {
-                if (tracker == null) continue;
-
-                tracker.serverEntity.sendChanges();
-            }
+        // Leaf start - shard across the pool instead of one whole-level task (see submitSharded).
+        // Chunks were already resolved on the calling thread above, so this only parallelizes the
+        // tick.run()/sendChanges work; per-tracker independence + the synchronized snapshot keep it safe.
+        submitSharded(index, j -> {
+            final Runnable tick = tickTask[j];
+            if (tick != null) tick.run();
+            sendChangesTrackers[j].serverEntity.sendChanges();
         });
+        // Leaf end
     }
 
     // Original ChunkMap#newTrackerTick of Paper
@@ -138,8 +155,38 @@ public class MultithreadedTracker {
         }
     }
 
+    // Leaf start - split [0,count) tracking work into up to maxPoolSize contiguous shards and submit
+    // one task per shard, so the pool actually parallelizes within a level. ThreadPoolExecutor only
+    // grows past corePoolSize once the queue is full, so a single whole-level task never used more than
+    // one thread; sharding + core==max (below) realizes the configured parallelism. Each entity's
+    // tracker is independent and individually synchronized, so this preserves tracking semantics.
+    @FunctionalInterface
+    private interface IndexTask {
+        void run(int index);
+    }
+
+    private static void submitSharded(final int count, final IndexTask task) {
+        if (count <= 0) return;
+
+        final int threads = Math.max(1, Math.min(count, getMaxPoolSize()));
+        final int shardSize = (count + threads - 1) / threads;
+        for (int t = 0; t < threads; t++) {
+            final int start = t * shardSize;
+            if (start >= count) break;
+            final int end = Math.min(start + shardSize, count);
+            TRACKER_EXECUTOR.execute(() -> {
+                for (int j = start; j < end; j++) {
+                    task.run(j);
+                }
+            });
+        }
+    }
+    // Leaf end
+
     private static int getCorePoolSize() {
-        return 1;
+        // Leaf - keep core == max so sharded tasks (submitSharded) run concurrently; with corePoolSize=1
+        // the executor only ever used a single thread because the queue never filled.
+        return Math.max(1, getMaxPoolSize());
     }
 
     private static int getMaxPoolSize() {

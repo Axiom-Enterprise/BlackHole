@@ -644,7 +644,7 @@ index b9748a392c9f76e61a1b673085b4dd74c007c70d..be24edc02918ee454bff8169e36434f6
              if (isLocatorBarEnabledFor(player)) {
                  if (!connection.isBroken()) {
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index b3f48ec80aa75fe2ce0738326b0240b84c904dab..b2ce8e9668e0448e25497791929d07c6d634349f 100644
+index 6807b1310c70cd50bf8a0c8828a1bb627bfe4fce..297a55d659ad356b0eb24c1de968c99674ebb3d0 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -3579,13 +3579,32 @@ public abstract class Entity
@@ -1210,7 +1210,7 @@ index 0e285f38d282b29f625c5578ee1871a6c2b8585d..93d613c2d86175574f33c2cea24fe3c7
  
      public static int getColorForPower(final int power) {
 diff --git a/net/minecraft/world/level/block/SaplingBlock.java b/net/minecraft/world/level/block/SaplingBlock.java
-index 61f0c8a9bb5bf9094fbd96d30fc36ed936ab9a2c..ade9b81a2d50c8d16fac7e420cc3e9bc3587a34c 100644
+index 61f0c8a9bb5bf9094fbd96d30fc36ed936ab9a2c..a089463c40614f0f8feb5948a3112f6395dd1b13 100644
 --- a/net/minecraft/world/level/block/SaplingBlock.java
 +++ b/net/minecraft/world/level/block/SaplingBlock.java
 @@ -25,6 +25,26 @@ public class SaplingBlock extends VegetationBlock implements BonemealableBlock {
@@ -1221,8 +1221,8 @@ index 61f0c8a9bb5bf9094fbd96d30fc36ed936ab9a2c..ade9b81a2d50c8d16fac7e420cc3e9bc
 +    public static final ThreadLocal<org.bukkit.TreeType> treeTypeTL = new ThreadLocal<>();
 +
 +    public static org.bukkit.TreeType getTreeTypeTL() {
-+        org.bukkit.TreeType treeTypeRTCopy;
-+        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking && (treeTypeRTCopy = treeTypeTL.get()) != null) return treeTypeRTCopy;
++        // Leaf - under parallel world ticking the ThreadLocal is the sole source of truth; skip the
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) return treeTypeTL.get(); // global SaplingBlock.class monitor (the static is no longer written, see setTreeTypeTL)
 +
 +        synchronized (SaplingBlock.class) {
 +            return treeType;
@@ -1230,7 +1230,7 @@ index 61f0c8a9bb5bf9094fbd96d30fc36ed936ab9a2c..ade9b81a2d50c8d16fac7e420cc3e9bc
 +    }
 +
 +    public static void setTreeTypeTL(org.bukkit.TreeType value) {
-+        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) treeTypeTL.set(value);
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) { treeTypeTL.set(value); return; } // Leaf - skip global lock + redundant static write under parallel ticking
 +
 +        synchronized (SaplingBlock.class) {
 +            treeType = value;

@@ -496,9 +496,17 @@ public class DivineConfig {
     // Purpur start - chunk-system algorithm (DivineMC)
     public static class PerformanceCategory {
         public static ChunkSystemAlgorithm chunkWorkerAlgorithm = ChunkSystemAlgorithm.MOONRISE;
+        public static boolean fastRandom = false; // DivineMC - fast xoroshiro RandomSource for runtime hot paths - default off
 
         public static void load() {
             chunkSettings();
+            fastRandomSettings();
+        }
+
+        private static void fastRandomSettings() {
+            fastRandom = getBoolean(ConfigCategory.PERFORMANCE.key("fast-random"), fastRandom,
+                "Use a fast xoroshiro128++ RandomSource for runtime, non-worldgen random",
+                "(mob AI, particles, item drop physics). Does not affect worldgen determinism.");
         }
 
         private static void chunkSettings() {

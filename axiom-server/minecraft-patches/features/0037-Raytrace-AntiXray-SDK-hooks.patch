@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 00:56:14 +0200
+Subject: [PATCH] Raytrace AntiXray SDK hooks
+
+
+diff --git a/net/minecraft/server/level/ServerPlayerGameMode.java b/net/minecraft/server/level/ServerPlayerGameMode.java
+index e8da84bc04587d369266da725818d0306eae7df3..9b2e00b1965926e09812eb0eb30060d12b5d6b45 100644
+--- a/net/minecraft/server/level/ServerPlayerGameMode.java
++++ b/net/minecraft/server/level/ServerPlayerGameMode.java
+@@ -209,6 +209,15 @@ public class ServerPlayerGameMode {
+                 }
+                 // CraftBukkit end
+ 
++                // DivineMC start - Raytrace AntiXray SDK player left-click hook
++                if (org.bxteam.divinemc.config.DivineConfig.PerformanceCategory.antiXraySdk) {
++                    final dev.imanity.antixray.sdk.AntiXrayAdapter antiXrayAdapter = dev.imanity.antixray.sdk.AntiXraySDK.getAdapter();
++                    if (antiXrayAdapter != null) {
++                        antiXrayAdapter.callPlayerLeftClickBlock(this.level.getWorld(), this.player.getBukkitEntity(), pos.getX(), pos.getY(), pos.getZ());
++                    }
++                }
++                // DivineMC end - Raytrace AntiXray SDK player left-click hook
++
+                 if (this.player.getAbilities().instabuild) {
+                     this.destroyAndAck(pos, sequence, "creative destroy");
+                     return;
+diff --git a/net/minecraft/world/level/Level.java b/net/minecraft/world/level/Level.java
+index 9c522a0948ebb06a5bb5478f5415d36149455fb6..221b53bf4f0a80ae9a21c4a9fed1cfe9c32e3c62 100644
+--- a/net/minecraft/world/level/Level.java
++++ b/net/minecraft/world/level/Level.java
+@@ -1150,6 +1150,16 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+             return false;
+         }
+ 
++        // DivineMC start - Raytrace AntiXray SDK block-change hook
++        if (org.bxteam.divinemc.config.DivineConfig.PerformanceCategory.antiXraySdk && !this.isClientSide()) {
++            final dev.imanity.antixray.sdk.AntiXrayAdapter antiXrayAdapter = dev.imanity.antixray.sdk.AntiXraySDK.getAdapter();
++            if (antiXrayAdapter != null) {
++                antiXrayAdapter.callBlockChange(this.getWorld(), pos.getX(), pos.getY(), pos.getZ(),
++                    org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(blockState.getBlock()));
++            }
++        }
++        // DivineMC end - Raytrace AntiXray SDK block-change hook
++
+         BlockState newState = this.getBlockState(pos);
+         /* // CraftBukkit
+         if (newState == blockState) {

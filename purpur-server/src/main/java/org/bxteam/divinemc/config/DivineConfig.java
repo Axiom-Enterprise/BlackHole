@@ -498,15 +498,25 @@ public class DivineConfig {
         public static ChunkSystemAlgorithm chunkWorkerAlgorithm = ChunkSystemAlgorithm.MOONRISE;
         public static boolean fastRandom = false; // DivineMC - fast xoroshiro RandomSource for runtime hot paths - default off
 
+        public static boolean antiXraySdk = false; // DivineMC - Raytrace AntiXray SDK hooks - default off
+
         public static void load() {
             chunkSettings();
             fastRandomSettings();
+            antiXraySettings();
         }
 
         private static void fastRandomSettings() {
             fastRandom = getBoolean(ConfigCategory.PERFORMANCE.key("fast-random"), fastRandom,
                 "Use a fast xoroshiro128++ RandomSource for runtime, non-worldgen random",
                 "(mob AI, particles, item drop physics). Does not affect worldgen determinism.");
+        }
+
+        private static void antiXraySettings() {
+            antiXraySdk = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.sdk-hooks"), antiXraySdk,
+                "Fire Raytrace AntiXray SDK callbacks from the server (block changes + player",
+                "left-click). Needed by the Raytrace AntiXray plugin or the built-in engine for",
+                "efficient, fork-level anti-xray. No effect unless an AntiXrayAdapter is registered.");
         }
 
         private static void chunkSettings() {

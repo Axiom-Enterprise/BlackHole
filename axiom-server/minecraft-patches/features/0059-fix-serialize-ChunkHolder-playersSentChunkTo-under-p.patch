@@ -1,0 +1,109 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 14:46:21 +0200
+Subject: [PATCH] fix: serialize ChunkHolder playersSentChunkTo under parallel
+ ticking
+
+Player disconnect on the main thread unloads the player's chunks via
+moonrise$removeReceivedChunk while region threads concurrently send and
+unload the same shared chunks to other players under parallel-world- or
+regionized-chunk-ticking. The per-ChunkHolder playersSentChunkTo
+ReferenceList (Reference2IntOpenHashMap) is not thread-safe, so the
+concurrent add/remove corrupts it and rehash throws
+ArrayIndexOutOfBoundsException on the next remove.
+
+- gate guarded access on enableParallelWorldTicking ||
+  enableRegionizedChunkTicking (startup-constant; vanilla keeps the
+  zero-overhead path when both are off)
+- serialize add/removeReceivedChunk and the hasChunkBeenSent(player)
+  hash probe on the list monitor
+- snapshot getPlayers under the monitor, filter outside it so the lock
+  stays a leaf (no nested chunk-loader lock, deadlock-free)
+- leave size()-only readers unguarded; an int read never rehashes
+
+diff --git a/net/minecraft/server/level/ChunkHolder.java b/net/minecraft/server/level/ChunkHolder.java
+index cd5a325d37f617431ceb568a655701601618198f..62242133d33dff4d936c2cf563204696af3df5d5 100644
+--- a/net/minecraft/server/level/ChunkHolder.java
++++ b/net/minecraft/server/level/ChunkHolder.java
+@@ -63,16 +63,42 @@ public class ChunkHolder extends GenerationChunkHolder implements ca.spottedleaf
+         this.newChunkHolder = newChunkHolder;
+     }
+ 
++    // Leaf start - serialize per-chunk playersSentChunkTo under parallel/regionized world ticking.
++    // This per-ChunkHolder ReferenceList (backed by a Reference2IntOpenHashMap) tracks which players have
++    // been sent this chunk. With parallel-world-ticking / regionized-chunk-ticking the SAME chunk is
++    // sent/unloaded to DIFFERENT players from different region threads, while a player disconnect unloads
++    // it from the main thread - concurrent add/remove corrupts the map (rehash AIOOBE). Serialize all
++    // mutating and hash-probing access on the list monitor (a private leaf lock: nothing else is acquired
++    // inside it, so it cannot deadlock). The flags are startup-constant, so when both are off we keep the
++    // vanilla zero-overhead path. size()-only readers are left unguarded: an int field read never rehashes.
++    private static boolean serializeSentChunkTo() {
++        return org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking
++            || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking;
++    }
++    // Leaf end - serialize per-chunk playersSentChunkTo
++
+     @Override
+     public final void moonrise$addReceivedChunk(final ServerPlayer player) {
+-        if (!this.playersSentChunkTo.add(player)) {
++        final boolean added; // Leaf - serialize playersSentChunkTo
++        if (serializeSentChunkTo()) { // Leaf
++            synchronized (this.playersSentChunkTo) { added = this.playersSentChunkTo.add(player); } // Leaf
++        } else { // Leaf
++            added = this.playersSentChunkTo.add(player); // Leaf
++        } // Leaf
++        if (!added) { // Leaf
+             throw new IllegalStateException("Already sent chunk " + this.pos + " in world '" + ca.spottedleaf.moonrise.common.util.WorldUtil.getWorldName(this.getChunkMap().level) + "' to player " + player);
+         }
+     }
+ 
+     @Override
+     public final void moonrise$removeReceivedChunk(final ServerPlayer player) {
+-        if (!this.playersSentChunkTo.remove(player)) {
++        final boolean removed; // Leaf - serialize playersSentChunkTo
++        if (serializeSentChunkTo()) { // Leaf
++            synchronized (this.playersSentChunkTo) { removed = this.playersSentChunkTo.remove(player); } // Leaf
++        } else { // Leaf
++            removed = this.playersSentChunkTo.remove(player); // Leaf
++        } // Leaf
++        if (!removed) { // Leaf
+             throw new IllegalStateException("Already sent chunk " + this.pos + " in world '" + ca.spottedleaf.moonrise.common.util.WorldUtil.getWorldName(this.getChunkMap().level) + "' to player " + player);
+         }
+     }
+@@ -84,15 +110,33 @@ public class ChunkHolder extends GenerationChunkHolder implements ca.spottedleaf
+ 
+     @Override
+     public final boolean moonrise$hasChunkBeenSent(final ServerPlayer to) {
++        if (serializeSentChunkTo()) { // Leaf - contains() is a hash probe; serialize against concurrent rehash
++            synchronized (this.playersSentChunkTo) { return this.playersSentChunkTo.contains(to); } // Leaf
++        } // Leaf
+         return this.playersSentChunkTo.contains(to);
+     }
+ 
+     @Override
+     public final List<ServerPlayer> moonrise$getPlayers(final boolean onlyOnWatchDistanceEdge) {
+         final List<ServerPlayer> ret = new java.util.ArrayList<>();
+-        final ServerPlayer[] raw = this.playersSentChunkTo.getRawDataUnchecked();
+-        for (int i = 0, len = this.playersSentChunkTo.size(); i < len; ++i) {
++        // Leaf start - snapshot playersSentChunkTo under its monitor when parallel/regionized ticking may
++        // mutate it from another thread; the isChunkSent filtering below runs OUTSIDE the monitor (it calls
++        // into the chunk loader) so the lock stays a leaf. Vanilla single-thread keeps the zero-copy path.
++        final ServerPlayer[] raw;
++        final int len;
++        if (serializeSentChunkTo()) {
++            synchronized (this.playersSentChunkTo) {
++                len = this.playersSentChunkTo.size();
++                raw = java.util.Arrays.copyOf(this.playersSentChunkTo.getRawDataUnchecked(), len);
++            }
++        } else {
++            raw = this.playersSentChunkTo.getRawDataUnchecked();
++            len = this.playersSentChunkTo.size();
++        }
++        for (int i = 0; i < len; ++i) {
+             final ServerPlayer player = raw[i];
++            if (player == null) continue; // Leaf - defensive against a raced/cleared slot
++            // Leaf end - snapshot playersSentChunkTo
+             if (onlyOnWatchDistanceEdge && !((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)this.getChunkMap().level).moonrise$getPlayerChunkLoader().isChunkSent(player, this.pos.x(), this.pos.z(), onlyOnWatchDistanceEdge)) {
+                 continue;
+             }

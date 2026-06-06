@@ -1,0 +1,54 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 07:56:28 +0200
+Subject: [PATCH] feat: cache entity spawn bundle per tick, reuse across
+ viewers
+
+
+diff --git a/net/minecraft/server/level/ServerEntity.java b/net/minecraft/server/level/ServerEntity.java
+index 6b09a844880a35ff17ac96e442ecbc5956906973..0b56985c053dc4ac9c5ec8689a78929bafea5dbd 100644
+--- a/net/minecraft/server/level/ServerEntity.java
++++ b/net/minecraft/server/level/ServerEntity.java
+@@ -70,6 +70,12 @@ public class ServerEntity {
+     private boolean wasOnGround;
+     private @Nullable List<SynchedEntityData.DataValue<?>> trackedDataValues;
+     private final Set<net.minecraft.server.network.ServerPlayerConnection> trackedPlayers; // Paper
++    // Leaf - per-tick spawn-bundle cache: the spawn packet bundle is viewer-independent (except the
++    // own-player scaled-health case, which is never cached), so a busy area pairing the same entity to many
++    // viewers in one tick builds it once. Same-tick freshness matches the per-tick broadcast model.
++    private final Object spawnBundleLock = new Object();
++    private @Nullable ClientboundBundlePacket cachedSpawnBundle;
++    private long cachedSpawnBundleTick = Long.MIN_VALUE;
+ 
+     public ServerEntity(
+         final ServerLevel level, final Entity entity, final int updateInterval, final boolean trackDelta, final ServerEntity.Synchronizer synchronizer, final Set<net.minecraft.server.network.ServerPlayerConnection> trackedPlayers // Paper
+@@ -310,6 +316,28 @@ public class ServerEntity {
+     }
+ 
+     public void addPairing(final ServerPlayer player) {
++        // Leaf start - reuse the per-tick cached spawn bundle for non-self viewers (build once per tick,
++        // send to every player paired this tick). The own-player case injects scaled self health and is
++        // viewer-specific, so it is always built fresh and never cached.
++        if (this.entity.getId() != player.getId()) {
++            final long now = this.level.getGameTime();
++            final ClientboundBundlePacket bundle;
++            synchronized (this.spawnBundleLock) {
++                if (this.cachedSpawnBundle != null && this.cachedSpawnBundleTick == now) {
++                    bundle = this.cachedSpawnBundle;
++                } else {
++                    final List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
++                    this.sendPairingData(player, packets::add);
++                    bundle = new ClientboundBundlePacket(packets);
++                    this.cachedSpawnBundle = bundle;
++                    this.cachedSpawnBundleTick = now;
++                }
++            }
++            player.connection.send(bundle); // send outside the lock
++            this.entity.startSeenByPlayer(player);
++            return;
++        }
++        // Leaf end
+         List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
+         this.sendPairingData(player, packets::add);
+         player.connection.send(new ClientboundBundlePacket(packets));

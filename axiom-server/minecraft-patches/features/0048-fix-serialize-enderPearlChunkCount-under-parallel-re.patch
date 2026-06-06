@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 08:14:01 +0200
+Subject: [PATCH] fix: serialize enderPearlChunkCount under parallel/regionized
+ ticking
+
+
+diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/server/ServerEntityLookup.java b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/server/ServerEntityLookup.java
+index 498c13580905b23c426456bdc3141f7670bb47c0..a55706ce831a5ba9d62c6c20af52797f7e0f5f55 100644
+--- a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/server/ServerEntityLookup.java
++++ b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/server/ServerEntityLookup.java
+@@ -148,7 +148,11 @@ public final class ServerEntityLookup extends EntityLookup {
+             return;
+         }
+ 
+-        final int oldCount = this.enderPearlChunkCount.addTo(coordinate, 1);
++        // Leaf - enderPearlChunkCount is a level-global Long2IntOpenHashMap mutated from entity add/move/
++        // remove callbacks, which run from multiple region threads under parallel/regionized ticking;
++        // serialize on the map monitor (concurrent addTo/remove corrupts the table -> rehash AIOOBE).
++        final int oldCount;
++        synchronized (this.enderPearlChunkCount) { oldCount = this.enderPearlChunkCount.addTo(coordinate, 1); } // Leaf
+         if (oldCount != 0) {
+             return;
+         }
+@@ -161,11 +165,17 @@ public final class ServerEntityLookup extends EntityLookup {
+             return;
+         }
+ 
+-        final int oldCount = this.enderPearlChunkCount.addTo(coordinate, -1);
++        // Leaf - see addEnderPearl; keep the decrement and the follow-up remove atomic under the monitor
++        final int oldCount;
++        synchronized (this.enderPearlChunkCount) {
++            oldCount = this.enderPearlChunkCount.addTo(coordinate, -1);
++            if (oldCount == 1) {
++                this.enderPearlChunkCount.remove(coordinate);
++            }
++        }
+         if (oldCount != 1) {
+             return;
+         }
+-        this.enderPearlChunkCount.remove(coordinate);
+         ((ChunkSystemServerLevel)this.serverWorld).moonrise$getChunkTaskScheduler().chunkHolderManager
+             .removeTicketAtLevel(ENDER_PEARL_TICKER, coordinate, ChunkHolderManager.ENTITY_TICKING_TICKET_LEVEL, null);
+     }

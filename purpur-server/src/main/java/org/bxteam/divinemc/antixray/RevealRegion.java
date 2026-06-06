@@ -39,9 +39,7 @@ public final class RevealRegion implements Raytracer.OcclusionView {
     }
 
     /** Capture a cube of radius {@code r} around (cx,cy,cz). MUST run on the tick thread. */
-    public static RevealRegion capture(final ServerLevel level,
-                                       final int cx, final int cy, final int cz, final int r,
-                                       final Set<Block> oreBlocks) {
+    public static RevealRegion capture(final ServerLevel level, final int cx, final int cy, final int cz, final int r, final Set<Block> oreBlocks) {
         final int minX = cx - r, minY = cy - r, minZ = cz - r;
         final int maxX = cx + r, maxY = cy + r, maxZ = cz + r;
         final int sizeX = maxX - minX + 1, sizeY = maxY - minY + 1, sizeZ = maxZ - minZ + 1;

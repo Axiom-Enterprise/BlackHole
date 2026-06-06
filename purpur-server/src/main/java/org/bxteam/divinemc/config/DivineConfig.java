@@ -206,7 +206,7 @@ public class DivineConfig {
 
         // Async chunk sending settings
         public static boolean asyncChunkSendingEnabled = false; // Purpur - default off
-        public static int asyncChunkSendingMaxThreads = 1;
+        public static int asyncChunkSendingMaxThreads = 4; // DivineMC - was 1; 1 bottlenecks anti-xray obfuscation on join
 
         // Async pathfinding settings // Purpur - async pathfinding (DivineMC)
         public static boolean asyncPathfinding = false; // Purpur - default off

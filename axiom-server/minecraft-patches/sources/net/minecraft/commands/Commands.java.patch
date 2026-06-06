@@ -14,7 +14,7 @@
              RaidCommand.register(this.dispatcher, context);
              DebugPathCommand.register(this.dispatcher);
              DebugMobSpawningCommand.register(this.dispatcher);
-@@ -299,6 +_,14 @@
+@@ -299,6 +_,16 @@
              StopCommand.register(this.dispatcher);
              TransferCommand.register(this.dispatcher);
              WhitelistCommand.register(this.dispatcher);
@@ -23,6 +23,8 @@
 +            org.purpurmc.purpur.command.PingCommand.register(this.dispatcher); // Purpur - Add ping command
 +            org.purpurmc.purpur.command.UptimeCommand.register(this.dispatcher); // Purpur - Add uptime command
 +            org.purpurmc.purpur.command.TPSBarCommand.register(this.dispatcher); // Purpur - Implement TPSBar
++            org.bxteam.divinemc.diagnostics.command.AxiomMetricsCommand.register(this.dispatcher); // Axiom - diagnostics
++            org.bxteam.divinemc.diagnostics.command.AxiomDebugCommand.register(this.dispatcher); // Axiom - diagnostics
 +            org.purpurmc.purpur.command.CompassCommand.register(this.dispatcher); // Purpur - Add compass command
 +            org.purpurmc.purpur.command.RamBarCommand.register(this.dispatcher); // Purpur - Add rambar command
 +            org.purpurmc.purpur.command.RamCommand.register(this.dispatcher); // Purpur - Add ram command

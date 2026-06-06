@@ -6,6 +6,7 @@ public enum ConfigCategory {
     FIXES("fixes"),
     NETWORK("network"),
     MISC("misc"),
+    DIAGNOSTICS("diagnostics"),
     REGION("region-settings");
 
     private final String name;

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Axiom Diagnostics</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.css">
+<style>
+  :root { --bg:#0e1116; --panel:#171c24; --line:#262d38; --txt:#dfe5ee; --muted:#8b96a5; --accent:#4fd1c5; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:14px/1.5 system-ui,sans-serif; }
+  header { padding:18px 24px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 24px; align-items:baseline; }
+  header h1 { font-size:18px; margin:0; color:var(--accent); }
+  header .meta { color:var(--muted); font-size:12px; display:flex; gap:18px; flex-wrap:wrap; }
+  main { padding:20px 24px; display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; min-width:0; }
+  .card.wide { grid-column:1 / -1; }
+  .card h2 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 12px; }
+  canvas { max-height:280px; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  th,td { text-align:left; padding:4px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { color:var(--muted); font-weight:600; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .scroll { max-height:320px; overflow:auto; }
+  .stat { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--line); }
+  .stat span:last-child { font-variant-numeric:tabular-nums; }
+  #flame { background:#fff; border-radius:6px; padding:6px; }
+  .err { padding:40px; text-align:center; color:#f87171; }
+  .pill { background:#23303a; color:var(--accent); border-radius:999px; padding:1px 9px; font-size:11px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Axiom Diagnostics</h1>
+  <span class="pill" id="type">—</span>
+  <div class="meta" id="meta"></div>
+</header>
+<main id="root"><div class="err">Loading report…</div></main>
+
+<script>
+const MB = 1024 * 1024;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtBytes = b => b == null ? "—" : (b / MB).toFixed(1) + " MB";
+const fmtPct = v => v == null || v < 0 ? "—" : (v * 100).toFixed(1) + "%";
+const dataUrl = location.pathname.replace(/\/$/, "") + "/data";
+
+Chart.defaults.color = "#8b96a5";
+Chart.defaults.borderColor = "#262d38";
+Chart.defaults.font.family = "system-ui, sans-serif";
+
+fetch(dataUrl)
+  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  .then(render)
+  .catch(e => { document.getElementById("root").innerHTML =
+    '<div class="err">Failed to load report: ' + e.message + '</div>'; });
+
+function card(title, inner, wide) {
+  return '<section class="card' + (wide ? ' wide' : '') + '"><h2>' + title + '</h2>' + inner + '</section>';
+}
+
+function render(d) {
+  document.getElementById("type").textContent = (d.type || "report").toUpperCase();
+  const m = d.meta || {};
+  document.getElementById("meta").innerHTML = [
+    ["Server", (m.serverBrand || "?") + " " + (m.minecraftVersion || "")],
+    ["Version", m.serverVersion || "?"],
+    ["Players", m.onlinePlayers ?? "?"],
+    ["Worlds", m.loadedWorlds ?? "?"],
+    ["CPUs", m.availableProcessors ?? "?"],
+    ["Uptime", fmtDuration(m.uptimeMs)],
+    m.durationMs ? ["Window", (m.durationMs / 1000) + "s"] : null,
+    ["Generated", m.generatedAtEpochMs ? new Date(m.generatedAtEpochMs).toLocaleString() : "?"],
+  ].filter(Boolean).map(x => "<span><b>" + esc(x[0]) + ":</b> " + esc(x[1]) + "</span>").join("");
+
+  const root = document.getElementById("root");
+  const cards = [];
+  const hasTimeline = (d.tickTimeline || []).length > 1;
+
+  if (hasTimeline) {
+    cards.push(card("TPS / MSPT", '<canvas id="c-tick"></canvas>', true));
+    cards.push(card("Heap & Non-Heap (timeline)", '<canvas id="c-mem"></canvas>'));
+    cards.push(card("CPU load (timeline)", '<canvas id="c-cpu"></canvas>'));
+  }
+  cards.push(card("System", systemStats(d), false));
+  cards.push(card("Memory pools", poolsTable(d), false));
+  cards.push(card("Garbage collection", '<canvas id="c-gc"></canvas>'));
+  cards.push(card("Thread states", '<canvas id="c-threads"></canvas>'));
+  if ((d.lagSpikes || []).length) cards.push(card("Lag spikes (" + d.lagSpikes.length + ")", lagTable(d)));
+  cards.push(card("Heap histogram (top classes)", heapTable(d), true));
+  if (d.flamegraph) cards.push(card("CPU profiler (flamegraph)", '<div id="flame"></div>', true));
+
+  root.innerHTML = cards.join("");
+
+  if (hasTimeline) { drawTick(d); drawMem(d); drawCpu(d); }
+  drawGc(d);
+  drawThreads(d);
+  if (d.flamegraph) drawFlame(d.flamegraph);
+}
+
+function fmtDuration(ms) {
+  if (!ms) return "—";
+  const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), mn = Math.floor((s % 3600) / 60);
+  return h + "h " + mn + "m";
+}
+
+function systemStats(d) {
+  const s = d.system || {}, jit = d.jit || {};
+  const rows = [
+    ["Heap used", fmtBytes(s.heapUsed) + " / " + fmtBytes(s.heapMax)],
+    ["Heap committed", fmtBytes(s.heapCommitted)],
+    ["Non-heap used", fmtBytes(s.nonHeapUsed)],
+    ["Process CPU", fmtPct(s.processCpuLoad)],
+    ["System CPU", fmtPct(s.systemCpuLoad)],
+    ["Load average", s.systemLoadAverage > 0 ? s.systemLoadAverage.toFixed(2) : "—"],
+    ["Threads", s.threadCount + " (" + s.daemonThreadCount + " daemon, peak " + s.peakThreadCount + ")"],
+    ["Loaded classes", s.loadedClasses],
+    ["JIT compiler", jit.compilerName || "—"],
+    ["JIT total time", jit.totalCompilationTimeMs != null ? jit.totalCompilationTimeMs + " ms" : "—"],
+    jit.deltaCompilationTimeMs ? ["JIT time (window)", jit.deltaCompilationTimeMs + " ms"] : null,
+  ].filter(Boolean);
+  return rows.map(r => '<div class="stat"><span>' + esc(r[0]) + '</span><span>' + esc(r[1]) + '</span></div>').join("");
+}
+
+function poolsTable(d) {
+  const pools = (d.system && d.system.pools) || [];
+  return '<div class="scroll"><table><tr><th>Pool</th><th>Type</th><th class="num">Used</th><th class="num">Committed</th></tr>' +
+    pools.map(p => '<tr><td>' + esc(p.name) + '</td><td>' + esc(p.type) + '</td><td class="num">' + fmtBytes(p.used) +
+      '</td><td class="num">' + fmtBytes(p.committed) + '</td></tr>').join("") + '</table></div>';
+}
+
+function lagTable(d) {
+  return '<div class="scroll"><table><tr><th class="num">t (s)</th><th class="num">MSPT</th></tr>' +
+    d.lagSpikes.map(l => '<tr><td class="num">' + (l.t / 1000).toFixed(1) + '</td><td class="num">' +
+      l.mspt.toFixed(1) + '</td></tr>').join("") + '</table></div>';
+}
+
+function heapTable(d) {
+  const deltas = {};
+  (d.heapDelta || []).forEach(x => deltas[x.name] = x);
+  const hasDelta = (d.heapDelta || []).length > 0;
+  return '<div class="scroll"><table><tr><th>Class</th><th class="num">Instances</th><th class="num">Bytes</th>' +
+    (hasDelta ? '<th class="num">Δ bytes</th>' : '') + '</tr>' +
+    (d.heap || []).map(h => {
+      const dl = deltas[h.name];
+      return '<tr><td>' + esc(h.name) + '</td><td class="num">' + h.instances.toLocaleString() +
+        '</td><td class="num">' + fmtBytes(h.bytes) + '</td>' +
+        (hasDelta ? '<td class="num" style="color:' + (dl && dl.bytesDelta > 0 ? "#f87171" : "#8b96a5") + '">' +
+          (dl ? "+" + fmtBytes(dl.bytesDelta) : "—") + '</td>' : '') + '</tr>';
+    }).join("") + '</table></div>';
+}
+
+function timeLabels(arr) { return arr.map(x => (x.t / 1000).toFixed(1)); }
+
+function drawTick(d) {
+  new Chart(document.getElementById("c-tick"), {
+    type: "line",
+    data: { labels: timeLabels(d.tickTimeline), datasets: [
+      { label: "TPS", data: d.tickTimeline.map(x => x.tps), borderColor: "#4fd1c5", yAxisID: "y", tension: .25, pointRadius: 0 },
+      { label: "MSPT", data: d.tickTimeline.map(x => x.mspt), borderColor: "#f6ad55", yAxisID: "y1", tension: .25, pointRadius: 0 },
+    ]},
+    options: { responsive: true, interaction: { mode: "index", intersect: false }, scales: {
+      x: { title: { display: true, text: "seconds" } },
+      y: { position: "left", min: 0, max: 20, title: { display: true, text: "TPS" } },
+      y1: { position: "right", min: 0, grid: { drawOnChartArea: false }, title: { display: true, text: "MSPT" } },
+    }}
+  });
+}
+
+function drawMem(d) {
+  const src = (d.memoryTimeline || []).length ? d.memoryTimeline : [];
+  new Chart(document.getElementById("c-mem"), {
+    type: "line",
+    data: { labels: timeLabels(src), datasets: [
+      { label: "Heap", data: src.map(x => x.heapUsed / MB), borderColor: "#63b3ed", fill: true, backgroundColor: "rgba(99,179,237,.15)", tension: .25, pointRadius: 0 },
+      { label: "Non-heap", data: src.map(x => x.nonHeapUsed / MB), borderColor: "#b794f4", tension: .25, pointRadius: 0 },
+    ]},
+    options: { responsive: true, scales: { y: { title: { display: true, text: "MB" }, min: 0 } } }
+  });
+}
+
+function drawCpu(d) {
+  const src = (d.cpuTimeline || []);
+  new Chart(document.getElementById("c-cpu"), {
+    type: "line",
+    data: { labels: timeLabels(src), datasets: [
+      { label: "Process", data: src.map(x => x.process < 0 ? null : x.process * 100), borderColor: "#4fd1c5", tension: .25, pointRadius: 0 },
+      { label: "System", data: src.map(x => x.system < 0 ? null : x.system * 100), borderColor: "#fc8181", tension: .25, pointRadius: 0 },
+    ]},
+    options: { responsive: true, scales: { y: { min: 0, max: 100, title: { display: true, text: "%" } } } }
+  });
+}
+
+function drawGc(d) {
+  const gc = d.gc || [];
+  const useDelta = gc.some(c => c.deltaCount > 0);
+  new Chart(document.getElementById("c-gc"), {
+    type: "bar",
+    data: { labels: gc.map(c => c.name), datasets: [
+      { label: useDelta ? "Collections (window)" : "Collections", data: gc.map(c => useDelta ? c.deltaCount : c.collectionCount), backgroundColor: "#4fd1c5", yAxisID: "y" },
+      { label: useDelta ? "Pause ms (window)" : "Pause ms (total)", data: gc.map(c => useDelta ? c.deltaTimeMs : c.collectionTimeMs), backgroundColor: "#f6ad55", yAxisID: "y1" },
+    ]},
+    options: { responsive: true, scales: {
+      y: { position: "left", min: 0, title: { display: true, text: "count" } },
+      y1: { position: "right", min: 0, grid: { drawOnChartArea: false }, title: { display: true, text: "ms" } },
+    }}
+  });
+}
+
+function drawThreads(d) {
+  const states = (d.system && d.system.threadStates) || {};
+  new Chart(document.getElementById("c-threads"), {
+    type: "doughnut",
+    data: { labels: Object.keys(states), datasets: [{ data: Object.values(states),
+      backgroundColor: ["#4fd1c5", "#f6ad55", "#fc8181", "#63b3ed", "#b794f4", "#68d391", "#a0aec0"] }] },
+    options: { responsive: true, plugins: { legend: { position: "right" } } }
+  });
+}
+
+function drawFlame(root) {
+  const chart = flamegraph().width(document.getElementById("flame").clientWidth).cellHeight(18).minFrameSize(2);
+  d3.select("#flame").datum(root).call(chart);
+  window.addEventListener("resize", () => chart.width(document.getElementById("flame").clientWidth).resetZoom());
+}
+</script>
+</body>
+</html>

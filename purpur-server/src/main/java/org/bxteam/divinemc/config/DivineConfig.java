@@ -185,6 +185,30 @@ public class DivineConfig {
             "so a slow locate no longer blocks the main thread. Result is sent when ready.");
     }
 
+    public static boolean diagnosticsEnabled = true;
+    public static String diagnosticsViewerUrl = "";
+    public static int diagnosticsProfilerDurationSeconds = 30;
+    public static int diagnosticsSamplerIntervalMs = 10;
+    public static double diagnosticsLagSpikeThresholdMs = 100.0;
+    public static int diagnosticsHeapHistogramTopN = 50;
+    private static void diagnostics() {
+        diagnosticsEnabled = getBoolean(ConfigCategory.DIAGNOSTICS.key("enabled"), diagnosticsEnabled,
+            "Master switch for the /axiommetrics and /axiomdebug diagnostics commands.");
+        diagnosticsViewerUrl = getString(ConfigCategory.DIAGNOSTICS.key("viewer-url"), diagnosticsViewerUrl,
+            "Base URL of your self-hosted Axiom diagnostics viewer (e.g. https://diag.example.com).",
+            "Reports are POSTed to <viewer-url>/upload and the temporary link is returned to the player.",
+            "Leave empty to disable uploading.");
+        diagnosticsProfilerDurationSeconds = getInt(ConfigCategory.DIAGNOSTICS.key("profiler-duration-seconds"), diagnosticsProfilerDurationSeconds,
+            "Default duration of /axiomdebug when no argument is given.");
+        diagnosticsSamplerIntervalMs = getInt(ConfigCategory.DIAGNOSTICS.key("sampler-interval-ms"), diagnosticsSamplerIntervalMs,
+            "How often (ms) the CPU sampler and timeline monitor poll during a debug session.",
+            "Lower = more detail and more overhead.");
+        diagnosticsLagSpikeThresholdMs = getDouble(ConfigCategory.DIAGNOSTICS.key("lag-spike-threshold-ms"), diagnosticsLagSpikeThresholdMs,
+            "MSPT at or above which a sample is recorded as a lag spike.");
+        diagnosticsHeapHistogramTopN = getInt(ConfigCategory.DIAGNOSTICS.key("heap-histogram-top-n"), diagnosticsHeapHistogramTopN,
+            "How many top classes (by retained bytes) to include in the heap histogram.");
+    }
+
     // Purpur start - async chunk sending (DivineMC)
     public static class AsyncCategory {
         // Purpur start - parallel world ticking (DivineMC)

@@ -32,7 +32,7 @@ if (!file(".git").exists()) {
 }
 
 rootProject.name = "axiom"
-for (name in listOf("purpur-api", "purpur-server")) {
+for (name in listOf("purpur-api", "purpur-server", "axiom-diagnostics-viewer")) {
     val projName = name.lowercase(Locale.ENGLISH)
     include(projName)
     findProject(":$projName")!!.projectDir = file(name)

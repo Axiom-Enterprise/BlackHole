@@ -584,6 +584,25 @@ public class DivineConfig {
     }
     // Purpur end - chunk-system algorithm (DivineMC)
 
+    // DivineMC start - network/connection tuning
+    public static class NetworkCategory {
+        // Keep-alive: the server sends a keep-alive every `interval` seconds and only disconnects a
+        // client once its OLDEST unanswered keep-alive is older than `limit` seconds (Paper multi-pending
+        // model). Raising the limit tolerates longer client-side stalls (GC pauses, big resource packs,
+        // mobile/poor links) without "Timed out" kicks; lowering it detects dead clients sooner.
+        public static int keepAliveLimitSeconds = 30;
+        public static int keepAliveIntervalSeconds = 1;
+
+        public static void load() {
+            keepAliveLimitSeconds = Math.max(1, getInt(ConfigCategory.NETWORK.key("keep-alive.limit-seconds"), keepAliveLimitSeconds,
+                "Disconnect a client only when its oldest unanswered keep-alive exceeds this many seconds.",
+                "Default 30. Increase to avoid timing out clients on transient lag spikes."));
+            keepAliveIntervalSeconds = Math.max(1, getInt(ConfigCategory.NETWORK.key("keep-alive.interval-seconds"), keepAliveIntervalSeconds,
+                "How often (seconds) the server sends a keep-alive. Default 1 (Paper behaviour)."));
+        }
+    }
+    // DivineMC end - network/connection tuning
+
     // Purpur start - linear region file format (DivineMC)
     public static class RegionSettingsCategory {
         // Region Format

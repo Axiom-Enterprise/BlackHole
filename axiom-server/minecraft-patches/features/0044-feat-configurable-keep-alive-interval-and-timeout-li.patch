@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 07:22:58 +0200
+Subject: [PATCH] feat: configurable keep-alive interval and timeout limit
+
+
+diff --git a/net/minecraft/server/network/ServerCommonPacketListenerImpl.java b/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
+index 9057ec887d136ea85ede153cd5ec76ae816f0239..fe4140ed6ca9fa1073807f37930f370c3fc77af4 100644
+--- a/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
++++ b/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
+@@ -284,9 +284,12 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+         if (org.purpurmc.purpur.PurpurConfig.useAlternateKeepAlive) {
+             if (this.checkIfClosed(now)) {
+                 long currTime = System.nanoTime();
+-                if ((currTime - this.keepAlive.lastKeepAliveTx) >= java.util.concurrent.TimeUnit.SECONDS.toNanos(1L)) { // 1 second
++                // DivineMC - configurable keep-alive interval/limit
++                final int kaInterval = org.bxteam.divinemc.config.DivineConfig.NetworkCategory.keepAliveIntervalSeconds;
++                final int kaLimit = org.bxteam.divinemc.config.DivineConfig.NetworkCategory.keepAliveLimitSeconds;
++                if ((currTime - this.keepAlive.lastKeepAliveTx) >= java.util.concurrent.TimeUnit.SECONDS.toNanos(kaInterval)) { // DivineMC - configurable interval
+                     this.keepAlive.lastKeepAliveTx = currTime;
+-                    if (this.keepAlivePending && keepAlives.size() * 1000L >= KEEPALIVE_LIMIT) {
++                    if (this.keepAlivePending && keepAlives.size() * (long) kaInterval >= kaLimit) { // DivineMC - configurable limit
+                         this.disconnect(TIMEOUT_DISCONNECTION_MESSAGE, io.papermc.paper.connection.DisconnectionReason.TIMEOUT);
+                     } else if (this.checkIfClosed(now)) {
+                         this.keepAlivePending = true;
+@@ -299,8 +302,12 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+         // Purpur end - Alternative Keepalive Handling
+         if (this.checkIfClosed(now)) {
+             long currTime = System.nanoTime();
++            // DivineMC - configurable keep-alive interval/limit (multi-pending model: send every interval,
++            // kick only when the oldest unanswered keep-alive exceeds the limit)
++            final int kaInterval = org.bxteam.divinemc.config.DivineConfig.NetworkCategory.keepAliveIntervalSeconds;
++            final int kaLimit = org.bxteam.divinemc.config.DivineConfig.NetworkCategory.keepAliveLimitSeconds;
+ 
+-            if ((currTime - this.keepAlive.lastKeepAliveTx) >= java.util.concurrent.TimeUnit.SECONDS.toNanos(1L)) {
++            if ((currTime - this.keepAlive.lastKeepAliveTx) >= java.util.concurrent.TimeUnit.SECONDS.toNanos(kaInterval)) { // DivineMC - configurable interval
+                 this.keepAlive.lastKeepAliveTx = currTime;
+ 
+                 io.papermc.paper.util.KeepAlive.PendingKeepAlive pka = new io.papermc.paper.util.KeepAlive.PendingKeepAlive(currTime, now);
+@@ -309,7 +316,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+             }
+ 
+             io.papermc.paper.util.KeepAlive.PendingKeepAlive oldest = this.keepAlive.pendingKeepAlives.peek();
+-            if (oldest != null && (currTime - oldest.txTimeNS()) > java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(KEEPALIVE_LIMIT)) {
++            if (oldest != null && (currTime - oldest.txTimeNS()) > java.util.concurrent.TimeUnit.SECONDS.toNanos(kaLimit)) { // DivineMC - configurable limit
+                 LOGGER.info("{} was kicked due to keepalive timeout!", this.playerProfile().name());
+                 this.disconnect(TIMEOUT_DISCONNECTION_MESSAGE, io.papermc.paper.connection.DisconnectionReason.TIMEOUT); // Paper - kick event cause
+                 // Paper end - improve keepalives

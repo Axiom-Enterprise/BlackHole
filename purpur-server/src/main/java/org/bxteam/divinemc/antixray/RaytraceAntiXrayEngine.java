@@ -291,36 +291,26 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
         final BlockState fake = fakeStateFor(chunk.getLevel().getWorld().getEnvironment());
         final Set<Block> hidden = this.hiddenBlocks;
         final LevelChunkSection[] sections = chunk.getSections();
+        LevelChunkSection[] out = null; // lazily clone the array only once we actually hide something
 
-        // Phase 1: does this chunk contain any hideable ore at all? If not, no obfuscation - normal path.
-        boolean hasOre = false;
-        for (final LevelChunkSection section : sections) {
-            if (section != null && !section.hasOnlyAir()
-                && section.maybeHas(state -> hidden.contains(state.getBlock()))) {
-                hasOre = true;
-                break;
-            }
-        }
-        if (!hasOre) {
-            return null;
-        }
-
-        // Phase 2: snapshot EVERY section into an immutable copy and rewrite ores in the copies. We must
-        // copy all sections (not just ore-bearing ones): the buffer is serialized in two passes
-        // (size then write), and under parallel/regionized ticking a shared live section could mutate
-        // between them, breaking the size invariant. A per-section copy() is self-consistent, so the
-        // serialize never races the world. The whole array is cached and reused across viewers.
-        final LevelChunkSection[] out = new LevelChunkSection[sections.length];
+        // Copy ONLY ore-bearing sections (cheap); non-ore sections are referenced as-is, exactly like the
+        // normal chunk send reads live sections off the tick thread. The ore copies are immutable, so they
+        // are race-free; the shared non-ore sections share the same (Paper-accepted) read race as a normal
+        // async send, which serialize()'s retry loop tolerates. This keeps the per-chunk work small enough
+        // to run on the async chunk-send pool instead of stalling the tick thread.
         for (int i = 0; i < sections.length; i++) {
             final LevelChunkSection section = sections[i];
-            if (section == null) {
+            if (section == null || section.hasOnlyAir()) {
                 continue;
             }
-            final LevelChunkSection copy = section.copy();
-            out[i] = copy;
-            if (section.hasOnlyAir() || !copy.maybeHas(state -> hidden.contains(state.getBlock()))) {
-                continue; // nothing hideable in this section's snapshot
+            if (!section.maybeHas(state -> hidden.contains(state.getBlock()))) {
+                continue; // palette gate: no hideable ore in this section
             }
+            final LevelChunkSection copy = section.copy();
+            if (out == null) {
+                out = sections.clone();
+            }
+            out[i] = copy;
             for (int y = 0; y < 16; y++) {
                 for (int z = 0; z < 16; z++) {
                     for (int x = 0; x < 16; x++) {

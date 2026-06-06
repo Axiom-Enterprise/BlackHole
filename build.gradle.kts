@@ -65,7 +65,6 @@ subprojects {
         mavenCentral()
         maven(paperMavenPublicUrl)
         maven("https://jitpack.io")
-        maven("https://maven.imanity.dev/repository/imanity-libraries/") // DivineMC - Raytrace AntiXray SDK
     }
 
     extensions.configure<PublishingExtension> {

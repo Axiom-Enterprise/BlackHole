@@ -498,73 +498,15 @@ public class DivineConfig {
         public static ChunkSystemAlgorithm chunkWorkerAlgorithm = ChunkSystemAlgorithm.MOONRISE;
         public static boolean fastRandom = false; // DivineMC - fast xoroshiro RandomSource for runtime hot paths - default off
 
-        public static boolean antiXraySdk = false; // DivineMC - Raytrace AntiXray SDK hooks - default off
-        @Experimental("Raytrace AntiXray Engine")
-        public static boolean raytraceEngineEnabled = false; // DivineMC - built-in raytrace anti-xray engine - default off
-        public static int raytraceEngineThreads = 2;
-        public static int raytraceEngineRadius = 64;
-        public static int raytraceRevealIntervalTicks = 20;
-        public static int raytraceRevealRadius = 16;
-        public static boolean raytraceReHide = false;
-        public static java.util.Set<org.bukkit.Material> raytraceHiddenBlocks = java.util.EnumSet.noneOf(org.bukkit.Material.class);
-
-        private static final List<String> DEFAULT_HIDDEN_BLOCKS = java.util.List.of(
-            "COAL_ORE", "DEEPSLATE_COAL_ORE", "IRON_ORE", "DEEPSLATE_IRON_ORE", "COPPER_ORE", "DEEPSLATE_COPPER_ORE",
-            "GOLD_ORE", "DEEPSLATE_GOLD_ORE", "REDSTONE_ORE", "DEEPSLATE_REDSTONE_ORE", "LAPIS_ORE", "DEEPSLATE_LAPIS_ORE",
-            "DIAMOND_ORE", "DEEPSLATE_DIAMOND_ORE", "EMERALD_ORE", "DEEPSLATE_EMERALD_ORE",
-            "NETHER_GOLD_ORE", "NETHER_QUARTZ_ORE", "ANCIENT_DEBRIS");
-
         public static void load() {
             chunkSettings();
             fastRandomSettings();
-            antiXraySettings();
-            antiXrayEngineSettings();
-            org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.bootstrap();
         }
 
         private static void fastRandomSettings() {
             fastRandom = getBoolean(ConfigCategory.PERFORMANCE.key("fast-random"), fastRandom,
                 "Use a fast xoroshiro128++ RandomSource for runtime, non-worldgen random",
                 "(mob AI, particles, item drop physics). Does not affect worldgen determinism.");
-        }
-
-        private static void antiXraySettings() {
-            antiXraySdk = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.sdk-hooks"), antiXraySdk,
-                "Fire Raytrace AntiXray SDK callbacks from the server (block changes + player",
-                "left-click). Needed by the Raytrace AntiXray plugin or the built-in engine for",
-                "efficient, fork-level anti-xray. No effect unless an AntiXrayAdapter is registered.");
-        }
-
-        private static void antiXrayEngineSettings() {
-            raytraceEngineEnabled = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.enabled"), raytraceEngineEnabled,
-                "Built-in multithreaded raytrace anti-xray REVEAL engine (registers as the SDK adapter).",
-                "Hiding itself is done by Paper engine-mode anti-xray (anticheat.anti-xray in the world",
-                "config); this engine reveals ores on a clear line of sight on top of that. Enable Paper",
-                "engine-mode (mode 1) to hide, and this to reveal what a player can actually see.");
-            raytraceEngineThreads = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.threads"), raytraceEngineThreads,
-                "Worker threads for the raytrace anti-xray engine.");
-            raytraceEngineRadius = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.update-radius"), raytraceEngineRadius,
-                "Max block distance from a viewer eye at which the engine evaluates visibility.");
-            raytraceRevealIntervalTicks = Math.max(1, getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.reveal-interval-ticks"), raytraceRevealIntervalTicks,
-                "How often (server ticks) to run the movement reveal pass per online player."));
-            raytraceRevealRadius = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.reveal-radius"), raytraceRevealRadius,
-                "Block radius around each viewer scanned for ores to reveal on a clear line of sight.");
-            raytraceReHide = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.re-hide-out-of-sight"), raytraceReHide,
-                "Re-hide ores that leave a player's line of sight (send a fake block back).",
-                "Pairs with Paper engine-mode hiding; leave off if you do not want re-hiding.");
-
-            final List<String> names = getStringList(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.hidden-blocks"), DEFAULT_HIDDEN_BLOCKS,
-                "Ores the reveal engine treats as hideable (should match Paper engine-mode hidden-blocks).");
-            final java.util.Set<org.bukkit.Material> hidden = java.util.EnumSet.noneOf(org.bukkit.Material.class);
-            for (final String name : names) {
-                final org.bukkit.Material material = org.bukkit.Material.matchMaterial(name);
-                if (material != null) {
-                    hidden.add(material);
-                } else {
-                    LOGGER.warn("Unknown material '{}' in raytrace-antixray.engine.hidden-blocks", name);
-                }
-            }
-            raytraceHiddenBlocks = hidden;
         }
 
         private static void chunkSettings() {

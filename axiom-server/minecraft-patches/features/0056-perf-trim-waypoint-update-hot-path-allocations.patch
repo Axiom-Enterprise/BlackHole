@@ -1,0 +1,67 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 12:34:24 +0200
+Subject: [PATCH] perf: trim waypoint update hot path allocations
+
+Locator-bar waypoint updates run per entity move; shave avoidable work
+without changing behaviour.
+
+- ServerWaypointManager: use connections.column(waypoint) directly
+  instead of Tables.transpose(connections).row(waypoint) (same map view,
+  no transpose wrapper); drop now-unused Tables import
+- WaypointTransmitter: compare squared distances in doesSourceIgnore-
+  Receiver and isReallyFar to avoid a sqrt per connection check
+
+diff --git a/net/minecraft/server/waypoints/ServerWaypointManager.java b/net/minecraft/server/waypoints/ServerWaypointManager.java
+index be24edc02918ee454bff8169e36434f63dd95e1c..0dd5c37c41f0372bd08f5a269ec7a3609f941f8c 100644
+--- a/net/minecraft/server/waypoints/ServerWaypointManager.java
++++ b/net/minecraft/server/waypoints/ServerWaypointManager.java
+@@ -4,7 +4,6 @@ import com.google.common.collect.HashBasedTable;
+ import com.google.common.collect.ImmutableSet;
+ import com.google.common.collect.Sets;
+ import com.google.common.collect.Table;
+-import com.google.common.collect.Tables;
+ import com.google.common.collect.Sets.SetView;
+ import java.util.HashSet;
+ import java.util.Map;
+@@ -45,7 +44,7 @@ public class ServerWaypointManager implements WaypointManager<WaypointTransmitte
+         if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot update waypoints off-main"); // Purpur - parallel world ticking (DivineMC)
+         if (!this.locatorBarEnabled) return; // Paper - optimize ServerWaypointManager with locator bar disabled
+         if (this.waypoints.contains(waypoint)) {
+-            Map<ServerPlayer, WaypointTransmitter.Connection> playerConnection = Tables.transpose(this.connections).row(waypoint);
++            Map<ServerPlayer, WaypointTransmitter.Connection> playerConnection = this.connections.column(waypoint); // Leaf - column() is the direct equivalent of transpose().row(), without the wrapper
+             SetView<ServerPlayer> potentialPlayers = Sets.difference(this.players, playerConnection.keySet());
+ 
+             for (Entry<ServerPlayer, WaypointTransmitter.Connection> waypointConnection : ImmutableSet.copyOf(playerConnection.entrySet())) {
+@@ -62,7 +61,7 @@ public class ServerWaypointManager implements WaypointManager<WaypointTransmitte
+     public void untrackWaypoint(final WaypointTransmitter waypoint) {
+         if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot untrack waypoints off-main"); // Purpur - parallel world ticking (DivineMC)
+         this.connections.column(waypoint).forEach((player, connection) -> connection.disconnect());
+-        Tables.transpose(this.connections).row(waypoint).clear();
++        this.connections.column(waypoint).clear(); // Leaf - column() == transpose().row(), drop the transpose wrapper
+         this.waypoints.remove(waypoint);
+     }
+ 
+diff --git a/net/minecraft/world/waypoints/WaypointTransmitter.java b/net/minecraft/world/waypoints/WaypointTransmitter.java
+index 2866b750a28cc32c2913d3c1afee95f05956982c..8a1b7126e20158b823141e3ac27874236d88f71e 100644
+--- a/net/minecraft/world/waypoints/WaypointTransmitter.java
++++ b/net/minecraft/world/waypoints/WaypointTransmitter.java
+@@ -27,7 +27,7 @@ public interface WaypointTransmitter extends Waypoint {
+             double broadcastRange = Math.min(
+                 source.getAttributeValue(Attributes.WAYPOINT_TRANSMIT_RANGE), receiver.getAttributeValue(Attributes.WAYPOINT_RECEIVE_RANGE)
+             );
+-            return source.distanceTo(receiver) >= broadcastRange;
++            return source.distanceToSqr(receiver) >= broadcastRange * broadcastRange; // Leaf - squared distance, avoid sqrt on the per-connection hot path
+         } else {
+             return true;
+         }
+@@ -41,7 +41,7 @@ public interface WaypointTransmitter extends Waypoint {
+     }
+ 
+     static boolean isReallyFar(final LivingEntity source, final ServerPlayer receiver) {
+-        return source.distanceTo(receiver) > 332.0F;
++        return source.distanceToSqr(receiver) > 110224.0D; // Leaf - 332^2; squared distance avoids the sqrt
+     }
+ 
+     interface BlockConnection extends WaypointTransmitter.Connection {

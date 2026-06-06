@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 07:16:59 +0200
+Subject: [PATCH] feat: invalidate anti-xray obfuscation cache on block change
+
+
+diff --git a/net/minecraft/world/level/Level.java b/net/minecraft/world/level/Level.java
+index 221b53bf4f0a80ae9a21c4a9fed1cfe9c32e3c62..02915bd43288a9144bd5de840f0ce15b65fc2238 100644
+--- a/net/minecraft/world/level/Level.java
++++ b/net/minecraft/world/level/Level.java
+@@ -1150,6 +1150,12 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+             return false;
+         }
+ 
++        // DivineMC start - invalidate cached chunk obfuscation on any block change (keeps the per-chunk
++        // obfuscated-section cache correct: non-ore edits change the chunk packet too). Cheap no-op when off.
++        if (!this.isClientSide()) {
++            org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.onBlockChanged(this.getWorld(), pos.getX(), pos.getZ());
++        }
++        // DivineMC end
+         // DivineMC start - Raytrace AntiXray SDK block-change hook
+         if (org.bxteam.divinemc.config.DivineConfig.PerformanceCategory.antiXraySdk && !this.isClientSide()) {
+             final dev.imanity.antixray.sdk.AntiXrayAdapter antiXrayAdapter = dev.imanity.antixray.sdk.AntiXraySDK.getAdapter();

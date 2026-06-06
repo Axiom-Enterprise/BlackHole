@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 10:54:56 +0200
+Subject: [PATCH] fix: synchronize PalettedContainer.copy for atomic snapshot
+
+copy() read data/palette/storage without holding the container monitor
+that set/onResize/write all synchronize on. The off-thread anti-xray
+section copy could capture a torn snapshot (palette from before a
+resize, storage from after), producing an unparseable chunk packet so
+the client hung forever on 'loading terrain' for any ore-bearing chunk.
+Mark copy() synchronized to match the other accessors.
+
+diff --git a/net/minecraft/world/level/chunk/PalettedContainer.java b/net/minecraft/world/level/chunk/PalettedContainer.java
+index 66a05adab494f8674f0636f8b34533f8ef640028..832c5260d804edeeaf97ee2c6eb004b3b30bf88e 100644
+--- a/net/minecraft/world/level/chunk/PalettedContainer.java
++++ b/net/minecraft/world/level/chunk/PalettedContainer.java
+@@ -406,7 +406,7 @@ public class PalettedContainer<T> implements PaletteResize<T>, PalettedContainer
+     }
+ 
+     @Override
+-    public PalettedContainer<T> copy() {
++    public synchronized PalettedContainer<T> copy() { // Leaf - synchronize: copy must read data/palette/storage atomically vs set/onResize/write (off-thread anti-xray section copy was reading a torn snapshot -> unparseable chunk packet)
+         return new PalettedContainer<>(this, this.presetValues); // Paper - Anti-Xray - Add preset values
+     }
+ 

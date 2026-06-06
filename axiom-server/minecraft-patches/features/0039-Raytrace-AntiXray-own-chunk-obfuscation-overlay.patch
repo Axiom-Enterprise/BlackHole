@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 04:42:32 +0200
+Subject: [PATCH] Raytrace AntiXray own chunk obfuscation overlay
+
+
+diff --git a/net/minecraft/server/network/PlayerChunkSender.java b/net/minecraft/server/network/PlayerChunkSender.java
+index cd8d7ef49bf52c5fc9dbaaf3844a72b9af597d20..99c5bb4cefca59267568770471830bb46f86cb87 100644
+--- a/net/minecraft/server/network/PlayerChunkSender.java
++++ b/net/minecraft/server/network/PlayerChunkSender.java
+@@ -93,6 +93,11 @@ public class PlayerChunkSender {
+     public static void sendChunk(final ServerGamePacketListenerImpl connection, final ServerLevel level, final LevelChunk chunk) { // Paper - rewrite chunk system - public
+         // Paper start - Anti-Xray
+         final boolean shouldModify = level.chunkPacketBlockController.shouldModify(connection.player, chunk);
++        // DivineMC start - own raytrace anti-xray obfuscation overlay (built on tick thread, sent right
++        // after the chunk packet so it overrides it; independent of Paper engine-mode anti-xray)
++        final java.util.List<net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket> antiXrayOverlay =
++            org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.obfuscationOverlay(chunk);
++        // DivineMC end
+         // Purpur start - async chunk sending (DivineMC)
+         if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncChunkSendingEnabled) {
+             var blockEntities = chunk.blockEntities.values().toArray(new net.minecraft.world.level.block.entity.BlockEntity[0]);
+@@ -104,9 +109,13 @@ public class PlayerChunkSender {
+                 }
+             }
+ 
+-            org.bxteam.divinemc.async.AsyncChunkSend.POOL.execute(() -> connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify, blockEntities, heightmaps)));
++            org.bxteam.divinemc.async.AsyncChunkSend.POOL.execute(() -> {
++                connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify, blockEntities, heightmaps));
++                if (antiXrayOverlay != null) { for (final var packet : antiXrayOverlay) connection.send(packet); } // DivineMC - anti-xray overlay (same runnable preserves order)
++            });
+         } else {
+             connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify));
++            if (antiXrayOverlay != null) { for (final var packet : antiXrayOverlay) connection.send(packet); } // DivineMC - anti-xray overlay
+         }
+         // Purpur end - async chunk sending (DivineMC)
+         // Paper end - Anti-Xray

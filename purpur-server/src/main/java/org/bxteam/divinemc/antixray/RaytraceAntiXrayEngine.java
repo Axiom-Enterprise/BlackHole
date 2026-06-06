@@ -5,13 +5,22 @@ import dev.imanity.antixray.sdk.AntiXraySDK;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
+import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
@@ -204,6 +213,58 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
                 this.occludedHits++; // best-effort diagnostic
             }
         });
+    }
+
+    /**
+     * Build the obfuscation overlay for a chunk being sent to a player: a section-blocks update per
+     * section that replaces every hideable ore with a dimension-appropriate fake block. Runs on the
+     * tick thread (chunk access). Returns null when disabled or no engine is active.
+     */
+    public static List<ClientboundSectionBlocksUpdatePacket> obfuscationOverlay(final LevelChunk chunk) {
+        final RaytraceAntiXrayEngine engine = instance;
+        if (engine == null || !DivineConfig.PerformanceCategory.raytraceObfuscateOnSend) {
+            return null;
+        }
+        return engine.buildObfuscation(chunk);
+    }
+
+    private List<ClientboundSectionBlocksUpdatePacket> buildObfuscation(final LevelChunk chunk) {
+        final BlockState fake = fakeStateFor(chunk.getLevel().getWorld().getEnvironment());
+        final Set<Block> hidden = this.hiddenBlocks;
+        final ChunkPos cp = chunk.getPos();
+        final LevelChunkSection[] sections = chunk.getSections();
+        List<ClientboundSectionBlocksUpdatePacket> out = null;
+
+        for (int i = 0; i < sections.length; i++) {
+            final LevelChunkSection section = sections[i];
+            if (section == null || section.hasOnlyAir()) {
+                continue;
+            }
+            if (!section.maybeHas(state -> hidden.contains(state.getBlock()))) {
+                continue; // palette gate: no hideable ore in this section
+            }
+            Short2ObjectOpenHashMap<BlockState> changes = null;
+            for (int y = 0; y < 16; y++) {
+                for (int z = 0; z < 16; z++) {
+                    for (int x = 0; x < 16; x++) {
+                        if (hidden.contains(section.getBlockState(x, y, z).getBlock())) {
+                            if (changes == null) {
+                                changes = new Short2ObjectOpenHashMap<>();
+                            }
+                            changes.put((short) ((x << 8) | (z << 4) | y), fake); // SectionPos relative short
+                        }
+                    }
+                }
+            }
+            if (changes != null) {
+                if (out == null) {
+                    out = new ArrayList<>();
+                }
+                out.add(new ClientboundSectionBlocksUpdatePacket(
+                    SectionPos.of(cp, chunk.getSectionYFromSectionIndex(i)), changes));
+            }
+        }
+        return out;
     }
 
     /** Null-safe per-server-tick entry point for the movement reveal pass. */

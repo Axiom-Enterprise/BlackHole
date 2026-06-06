@@ -506,6 +506,7 @@ public class DivineConfig {
         public static int raytraceRevealIntervalTicks = 20;
         public static int raytraceRevealRadius = 16;
         public static boolean raytraceReHide = false;
+        public static boolean raytraceObfuscateOnSend = false;
         public static java.util.Set<org.bukkit.Material> raytraceHiddenBlocks = java.util.EnumSet.noneOf(org.bukkit.Material.class);
 
         private static final List<String> DEFAULT_HIDDEN_BLOCKS = java.util.List.of(
@@ -550,8 +551,12 @@ public class DivineConfig {
                 "Block radius around each viewer scanned for ores to reveal on a clear line of sight.");
             raytraceReHide = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.re-hide-out-of-sight"), raytraceReHide,
                 "Re-obfuscate ores that leave a player's line of sight (send a fake block).",
-                "REQUIRES the chunk to be obfuscated already (Paper engine-mode anti-xray); otherwise",
-                "this hides real ores. Leave off unless engine-mode obfuscation is active.");
+                "REQUIRES the chunk to be obfuscated already (obfuscate-on-send below, or Paper",
+                "engine-mode); otherwise this hides real ores. Leave off unless obfuscation is active.");
+            raytraceObfuscateOnSend = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.obfuscate-on-send"), raytraceObfuscateOnSend,
+                "Own obfuscation, independent of Paper engine-mode: when a chunk is sent, overlay a",
+                "section-blocks update replacing all hideable ores with a fake block; the reveal pass",
+                "then restores those in line of sight. Pair with re-hide-out-of-sight for the full cycle.");
 
             final List<String> names = getStringList(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.hidden-blocks"), DEFAULT_HIDDEN_BLOCKS,
                 "Blocks the engine treats as hideable; only changes to these trigger a raytrace reveal.");

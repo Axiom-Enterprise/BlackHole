@@ -1,0 +1,129 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 13:01:01 +0200
+Subject: [PATCH] perf: batch locator-bar waypoint updates to once per tick
+
+Waypoint updates fired on every sub-tick position change (Entity.setPosRaw)
+and again from ServerChunkCache.move, each doing Guava view + set-diff +
+defensive-copy work per receiver/transmitter. Collapse them into a per-tick
+batch: movements only mark a dirty entry (O(1), thread-safe), and the level
+flushes each dirty waypoint/player exactly once per tick on the tick thread.
+
+Behaviour-preserving (the locator bar refreshes ~per tick client-side) and
+vanilla/parallel-ticking safe (connection-table mutations stay on the tick
+thread; only the cheap dirty-marking happens off it).
+
+- ServerWaypointManager: dirtyWaypoints/dirtyPlayers sets + mark*/flushDirty
+- Entity.setPosRaw / ServerChunkCache.move: mark dirty instead of update
+- ServerLevel.tick: flushDirty once after entity ticking
+
+diff --git a/net/minecraft/server/level/ServerChunkCache.java b/net/minecraft/server/level/ServerChunkCache.java
+index 6ef6ef65ab8a2a6eb9b57faa447624552cf1fe7f..2f33815195f77fa09c75705db96c0214cbb55cd7 100644
+--- a/net/minecraft/server/level/ServerChunkCache.java
++++ b/net/minecraft/server/level/ServerChunkCache.java
+@@ -808,7 +808,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+         if (!player.isRemoved()) {
+             this.chunkMap.move(player);
+             if (player.isReceivingWaypoints()) {
+-                this.level.getWaypointManager().updatePlayer(player);
++                this.level.getWaypointManager().markPlayerDirty(player); // Leaf - batch waypoint updates (flushed once per tick)
+             }
+         }
+     }
+diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
+index 19e6e76702d99ddb5b01d765bb7e7eaacaccd7b4..bcbaef4380c5d272941f1e610b978956f8d17ad3 100644
+--- a/net/minecraft/server/level/ServerLevel.java
++++ b/net/minecraft/server/level/ServerLevel.java
+@@ -1000,6 +1000,8 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
+             // Purpur end - regionized chunk ticking (DivineMC)
+         }
+ 
++        this.waypointManager.flushDirty(); // Leaf - batch waypoint updates: apply all per-tick moves once, on the tick thread
++
+         profiler.push("entityManagement");
+         // Paper - rewrite chunk system
+         profiler.pop();
+diff --git a/net/minecraft/server/waypoints/ServerWaypointManager.java b/net/minecraft/server/waypoints/ServerWaypointManager.java
+index 0dd5c37c41f0372bd08f5a269ec7a3609f941f8c..d486347fb130da0cb1eef7d283954c9e7855f49e 100644
+--- a/net/minecraft/server/waypoints/ServerWaypointManager.java
++++ b/net/minecraft/server/waypoints/ServerWaypointManager.java
+@@ -18,6 +18,13 @@ public class ServerWaypointManager implements WaypointManager<WaypointTransmitte
+     private final Set<WaypointTransmitter> waypoints = new HashSet<>();
+     private final Set<ServerPlayer> players = new HashSet<>();
+     private final Table<ServerPlayer, WaypointTransmitter, WaypointTransmitter.Connection> connections = HashBasedTable.create();
++    // Leaf start - batch waypoint updates: setPosRaw fires per sub-tick position change; instead of running
++    // the full update there, just mark dirty (O(1), no allocation) and process each dirty waypoint/player
++    // ONCE per tick on the tick thread (flushDirty). The locator bar only refreshes ~per tick client-side,
++    // so this is behaviour-preserving while collapsing multiple per-tick moves into one update.
++    private final Set<WaypointTransmitter> dirtyWaypoints = java.util.concurrent.ConcurrentHashMap.newKeySet();
++    private final Set<ServerPlayer> dirtyPlayers = java.util.concurrent.ConcurrentHashMap.newKeySet();
++    // Leaf end - batch waypoint updates
+     private final net.minecraft.server.level.ServerLevel level; // Purpur - parallel world ticking (DivineMC)
+     // Paper start - optimize ServerWaypointManager with locator bar disabled
+     public boolean locatorBarEnabled; // Avoid a gamerule lookup for each player
+@@ -122,6 +129,43 @@ public class ServerWaypointManager implements WaypointManager<WaypointTransmitte
+         return this.waypoints;
+     }
+ 
++    // Leaf start - batch waypoint updates
++    /** Mark a moved transmitter for a single update at the next flush. Cheap, thread-safe, no-op when off. */
++    public void markWaypointDirty(final WaypointTransmitter waypoint) {
++        if (this.locatorBarEnabled) {
++            this.dirtyWaypoints.add(waypoint);
++        }
++    }
++
++    /** Mark a moved receiver for a single update at the next flush. Cheap, thread-safe, no-op when off. */
++    public void markPlayerDirty(final ServerPlayer player) {
++        if (this.locatorBarEnabled) {
++            this.dirtyPlayers.add(player);
++        }
++    }
++
++    /** Process all pending waypoint/player updates once. Must run on the level tick thread (post entity tick). */
++    public void flushDirty() {
++        if (!this.locatorBarEnabled) {
++            return;
++        }
++        if (!this.dirtyWaypoints.isEmpty()) {
++            for (final WaypointTransmitter waypoint : this.dirtyWaypoints) {
++                this.updateWaypoint(waypoint); // self-guards on this.waypoints.contains(waypoint)
++            }
++            this.dirtyWaypoints.clear();
++        }
++        if (!this.dirtyPlayers.isEmpty()) {
++            for (final ServerPlayer player : this.dirtyPlayers) {
++                if (this.players.contains(player)) {
++                    this.updatePlayer(player);
++                }
++            }
++            this.dirtyPlayers.clear();
++        }
++    }
++    // Leaf end - batch waypoint updates
++
+     // Paper start - optimize ServerWaypointManager with locator bar disabled
+     // Avoid a gamerule lookup for each player
+     private boolean isLocatorBarEnabledFor(final ServerPlayer player) {
+diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
+index 5b32486a68d302e40cfc56f4d7f7818784e82d03..401256b226bcdf512a5555f83d497010b05cdfa7 100644
+--- a/net/minecraft/world/entity/Entity.java
++++ b/net/minecraft/world/entity/Entity.java
+@@ -5069,12 +5069,14 @@ public abstract class Entity
+ 
+             this.levelCallback.onMove();
+             if (!this.firstTick && this.level instanceof ServerLevel serverLevel && !this.isRemoved()) {
++                // Leaf - batch waypoint updates: mark dirty (O(1)) instead of running the full update on every
++                // sub-tick position change; ServerLevel flushes the dirty set once per tick.
+                 if (this instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
+-                    serverLevel.getWaypointManager().updateWaypoint(waypoint);
++                    serverLevel.getWaypointManager().markWaypointDirty(waypoint);
+                 }
+ 
+                 if (this instanceof ServerPlayer player && player.isReceivingWaypoints() && player.connection != null) {
+-                    serverLevel.getWaypointManager().updatePlayer(player);
++                    serverLevel.getWaypointManager().markPlayerDirty(player);
+                 }
+             }
+             // Paper start - Fix MC-44654

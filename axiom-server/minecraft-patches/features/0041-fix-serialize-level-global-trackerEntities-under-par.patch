@@ -1,0 +1,65 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 06:49:28 +0200
+Subject: [PATCH] fix: serialize level-global trackerEntities under
+ parallel/regionized ticking
+
+
+diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/server/ServerEntityLookup.java b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/server/ServerEntityLookup.java
+index f312a7f5b1b2a777ab36b94ce7cbf3873f5e88bc..498c13580905b23c426456bdc3141f7670bb47c0 100644
+--- a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/server/ServerEntityLookup.java
++++ b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/server/ServerEntityLookup.java
+@@ -112,14 +112,19 @@ public final class ServerEntityLookup extends EntityLookup {
+     @Override
+     protected void entityStartLoaded(final Entity entity) {
+         // Moonrise start - entity tracker
+-        this.trackerEntities.add(entity);
++        // Leaf - trackerEntities is a single level-global ReferenceList, but under parallel/regionized world
++        // ticking entityStartLoaded/EndLoaded run from multiple region threads (each owning a different chunk,
++        // so the per-chunk checkThread passes). The backing Reference2IntOpenHashMap is not thread-safe, so
++        // concurrent add/remove corrupts it (rehash AIOOBE). Serialize on the list monitor; readers
++        // (entity tracker tick) take the same monitor when those features are on.
++        synchronized (this.trackerEntities) { this.trackerEntities.add(entity); } // Leaf
+         // Moonrise end - entity tracker
+     }
+ 
+     @Override
+     protected void entityEndLoaded(final Entity entity) {
+         // Moonrise start - entity tracker
+-        this.trackerEntities.remove(entity);
++        synchronized (this.trackerEntities) { this.trackerEntities.remove(entity); } // Leaf
+         // Moonrise end - entity tracker
+     }
+ 
+diff --git a/net/minecraft/server/level/ChunkMap.java b/net/minecraft/server/level/ChunkMap.java
+index 5a6f787d7dc0ca9a88e1a918ead6471947d0c0ec..7de46f5dc203638016866c7433d277e6fa7c0a83 100644
+--- a/net/minecraft/server/level/ChunkMap.java
++++ b/net/minecraft/server/level/ChunkMap.java
+@@ -1075,9 +1075,24 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
+         final ca.spottedleaf.moonrise.patches.chunk_system.level.entity.server.ServerEntityLookup entityLookup = (ca.spottedleaf.moonrise.patches.chunk_system.level.entity.server.ServerEntityLookup)((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)this.level).moonrise$getEntityLookup();;
+ 
+         final ca.spottedleaf.moonrise.common.list.ReferenceList<net.minecraft.world.entity.Entity> trackerEntities = entityLookup.trackerEntities;
+-        final Entity[] trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
+-        for (int i = 0, len = trackerEntities.size(); i < len; ++i) {
++        // Leaf start - under parallel/regionized world ticking the level-global trackerEntities list is mutated
++        // from region threads while this fallback iterates it on the main thread; snapshot under its monitor so
++        // a concurrent grow can't index past the array. Vanilla single-thread keeps the original zero-copy path.
++        final Entity[] trackerEntitiesRaw;
++        final int len;
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking
++            || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking) {
++            synchronized (trackerEntities) {
++                trackerEntitiesRaw = java.util.Arrays.copyOf(trackerEntities.getRawDataUnchecked(), trackerEntities.size());
++                len = trackerEntitiesRaw.length;
++            }
++        } else {
++            trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
++            len = trackerEntities.size();
++        }
++        for (int i = 0; i < len; ++i) {
+             final Entity entity = trackerEntitiesRaw[i];
++            if (entity == null) continue; // Leaf - snapshot may race a removal that nulls a slot
+             final ChunkMap.TrackedEntity tracker = ((ca.spottedleaf.moonrise.patches.entity_tracker.EntityTrackerEntity)entity).moonrise$getTrackedEntity();
+             if (tracker == null) {
+                 continue;

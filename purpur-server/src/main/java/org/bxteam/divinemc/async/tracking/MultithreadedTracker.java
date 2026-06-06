@@ -63,27 +63,35 @@ public class MultithreadedTracker {
         final ServerEntityLookup entityLookup = (ServerEntityLookup) level.moonrise$getEntityLookup();
 
         final ReferenceList<Entity> trackerEntities = entityLookup.trackerEntities;
-        final Entity[] trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
-        final int size = trackerEntities.size(); // Leaf - iterate live [0,size) only; ReferenceList nulls the tail on remove, so this is equivalent to the full-array null-skip but avoids scanning the null padding each tick
 
         // Leaf start - resolve per-entity tracker + chunk on the calling (main/region) thread.
         // Entity#chunkPosition() is mutated by setPos on the entity tick thread; reading it inside the
         // worker raced with that write (stale/wrong NearbyPlayers chunk -> wrong viewer set). Mirror the
         // compat path: snapshot here, defer only the heavy moonrise$tick/sendChanges to the pool. Use
-        // parallel arrays (no per-entity lambda) to keep this allocation-light.
-        final ChunkMap.TrackedEntity[] trackers = new ChunkMap.TrackedEntity[size];
-        final NearbyPlayers.TrackedChunk[] trackedChunks = new NearbyPlayers.TrackedChunk[size];
-        int index = 0;
-        for (int i = 0; i < size; i++) {
-            final Entity entity = trackerEntitiesRaw[i];
-            if (entity == null) continue;
+        // parallel arrays (no per-entity lambda) to keep this allocation-light. Build the snapshot under
+        // the trackerEntities monitor: under parallel/regionized ticking the list is mutated from region
+        // threads concurrently, and an unsynchronized read of (raw,size) can index past a grown array.
+        final ChunkMap.TrackedEntity[] trackers;
+        final NearbyPlayers.TrackedChunk[] trackedChunks;
+        final int index;
+        synchronized (trackerEntities) {
+            final Entity[] trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
+            final int size = trackerEntities.size(); // iterate live [0,size) only; tail is nulled on remove
+            trackers = new ChunkMap.TrackedEntity[size];
+            trackedChunks = new NearbyPlayers.TrackedChunk[size];
+            int idx = 0;
+            for (int i = 0; i < size; i++) {
+                final Entity entity = trackerEntitiesRaw[i];
+                if (entity == null) continue;
 
-            final ChunkMap.TrackedEntity tracker = ((EntityTrackerEntity) entity).moonrise$getTrackedEntity();
-            if (tracker == null) continue;
+                final ChunkMap.TrackedEntity tracker = ((EntityTrackerEntity) entity).moonrise$getTrackedEntity();
+                if (tracker == null) continue;
 
-            trackers[index] = tracker;
-            trackedChunks[index] = nearbyPlayers.getChunk(entity.chunkPosition());
-            index++;
+                trackers[idx] = tracker;
+                trackedChunks[idx] = nearbyPlayers.getChunk(entity.chunkPosition());
+                idx++;
+            }
+            index = idx;
         }
 
         submitSharded(index, j -> {
@@ -101,26 +109,35 @@ public class MultithreadedTracker {
         final ServerEntityLookup entityLookup = (ServerEntityLookup) level.moonrise$getEntityLookup();
 
         final ReferenceList<Entity> trackerEntities = entityLookup.trackerEntities;
-        final Entity[] trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
-        final int size = trackerEntities.size(); // Leaf - bound by live size (tail is null), skip padding scan
-        final Runnable[] tickTask = new Runnable[size];
-        final ChunkMap.TrackedEntity[] sendChangesTrackers = new ChunkMap.TrackedEntity[size]; // Leaf - store tracker directly instead of allocating a per-entity sendChanges lambda each tick
-        int index = 0;
+        // Leaf start - build snapshot under the trackerEntities monitor (see tickAsync); parallel/regionized
+        // ticking mutates the level-global list from region threads concurrently with this read.
+        final Runnable[] tickTask;
+        final ChunkMap.TrackedEntity[] sendChangesTrackers; // store tracker directly instead of a per-entity sendChanges lambda
+        final int index;
+        synchronized (trackerEntities) {
+            final Entity[] trackerEntitiesRaw = trackerEntities.getRawDataUnchecked();
+            final int size = trackerEntities.size(); // bound by live size (tail is null), skip padding scan
+            tickTask = new Runnable[size];
+            sendChangesTrackers = new ChunkMap.TrackedEntity[size];
+            int idx = 0;
 
-        for (int i = 0; i < size; i++) {
-            final Entity entity = trackerEntitiesRaw[i];
-            if (entity == null) continue;
+            for (int i = 0; i < size; i++) {
+                final Entity entity = trackerEntitiesRaw[i];
+                if (entity == null) continue;
 
-            final ChunkMap.TrackedEntity tracker = ((EntityTrackerEntity) entity).moonrise$getTrackedEntity();
+                final ChunkMap.TrackedEntity tracker = ((EntityTrackerEntity) entity).moonrise$getTrackedEntity();
 
-            if (tracker == null) continue;
+                if (tracker == null) continue;
 
-            synchronized (tracker) {
-                tickTask[index] = tracker.tickCompact(nearbyPlayers.getChunk(entity.chunkPosition()));
-                sendChangesTrackers[index] = tracker;
+                synchronized (tracker) {
+                    tickTask[idx] = tracker.tickCompact(nearbyPlayers.getChunk(entity.chunkPosition()));
+                    sendChangesTrackers[idx] = tracker;
+                }
+                idx++;
             }
-            index++;
+            index = idx;
         }
+        // Leaf end
 
         // Leaf start - shard across the pool instead of one whole-level task (see submitSharded).
         // Chunks were already resolved on the calling thread above, so this only parallelizes the

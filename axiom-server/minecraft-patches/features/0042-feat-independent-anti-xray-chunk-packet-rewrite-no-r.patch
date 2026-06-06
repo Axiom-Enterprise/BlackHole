@@ -1,0 +1,156 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 07:08:03 +0200
+Subject: [PATCH] feat: independent anti-xray chunk-packet rewrite (no real ore
+ data on wire)
+
+
+diff --git a/net/minecraft/network/protocol/game/ClientboundLevelChunkPacketData.java b/net/minecraft/network/protocol/game/ClientboundLevelChunkPacketData.java
+index d98fc6d62634ebeb3ba07dcaa51b4024105ddd2f..5531a0d017fa29d104ead3909d4bdce42b26d92f 100644
+--- a/net/minecraft/network/protocol/game/ClientboundLevelChunkPacketData.java
++++ b/net/minecraft/network/protocol/game/ClientboundLevelChunkPacketData.java
+@@ -121,6 +121,38 @@ public class ClientboundLevelChunkPacketData {
+     }
+     // Purpur end - async chunk sending (DivineMC)
+ 
++    // Leaf start - independent anti-xray: serialize from pre-obfuscated section copies (ores already
++    // rewritten to fake on the tick thread). The copies are immutable snapshots, so unlike the live
++    // sections they cannot mutate mid-serialization - the size is exact and no re-extract loop is needed,
++    // even on the async chunk-send thread. Block entities and heightmaps are precomputed by the caller on
++    // the tick thread to avoid touching the live chunk off-thread.
++    public ClientboundLevelChunkPacketData(final LevelChunkSection[] obfuscatedSections, final BlockEntity[] blockEntities, final Map<Heightmap.Types, long[]> heightmaps) {
++        this.heightmaps = heightmaps;
++        if (Thread.currentThread() instanceof org.bxteam.divinemc.async.AsyncChunkSend.AsyncChunkSendThread) {
++            final int size = calculateChunkSize(obfuscatedSections);
++            final ByteBuf buffer = Unpooled.buffer(size);
++            extractChunkData(new FriendlyByteBuf(buffer), obfuscatedSections);
++            this.buffer = it.unimi.dsi.fastutil.bytes.ByteArrays.setLength(buffer.array(), buffer.writerIndex());
++        } else {
++            this.buffer = new byte[calculateChunkSize(obfuscatedSections)];
++            extractChunkData(new FriendlyByteBuf(this.getWriteBuffer()), obfuscatedSections);
++        }
++
++        this.blockEntitiesData = Lists.newArrayList();
++        int totalTileEntities = 0;
++        for (final BlockEntity blockEntity : blockEntities) {
++            if (++totalTileEntities > BLOCK_ENTITY_LIMIT) {
++                final net.minecraft.network.protocol.Packet<ClientGamePacketListener> packet = blockEntity.getUpdatePacket();
++                if (packet != null) {
++                    this.extraPackets.add(packet);
++                    continue;
++                }
++            }
++            this.blockEntitiesData.add(ClientboundLevelChunkPacketData.BlockEntityInfo.create(blockEntity));
++        }
++    }
++    // Leaf end
++
+     public ClientboundLevelChunkPacketData(final RegistryFriendlyByteBuf input, final int x, final int z) {
+         this.heightmaps = HEIGHTMAPS_STREAM_CODEC.decode(input);
+         int size = input.readVarInt();
+@@ -150,6 +182,26 @@ public class ClientboundLevelChunkPacketData {
+         return total;
+     }
+ 
++    // Leaf start - independent anti-xray: size/serialize an explicit (obfuscated) section array
++    private static int calculateChunkSize(final LevelChunkSection[] sections) {
++        int total = 0;
++        for (final LevelChunkSection section : sections) {
++            total += section.getSerializedSize();
++        }
++        return total;
++    }
++
++    public static void extractChunkData(final FriendlyByteBuf buffer, final LevelChunkSection[] sections) {
++        for (final LevelChunkSection section : sections) {
++            section.write(buffer); // no ChunkPacketInfo: ores were already rewritten in the copies
++        }
++        if (Thread.currentThread() instanceof org.bxteam.divinemc.async.AsyncChunkSend.AsyncChunkSendThread) return;
++        if (buffer.writerIndex() != buffer.capacity()) {
++            throw new IllegalStateException("Didn't fill chunk buffer: expected " + buffer.capacity() + " bytes, got " + buffer.writerIndex());
++        }
++    }
++    // Leaf end
++
+     private ByteBuf getWriteBuffer() {
+         ByteBuf buffer = Unpooled.wrappedBuffer(this.buffer);
+         buffer.writerIndex(0);
+diff --git a/net/minecraft/network/protocol/game/ClientboundLevelChunkWithLightPacket.java b/net/minecraft/network/protocol/game/ClientboundLevelChunkWithLightPacket.java
+index fb003ef5011faac894b13650b9306e7ac07706ed..a8741e6c0c9009e4d27c3fe48993af71e053dbee 100644
+--- a/net/minecraft/network/protocol/game/ClientboundLevelChunkWithLightPacket.java
++++ b/net/minecraft/network/protocol/game/ClientboundLevelChunkWithLightPacket.java
+@@ -69,6 +69,19 @@ public class ClientboundLevelChunkWithLightPacket implements Packet<ClientGamePa
+     }
+     // Purpur end - async chunk sending (DivineMC)
+ 
++    // Leaf start - independent anti-xray: build the chunk packet from pre-obfuscated section copies, so the
++    // real ore data never reaches the wire. No Paper engine-mode (chunkPacketBlockController) is involved -
++    // the obfuscation is done by our raytrace engine on the tick thread before this is constructed. Block
++    // entities and heightmaps are precomputed by the caller on the tick thread (async-send safe).
++    public ClientboundLevelChunkWithLightPacket(final LevelChunk chunk, final LevelLightEngine lightEngine, final @Nullable BitSet skyLight, final @Nullable BitSet blockLight, final net.minecraft.world.level.block.entity.BlockEntity[] blockEntities, final java.util.Map<net.minecraft.world.level.levelgen.Heightmap.Types, long[]> heightmaps, final net.minecraft.world.level.chunk.LevelChunkSection[] obfuscatedSections) {
++        final ChunkPos chunkPos = chunk.getPos();
++        this.x = chunkPos.x();
++        this.z = chunkPos.z();
++        this.chunkData = new ClientboundLevelChunkPacketData(obfuscatedSections, blockEntities, heightmaps);
++        this.lightData = new ClientboundLightUpdatePacketData(chunkPos, lightEngine, skyLight, blockLight);
++    }
++    // Leaf end
++
+     private ClientboundLevelChunkWithLightPacket(final RegistryFriendlyByteBuf input) {
+         this.x = input.readInt();
+         this.z = input.readInt();
+diff --git a/net/minecraft/server/network/PlayerChunkSender.java b/net/minecraft/server/network/PlayerChunkSender.java
+index 99c5bb4cefca59267568770471830bb46f86cb87..8ba2cc47e5360a16af157b24597819c558fed158 100644
+--- a/net/minecraft/server/network/PlayerChunkSender.java
++++ b/net/minecraft/server/network/PlayerChunkSender.java
+@@ -93,10 +93,11 @@ public class PlayerChunkSender {
+     public static void sendChunk(final ServerGamePacketListenerImpl connection, final ServerLevel level, final LevelChunk chunk) { // Paper - rewrite chunk system - public
+         // Paper start - Anti-Xray
+         final boolean shouldModify = level.chunkPacketBlockController.shouldModify(connection.player, chunk);
+-        // DivineMC start - own raytrace anti-xray obfuscation overlay (built on tick thread, sent right
+-        // after the chunk packet so it overrides it; independent of Paper engine-mode anti-xray)
+-        final java.util.List<net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket> antiXrayOverlay =
+-            org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.obfuscationOverlay(chunk);
++        // DivineMC start - own raytrace anti-xray: rewrite the chunk packet from pre-obfuscated section
++        // copies built on the tick thread, so real ore data never reaches the wire (independent of Paper
++        // engine-mode). null => no hideable ore, use the normal path. Reveal-on-sight re-adds visible ores.
++        final net.minecraft.world.level.chunk.LevelChunkSection[] antiXraySections =
++            org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.obfuscatedSections(chunk);
+         // DivineMC end
+         // Purpur start - async chunk sending (DivineMC)
+         if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncChunkSendingEnabled) {
+@@ -109,13 +110,27 @@ public class PlayerChunkSender {
+                 }
+             }
+ 
+-            org.bxteam.divinemc.async.AsyncChunkSend.POOL.execute(() -> {
+-                connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify, blockEntities, heightmaps));
+-                if (antiXrayOverlay != null) { for (final var packet : antiXrayOverlay) connection.send(packet); } // DivineMC - anti-xray overlay (same runnable preserves order)
+-            });
++            if (antiXraySections != null) {
++                org.bxteam.divinemc.async.AsyncChunkSend.POOL.execute(() -> connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, blockEntities, heightmaps, antiXraySections))); // DivineMC - independent anti-xray
++            } else {
++                org.bxteam.divinemc.async.AsyncChunkSend.POOL.execute(() -> connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify, blockEntities, heightmaps)));
++            }
+         } else {
+-            connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify));
+-            if (antiXrayOverlay != null) { for (final var packet : antiXrayOverlay) connection.send(packet); } // DivineMC - anti-xray overlay
++            if (antiXraySections != null) {
++                // DivineMC start - independent anti-xray sync path: precompute block entities + heightmaps on
++                // this (tick) thread, then serialize from the obfuscated copies.
++                var blockEntities = chunk.blockEntities.values().toArray(new net.minecraft.world.level.block.entity.BlockEntity[0]);
++                java.util.Map<net.minecraft.world.level.levelgen.Heightmap.Types, long[]> heightmaps = new java.util.HashMap<>();
++                for (var entry : chunk.getHeightmaps()) {
++                    if (entry.getKey().sendToClient()) {
++                        heightmaps.put(entry.getKey(), entry.getValue().getRawData());
++                    }
++                }
++                connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, blockEntities, heightmaps, antiXraySections));
++                // DivineMC end
++            } else {
++                connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify));
++            }
+         }
+         // Purpur end - async chunk sending (DivineMC)
+         // Paper end - Anti-Xray

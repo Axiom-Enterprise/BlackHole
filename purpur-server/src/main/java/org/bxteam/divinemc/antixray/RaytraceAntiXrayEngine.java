@@ -5,22 +5,16 @@ import dev.imanity.antixray.sdk.AntiXraySDK;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
-import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
@@ -216,24 +210,29 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
     }
 
     /**
-     * Build the obfuscation overlay for a chunk being sent to a player: a section-blocks update per
-     * section that replaces every hideable ore with a dimension-appropriate fake block. Runs on the
-     * tick thread (chunk access). Returns null when disabled or no engine is active.
+     * Build the obfuscated section array for a chunk being sent to a player: a clone of the chunk's
+     * section array where every section containing a hideable ore is replaced by a deep copy with those
+     * ores rewritten to a dimension-appropriate fake block. The chunk packet is then serialized from
+     * these copies, so the real ore data never reaches the wire (unlike an after-the-fact overlay, which
+     * leaks the real chunk packet and is defeated by packet-sniffing xray). Reveal-on-sight then re-adds
+     * the ores a viewer can actually see, on top of this obfuscated base.
+     *
+     * <p>Runs on the tick thread (reads live chunk state). Returns null when disabled, no engine is
+     * active, or the chunk has no hideable ore — in which case the caller uses the normal send path.
      */
-    public static List<ClientboundSectionBlocksUpdatePacket> obfuscationOverlay(final LevelChunk chunk) {
+    public static LevelChunkSection[] obfuscatedSections(final LevelChunk chunk) {
         final RaytraceAntiXrayEngine engine = instance;
         if (engine == null || !DivineConfig.PerformanceCategory.raytraceObfuscateOnSend) {
             return null;
         }
-        return engine.buildObfuscation(chunk);
+        return engine.buildObfuscatedSections(chunk);
     }
 
-    private List<ClientboundSectionBlocksUpdatePacket> buildObfuscation(final LevelChunk chunk) {
+    private LevelChunkSection[] buildObfuscatedSections(final LevelChunk chunk) {
         final BlockState fake = fakeStateFor(chunk.getLevel().getWorld().getEnvironment());
         final Set<Block> hidden = this.hiddenBlocks;
-        final ChunkPos cp = chunk.getPos();
         final LevelChunkSection[] sections = chunk.getSections();
-        List<ClientboundSectionBlocksUpdatePacket> out = null;
+        LevelChunkSection[] out = null; // lazily clone the array only once we actually hide something
 
         for (int i = 0; i < sections.length; i++) {
             final LevelChunkSection section = sections[i];
@@ -243,25 +242,23 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
             if (!section.maybeHas(state -> hidden.contains(state.getBlock()))) {
                 continue; // palette gate: no hideable ore in this section
             }
-            Short2ObjectOpenHashMap<BlockState> changes = null;
+            LevelChunkSection copy = null;
             for (int y = 0; y < 16; y++) {
                 for (int z = 0; z < 16; z++) {
                     for (int x = 0; x < 16; x++) {
+                        // read the original, write the fake into the copy
                         if (hidden.contains(section.getBlockState(x, y, z).getBlock())) {
-                            if (changes == null) {
-                                changes = new Short2ObjectOpenHashMap<>();
+                            if (copy == null) {
+                                if (out == null) {
+                                    out = sections.clone();
+                                }
+                                copy = section.copy();
+                                out[i] = copy;
                             }
-                            changes.put((short) ((x << 8) | (z << 4) | y), fake); // SectionPos relative short
+                            copy.setBlockState(x, y, z, fake, false);
                         }
                     }
                 }
-            }
-            if (changes != null) {
-                if (out == null) {
-                    out = new ArrayList<>();
-                }
-                out.add(new ClientboundSectionBlocksUpdatePacket(
-                    SectionPos.of(cp, chunk.getSectionYFromSectionIndex(i)), changes));
             }
         }
         return out;

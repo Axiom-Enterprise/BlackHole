@@ -9,11 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.block.state.BlockState;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,15 +36,19 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Built-in multithreaded raytrace anti-xray engine. Registers itself as the
- * {@link AntiXrayAdapter} so the fork-level SDK hooks (see patch 0037) feed it block-change and
- * player-interaction signals; a paid plugin may override it by calling {@link AntiXraySDK#setAdapter}.
+ * Built-in multithreaded raytrace anti-xray, reveal-on-sight layer.
  *
- * <p>Threading contract: SDK callbacks fire on the tick thread. This engine only captures primitives
- * there and defers work to its own pool; it never touches live {@code Level} state off-thread. The
- * actual visibility recompute runs through {@link Raytracer} against a captured {@code OcclusionView}
- * snapshot, and packet obfuscation is the next increment — this MVP wires the lifecycle, config and
- * async pipeline without altering gameplay.
+ * <p><b>Hiding is NOT done here.</b> Ores are hidden by Paper engine-mode anti-xray
+ * ({@code anticheat.anti-xray} in the world config), which rewrites the chunk packet during serialization
+ * and also keeps live block updates obscured. This engine only sits on TOP of that: a periodic per-player
+ * pass raytraces nearby hideable ores against a tick-thread occlusion snapshot and, off-thread, sends the
+ * REAL block for any ore with a clear line of sight (reveal-on-sight) and optionally re-hides ores that
+ * leave sight again. Because it only ever sends accurate data on top of an already-obfuscated chunk, it
+ * cannot corrupt the chunk packet or stall chunk sending - unlike the removed custom-rewrite approach.
+ *
+ * <p>Threading: snapshots are captured on the tick thread (safe live reads); raytracing and packet sends
+ * run on this engine's own pool. It registers as the Imanity {@link AntiXrayAdapter}; a paid plugin may
+ * override it via {@link AntiXraySDK#setAdapter}.
  */
 public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
     private static final Logger LOGGER = LogManager.getLogger("RaytraceAntiXray");
@@ -60,19 +61,8 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
     private final Set<Block> hiddenBlocks;
     // Per-player set of already-revealed ore positions, to avoid resending each interval.
     private final ConcurrentHashMap<UUID, LongOpenHashSet> revealed = new ConcurrentHashMap<>();
-    // Cached obfuscated section arrays per chunk, reused across viewers; invalidated on any block change.
-    // The arrays are immutable copies, so sharing them between connections/sends is safe.
-    private static final byte[] NO_OBF = new byte[0]; // sentinel: chunk has no hideable ore
-    private static final int OBF_CACHE_CAP = 8192; // per-world entry cap; cleared wholesale on overflow
-    // Cache the serialized obfuscated chunk-data buffer per chunk. byte[] is immutable and read-only on
-    // send, so it is shared across all viewers and threads - the ore scan, section copy AND serialization
-    // run once per chunk instead of once per (chunk, player). Invalidated on any block change.
-    private final ConcurrentHashMap<World, ConcurrentHashMap<Long, byte[]>> obfCache = new ConcurrentHashMap<>();
     private long revealTick; // tick thread only
-    // Diagnostics only. `submitted` has a single writer (SDK callbacks fire on the tick thread).
-    // The hit counters are written from workers and are intentionally best-effort (no atomics):
-    // an occasional lost increment is fine for stats and avoids CAS traffic on the hot path.
-    private volatile long submitted;
+    // Best-effort diagnostics (no atomics on the hot path; an occasional lost increment is fine).
     private volatile long visibleHits;
     private volatile long occludedHits;
 
@@ -112,16 +102,11 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
         final RaytraceAntiXrayEngine engine = new RaytraceAntiXrayEngine(threads, hidden);
         instance = engine;
         AntiXraySDK.setAdapter(engine);
-        LOGGER.info("Raytrace AntiXray engine started ({} threads, radius {}, obfuscate-on-send={}, {} hideable blocks, re-hide={})",
-            threads, DivineConfig.PerformanceCategory.raytraceEngineRadius,
-            DivineConfig.PerformanceCategory.raytraceObfuscateOnSend, hidden.size(),
+        LOGGER.info("Raytrace AntiXray reveal engine started ({} threads, reveal-radius {}, {} hideable blocks, re-hide={}). Hiding is provided by Paper engine-mode anti-xray.",
+            threads, DivineConfig.PerformanceCategory.raytraceRevealRadius, hidden.size(),
             DivineConfig.PerformanceCategory.raytraceReHide);
         if (hidden.isEmpty()) {
-            LOGGER.warn("Raytrace AntiXray: hidden-blocks resolved to ZERO blocks - no ore will be hidden. "
-                + "Check raytrace-antixray.engine.hidden-blocks (material names) in the config.");
-        } else if (!DivineConfig.PerformanceCategory.raytraceObfuscateOnSend) {
-            LOGGER.warn("Raytrace AntiXray: engine is ON but obfuscate-on-send is OFF - ores are NOT hidden, "
-                + "only revealed on sight. Enable raytrace-antixray.engine.obfuscate-on-send to actually hide ores.");
+            LOGGER.warn("Raytrace AntiXray: hidden-blocks resolved to ZERO blocks - nothing will be revealed. Check raytrace-antixray.engine.hidden-blocks.");
         }
     }
 
@@ -134,194 +119,20 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
             AntiXraySDK.setAdapter(null);
         }
         this.revealed.clear();
-        this.obfCache.clear();
         this.workers.shutdownNow();
     }
 
+    // SDK hooks. Reveal is driven by the periodic movement pass (tickReveal) and Paper engine-mode handles
+    // break-to-reveal, so these per-event callbacks are intentionally cheap no-ops. Kept for Imanity SDK
+    // compatibility (a third-party adapter may do more).
     @Override
     public void callBlockChange(final World world, final int x, final int y, final int z, final Material material) {
-        this.submitted++; // tick thread only
-        // Only hideable blocks (ores) are worth a reveal pass.
-        if (!DivineConfig.PerformanceCategory.raytraceHiddenBlocks.contains(material)) {
-            return;
-        }
-        if (!(world instanceof final CraftWorld craftWorld)) {
-            return;
-        }
-        final ServerLevel level = craftWorld.getHandle();
-        final BlockPos target = new BlockPos(x, y, z);
-        final BlockState realState = level.getBlockStateIfLoaded(target); // tick thread
-        if (realState == null) {
-            return;
-        }
-
-        final int radius = DivineConfig.PerformanceCategory.raytraceEngineRadius;
-        final long radiusSq = (long) radius * radius;
-        final double cx = x + 0.5, cy = y + 0.5, cz = z + 0.5;
-
-        // For each viewer in range, capture eye + a bounded occlusion snapshot on the TICK THREAD,
-        // then raytrace off-thread. On a clear line of sight, send the real block (reveal-on-sight).
-        // This only ever sends MORE accurate data on top of an obfuscated chunk, so it cannot break
-        // gameplay whether or not Paper's engine-mode anti-xray is active.
-        for (final Player bukkitPlayer : world.getPlayers()) {
-            final Location eye = bukkitPlayer.getEyeLocation();
-            final double eyeX = eye.getX(), eyeY = eye.getY(), eyeZ = eye.getZ();
-            final double dx = eyeX - cx, dy = eyeY - cy, dz = eyeZ - cz;
-            if (dx * dx + dy * dy + dz * dz > radiusSq) {
-                continue;
-            }
-
-            final int ex = (int) Math.floor(eyeX);
-            final int ey = (int) Math.floor(eyeY);
-            final int ez = (int) Math.floor(eyeZ);
-            final OcclusionSnapshot snapshot = OcclusionSnapshot.capture(level,
-                Math.min(ex, x) - 1, Math.min(ey, y) - 1, Math.min(ez, z) - 1,
-                Math.max(ex, x) + 1, Math.max(ey, y) + 1, Math.max(ez, z) + 1);
-            if (snapshot == null) {
-                continue; // out of capture bounds (too far) - skip
-            }
-
-            final ServerGamePacketListenerImpl connection = ((CraftPlayer) bukkitPlayer).getHandle().connection;
-            this.workers.execute(() -> {
-                if (Raytracer.isVisible(snapshot, eyeX, eyeY, eyeZ, x, y, z)) {
-                    connection.send(new ClientboundBlockUpdatePacket(target, realState)); // reveal
-                    this.visibleHits++; // best-effort diagnostic
-                } else {
-                    this.occludedHits++; // best-effort diagnostic
-                }
-            });
-        }
+        // no-op: handled by engine-mode + the periodic reveal pass
     }
 
     @Override
     public void callPlayerLeftClickBlock(final World world, final Player player, final int x, final int y, final int z) {
-        this.submitted++; // tick thread only
-        if (!(world instanceof final CraftWorld craftWorld)) {
-            return;
-        }
-        final ServerLevel level = craftWorld.getHandle();
-
-        // Capture viewer eye + a bounded occlusion snapshot of the eye->target box on the TICK THREAD;
-        // the target is the clicked block (within reach), so the box is small. The raytrace itself then
-        // runs off-thread against the immutable snapshot - no live Level access on the workers.
-        final Location eye = player.getEyeLocation();
-        final double eyeX = eye.getX();
-        final double eyeY = eye.getY();
-        final double eyeZ = eye.getZ();
-
-        final int ex = (int) Math.floor(eyeX);
-        final int ey = (int) Math.floor(eyeY);
-        final int ez = (int) Math.floor(eyeZ);
-        final OcclusionSnapshot snapshot = OcclusionSnapshot.capture(level,
-            Math.min(ex, x) - 1, Math.min(ey, y) - 1, Math.min(ez, z) - 1,
-            Math.max(ex, x) + 1, Math.max(ey, y) + 1, Math.max(ez, z) + 1);
-        if (snapshot == null) {
-            return; // box too large / unloaded
-        }
-
-        this.workers.execute(() -> {
-            if (Raytracer.isVisible(snapshot, eyeX, eyeY, eyeZ, x, y, z)) {
-                this.visibleHits++; // best-effort diagnostic
-            } else {
-                this.occludedHits++; // best-effort diagnostic
-            }
-        });
-    }
-
-    /**
-     * Build the obfuscated section array for a chunk being sent to a player: a clone of the chunk's
-     * section array where every section containing a hideable ore is replaced by a deep copy with those
-     * ores rewritten to a dimension-appropriate fake block. The chunk packet is then serialized from
-     * these copies, so the real ore data never reaches the wire (unlike an after-the-fact overlay, which
-     * leaks the real chunk packet and is defeated by packet-sniffing xray). Reveal-on-sight then re-adds
-     * the ores a viewer can actually see, on top of this obfuscated base.
-     *
-     * <p>Runs on the tick thread (reads live chunk state). Returns null when disabled, no engine is
-     * active, or the chunk has no hideable ore — in which case the caller uses the normal send path.
-     */
-    public static byte[] obfuscatedBuffer(final LevelChunk chunk) {
-        final RaytraceAntiXrayEngine engine = instance;
-        if (engine == null || !DivineConfig.PerformanceCategory.raytraceObfuscateOnSend) {
-            return null;
-        }
-        // Cache the (expensive) per-block scan + section copies + serialization per chunk and reuse the
-        // resulting buffer across viewers. Invalidated on any block change via onBlockChanged().
-        final World world = chunk.getLevel().getWorld();
-        final long key = chunk.getPos().pack();
-        final ConcurrentHashMap<Long, byte[]> worldCache =
-            engine.obfCache.computeIfAbsent(world, w -> new ConcurrentHashMap<>());
-        final byte[] cached = worldCache.get(key);
-        if (cached != null) {
-            return cached == NO_OBF ? null : cached;
-        }
-        final byte[] buf;
-        try {
-            final LevelChunkSection[] sections = engine.buildObfuscatedSections(chunk);
-            buf = sections == null
-                ? NO_OBF
-                : net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData.serialize(sections);
-        } catch (final Throwable t) {
-            // Anti-xray must NEVER break chunk delivery. Under parallel/regionized ticking a section can
-            // mutate mid-serialize; fall back to the normal (unobfuscated) send for this attempt and do
-            // NOT cache, so the next send rebuilds. Better a momentarily visible ore than an unsent chunk.
-            LOGGER.warn("Anti-xray obfuscation failed for chunk {}; sending unobfuscated this time", chunk.getPos(), t);
-            return null;
-        }
-        if (worldCache.size() < OBF_CACHE_CAP) {
-            worldCache.put(key, buf);
-        } else {
-            worldCache.clear(); // crude bound; rebuilt lazily on next send
-        }
-        return buf == NO_OBF ? null : buf;
-    }
-
-    /** Invalidate the cached obfuscation for the chunk containing (x,z). Cheap no-op when disabled. */
-    public static void onBlockChanged(final World world, final int x, final int z) {
-        final RaytraceAntiXrayEngine engine = instance;
-        if (engine == null || !DivineConfig.PerformanceCategory.raytraceObfuscateOnSend) {
-            return;
-        }
-        final ConcurrentHashMap<Long, byte[]> worldCache = engine.obfCache.get(world);
-        if (worldCache != null) {
-            worldCache.remove(ChunkPos.pack(x >> 4, z >> 4));
-        }
-    }
-
-    private LevelChunkSection[] buildObfuscatedSections(final LevelChunk chunk) {
-        final BlockState fake = fakeStateFor(chunk.getLevel().getWorld().getEnvironment());
-        final Set<Block> hidden = this.hiddenBlocks;
-        final LevelChunkSection[] sections = chunk.getSections();
-        LevelChunkSection[] out = null; // lazily clone the array only once we actually hide something
-
-        // Copy ONLY ore-bearing sections (cheap); non-ore sections are referenced as-is, exactly like the
-        // normal chunk send reads live sections off the tick thread. The ore copies are immutable, so they
-        // are race-free; the shared non-ore sections share the same (Paper-accepted) read race as a normal
-        // async send, which serialize()'s retry loop tolerates. This keeps the per-chunk work small enough
-        // to run on the async chunk-send pool instead of stalling the tick thread.
-        for (int i = 0; i < sections.length; i++) {
-            final LevelChunkSection section = sections[i];
-            if (section == null || section.hasOnlyAir()) {
-                continue;
-            }
-            if (!section.maybeHas(state -> hidden.contains(state.getBlock()))) {
-                continue; // palette gate: no hideable ore in this section
-            }
-            final LevelChunkSection copy = section.copy();
-            if (out == null) {
-                out = sections.clone();
-            }
-            out[i] = copy;
-            for (int y = 0; y < 16; y++) {
-                for (int z = 0; z < 16; z++) {
-                    for (int x = 0; x < 16; x++) {
-                        if (hidden.contains(copy.getBlockState(x, y, z).getBlock())) {
-                            copy.setBlockState(x, y, z, fake, false);
-                        }
-                    }
-                }
-            }
-        }
-        return out;
+        // no-op: handled by engine-mode + the periodic reveal pass
     }
 
     /** Null-safe per-server-tick entry point for the movement reveal pass. */
@@ -405,7 +216,7 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
                     revealIdx.add(k);
                 }
             }
-            // Previously revealed but no longer visible -> re-hide (opt-in; needs base obfuscation).
+            // Previously revealed but no longer visible -> re-hide (opt-in).
             if (fakeState != null) {
                 final LongIterator it = dedup.iterator();
                 while (it.hasNext()) {
@@ -433,10 +244,6 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
                 connection.send(new ClientboundBlockUpdatePacket(BlockPos.of(toHide.getLong(i)), fakeState)); // re-hide
             }
         }
-    }
-
-    public long submittedSignals() {
-        return this.submitted;
     }
 
     public long visibleHits() {

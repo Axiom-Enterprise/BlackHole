@@ -1,0 +1,237 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 11:10:18 +0200
+Subject: [PATCH] refactor: drop custom anti-xray chunk-packet rewrite
+
+The independent chunk-packet rewrite (off-thread section copy + serialize)
+was the root of the join-time stalls, void spawns and torn-snapshot
+'loading terrain' hangs. Remove it entirely and let Paper engine-mode
+anti-xray do the hiding; the built-in engine keeps only reveal-on-sight.
+
+- PlayerChunkSender: normal Paper send path (no obfuscated buffer)
+- FeatureHooks.sendChunkRefreshPackets: revert to Paper original
+- Level.setBlock: drop the obfuscation cache-invalidation hook
+- ClientboundLevelChunkWithLightPacket / ...PacketData: remove the
+  obfuscated-buffer ctor, serialize() and section-array helpers
+- PalettedContainer.copy: revert to non-synchronized (no off-thread copy)
+
+diff --git a/io/papermc/paper/FeatureHooks.java b/io/papermc/paper/FeatureHooks.java
+index 3c50e4722d5800240d9f131b0ecccc00f176f95a..4dd1baf17597d8801a286346a2b74345f4d23dfa 100644
+--- a/io/papermc/paper/FeatureHooks.java
++++ b/io/papermc/paper/FeatureHooks.java
+@@ -51,30 +51,6 @@ public final class FeatureHooks {
+     }
+ 
+     public static void sendChunkRefreshPackets(final List<ServerPlayer> playersInRange, final LevelChunk chunk) {
+-        // DivineMC start - independent anti-xray: a chunk refresh (Bukkit World.refreshChunk, block-physics
+-        // refresh, plugins) must obfuscate ores too, otherwise it resends the real chunk data and a packet-
+-        // sniffing xray pack sees every ore again. Build the cached, viewer-shared obfuscated buffer once and
+-        // send the same packet to all viewers; reveal-on-sight re-adds visible ores afterwards. Falls back to
+-        // the Paper engine-mode path only when our engine has no obfuscation for this chunk (null).
+-        final byte[] antiXrayBuffer = org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.obfuscatedBuffer(chunk);
+-        if (antiXrayBuffer != null) {
+-            final net.minecraft.world.level.block.entity.BlockEntity[] blockEntities =
+-                chunk.blockEntities.values().toArray(new net.minecraft.world.level.block.entity.BlockEntity[0]);
+-            final Map<net.minecraft.world.level.levelgen.Heightmap.Types, long[]> heightmaps = new HashMap<>();
+-            for (final var entry : chunk.getHeightmaps()) {
+-                if (entry.getKey().sendToClient()) {
+-                    heightmaps.put(entry.getKey(), entry.getValue().getRawData());
+-                }
+-            }
+-            final ClientboundLevelChunkWithLightPacket packet = new ClientboundLevelChunkWithLightPacket(
+-                chunk, chunk.level.getLightEngine(), null, null, blockEntities, heightmaps, antiXrayBuffer);
+-            for (final ServerPlayer player : playersInRange) {
+-                if (player.connection == null) continue;
+-                player.connection.send(packet); // Use connection to prevent firing event
+-            }
+-            return;
+-        }
+-        // DivineMC end
+         // Paper start - Anti-Xray
+         final Map<Object, ClientboundLevelChunkWithLightPacket> refreshPackets = new HashMap<>();
+         for (final ServerPlayer player : playersInRange) {
+diff --git a/net/minecraft/network/protocol/game/ClientboundLevelChunkPacketData.java b/net/minecraft/network/protocol/game/ClientboundLevelChunkPacketData.java
+index 0f614c6182bb9e867d247254e40398690528f59b..d98fc6d62634ebeb3ba07dcaa51b4024105ddd2f 100644
+--- a/net/minecraft/network/protocol/game/ClientboundLevelChunkPacketData.java
++++ b/net/minecraft/network/protocol/game/ClientboundLevelChunkPacketData.java
+@@ -121,47 +121,6 @@ public class ClientboundLevelChunkPacketData {
+     }
+     // Purpur end - async chunk sending (DivineMC)
+ 
+-    // Leaf start - independent anti-xray: build from a pre-serialized (and cached, viewer-shared)
+-    // obfuscated section buffer. The buffer is immutable and read-only on write(), so the same array is
+-    // safely shared across all connections. Block entities and heightmaps are precomputed by the caller on
+-    // the tick thread to avoid touching the live chunk off-thread.
+-    public ClientboundLevelChunkPacketData(final byte[] obfuscatedBuffer, final BlockEntity[] blockEntities, final Map<Heightmap.Types, long[]> heightmaps) {
+-        this.heightmaps = heightmaps;
+-        this.buffer = obfuscatedBuffer;
+-
+-        this.blockEntitiesData = Lists.newArrayList();
+-        int totalTileEntities = 0;
+-        for (final BlockEntity blockEntity : blockEntities) {
+-            if (++totalTileEntities > BLOCK_ENTITY_LIMIT) {
+-                final net.minecraft.network.protocol.Packet<ClientGamePacketListener> packet = blockEntity.getUpdatePacket();
+-                if (packet != null) {
+-                    this.extraPackets.add(packet);
+-                    continue;
+-                }
+-            }
+-            this.blockEntitiesData.add(ClientboundLevelChunkPacketData.BlockEntityInfo.create(blockEntity));
+-        }
+-    }
+-
+-    /**
+-     * Serialize an explicit (obfuscated) section array into a chunk-data buffer for caching/reuse.
+-     * Mirrors the async-send retry loop: the section array mixes immutable ore copies with shared live
+-     * (non-ore) sections, so a concurrent edit can change the serialized size mid-write; recompute and
+-     * rewrite until the size is stable. Safe to run off the tick thread (anti-xray builds on the async pool).
+-     */
+-    public static byte[] serialize(final LevelChunkSection[] sections) {
+-        int size = calculateChunkSize(sections);
+-        final ByteBuf buf = Unpooled.buffer(size);
+-        extractChunkData(new FriendlyByteBuf(buf), sections);
+-        while (size != buf.writerIndex()) {
+-            buf.writerIndex(0);
+-            size = calculateChunkSize(sections);
+-            extractChunkData(new FriendlyByteBuf(buf), sections);
+-        }
+-        return it.unimi.dsi.fastutil.bytes.ByteArrays.setLength(buf.array(), buf.writerIndex());
+-    }
+-    // Leaf end
+-
+     public ClientboundLevelChunkPacketData(final RegistryFriendlyByteBuf input, final int x, final int z) {
+         this.heightmaps = HEIGHTMAPS_STREAM_CODEC.decode(input);
+         int size = input.readVarInt();
+@@ -191,24 +150,6 @@ public class ClientboundLevelChunkPacketData {
+         return total;
+     }
+ 
+-    // Leaf start - independent anti-xray: size/serialize an explicit (obfuscated) section array
+-    private static int calculateChunkSize(final LevelChunkSection[] sections) {
+-        int total = 0;
+-        for (final LevelChunkSection section : sections) {
+-            total += section.getSerializedSize();
+-        }
+-        return total;
+-    }
+-
+-    public static void extractChunkData(final FriendlyByteBuf buffer, final LevelChunkSection[] sections) {
+-        // No ChunkPacketInfo: ores were already rewritten in the copies. No fill assertion here - the
+-        // size invariant is enforced by serialize()'s retry loop (sections may be shared live ones).
+-        for (final LevelChunkSection section : sections) {
+-            section.write(buffer);
+-        }
+-    }
+-    // Leaf end
+-
+     private ByteBuf getWriteBuffer() {
+         ByteBuf buffer = Unpooled.wrappedBuffer(this.buffer);
+         buffer.writerIndex(0);
+diff --git a/net/minecraft/network/protocol/game/ClientboundLevelChunkWithLightPacket.java b/net/minecraft/network/protocol/game/ClientboundLevelChunkWithLightPacket.java
+index 1b5ef1e4f2a720ec19b9dfb9030214fbcdb85e1d..fb003ef5011faac894b13650b9306e7ac07706ed 100644
+--- a/net/minecraft/network/protocol/game/ClientboundLevelChunkWithLightPacket.java
++++ b/net/minecraft/network/protocol/game/ClientboundLevelChunkWithLightPacket.java
+@@ -69,19 +69,6 @@ public class ClientboundLevelChunkWithLightPacket implements Packet<ClientGamePa
+     }
+     // Purpur end - async chunk sending (DivineMC)
+ 
+-    // Leaf start - independent anti-xray: build the chunk packet from pre-obfuscated section copies, so the
+-    // real ore data never reaches the wire. No Paper engine-mode (chunkPacketBlockController) is involved -
+-    // the obfuscation is done by our raytrace engine on the tick thread before this is constructed. Block
+-    // entities and heightmaps are precomputed by the caller on the tick thread (async-send safe).
+-    public ClientboundLevelChunkWithLightPacket(final LevelChunk chunk, final LevelLightEngine lightEngine, final @Nullable BitSet skyLight, final @Nullable BitSet blockLight, final net.minecraft.world.level.block.entity.BlockEntity[] blockEntities, final java.util.Map<net.minecraft.world.level.levelgen.Heightmap.Types, long[]> heightmaps, final byte[] obfuscatedBuffer) {
+-        final ChunkPos chunkPos = chunk.getPos();
+-        this.x = chunkPos.x();
+-        this.z = chunkPos.z();
+-        this.chunkData = new ClientboundLevelChunkPacketData(obfuscatedBuffer, blockEntities, heightmaps);
+-        this.lightData = new ClientboundLightUpdatePacketData(chunkPos, lightEngine, skyLight, blockLight);
+-    }
+-    // Leaf end
+-
+     private ClientboundLevelChunkWithLightPacket(final RegistryFriendlyByteBuf input) {
+         this.x = input.readInt();
+         this.z = input.readInt();
+diff --git a/net/minecraft/server/network/PlayerChunkSender.java b/net/minecraft/server/network/PlayerChunkSender.java
+index 4a3dd45139897c1cddec78b2bb6a9b58920ca2e1..870ef81c64c0ce61ec50598474a4e7e45ea09be2 100644
+--- a/net/minecraft/server/network/PlayerChunkSender.java
++++ b/net/minecraft/server/network/PlayerChunkSender.java
+@@ -93,11 +93,9 @@ public class PlayerChunkSender {
+     public static void sendChunk(final ServerGamePacketListenerImpl connection, final ServerLevel level, final LevelChunk chunk) { // Paper - rewrite chunk system - public
+         // Paper start - Anti-Xray
+         final boolean shouldModify = level.chunkPacketBlockController.shouldModify(connection.player, chunk);
+-        // DivineMC start - own raytrace anti-xray: rewrite the chunk packet from obfuscated section copies,
+-        // so real ore data never reaches the wire (independent of Paper engine-mode). The (expensive) ore
+-        // scan + section copy + serialize is run on the ASYNC chunk-send pool, NOT the tick thread, to avoid
+-        // stalling the server during the chunk-heavy join. null => no hideable ore, use the normal path.
+         // Purpur start - async chunk sending (DivineMC)
++        // Hiding is handled by Paper engine-mode anti-xray (shouldModify); the built-in raytrace engine only
++        // reveals ores on a clear line of sight on top of that - no custom chunk-packet rewrite here.
+         if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncChunkSendingEnabled) {
+             var blockEntities = chunk.blockEntities.values().toArray(new net.minecraft.world.level.block.entity.BlockEntity[0]);
+             java.util.Map<net.minecraft.world.level.levelgen.Heightmap.Types, long[]> heightmaps = new java.util.concurrent.ConcurrentHashMap<>();
+@@ -108,32 +106,10 @@ public class PlayerChunkSender {
+                 }
+             }
+ 
+-            org.bxteam.divinemc.async.AsyncChunkSend.POOL.execute(() -> {
+-                final byte[] antiXrayBuffer = org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.obfuscatedBuffer(chunk); // off-tick build
+-                if (antiXrayBuffer != null) {
+-                    connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, blockEntities, heightmaps, antiXrayBuffer)); // DivineMC - independent anti-xray
+-                } else {
+-                    connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify, blockEntities, heightmaps));
+-                }
+-            });
++            org.bxteam.divinemc.async.AsyncChunkSend.POOL.execute(() -> connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify, blockEntities, heightmaps)));
+         } else {
+-            final byte[] antiXrayBuffer = org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.obfuscatedBuffer(chunk); // sync path: build on tick
+-            if (antiXrayBuffer != null) {
+-                // DivineMC - independent anti-xray sync path: precompute block entities + heightmaps on the
+-                // tick thread, then serialize from the obfuscated copies.
+-                var blockEntities = chunk.blockEntities.values().toArray(new net.minecraft.world.level.block.entity.BlockEntity[0]);
+-                java.util.Map<net.minecraft.world.level.levelgen.Heightmap.Types, long[]> heightmaps = new java.util.HashMap<>();
+-                for (var entry : chunk.getHeightmaps()) {
+-                    if (entry.getKey().sendToClient()) {
+-                        heightmaps.put(entry.getKey(), entry.getValue().getRawData());
+-                    }
+-                }
+-                connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, blockEntities, heightmaps, antiXrayBuffer));
+-            } else {
+-                connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify));
+-            }
++            connection.send(new ClientboundLevelChunkWithLightPacket(chunk, level.getLightEngine(), null, null, shouldModify));
+         }
+-        // DivineMC end
+         // Purpur end - async chunk sending (DivineMC)
+         // Paper end - Anti-Xray
+         // Paper start - PlayerChunkLoadEvent
+diff --git a/net/minecraft/world/level/Level.java b/net/minecraft/world/level/Level.java
+index 02915bd43288a9144bd5de840f0ce15b65fc2238..221b53bf4f0a80ae9a21c4a9fed1cfe9c32e3c62 100644
+--- a/net/minecraft/world/level/Level.java
++++ b/net/minecraft/world/level/Level.java
+@@ -1150,12 +1150,6 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+             return false;
+         }
+ 
+-        // DivineMC start - invalidate cached chunk obfuscation on any block change (keeps the per-chunk
+-        // obfuscated-section cache correct: non-ore edits change the chunk packet too). Cheap no-op when off.
+-        if (!this.isClientSide()) {
+-            org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.onBlockChanged(this.getWorld(), pos.getX(), pos.getZ());
+-        }
+-        // DivineMC end
+         // DivineMC start - Raytrace AntiXray SDK block-change hook
+         if (org.bxteam.divinemc.config.DivineConfig.PerformanceCategory.antiXraySdk && !this.isClientSide()) {
+             final dev.imanity.antixray.sdk.AntiXrayAdapter antiXrayAdapter = dev.imanity.antixray.sdk.AntiXraySDK.getAdapter();
+diff --git a/net/minecraft/world/level/chunk/PalettedContainer.java b/net/minecraft/world/level/chunk/PalettedContainer.java
+index 832c5260d804edeeaf97ee2c6eb004b3b30bf88e..66a05adab494f8674f0636f8b34533f8ef640028 100644
+--- a/net/minecraft/world/level/chunk/PalettedContainer.java
++++ b/net/minecraft/world/level/chunk/PalettedContainer.java
+@@ -406,7 +406,7 @@ public class PalettedContainer<T> implements PaletteResize<T>, PalettedContainer
+     }
+ 
+     @Override
+-    public synchronized PalettedContainer<T> copy() { // Leaf - synchronize: copy must read data/palette/storage atomically vs set/onResize/write (off-thread anti-xray section copy was reading a torn snapshot -> unparseable chunk packet)
++    public PalettedContainer<T> copy() {
+         return new PalettedContainer<>(this, this.presetValues); // Paper - Anti-Xray - Add preset values
+     }
+ 

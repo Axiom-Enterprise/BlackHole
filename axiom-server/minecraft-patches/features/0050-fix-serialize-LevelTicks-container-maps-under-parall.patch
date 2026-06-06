@@ -1,0 +1,130 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 08:45:01 +0200
+Subject: [PATCH] fix: serialize LevelTicks container maps under
+ parallel/regionized ticking
+
+
+diff --git a/net/minecraft/world/ticks/LevelTicks.java b/net/minecraft/world/ticks/LevelTicks.java
+index 7bf9e93692debcef511bfa316aeef32ae8a7d3b7..97dd8782be1dc73d38dfa0c5cbe0c5cb2ab99d9d 100644
+--- a/net/minecraft/world/ticks/LevelTicks.java
++++ b/net/minecraft/world/ticks/LevelTicks.java
+@@ -33,6 +33,12 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+     private final LongPredicate tickCheck;
+     private final Long2ObjectMap<LevelChunkTicks<T>> allContainers = new Long2ObjectOpenHashMap<>();
+     private final Long2LongMap nextTickForContainer = Util.make(new Long2LongOpenHashMap(), m -> m.defaultReturnValue(Long.MAX_VALUE));
++    // Leaf - allContainers/nextTickForContainer are per-level fastutil maps mutated both from chunk
++    // load/unload (addContainer/removeContainer, which run from multiple region threads under parallel/
++    // regionized ticking) and from the level tick thread (schedule/sortContainersToTick/
++    // updateContainerScheduling). Concurrent access corrupts the tables (rehash AIOOBE). Serialize every
++    // map access on this reentrant monitor; the per-tick queues are tick-thread-only and need no guard.
++    private final Object lock = new Object();
+     private final Queue<LevelChunkTicks<T>> containersToTick = new PriorityQueue<>(CONTAINER_DRAIN_ORDER);
+     private final Queue<ScheduledTick<T>> toRunThisTick = new ArrayDeque<>();
+     private final List<ScheduledTick<T>> alreadyRunThisTick = new ArrayList<>();
+@@ -49,10 +55,12 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+ 
+     public void addContainer(final ChunkPos pos, final LevelChunkTicks<T> container) {
+         long posKey = pos.pack();
+-        this.allContainers.put(posKey, container);
+-        ScheduledTick<T> nextTick = container.peek();
+-        if (nextTick != null) {
+-            this.nextTickForContainer.put(posKey, nextTick.triggerTick());
++        synchronized (this.lock) { // Leaf - serialize map access (parallel/regionized ticking)
++            this.allContainers.put(posKey, container);
++            ScheduledTick<T> nextTick = container.peek();
++            if (nextTick != null) {
++                this.nextTickForContainer.put(posKey, nextTick.triggerTick());
++            }
+         }
+ 
+         container.setOnTickAdded(this.chunkScheduleUpdater);
+@@ -60,8 +68,11 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+ 
+     public void removeContainer(final ChunkPos pos) {
+         long chunkKey = pos.pack();
+-        LevelChunkTicks<T> removedContainer = this.allContainers.remove(chunkKey);
+-        this.nextTickForContainer.remove(chunkKey);
++        final LevelChunkTicks<T> removedContainer;
++        synchronized (this.lock) { // Leaf - serialize map access
++            removedContainer = this.allContainers.remove(chunkKey);
++            this.nextTickForContainer.remove(chunkKey);
++        }
+         if (removedContainer != null) {
+             removedContainer.setOnTickAdded(null);
+         }
+@@ -70,7 +81,8 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+     @Override
+     public void schedule(final ScheduledTick<T> tick) {
+         long chunkKey = ChunkPos.pack(tick.pos());
+-        LevelChunkTicks<T> tickContainer = this.allContainers.get(chunkKey);
++        final LevelChunkTicks<T> tickContainer;
++        synchronized (this.lock) { tickContainer = this.allContainers.get(chunkKey); } // Leaf - guarded read
+         if (tickContainer == null) {
+             Util.logAndPauseIfInIde("Trying to schedule tick in not loaded position " + tick.pos());
+         } else {
+@@ -98,6 +110,7 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+     }
+ 
+     private void sortContainersToTick(final long currentTick) {
++        synchronized (this.lock) { // Leaf - guard the whole nextTickForContainer iteration + allContainers reads
+         ObjectIterator<Entry> it = Long2LongMaps.fastIterator(this.nextTickForContainer);
+ 
+         while (it.hasNext()) {
+@@ -121,6 +134,7 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+                 }
+             }
+         }
++        } // Leaf
+     }
+ 
+     private void drainContainers(final long currentTick, final int maxTicksToProcess) {
+@@ -147,7 +161,9 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+     }
+ 
+     private void updateContainerScheduling(final ScheduledTick<T> nextTick) {
+-        this.nextTickForContainer.put(ChunkPos.pack(nextTick.pos()), nextTick.triggerTick());
++        synchronized (this.lock) { // Leaf - guarded write (also reached via chunkScheduleUpdater off the lock)
++            this.nextTickForContainer.put(ChunkPos.pack(nextTick.pos()), nextTick.triggerTick());
++        }
+     }
+ 
+     private void drainFromCurrentContainer(
+@@ -200,7 +216,8 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+ 
+     @Override
+     public boolean hasScheduledTick(final BlockPos pos, final T block) {
+-        LevelChunkTicks<T> tickContainer = this.allContainers.get(ChunkPos.pack(pos));
++        final LevelChunkTicks<T> tickContainer;
++        synchronized (this.lock) { tickContainer = this.allContainers.get(ChunkPos.pack(pos)); } // Leaf - guarded read
+         return tickContainer != null && tickContainer.hasScheduledTick(pos, block);
+     }
+ 
+@@ -222,6 +239,7 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+         int xMax = SectionPos.posToSectionCoord(bb.maxX());
+         int zMax = SectionPos.posToSectionCoord(bb.maxZ());
+ 
++        synchronized (this.lock) { // Leaf - guard allContainers reads (+ any nextTickForContainer writes in the callback, reentrant)
+         for (int x = xMin; x <= xMax; x++) {
+             for (int z = zMin; z <= zMax; z++) {
+                 long containerPos = ChunkPos.pack(x, z);
+@@ -231,6 +249,7 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+                 }
+             }
+         }
++        } // Leaf
+     }
+ 
+     public void clearArea(final BoundingBox area) {
+@@ -275,7 +294,9 @@ public class LevelTicks<T> implements LevelTickAccess<T> {
+ 
+     @Override
+     public int count() {
+-        return this.allContainers.values().stream().mapToInt(TickAccess::count).sum();
++        synchronized (this.lock) { // Leaf - guard allContainers iteration
++            return this.allContainers.values().stream().mapToInt(TickAccess::count).sum();
++        }
+     }
+ 
+     @FunctionalInterface

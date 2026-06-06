@@ -40,9 +40,12 @@ import org.bxteam.divinemc.util.NamedAgnosticThreadFactory;
 import org.jetbrains.annotations.NotNull;
 
 public final class RegionizedChunkTicking extends ServerChunkCache {
-    public static final Executor REGION_EXECUTOR = Executors.newFixedThreadPool(DivineConfig.AsyncCategory.regionizedChunkTickingExecutorThreadCount,
-        new NamedAgnosticThreadFactory<>("Region Ticking", TickThread::new, DivineConfig.AsyncCategory.regionizedChunkTickingExecutorThreadPriority));
+    public static final Executor REGION_EXECUTOR = Executors.newFixedThreadPool(DivineConfig.AsyncCategory.regionizedChunkTickingExecutorThreadCount, new NamedAgnosticThreadFactory<>("Region Ticking", TickThread::new, DivineConfig.AsyncCategory.regionizedChunkTickingExecutorThreadPriority));
     private static final int LOG_INTERVAL = 18000;
+    // Chunk-radius around an entity that must stay within its own region for the entity to be safely
+    // ticked on a region thread. 1 covers normal per-tick movement (<1 chunk); border entities are
+    // deferred to the sequential main-thread pass to avoid cross-region entityStatusChange races.
+    private static final int ENTITY_BORDER_MARGIN = 1;
     private final AvgTimeLogger avgTimeLogger;
     private int i = 0;
 
@@ -257,14 +260,24 @@ public final class RegionizedChunkTicking extends ServerChunkCache {
                     .parallel()
                     .filter(Objects::nonNull)
                     .forEach(entity -> {
-                        long chunkKey = entity.chunkPosition().pack();
-                        int regionIndex = chunkToRegion.get(chunkKey);
-                        if (regionIndex != -1) {
-                            RegionData targetRegion = regions.get(regionIndex);
+                        final ChunkPos cp = entity.chunkPosition();
+                        final int regionIndex = chunkToRegion.get(cp.pack());
+                        if (regionIndex == -1) {
+                            firstTick.add(entity);
+                            return;
+                        }
+                        final RegionData targetRegion = regions.get(regionIndex);
+                        if (entity instanceof ServerPlayer player) {
+                            targetRegion.players().add(player);
+                        }
+                        // Border safety: a region thread may only tick an entity that cannot, in one tick,
+                        // move into a chunk owned by a DIFFERENT concurrently-ticking region. If the whole
+                        // ENTITY_BORDER_MARGIN-chunk neighbourhood is in this same region (or unregioned,
+                        // which no thread touches during region ticking), it is safe; otherwise defer it to
+                        // the sequential main-thread pass so its cross-slice entityStatusChange never races
+                        // another region's tick (the "entity chunk is receiving update" abort).
+                        if (isRegionInterior(chunkToRegion, cp.x(), cp.z(), regionIndex)) {
                             targetRegion.entities().add(entity);
-                            if (entity instanceof ServerPlayer player) {
-                                targetRegion.players().add(player);
-                            }
                         } else {
                             firstTick.add(entity);
                         }
@@ -276,6 +289,24 @@ public final class RegionizedChunkTicking extends ServerChunkCache {
 
         regions.sort(Comparator.comparingDouble(r -> ((RegionData) r).players().stream().map(p -> p.avgTickTimeNanos.average().orElse(-1)).max(Comparator.naturalOrder()).orElse(-1d)).reversed());
         return new TickPair(regions.toArray(new RegionData[0]), firstTick);
+    }
+
+    /**
+     * @return true if every chunk within {@link #ENTITY_BORDER_MARGIN} of (chunkX,chunkZ) belongs to
+     * {@code regionIndex} or to no region at all. Only then can an entity there be ticked on the region
+     * thread without its movement crossing into another concurrently-ticking region's slices.
+     */
+    private static boolean isRegionInterior(final Long2IntOpenHashMap chunkToRegion,
+                                            final int chunkX, final int chunkZ, final int regionIndex) {
+        for (int dx = -ENTITY_BORDER_MARGIN; dx <= ENTITY_BORDER_MARGIN; dx++) {
+            for (int dz = -ENTITY_BORDER_MARGIN; dz <= ENTITY_BORDER_MARGIN; dz++) {
+                final int neighbour = chunkToRegion.get(CoordinateUtils.getChunkKey(chunkX + dx, chunkZ + dz));
+                if (neighbour != -1 && neighbour != regionIndex) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void tickEntity(Entity entity) {

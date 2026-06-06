@@ -112,8 +112,17 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
         final RaytraceAntiXrayEngine engine = new RaytraceAntiXrayEngine(threads, hidden);
         instance = engine;
         AntiXraySDK.setAdapter(engine);
-        LOGGER.info("Raytrace AntiXray engine started ({} threads, radius {})",
-            threads, DivineConfig.PerformanceCategory.raytraceEngineRadius);
+        LOGGER.info("Raytrace AntiXray engine started ({} threads, radius {}, obfuscate-on-send={}, {} hideable blocks, re-hide={})",
+            threads, DivineConfig.PerformanceCategory.raytraceEngineRadius,
+            DivineConfig.PerformanceCategory.raytraceObfuscateOnSend, hidden.size(),
+            DivineConfig.PerformanceCategory.raytraceReHide);
+        if (hidden.isEmpty()) {
+            LOGGER.warn("Raytrace AntiXray: hidden-blocks resolved to ZERO blocks - no ore will be hidden. "
+                + "Check raytrace-antixray.engine.hidden-blocks (material names) in the config.");
+        } else if (!DivineConfig.PerformanceCategory.raytraceObfuscateOnSend) {
+            LOGGER.warn("Raytrace AntiXray: engine is ON but obfuscate-on-send is OFF - ores are NOT hidden, "
+                + "only revealed on sight. Enable raytrace-antixray.engine.obfuscate-on-send to actually hide ores.");
+        }
     }
 
     public static RaytraceAntiXrayEngine instance() {

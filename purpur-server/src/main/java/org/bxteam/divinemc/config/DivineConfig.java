@@ -539,8 +539,8 @@ public class DivineConfig {
         private static void antiXrayEngineSettings() {
             raytraceEngineEnabled = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.enabled"), raytraceEngineEnabled,
                 "Built-in multithreaded raytrace anti-xray engine (registers as the SDK adapter).",
-                "EXPERIMENTAL foundation: computes per-player block visibility off-thread; packet",
-                "obfuscation is not yet wired, so this does not hide ores on its own yet.");
+                "Computes per-player ore visibility off-thread and reveals ores on a clear line of",
+                "sight. To actually HIDE ores you must also enable obfuscate-on-send below.");
             raytraceEngineThreads = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.threads"), raytraceEngineThreads,
                 "Worker threads for the raytrace anti-xray engine.");
             raytraceEngineRadius = getInt(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.update-radius"), raytraceEngineRadius,
@@ -554,9 +554,11 @@ public class DivineConfig {
                 "REQUIRES the chunk to be obfuscated already (obfuscate-on-send below, or Paper",
                 "engine-mode); otherwise this hides real ores. Leave off unless obfuscation is active.");
             raytraceObfuscateOnSend = getBoolean(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.obfuscate-on-send"), raytraceObfuscateOnSend,
-                "Own obfuscation, independent of Paper engine-mode: when a chunk is sent, overlay a",
-                "section-blocks update replacing all hideable ores with a fake block; the reveal pass",
-                "then restores those in line of sight. Pair with re-hide-out-of-sight for the full cycle.");
+                "Own obfuscation, independent of Paper engine-mode: the chunk packet itself is rebuilt",
+                "from section copies with every hideable ore replaced by a fake block, so the real ore",
+                "data never reaches the wire (sniffer-proof). The reveal pass then restores ores in line",
+                "of sight. REQUIRED to hide ores - the engine alone only reveals. Disable Paper",
+                "engine-mode anti-xray when using this to avoid double work.");
 
             final List<String> names = getStringList(ConfigCategory.PERFORMANCE.key("raytrace-antixray.engine.hidden-blocks"), DEFAULT_HIDDEN_BLOCKS,
                 "Blocks the engine treats as hideable; only changes to these trigger a raytrace reveal.");

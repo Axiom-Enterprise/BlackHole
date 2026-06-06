@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 09:08:04 +0200
+Subject: [PATCH] fix: obfuscate chunk-refresh packets via independent
+ anti-xray
+
+World.refreshChunk and block-physics refresh resent the real chunk
+data, letting a packet-sniffing xray pack see every ore again. Route
+sendChunkRefreshPackets through the engine's cached obfuscated buffer
+(viewer-shared) and fall back to the Paper engine-mode path only when
+no obfuscation exists for the chunk.
+
+diff --git a/io/papermc/paper/FeatureHooks.java b/io/papermc/paper/FeatureHooks.java
+index 4dd1baf17597d8801a286346a2b74345f4d23dfa..3c50e4722d5800240d9f131b0ecccc00f176f95a 100644
+--- a/io/papermc/paper/FeatureHooks.java
++++ b/io/papermc/paper/FeatureHooks.java
+@@ -51,6 +51,30 @@ public final class FeatureHooks {
+     }
+ 
+     public static void sendChunkRefreshPackets(final List<ServerPlayer> playersInRange, final LevelChunk chunk) {
++        // DivineMC start - independent anti-xray: a chunk refresh (Bukkit World.refreshChunk, block-physics
++        // refresh, plugins) must obfuscate ores too, otherwise it resends the real chunk data and a packet-
++        // sniffing xray pack sees every ore again. Build the cached, viewer-shared obfuscated buffer once and
++        // send the same packet to all viewers; reveal-on-sight re-adds visible ores afterwards. Falls back to
++        // the Paper engine-mode path only when our engine has no obfuscation for this chunk (null).
++        final byte[] antiXrayBuffer = org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.obfuscatedBuffer(chunk);
++        if (antiXrayBuffer != null) {
++            final net.minecraft.world.level.block.entity.BlockEntity[] blockEntities =
++                chunk.blockEntities.values().toArray(new net.minecraft.world.level.block.entity.BlockEntity[0]);
++            final Map<net.minecraft.world.level.levelgen.Heightmap.Types, long[]> heightmaps = new HashMap<>();
++            for (final var entry : chunk.getHeightmaps()) {
++                if (entry.getKey().sendToClient()) {
++                    heightmaps.put(entry.getKey(), entry.getValue().getRawData());
++                }
++            }
++            final ClientboundLevelChunkWithLightPacket packet = new ClientboundLevelChunkWithLightPacket(
++                chunk, chunk.level.getLightEngine(), null, null, blockEntities, heightmaps, antiXrayBuffer);
++            for (final ServerPlayer player : playersInRange) {
++                if (player.connection == null) continue;
++                player.connection.send(packet); // Use connection to prevent firing event
++            }
++            return;
++        }
++        // DivineMC end
+         // Paper start - Anti-Xray
+         final Map<Object, ClientboundLevelChunkWithLightPacket> refreshPackets = new HashMap<>();
+         for (final ServerPlayer player : playersInRange) {

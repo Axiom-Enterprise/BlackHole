@@ -254,10 +254,19 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
         if (cached != null) {
             return cached == NO_OBF ? null : cached;
         }
-        final LevelChunkSection[] sections = engine.buildObfuscatedSections(chunk);
-        final byte[] buf = sections == null
-            ? NO_OBF
-            : net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData.serialize(sections);
+        final byte[] buf;
+        try {
+            final LevelChunkSection[] sections = engine.buildObfuscatedSections(chunk);
+            buf = sections == null
+                ? NO_OBF
+                : net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData.serialize(sections);
+        } catch (final Throwable t) {
+            // Anti-xray must NEVER break chunk delivery. Under parallel/regionized ticking a section can
+            // mutate mid-serialize; fall back to the normal (unobfuscated) send for this attempt and do
+            // NOT cache, so the next send rebuilds. Better a momentarily visible ore than an unsent chunk.
+            LOGGER.warn("Anti-xray obfuscation failed for chunk {}; sending unobfuscated this time", chunk.getPos(), t);
+            return null;
+        }
         if (worldCache.size() < OBF_CACHE_CAP) {
             worldCache.put(key, buf);
         } else {
@@ -282,29 +291,40 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
         final BlockState fake = fakeStateFor(chunk.getLevel().getWorld().getEnvironment());
         final Set<Block> hidden = this.hiddenBlocks;
         final LevelChunkSection[] sections = chunk.getSections();
-        LevelChunkSection[] out = null; // lazily clone the array only once we actually hide something
 
+        // Phase 1: does this chunk contain any hideable ore at all? If not, no obfuscation - normal path.
+        boolean hasOre = false;
+        for (final LevelChunkSection section : sections) {
+            if (section != null && !section.hasOnlyAir()
+                && section.maybeHas(state -> hidden.contains(state.getBlock()))) {
+                hasOre = true;
+                break;
+            }
+        }
+        if (!hasOre) {
+            return null;
+        }
+
+        // Phase 2: snapshot EVERY section into an immutable copy and rewrite ores in the copies. We must
+        // copy all sections (not just ore-bearing ones): the buffer is serialized in two passes
+        // (size then write), and under parallel/regionized ticking a shared live section could mutate
+        // between them, breaking the size invariant. A per-section copy() is self-consistent, so the
+        // serialize never races the world. The whole array is cached and reused across viewers.
+        final LevelChunkSection[] out = new LevelChunkSection[sections.length];
         for (int i = 0; i < sections.length; i++) {
             final LevelChunkSection section = sections[i];
-            if (section == null || section.hasOnlyAir()) {
+            if (section == null) {
                 continue;
             }
-            if (!section.maybeHas(state -> hidden.contains(state.getBlock()))) {
-                continue; // palette gate: no hideable ore in this section
+            final LevelChunkSection copy = section.copy();
+            out[i] = copy;
+            if (section.hasOnlyAir() || !copy.maybeHas(state -> hidden.contains(state.getBlock()))) {
+                continue; // nothing hideable in this section's snapshot
             }
-            LevelChunkSection copy = null;
             for (int y = 0; y < 16; y++) {
                 for (int z = 0; z < 16; z++) {
                     for (int x = 0; x < 16; x++) {
-                        // read the original, write the fake into the copy
-                        if (hidden.contains(section.getBlockState(x, y, z).getBlock())) {
-                            if (copy == null) {
-                                if (out == null) {
-                                    out = sections.clone();
-                                }
-                                copy = section.copy();
-                                out[i] = copy;
-                            }
+                        if (hidden.contains(copy.getBlockState(x, y, z).getBlock())) {
                             copy.setBlockState(x, y, z, fake, false);
                         }
                     }

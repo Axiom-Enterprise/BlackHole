@@ -1,0 +1,417 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 14:16:51 +0200
+Subject: [PATCH] perf: fully async actor-model waypoint manager
+
+Move all locator-bar work off the tick thread. A single dedicated worker
+owns the connection table and the waypoint/player sets; every mutating op
+is enqueued onto it, so the non-thread-safe HashBasedTable is touched by
+one thread without locking. The tick thread only marks dirty (O(1)) and
+once per tick dispatches a batch.
+
+The only state unsafe to read off-thread - each receiver's sent-chunk set
+(getSentChunksRaw, used by isChunkVisible) - is cloned on the tick thread
+into a per-batch snapshot published to the worker via a ThreadLocal and
+consulted there instead of the live set. The clone is wrapped defensively
+so a rare off-thread lifecycle call degrades to a flicker, never a crash.
+Positions/attributes are read live off-thread (no crashing structures),
+like the async entity tracker.
+
+- ServerWaypointManager: actor model, snapshot capture/publish, batching
+- WaypointTransmitter.isChunkVisible: use the snapshot when on the worker
+
+diff --git a/net/minecraft/server/waypoints/ServerWaypointManager.java b/net/minecraft/server/waypoints/ServerWaypointManager.java
+index d486347fb130da0cb1eef7d283954c9e7855f49e..5fcc0db3e0b8470fbbe2b97abf87de4e71bb81d5 100644
+--- a/net/minecraft/server/waypoints/ServerWaypointManager.java
++++ b/net/minecraft/server/waypoints/ServerWaypointManager.java
+@@ -5,53 +5,143 @@ import com.google.common.collect.ImmutableSet;
+ import com.google.common.collect.Sets;
+ import com.google.common.collect.Table;
+ import com.google.common.collect.Sets.SetView;
+-import java.util.HashSet;
++import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.IdentityHashMap;
++import java.util.List;
+ import java.util.Map;
+ import java.util.Set;
+ import java.util.Map.Entry;
++import java.util.concurrent.ConcurrentHashMap;
++import java.util.concurrent.ExecutorService;
++import java.util.concurrent.LinkedBlockingQueue;
++import java.util.concurrent.ThreadPoolExecutor;
++import java.util.concurrent.TimeUnit;
+ import net.minecraft.server.level.ServerPlayer;
+ import net.minecraft.world.level.gamerules.GameRules;
+ import net.minecraft.world.waypoints.WaypointManager;
+ import net.minecraft.world.waypoints.WaypointTransmitter;
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
+ 
++/**
++ * Fully asynchronous, actor-model waypoint (locator bar) manager.
++ *
++ * <p>All waypoint state - the non-thread-safe {@code connections} table plus the waypoint/player sets -
++ * is owned by a single dedicated worker thread ({@link #WAYPOINT_EXECUTOR}). Every mutating operation is
++ * enqueued onto that thread, so the table is only ever touched by one thread and never needs locking.
++ * Packet sends are thread-safe (Netty), so they happen on the worker too. The server tick thread only
++ * does O(1) work: it marks moved entities dirty and once per tick enqueues a single batch.
++ *
++ * <p>The one piece of state the worker needs that is NOT safe to read off-thread is each receiver's set
++ * of sent chunks ({@code getSentChunksRaw()}, used by {@link WaypointTransmitter#isChunkVisible}). That
++ * set is cloned on the TICK thread (where the read is safe) into a per-batch snapshot, published to the
++ * worker via {@link #SENT_SNAPSHOT}, and consulted there instead of the live set. Entity positions are
++ * read live off-thread (immutable Vec3 refs), which is tolerable - only the fastutil set would crash.
++ */
+ public class ServerWaypointManager implements WaypointManager<WaypointTransmitter> {
+-    private final Set<WaypointTransmitter> waypoints = new HashSet<>();
+-    private final Set<ServerPlayer> players = new HashSet<>();
++    private static final Logger LOGGER = LogManager.getLogger("WaypointManager");
++
++    // One global single-thread actor for all levels. Per-level state is only touched by this thread.
++    private static final ExecutorService WAYPOINT_EXECUTOR = new ThreadPoolExecutor(
++        1, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(),
++        r -> {
++            final Thread t = new Thread(r, "Leaf Waypoint Worker");
++            t.setDaemon(true);
++            t.setPriority(Thread.NORM_PRIORITY - 1);
++            return t;
++        });
++    static {
++        ((ThreadPoolExecutor) WAYPOINT_EXECUTOR).allowCoreThreadTimeOut(true);
++    }
++
++    // Per-batch snapshot of receivers' sent-chunk sets, published to the worker thread for isChunkVisible.
++    private static final ThreadLocal<Map<ServerPlayer, LongOpenHashSet>> SENT_SNAPSHOT = new ThreadLocal<>();
++
++    /** @return the snapshotted sent-chunk set for {@code player} on the worker thread, or null off-batch. */
++    public static LongOpenHashSet sentChunksSnapshotFor(final ServerPlayer player) {
++        final Map<ServerPlayer, LongOpenHashSet> map = SENT_SNAPSHOT.get();
++        return map == null ? null : map.get(player);
++    }
++
++    // Worker-owned (connections) / concurrent (sets read by external callers + dirty marks).
++    private final Set<WaypointTransmitter> waypoints = ConcurrentHashMap.newKeySet();
++    private final Set<ServerPlayer> players = ConcurrentHashMap.newKeySet();
+     private final Table<ServerPlayer, WaypointTransmitter, WaypointTransmitter.Connection> connections = HashBasedTable.create();
+-    // Leaf start - batch waypoint updates: setPosRaw fires per sub-tick position change; instead of running
+-    // the full update there, just mark dirty (O(1), no allocation) and process each dirty waypoint/player
+-    // ONCE per tick on the tick thread (flushDirty). The locator bar only refreshes ~per tick client-side,
+-    // so this is behaviour-preserving while collapsing multiple per-tick moves into one update.
+-    private final Set<WaypointTransmitter> dirtyWaypoints = java.util.concurrent.ConcurrentHashMap.newKeySet();
+-    private final Set<ServerPlayer> dirtyPlayers = java.util.concurrent.ConcurrentHashMap.newKeySet();
+-    // Leaf end - batch waypoint updates
+-    private final net.minecraft.server.level.ServerLevel level; // Purpur - parallel world ticking (DivineMC)
+-    // Paper start - optimize ServerWaypointManager with locator bar disabled
+-    public boolean locatorBarEnabled; // Avoid a gamerule lookup for each player
++    private final Set<WaypointTransmitter> dirtyWaypoints = ConcurrentHashMap.newKeySet();
++    private final Set<ServerPlayer> dirtyPlayers = ConcurrentHashMap.newKeySet();
++
++    public volatile boolean locatorBarEnabled; // read on many threads; written on the main thread (gamerule)
+ 
+     public ServerWaypointManager(net.minecraft.server.level.ServerLevel serverLevel) {
+-        this.level = serverLevel; // Purpur - parallel world ticking (DivineMC)
+         this.locatorBarEnabled = serverLevel.getGameRules().get(GameRules.LOCATOR_BAR);
+     }
+-    // Paper end - optimize ServerWaypointManager with locator bar disabled
++
++    // --- snapshot + dispatch helpers (capture runs on the calling/tick thread) ----------------------------
++
++    /** Clone each player's sent-chunk set on the current (tick) thread, where that read is safe. */
++    private static Map<ServerPlayer, LongOpenHashSet> capture(final Iterable<ServerPlayer> snapPlayers) {
++        final Map<ServerPlayer, LongOpenHashSet> map = new IdentityHashMap<>();
++        for (final ServerPlayer p : snapPlayers) {
++            try {
++                final ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.PlayerChunkLoaderData loader =
++                    ((ca.spottedleaf.moonrise.patches.chunk_system.player.ChunkSystemServerPlayer) p).moonrise$getChunkLoader();
++                if (loader != null) {
++                    map.put(p, loader.getSentChunksRaw().clone());
++                }
++            } catch (final Throwable ignored) {
++                // Defensive: a rare lifecycle call may run off the owning world thread under parallel world
++                // ticking, making this clone race the chunk system. Skip the player rather than crash; the
++                // worst case is its waypoints are treated as not chunk-visible for this one batch.
++            }
++        }
++        return map;
++    }
++
++    /** Run {@code task} on the worker with {@code snapshot} published for isChunkVisible. */
++    private static void submit(final Map<ServerPlayer, LongOpenHashSet> snapshot, final Runnable task) {
++        WAYPOINT_EXECUTOR.execute(() -> {
++            SENT_SNAPSHOT.set(snapshot);
++            try {
++                task.run();
++            } catch (final Throwable t) {
++                LOGGER.error("Error in async waypoint task", t);
++            } finally {
++                SENT_SNAPSHOT.remove();
++            }
++        });
++    }
++
++    /** Run {@code task} on the worker with no visibility snapshot (disconnect-only tasks). */
++    private static void submit(final Runnable task) {
++        submit(Collections.emptyMap(), task);
++    }
++
++    // --- public API (enqueued onto the worker) ----------------------------------------------------------
+ 
+     @Override
+     public void trackWaypoint(final WaypointTransmitter waypoint) {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot track waypoints off-main"); // Purpur - parallel world ticking (DivineMC)
+         this.waypoints.add(waypoint);
+-
+-        if (!this.locatorBarEnabled) return; // Paper - optimize ServerWaypointManager with locator bar disabled
+-        for (ServerPlayer player : this.players) {
+-            this.createConnection(player, waypoint);
+-        }
++        if (!this.locatorBarEnabled) return;
++        final Map<ServerPlayer, LongOpenHashSet> snapshot = capture(this.players);
++        submit(snapshot, () -> {
++            for (ServerPlayer player : this.players) {
++                this.createConnection(player, waypoint);
++            }
++        });
+     }
+ 
+     @Override
+     public void updateWaypoint(final WaypointTransmitter waypoint) {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot update waypoints off-main"); // Purpur - parallel world ticking (DivineMC)
+-        if (!this.locatorBarEnabled) return; // Paper - optimize ServerWaypointManager with locator bar disabled
++        if (!this.locatorBarEnabled) return;
++        final Map<ServerPlayer, LongOpenHashSet> snapshot = capture(this.players);
++        submit(snapshot, () -> this.updateWaypointImpl(waypoint));
++    }
++
++    private void updateWaypointImpl(final WaypointTransmitter waypoint) {
+         if (this.waypoints.contains(waypoint)) {
+-            Map<ServerPlayer, WaypointTransmitter.Connection> playerConnection = this.connections.column(waypoint); // Leaf - column() is the direct equivalent of transpose().row(), without the wrapper
++            Map<ServerPlayer, WaypointTransmitter.Connection> playerConnection = this.connections.column(waypoint);
+             SetView<ServerPlayer> potentialPlayers = Sets.difference(this.players, playerConnection.keySet());
+ 
+             for (Entry<ServerPlayer, WaypointTransmitter.Connection> waypointConnection : ImmutableSet.copyOf(playerConnection.entrySet())) {
+@@ -66,30 +156,43 @@ public class ServerWaypointManager implements WaypointManager<WaypointTransmitte
+ 
+     @Override
+     public void untrackWaypoint(final WaypointTransmitter waypoint) {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot untrack waypoints off-main"); // Purpur - parallel world ticking (DivineMC)
+-        this.connections.column(waypoint).forEach((player, connection) -> connection.disconnect());
+-        this.connections.column(waypoint).clear(); // Leaf - column() == transpose().row(), drop the transpose wrapper
+         this.waypoints.remove(waypoint);
++        this.dirtyWaypoints.remove(waypoint);
++        submit(() -> {
++            this.connections.column(waypoint).forEach((player, connection) -> connection.disconnect());
++            this.connections.column(waypoint).clear();
++        });
+     }
+ 
+     public void addPlayer(final ServerPlayer player) {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot add player to waypoints off-main"); // Purpur - parallel world ticking (DivineMC)
+         this.players.add(player);
+-
+-        if (this.locatorBarEnabled) { // Paper - optimize ServerWaypointManager with locator bar disabled
+-        for (WaypointTransmitter waypoint : this.waypoints) {
+-            this.createConnection(player, waypoint);
+-        }
+-        } // Paper - optimize ServerWaypointManager with locator bar disabled
+-
+-        if (player.isTransmittingWaypoint()) {
+-            this.trackWaypoint(player);
+-        }
++        if (!this.locatorBarEnabled && !player.isTransmittingWaypoint()) return;
++        final Map<ServerPlayer, LongOpenHashSet> snapshot = capture(this.players);
++        submit(snapshot, () -> {
++            if (this.locatorBarEnabled) {
++                for (WaypointTransmitter waypoint : this.waypoints) {
++                    this.createConnection(player, waypoint);
++                }
++            }
++            if (player.isTransmittingWaypoint()) {
++                this.waypoints.add(player);
++                if (this.locatorBarEnabled) {
++                    for (ServerPlayer other : this.players) {
++                        this.createConnection(other, player);
++                    }
++                }
++            }
++        });
+     }
+ 
+     public void updatePlayer(final ServerPlayer player) {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot update player for waypoints off-main"); // Purpur - parallel world ticking (DivineMC)
+-        if (!this.locatorBarEnabled) return; // Paper - optimize ServerWaypointManager with locator bar disabled
++        if (!this.locatorBarEnabled) return;
++        final Map<ServerPlayer, LongOpenHashSet> snapshot = capture(List.of(player));
++        submit(snapshot, () -> this.updatePlayerImpl(player));
++    }
++
++    private void updatePlayerImpl(final ServerPlayer player) {
++        if (!this.players.contains(player)) return;
+         Map<WaypointTransmitter, WaypointTransmitter.Connection> waypointConnections = this.connections.row(player);
+         SetView<WaypointTransmitter> potentialWaypoints = Sets.difference(this.waypoints, waypointConnections.keySet());
+ 
+@@ -103,78 +206,95 @@ public class ServerWaypointManager implements WaypointManager<WaypointTransmitte
+     }
+ 
+     public void removePlayer(final ServerPlayer player) {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot remove player from waypoints off-main"); // Purpur - parallel world ticking (DivineMC)
+-        this.connections.row(player).values().removeIf(connection -> {
+-            connection.disconnect();
+-            return true;
+-        });
+-        this.untrackWaypoint(player);
+         this.players.remove(player);
++        this.waypoints.remove(player);
++        this.dirtyPlayers.remove(player);
++        submit(() -> {
++            this.connections.row(player).values().removeIf(connection -> {
++                connection.disconnect();
++                return true;
++            });
++            this.connections.column(player).forEach((p, connection) -> connection.disconnect());
++            this.connections.column(player).clear();
++        });
+     }
+ 
+     public void breakAllConnections() {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking)  ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot break all waypoint connections off-main"); // Purpur - parallel world ticking (DivineMC)
+-        this.connections.values().forEach(WaypointTransmitter.Connection::disconnect);
+-        this.connections.clear();
++        submit(() -> {
++            this.connections.values().forEach(WaypointTransmitter.Connection::disconnect);
++            this.connections.clear();
++        });
+     }
+ 
+     public void remakeConnections(final WaypointTransmitter waypoint) {
+-        if (!this.locatorBarEnabled) return; // Paper - optimize ServerWaypointManager with locator bar disabled
+-        for (ServerPlayer player : this.players) {
+-            this.createConnection(player, waypoint);
+-        }
++        if (!this.locatorBarEnabled) return;
++        final Map<ServerPlayer, LongOpenHashSet> snapshot = capture(this.players);
++        submit(snapshot, () -> {
++            for (ServerPlayer player : this.players) {
++                this.createConnection(player, waypoint);
++            }
++        });
+     }
+ 
+     public Set<WaypointTransmitter> transmitters() {
+         return this.waypoints;
+     }
+ 
+-    // Leaf start - batch waypoint updates
+-    /** Mark a moved transmitter for a single update at the next flush. Cheap, thread-safe, no-op when off. */
++    // --- per-tick batching (tick thread marks dirty; flush drains + snapshots + dispatches) --------------
++
+     public void markWaypointDirty(final WaypointTransmitter waypoint) {
+         if (this.locatorBarEnabled) {
+             this.dirtyWaypoints.add(waypoint);
+         }
+     }
+ 
+-    /** Mark a moved receiver for a single update at the next flush. Cheap, thread-safe, no-op when off. */
+     public void markPlayerDirty(final ServerPlayer player) {
+         if (this.locatorBarEnabled) {
+             this.dirtyPlayers.add(player);
+         }
+     }
+ 
+-    /** Process all pending waypoint/player updates once. Must run on the level tick thread (post entity tick). */
++    /** Tick thread: drain the dirty marks, snapshot the affected receivers, dispatch one worker batch. */
+     public void flushDirty() {
+         if (!this.locatorBarEnabled) {
+             return;
+         }
+-        if (!this.dirtyWaypoints.isEmpty()) {
+-            for (final WaypointTransmitter waypoint : this.dirtyWaypoints) {
+-                this.updateWaypoint(waypoint); // self-guards on this.waypoints.contains(waypoint)
+-            }
+-            this.dirtyWaypoints.clear();
++        if (this.dirtyWaypoints.isEmpty() && this.dirtyPlayers.isEmpty()) {
++            return;
+         }
+-        if (!this.dirtyPlayers.isEmpty()) {
+-            for (final ServerPlayer player : this.dirtyPlayers) {
+-                if (this.players.contains(player)) {
+-                    this.updatePlayer(player);
+-                }
+-            }
+-            this.dirtyPlayers.clear();
++        final List<WaypointTransmitter> wps;
++        if (this.dirtyWaypoints.isEmpty()) {
++            wps = Collections.emptyList();
++        } else {
++            wps = new ArrayList<>(this.dirtyWaypoints);
++            this.dirtyWaypoints.removeAll(wps);
+         }
++        final List<ServerPlayer> pls;
++        if (this.dirtyPlayers.isEmpty()) {
++            pls = Collections.emptyList();
++        } else {
++            pls = new ArrayList<>(this.dirtyPlayers);
++            this.dirtyPlayers.removeAll(pls);
++        }
++        // A dirty waypoint may touch any receiver, so snapshot all players; otherwise just the dirty ones.
++        final Map<ServerPlayer, LongOpenHashSet> snapshot = capture(wps.isEmpty() ? pls : this.players);
++        submit(snapshot, () -> {
++            for (final WaypointTransmitter waypoint : wps) {
++                this.updateWaypointImpl(waypoint);
++            }
++            for (final ServerPlayer player : pls) {
++                this.updatePlayerImpl(player);
++            }
++        });
+     }
+-    // Leaf end - batch waypoint updates
+ 
+-    // Paper start - optimize ServerWaypointManager with locator bar disabled
+-    // Avoid a gamerule lookup for each player
++    // --- worker-thread internals ------------------------------------------------------------------------
++
+     private boolean isLocatorBarEnabledFor(final ServerPlayer player) {
+         return locatorBarEnabled;
+-    // Paper end - optimize ServerWaypointManager with locator bar disabled
+     }
+ 
+     private void createConnection(final ServerPlayer player, final WaypointTransmitter waypoint) {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot create waypoint connections off-main"); // Purpur - parallel world ticking (DivineMC)
+         if (player != waypoint) {
+             if (isLocatorBarEnabledFor(player)) {
+                 waypoint.makeWaypointConnectionWith(player).ifPresentOrElse(connection -> {
+@@ -191,7 +311,6 @@ public class ServerWaypointManager implements WaypointManager<WaypointTransmitte
+     }
+ 
+     private void updateConnection(final ServerPlayer player, final WaypointTransmitter waypoint, final WaypointTransmitter.Connection connection) {
+-        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this.level, "Cannot update waypoint connection off-main"); // Purpur - parallel world ticking (DivineMC)
+         if (player != waypoint) {
+             if (isLocatorBarEnabledFor(player)) {
+                 if (!connection.isBroken()) {
+diff --git a/net/minecraft/world/waypoints/WaypointTransmitter.java b/net/minecraft/world/waypoints/WaypointTransmitter.java
+index 8a1b7126e20158b823141e3ac27874236d88f71e..c5401b6ce07e471aa046ec4ca80ae136ca45633b 100644
+--- a/net/minecraft/world/waypoints/WaypointTransmitter.java
++++ b/net/minecraft/world/waypoints/WaypointTransmitter.java
+@@ -34,9 +34,18 @@ public interface WaypointTransmitter extends Waypoint {
+     }
+ 
+     static boolean isChunkVisible(final ChunkPos chunkPos, final ServerPlayer receiver) {
++        final long key = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkPos);
++        // Leaf start - async waypoints: off the tick thread use the per-flush snapshot of the receiver's sent
++        // chunks. getSentChunksRaw() is NOT thread-safe; reading it live off-thread races the chunk system
++        // (rehash AIOOBE). The snapshot is cloned on the tick thread where the read is safe.
++        final it.unimi.dsi.fastutil.longs.LongOpenHashSet snapshot = net.minecraft.server.waypoints.ServerWaypointManager.sentChunksSnapshotFor(receiver);
++        if (snapshot != null) {
++            return snapshot.contains(key);
++        }
++        // Leaf end - async waypoints
+         // Paper start - rewrite chunk system
+         final ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.PlayerChunkLoaderData playerChunkLoader = ((ca.spottedleaf.moonrise.patches.chunk_system.player.ChunkSystemServerPlayer)receiver).moonrise$getChunkLoader();
+-        return playerChunkLoader != null && playerChunkLoader.getSentChunksRaw().contains(ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkPos));
++        return playerChunkLoader != null && playerChunkLoader.getSentChunksRaw().contains(key);
+         // Paper end - rewrite chunk system
+     }
+ 

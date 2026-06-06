@@ -62,9 +62,12 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
     private final ConcurrentHashMap<UUID, LongOpenHashSet> revealed = new ConcurrentHashMap<>();
     // Cached obfuscated section arrays per chunk, reused across viewers; invalidated on any block change.
     // The arrays are immutable copies, so sharing them between connections/sends is safe.
-    private static final LevelChunkSection[] NO_OBF = new LevelChunkSection[0]; // sentinel: chunk has no hideable ore
+    private static final byte[] NO_OBF = new byte[0]; // sentinel: chunk has no hideable ore
     private static final int OBF_CACHE_CAP = 8192; // per-world entry cap; cleared wholesale on overflow
-    private final ConcurrentHashMap<World, ConcurrentHashMap<Long, LevelChunkSection[]>> obfCache = new ConcurrentHashMap<>();
+    // Cache the serialized obfuscated chunk-data buffer per chunk. byte[] is immutable and read-only on
+    // send, so it is shared across all viewers and threads - the ore scan, section copy AND serialization
+    // run once per chunk instead of once per (chunk, player). Invalidated on any block change.
+    private final ConcurrentHashMap<World, ConcurrentHashMap<Long, byte[]>> obfCache = new ConcurrentHashMap<>();
     private long revealTick; // tick thread only
     // Diagnostics only. `submitted` has a single writer (SDK callbacks fire on the tick thread).
     // The hit counters are written from workers and are intentionally best-effort (no atomics):
@@ -227,28 +230,31 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
      * <p>Runs on the tick thread (reads live chunk state). Returns null when disabled, no engine is
      * active, or the chunk has no hideable ore — in which case the caller uses the normal send path.
      */
-    public static LevelChunkSection[] obfuscatedSections(final LevelChunk chunk) {
+    public static byte[] obfuscatedBuffer(final LevelChunk chunk) {
         final RaytraceAntiXrayEngine engine = instance;
         if (engine == null || !DivineConfig.PerformanceCategory.raytraceObfuscateOnSend) {
             return null;
         }
-        // Cache the (expensive) per-block scan + section copies per chunk and reuse across viewers; the
-        // immutable copies are safe to share. Invalidated on any block change via onBlockChanged().
+        // Cache the (expensive) per-block scan + section copies + serialization per chunk and reuse the
+        // resulting buffer across viewers. Invalidated on any block change via onBlockChanged().
         final World world = chunk.getLevel().getWorld();
         final long key = chunk.getPos().pack();
-        final ConcurrentHashMap<Long, LevelChunkSection[]> worldCache =
+        final ConcurrentHashMap<Long, byte[]> worldCache =
             engine.obfCache.computeIfAbsent(world, w -> new ConcurrentHashMap<>());
-        final LevelChunkSection[] cached = worldCache.get(key);
+        final byte[] cached = worldCache.get(key);
         if (cached != null) {
             return cached == NO_OBF ? null : cached;
         }
-        final LevelChunkSection[] built = engine.buildObfuscatedSections(chunk);
+        final LevelChunkSection[] sections = engine.buildObfuscatedSections(chunk);
+        final byte[] buf = sections == null
+            ? NO_OBF
+            : net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData.serialize(sections);
         if (worldCache.size() < OBF_CACHE_CAP) {
-            worldCache.put(key, built == null ? NO_OBF : built);
+            worldCache.put(key, buf);
         } else {
             worldCache.clear(); // crude bound; rebuilt lazily on next send
         }
-        return built;
+        return buf == NO_OBF ? null : buf;
     }
 
     /** Invalidate the cached obfuscation for the chunk containing (x,z). Cheap no-op when disabled. */
@@ -257,7 +263,7 @@ public final class RaytraceAntiXrayEngine implements AntiXrayAdapter {
         if (engine == null || !DivineConfig.PerformanceCategory.raytraceObfuscateOnSend) {
             return;
         }
-        final ConcurrentHashMap<Long, LevelChunkSection[]> worldCache = engine.obfCache.get(world);
+        final ConcurrentHashMap<Long, byte[]> worldCache = engine.obfCache.get(world);
         if (worldCache != null) {
             worldCache.remove(ChunkPos.pack(x >> 4, z >> 4));
         }

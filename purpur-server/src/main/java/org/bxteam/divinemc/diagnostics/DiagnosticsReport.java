@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class DiagnosticsReport {
     /** Report schema version, bumped when the viewer contract changes. */
-    public int schema = 1;
+    public int schema = 2;
     /** "metrics" (instant snapshot) or "debug" (timed profiling session). */
     public String type;
     public Meta meta = new Meta();
@@ -36,6 +36,15 @@ public final class DiagnosticsReport {
 
     /** CPU profiler flamegraph root. Debug only; null in metrics mode. */
     public FlameNode flamegraph;
+
+    /** Per-plugin attribution (classes, packages, live footprint, leak signals). Both modes. */
+    public List<PluginInfo> plugins = new ArrayList<>();
+    /** Heap rolled up by package, attributed to an owning plugin / minecraft / jdk. Both modes. */
+    public List<PackageInfo> packages = new ArrayList<>();
+    /** Ranked leak suspects across classes, classloaders, threads and tasks. Both modes. */
+    public List<LeakSuspect> leakSuspects = new ArrayList<>();
+    /** Heap-dump capture + parse metadata. Null if a dump was never attempted. */
+    public HeapDumpInfo heapDump;
 
     public static final class Meta {
         public String serverBrand;
@@ -139,5 +148,67 @@ public final class DiagnosticsReport {
         public FlameNode(String name) {
             this.name = name;
         }
+    }
+
+    /** One installed plugin with its heap footprint and leak signals. */
+    public static final class PluginInfo {
+        public String name;
+        public String version;
+        public String main;                            // main class name
+        public List<String> authors = new ArrayList<>();
+        public boolean enabled;
+        public String loaderType;                      // simple class name of the plugin classloader
+        /** HPROF classloader object id (debugging aid; 0 when the dump could not bridge it). */
+        public long classLoaderId;
+        public int ownedClasses;                       // classes loaded by this plugin's loader
+        public long liveInstances;                     // instances of owned classes (from heap dump)
+        public long liveBytes;                         // shallow bytes of owned-class instances
+        public long instancesDelta;                    // owned-class growth over the window (debug); 0 in metrics
+        public long bytesDelta;
+        public int threads;                            // live threads attributed to the plugin
+        public List<String> threadNames = new ArrayList<>();
+        public int tasks;                              // scheduled Bukkit tasks owned
+        public int listeners;                          // registered event listeners
+        public int classLoaders;                       // loaders found for this plugin (>1 ⇒ reload leak)
+        public int leakScore;                          // 0..100 heuristic
+        public List<String> leakReasons = new ArrayList<>();
+        public List<PackageInfo> topPackages = new ArrayList<>();  // drill-down
+        public List<HeapClass> topClasses = new ArrayList<>();     // drill-down (top owned classes by bytes)
+    }
+
+    /** Heap rolled up by Java package. */
+    public static final class PackageInfo {
+        public String name;
+        public String owner;     // plugin name / "minecraft" / "jdk" / "unknown"
+        public int classes;
+        public long instances;
+        public long bytes;
+    }
+
+    /** A ranked leak suspect. */
+    public static final class LeakSuspect {
+        public String kind;        // class-growth | classloader-leak | thread-leak | task-leak
+        public String plugin;      // owning plugin, or null
+        public String detail;      // class name / human description
+        public long bytes;
+        public long bytesDelta;
+        public long instances;
+        public String severity;    // low | medium | high
+        public String reason;
+    }
+
+    /** Heap-dump capture + parse metadata. */
+    public static final class HeapDumpInfo {
+        public boolean captured;
+        public boolean parsed;
+        public String skipReason;          // null when captured + parsed cleanly
+        public long fileBytes;
+        public long dumpMillis;
+        public long parseMillis;
+        public long totalInstances;
+        public long totalShallowBytes;
+        public int classCount;
+        public int classLoaderCount;
+        public int pluginClassLoaderCount;
     }
 }

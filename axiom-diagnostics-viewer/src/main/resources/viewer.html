@@ -30,6 +30,15 @@
   #flame { background:#fff; border-radius:6px; padding:6px; }
   .err { padding:40px; text-align:center; color:#f87171; }
   .pill { background:#23303a; color:var(--accent); border-radius:999px; padding:1px 9px; font-size:11px; }
+  tr.prow:hover { background:#1d242e; }
+  .pd { padding:6px 2px 2px; }
+  .pd-reasons { color:#f6ad55; margin-bottom:10px; font-size:12px; }
+  .pd-reasons div { padding:1px 0; }
+  .pd-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; align-items:start; }
+  .pd-grid > div { min-width:0; }
+  .pd-grid table { margin-top:4px; }
+  .pd-grid td { white-space:normal; word-break:break-all; border-bottom:1px solid #20262f; }
+  #expiry { color:#8b96a5; font-size:12px; margin-left:auto; }
 </style>
 </head>
 <body>
@@ -51,11 +60,30 @@ Chart.defaults.color = "#8b96a5";
 Chart.defaults.borderColor = "#262d38";
 Chart.defaults.font.family = "system-ui, sans-serif";
 
+let expiresAt = 0;
 fetch(dataUrl)
-  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-  .then(render)
+  .then(r => {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    expiresAt = parseInt(r.headers.get("X-Report-Expires-At") || "0", 10) || 0;
+    return r.json();
+  })
+  .then(d => { render(d); startExpiryTicker(); })
   .catch(e => { document.getElementById("root").innerHTML =
     '<div class="err">Failed to load report: ' + e.message + '</div>'; });
+
+function startExpiryTicker() {
+  const el = document.getElementById("expiry");
+  if (!el || !expiresAt) return;
+  const tick = () => {
+    const ms = expiresAt - Date.now();
+    if (ms <= 0) { el.textContent = "expired"; el.style.color = "#f87171"; return; }
+    const mins = Math.floor(ms / 60000), secs = Math.floor((ms % 60000) / 1000);
+    el.textContent = "expires in " + mins + "m " + String(secs).padStart(2, "0") + "s";
+    el.style.color = ms < 120000 ? "#f6ad55" : "#8b96a5";
+    setTimeout(tick, 1000);
+  };
+  tick();
+}
 
 function card(title, inner, wide) {
   return '<section class="card' + (wide ? ' wide' : '') + '"><h2>' + title + '</h2>' + inner + '</section>';
@@ -64,6 +92,7 @@ function card(title, inner, wide) {
 function render(d) {
   document.getElementById("type").textContent = (d.type || "report").toUpperCase();
   const m = d.meta || {};
+  const hd = d.heapDump;
   document.getElementById("meta").innerHTML = [
     ["Server", (m.serverBrand || "?") + " " + (m.minecraftVersion || "")],
     ["Version", m.serverVersion || "?"],
@@ -72,8 +101,11 @@ function render(d) {
     ["CPUs", m.availableProcessors ?? "?"],
     ["Uptime", fmtDuration(m.uptimeMs)],
     m.durationMs ? ["Window", (m.durationMs / 1000) + "s"] : null,
+    (d.plugins || []).length ? ["Plugins", d.plugins.length] : null,
+    hd ? ["Heap dump", heapDumpSummary(hd)] : null,
     ["Generated", m.generatedAtEpochMs ? new Date(m.generatedAtEpochMs).toLocaleString() : "?"],
-  ].filter(Boolean).map(x => "<span><b>" + esc(x[0]) + ":</b> " + esc(x[1]) + "</span>").join("");
+  ].filter(Boolean).map(x => "<span><b>" + esc(x[0]) + ":</b> " + esc(x[1]) + "</span>").join("")
+    + '<span id="expiry"></span>';
 
   const root = document.getElementById("root");
   const cards = [];
@@ -89,6 +121,9 @@ function render(d) {
   cards.push(card("Garbage collection", '<canvas id="c-gc"></canvas>'));
   cards.push(card("Thread states", '<canvas id="c-threads"></canvas>'));
   if ((d.lagSpikes || []).length) cards.push(card("Lag spikes (" + d.lagSpikes.length + ")", lagTable(d)));
+  if ((d.leakSuspects || []).length) cards.push(card("Leak suspects (" + d.leakSuspects.length + ")", leakTable(d), true));
+  if ((d.plugins || []).length) cards.push(card("Plugins (" + d.plugins.length + ")", pluginsTable(d), true));
+  if ((d.packages || []).length) cards.push(card("Heap by package", packagesTable(d), true));
   cards.push(card("Heap histogram (top classes)", heapTable(d), true));
   if (d.flamegraph) cards.push(card("CPU profiler (flamegraph)", '<div id="flame"></div>', true));
 
@@ -98,6 +133,7 @@ function render(d) {
   drawGc(d);
   drawThreads(d);
   if (d.flamegraph) drawFlame(d.flamegraph);
+  wirePluginDrilldown(d);
 }
 
 function fmtDuration(ms) {
@@ -150,6 +186,104 @@ function heapTable(d) {
         (hasDelta ? '<td class="num" style="color:' + (dl && dl.bytesDelta > 0 ? "#f87171" : "#8b96a5") + '">' +
           (dl ? "+" + fmtBytes(dl.bytesDelta) : "—") + '</td>' : '') + '</tr>';
     }).join("") + '</table></div>';
+}
+
+function heapDumpSummary(hd) {
+  if (!hd) return "—";
+  if (!hd.captured) return "skipped (" + (hd.skipReason || "n/a") + ")";
+  if (!hd.parsed) return "captured " + fmtBytes(hd.fileBytes) + ", parse failed";
+  return fmtBytes(hd.fileBytes) + " · " + (hd.classCount || 0).toLocaleString() + " classes · " +
+    (hd.classLoaderCount || 0) + " loaders (" + (hd.pluginClassLoaderCount || 0) + " plugin) · " +
+    (hd.dumpMillis || 0) + "+" + (hd.parseMillis || 0) + "ms";
+}
+
+function sevColor(s) { return s === "high" ? "#f87171" : s === "medium" ? "#f6ad55" : "#8b96a5"; }
+function scoreColor(v) { return v >= 60 ? "#f87171" : v >= 30 ? "#f6ad55" : "#68d391"; }
+function ownerBadge(o) {
+  const c = o === "minecraft" ? "#63b3ed" : o === "jdk" ? "#a0aec0" : o === "unknown" ? "#8b96a5" : "#4fd1c5";
+  return '<span style="color:' + c + '">' + esc(o) + "</span>";
+}
+
+function leakTable(d) {
+  const rows = d.leakSuspects.map(s =>
+    '<tr><td><span style="color:' + sevColor(s.severity) + '">●</span> ' + esc(s.severity || "") + "</td>" +
+    "<td>" + esc(s.kind || "") + "</td>" +
+    "<td>" + (s.plugin ? esc(s.plugin) : '<span style="color:#8b96a5">—</span>') + "</td>" +
+    "<td>" + esc(s.detail || "") + "</td>" +
+    '<td class="num">' + (s.bytesDelta ? "+" + fmtBytes(s.bytesDelta) : (s.bytes ? fmtBytes(s.bytes) : "—")) + "</td>" +
+    "<td>" + esc(s.reason || "") + "</td></tr>").join("");
+  return '<div class="scroll"><table><tr><th>Severity</th><th>Kind</th><th>Plugin</th><th>Detail</th><th class="num">Size</th><th>Reason</th></tr>' + rows + "</table></div>";
+}
+
+function scoreBar(v) {
+  return '<div style="display:flex;align-items:center;gap:6px"><div style="flex:0 0 56px;height:7px;background:#23303a;border-radius:4px;overflow:hidden">' +
+    '<div style="width:' + Math.min(100, v) + "%;height:100%;background:" + scoreColor(v) + '"></div></div>' +
+    '<span style="color:' + scoreColor(v) + '">' + v + "</span></div>";
+}
+
+function pluginsTable(d) {
+  const rows = d.plugins.map((p, i) => {
+    const head = '<tr class="prow" data-idx="' + i + '">' +
+      "<td>▸ <b>" + esc(p.name) + '</b> <span style="color:#8b96a5">' + esc(p.version || "") + "</span></td>" +
+      '<td class="num">' + (p.ownedClasses || 0).toLocaleString() + "</td>" +
+      '<td class="num">' + fmtBytes(p.liveBytes) + "</td>" +
+      '<td class="num" style="color:' + ((p.bytesDelta || 0) > 0 ? "#f87171" : "#8b96a5") + '">' +
+        ((p.bytesDelta || 0) > 0 ? "+" + fmtBytes(p.bytesDelta) : "—") + "</td>" +
+      '<td class="num">' + (p.threads || 0) + "</td>" +
+      '<td class="num">' + (p.tasks || 0) + "</td>" +
+      '<td class="num">' + (p.listeners || 0) + "</td>" +
+      '<td class="num">' + (p.classLoaders || 1) + "</td>" +
+      "<td>" + scoreBar(p.leakScore || 0) + "</td></tr>";
+    const detail = '<tr class="pdetail" id="pd-' + i + '" style="display:none"><td colspan="9">' + pluginDetail(p) + "</td></tr>";
+    return head + detail;
+  }).join("");
+  return '<div class="scroll"><table><tr><th>Plugin</th><th class="num">Classes</th><th class="num">Live</th><th class="num">Δ</th>' +
+    '<th class="num">Thr</th><th class="num">Task</th><th class="num">Lstn</th><th class="num">CL</th><th>Leak</th></tr>' + rows + "</table></div>";
+}
+
+function pluginDetail(p) {
+  let h = '<div class="pd">';
+  if ((p.leakReasons || []).length) {
+    h += '<div class="pd-reasons">' + p.leakReasons.map(r => "<div>⚠ " + esc(r) + "</div>").join("") + "</div>";
+  }
+  h += '<div class="pd-grid">';
+  h += "<div><b>Main class</b><br><span style='color:#8b96a5'>" + esc(p.main || "?") + "</span><br><br>" +
+    "<b>Loader</b> " + esc(p.loaderType || "?") + "<br><b>Authors</b> " + esc((p.authors || []).join(", ") || "—") +
+    "<br><b>Enabled</b> " + (p.enabled ? "yes" : "no") + "</div>";
+  if ((p.topClasses || []).length) {
+    h += "<div><b>Top owned classes</b><table>" + p.topClasses.map(c =>
+      "<tr><td>" + esc(c.name) + '</td><td class="num">' + (c.instances || 0).toLocaleString() +
+      '</td><td class="num">' + fmtBytes(c.bytes) + "</td></tr>").join("") + "</table></div>";
+  }
+  if ((p.topPackages || []).length) {
+    h += "<div><b>Top packages</b><table>" + p.topPackages.map(pk =>
+      "<tr><td>" + esc(pk.name) + '</td><td class="num">' + fmtBytes(pk.bytes) + "</td></tr>").join("") + "</table></div>";
+  }
+  if ((p.threadNames || []).length) {
+    h += "<div><b>Threads</b><br><span style='color:#8b96a5'>" + p.threadNames.map(t => esc(t)).join("<br>") + "</span></div>";
+  }
+  h += "</div></div>";
+  return h;
+}
+
+function packagesTable(d) {
+  const rows = d.packages.map(p =>
+    "<tr><td>" + esc(p.name) + "</td><td>" + ownerBadge(p.owner || "unknown") + "</td>" +
+    '<td class="num">' + (p.classes || 0).toLocaleString() + "</td>" +
+    '<td class="num">' + (p.instances || 0).toLocaleString() + "</td>" +
+    '<td class="num">' + fmtBytes(p.bytes) + "</td></tr>").join("");
+  return '<div class="scroll"><table><tr><th>Package</th><th>Owner</th><th class="num">Classes</th><th class="num">Instances</th><th class="num">Bytes</th></tr>' + rows + "</table></div>";
+}
+
+function wirePluginDrilldown(d) {
+  document.querySelectorAll(".prow").forEach(row => {
+    row.style.cursor = "pointer";
+    row.addEventListener("click", () => {
+      const idx = row.getAttribute("data-idx");
+      const det = document.getElementById("pd-" + idx);
+      if (det) det.style.display = det.style.display === "none" ? "table-row" : "none";
+    });
+  });
 }
 
 function timeLabels(arr) { return arr.map(x => (x.t / 1000).toFixed(1)); }

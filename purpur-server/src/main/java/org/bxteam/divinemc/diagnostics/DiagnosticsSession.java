@@ -45,6 +45,8 @@ public final class DiagnosticsSession {
             final HeapHistogram.Snapshot heap = HeapHistogram.capture();
             HeapHistogram.fillTop(report, heap, DivineConfig.diagnosticsHeapHistogramTopN);
 
+            captureAndAttribute(report, null, heap.byClass);
+
             ReportUploader.upload(DivineConfig.diagnosticsViewerBaseUrl(), report).thenAccept(onResult);
         });
     }
@@ -94,6 +96,8 @@ public final class DiagnosticsSession {
                 HeapHistogram.fillTop(report, heapEnd, DivineConfig.diagnosticsHeapHistogramTopN);
                 HeapHistogram.fillDelta(report, heapStart, heapEnd, DivineConfig.diagnosticsHeapHistogramTopN);
 
+                captureAndAttribute(report, heapStart.byClass, heapEnd.byClass);
+
                 ReportUploader.upload(DivineConfig.diagnosticsViewerBaseUrl(), report).thenAccept(onResult);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -104,6 +108,55 @@ public final class DiagnosticsSession {
                 DEBUG_RUNNING.set(false);
             }
         });
+    }
+
+    /**
+     * Takes a live heap dump, parses it for per-classloader attribution, and runs
+     * {@link PluginAttribution} to populate the plugin / package / leak sections.
+     * Never throws: a failed dump degrades to histogram-only attribution.
+     *
+     * @param histStart class histogram at window start (debug); null in metrics mode
+     * @param histEnd   class histogram at window end / the single metrics histogram
+     */
+    private static void captureAndAttribute(DiagnosticsReport report,
+                                            Map<String, long[]> histStart, Map<String, long[]> histEnd) {
+        final DiagnosticsReport.HeapDumpInfo info = new DiagnosticsReport.HeapDumpInfo();
+        report.heapDump = info;
+
+        final long cap = DivineConfig.diagnosticsHeapDumpMaxMb > 0
+            ? DivineConfig.diagnosticsHeapDumpMaxMb * 1024L * 1024L
+            : 0;
+        final HeapDump.Result dump = HeapDump.capture(cap);
+        info.captured = dump.ok;
+        info.fileBytes = dump.fileBytes;
+        info.dumpMillis = dump.dumpMillis;
+
+        HprofParser.Result parsed = null;
+        if (dump.ok) {
+            try {
+                final long t0 = System.nanoTime();
+                parsed = HprofParser.parse(dump.file);
+                info.parseMillis = (System.nanoTime() - t0) / 1_000_000L;
+                info.parsed = true;
+                info.classCount = parsed.classCount;
+                info.classLoaderCount = parsed.classLoaderCount;
+                info.totalInstances = parsed.totalInstances;
+                info.totalShallowBytes = parsed.totalShallowBytes;
+            } catch (Throwable t) {
+                parsed = null;
+                info.skipReason = "parse failed: " + t.getClass().getSimpleName() + ": " + t.getMessage();
+            } finally {
+                dump.cleanup();
+            }
+        } else {
+            info.skipReason = dump.error;
+        }
+
+        try {
+            PluginAttribution.fill(report, parsed, histStart, histEnd);
+        } catch (Throwable ignored) {
+            // attribution is supplementary — never let it break the report upload
+        }
     }
 
     private static void fillMeta(DiagnosticsReport report, long durationMs) {

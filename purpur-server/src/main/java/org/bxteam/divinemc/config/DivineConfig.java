@@ -193,6 +193,7 @@ public class DivineConfig {
     public static int diagnosticsSamplerIntervalMs = 10;
     public static double diagnosticsLagSpikeThresholdMs = 100.0;
     public static int diagnosticsHeapHistogramTopN = 50;
+    public static int diagnosticsHeapDumpMaxMb = 4096;
     private static void diagnostics() {
         diagnosticsEnabled = getBoolean(ConfigCategory.DIAGNOSTICS.key("enabled"), diagnosticsEnabled,
             "Master switch for the /axiommetrics and /axiomdebug diagnostics commands.");
@@ -215,21 +216,39 @@ public class DivineConfig {
             "MSPT at or above which a sample is recorded as a lag spike.");
         diagnosticsHeapHistogramTopN = getInt(ConfigCategory.DIAGNOSTICS.key("heap-histogram-top-n"), diagnosticsHeapHistogramTopN,
             "How many top classes (by retained bytes) to include in the heap histogram.");
+        diagnosticsHeapDumpMaxMb = getInt(ConfigCategory.DIAGNOSTICS.key("heap-dump-max-mb"), diagnosticsHeapDumpMaxMb,
+            "Ceiling (MB) for the live heap dump taken on every /axiommetrics and /axiomdebug for per-plugin",
+            "class attribution and leak detection. The dump is live-only (post-GC) and deleted right after parsing.",
+            "If a dump would exceed this size it is skipped and attribution falls back to the class histogram.",
+            "Set to 0 to remove the ceiling. Lower this on very large heaps to bound disk and pause time.");
     }
 
     /**
      * Resolves the diagnostics viewer base URL. An explicit {@code viewer-url}
      * wins; otherwise it is built from {@code viewer-host} and {@code viewer-port}.
      * Returns an empty string when neither is configured (uploading disabled).
+     *
+     * <p>A {@code viewer-url} given without a scheme (e.g. {@code metrics.example.com})
+     * is normalized to {@code https://metrics.example.com} so the uploader never sees
+     * a scheme-less URI, which would otherwise fail with "URI with undefined scheme".
      */
     public static String diagnosticsViewerBaseUrl() {
         if (diagnosticsViewerUrl != null && !diagnosticsViewerUrl.isBlank()) {
-            return diagnosticsViewerUrl;
+            return withScheme(diagnosticsViewerUrl.trim());
         }
         if (diagnosticsViewerHost != null && !diagnosticsViewerHost.isBlank()) {
-            return "http://" + diagnosticsViewerHost + ":" + diagnosticsViewerPort;
+            return "http://" + diagnosticsViewerHost.trim() + ":" + diagnosticsViewerPort;
         }
         return "";
+    }
+
+    /** Prepends {@code https://} when {@code url} carries no {@code http(s)} scheme. */
+    private static String withScheme(String url) {
+        final String lower = url.toLowerCase(java.util.Locale.ROOT);
+        if (lower.startsWith("http://") || lower.startsWith("https://")) {
+            return url;
+        }
+        return "https://" + url;
     }
 
     // Purpur start - async chunk sending (DivineMC)

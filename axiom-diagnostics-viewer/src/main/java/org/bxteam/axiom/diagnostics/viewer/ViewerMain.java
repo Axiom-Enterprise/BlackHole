@@ -28,9 +28,13 @@ import java.util.zip.GZIPInputStream;
 public final class ViewerMain {
     private static final long MAX_UPLOAD_BYTES = 64L * 1024 * 1024; // 64 MiB decompressed cap
 
+    /** Hard ceiling on link lifetime — reports never live longer than this. */
+    private static final long MAX_TTL_MINUTES = 60;
+
     public static void main(String[] args) {
         final int port = intOpt(args, "--port", "PORT", 8080);
-        final long ttlMinutes = intOpt(args, "--ttl-minutes", "TTL_MINUTES", 30);
+        // Links expire; never longer than one hour regardless of configuration.
+        final long ttlMinutes = Math.max(1, Math.min(MAX_TTL_MINUTES, intOpt(args, "--ttl-minutes", "TTL_MINUTES", 30)));
         final String publicUrl = stripTrailingSlash(
             strOpt(args, "--public-url", "PUBLIC_URL", "http://localhost:" + port));
 
@@ -39,10 +43,13 @@ public final class ViewerMain {
 
         final Javalin app = Javalin.create(cfg -> cfg.showJavalinBanner = false).start(port);
 
+        app.get("/", ctx -> ctx.contentType(ContentType.TEXT_HTML).result(landingPage(ttlMinutes)));
+
         app.get("/health", ctx -> {
             final JsonObject health = new JsonObject();
             health.addProperty("status", "ok");
             health.addProperty("reports", store.size());
+            health.addProperty("ttlMinutes", ttlMinutes);
             ctx.contentType(ContentType.APPLICATION_JSON).result(health.toString());
         });
 
@@ -63,12 +70,14 @@ public final class ViewerMain {
         });
 
         app.get("/{key}/data", ctx -> {
-            final String json = store.get(ctx.pathParam("key"));
+            final String key = ctx.pathParam("key");
+            final String json = store.get(key);
             if (json == null) {
                 ctx.status(HttpStatus.NOT_FOUND).contentType(ContentType.APPLICATION_JSON)
                     .result(errorJson("report not found or expired"));
                 return;
             }
+            ctx.header("X-Report-Expires-At", Long.toString(store.expiresAt(key)));
             ctx.contentType(ContentType.APPLICATION_JSON).result(json);
         });
 
@@ -99,6 +108,26 @@ public final class ViewerMain {
 
     private static boolean isGzip(String encoding) {
         return encoding != null && encoding.toLowerCase().contains("gzip");
+    }
+
+    private static String landingPage(long ttlMinutes) {
+        return "<!doctype html><html lang=en><head><meta charset=utf-8>"
+            + "<meta name=viewport content=\"width=device-width, initial-scale=1\">"
+            + "<title>Axiom Diagnostics</title><style>"
+            + "body{margin:0;background:#0e1116;color:#dfe5ee;font:15px/1.6 system-ui,sans-serif;"
+            + "display:flex;min-height:100vh;align-items:center;justify-content:center}"
+            + ".box{max-width:560px;padding:40px;text-align:center}"
+            + "h1{color:#4fd1c5;font-size:24px;margin:0 0 8px}"
+            + "p{color:#8b96a5;margin:8px 0}code{background:#171c24;color:#4fd1c5;padding:2px 7px;border-radius:5px}"
+            + ".pill{display:inline-block;margin-top:14px;background:#23303a;color:#4fd1c5;border-radius:999px;padding:4px 14px;font-size:13px}"
+            + "</style></head><body><div class=box>"
+            + "<h1>Axiom Diagnostics</h1>"
+            + "<p>Self-hosted viewer for Axiom server diagnostics &mdash; TPS/MSPT, heap, CPU, GC, JIT, "
+            + "per-plugin memory attribution and leak detection.</p>"
+            + "<p>Run <code>/axiommetrics</code> or <code>/axiomdebug</code> in-game to generate a report; "
+            + "you&rsquo;ll get a private link to open here.</p>"
+            + "<div class=pill>Links expire after " + ttlMinutes + " minute" + (ttlMinutes == 1 ? "" : "s") + "</div>"
+            + "</div></body></html>";
     }
 
     private static String notFoundPage() {

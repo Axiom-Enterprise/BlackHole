@@ -58,6 +58,17 @@ public final class ReportStore {
         return entries.size();
     }
 
+    /** Epoch-ms expiry for a key, or -1 if missing. */
+    public long expiresAt(String key) {
+        final Entry entry = entries.get(key);
+        return entry == null ? -1 : entry.expiresAt();
+    }
+
+    /** Configured TTL in whole minutes. */
+    public long ttlMinutes() {
+        return ttlMillis / 60_000L;
+    }
+
     private void sweep() {
         final long now = System.currentTimeMillis();
         entries.entrySet().removeIf(e -> e.getValue().expiresAt() < now);

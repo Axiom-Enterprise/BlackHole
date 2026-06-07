@@ -47,7 +47,8 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
 @@ -26,14 +27,14 @@ public class TickThread extends Thread {
      public static void ensureTickThread(final String reason) {
          if (!isTickThread()) {
-             LOGGER.error("Thread failed main thread check: " + reason + ", context=" + getThreadContext(), new Throwable());
+-            LOGGER.error("Thread failed main thread check: " + reason + ", context=" + getThreadContext(), new Throwable());
++            if (HARD_THROW) LOGGER.error("Thread failed main thread check: " + reason + ", context=" + getThreadContext(), new Throwable()); // Leaf - suppress spam when disable-hard-throw
 -            throw new IllegalStateException(reason);
 +            if (HARD_THROW) throw new IllegalStateException(reason); // Purpur - parallel world ticking (DivineMC)
          }
@@ -58,8 +59,10 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
              final String ex = "Thread failed main thread check: " +
 -                               reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", block_pos=" + pos;
 +                               reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", block_pos=" + pos + " - " + getTickThreadInformation(world.getServer()); // Purpur - parallel world ticking (DivineMC)
-             LOGGER.error(ex, new Throwable());
-             throw new IllegalStateException(ex);
+-            LOGGER.error(ex, new Throwable());
+-            throw new IllegalStateException(ex);
++            if (HARD_THROW) LOGGER.error(ex, new Throwable()); // Leaf - respect disable-hard-throw on positional checks
++            if (HARD_THROW) throw new IllegalStateException(ex); // Leaf - respect disable-hard-throw on positional checks
          }
 @@ -42,7 +43,7 @@ public class TickThread extends Thread {
      public static void ensureTickThread(final Level world, final BlockPos pos, final int blockRadius, final String reason) {
@@ -67,8 +70,10 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
              final String ex = "Thread failed main thread check: " +
 -                reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", block_pos=" + pos + ", block_radius=" + blockRadius;
 +                reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", block_pos=" + pos + ", block_radius=" + blockRadius + " - " + getTickThreadInformation(world.getServer()); // Purpur - parallel world ticking (DivineMC)
-             LOGGER.error(ex, new Throwable());
-             throw new IllegalStateException(ex);
+-            LOGGER.error(ex, new Throwable());
+-            throw new IllegalStateException(ex);
++            if (HARD_THROW) LOGGER.error(ex, new Throwable()); // Leaf - respect disable-hard-throw on positional checks
++            if (HARD_THROW) throw new IllegalStateException(ex); // Leaf - respect disable-hard-throw on positional checks
          }
 @@ -60,7 +61,7 @@ public class TickThread extends Thread {
      public static void ensureTickThread(final Level world, final int chunkX, final int chunkZ, final String reason) {
@@ -76,8 +81,10 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
              final String ex = "Thread failed main thread check: " +
 -                reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", chunk_pos=" + new ChunkPos(chunkX, chunkZ);
 +                reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", chunk_pos=" + new ChunkPos(chunkX, chunkZ) + " - " + getTickThreadInformation(world.getServer()); // Purpur - parallel world ticking (DivineMC)
-             LOGGER.error(ex, new Throwable());
-             throw new IllegalStateException(ex);
+-            LOGGER.error(ex, new Throwable());
+-            throw new IllegalStateException(ex);
++            if (HARD_THROW) LOGGER.error(ex, new Throwable()); // Leaf - respect disable-hard-throw on positional checks
++            if (HARD_THROW) throw new IllegalStateException(ex); // Leaf - respect disable-hard-throw on positional checks
          }
 @@ -69,7 +70,7 @@ public class TickThread extends Thread {
      public static void ensureTickThread(final Entity entity, final String reason) {
@@ -85,8 +92,10 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
              final String ex = "Thread failed main thread check: " +
 -                reason + ", context=" + getThreadContext() + ", entity=" + EntityUtil.dumpEntity(entity);
 +                reason + ", context=" + getThreadContext() + ", entity=" + EntityUtil.dumpEntity(entity) + " - " + getTickThreadInformation(entity.level().getServer()); // Purpur - parallel world ticking (DivineMC)
-             LOGGER.error(ex, new Throwable());
-             throw new IllegalStateException(ex);
+-            LOGGER.error(ex, new Throwable());
+-            throw new IllegalStateException(ex);
++            if (HARD_THROW) LOGGER.error(ex, new Throwable()); // Leaf - respect disable-hard-throw on positional checks
++            if (HARD_THROW) throw new IllegalStateException(ex); // Leaf - respect disable-hard-throw on positional checks
          }
 @@ -78,7 +79,7 @@ public class TickThread extends Thread {
      public static void ensureTickThread(final Level world, final AABB aabb, final String reason) {
@@ -94,8 +103,10 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
              final String ex = "Thread failed main thread check: " +
 -                reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", aabb=" + aabb;
 +                reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", aabb=" + aabb + " - " + getTickThreadInformation(world.getServer()); // Purpur - parallel world ticking (DivineMC)
-             LOGGER.error(ex, new Throwable());
-             throw new IllegalStateException(ex);
+-            LOGGER.error(ex, new Throwable());
+-            throw new IllegalStateException(ex);
++            if (HARD_THROW) LOGGER.error(ex, new Throwable()); // Leaf - respect disable-hard-throw on positional checks
++            if (HARD_THROW) throw new IllegalStateException(ex); // Leaf - respect disable-hard-throw on positional checks
          }
 @@ -87,12 +88,67 @@ public class TickThread extends Thread {
      public static void ensureTickThread(final Level world, final double blockX, final double blockZ, final String reason) {
@@ -103,15 +114,17 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
              final String ex = "Thread failed main thread check: " +
 -                reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", block_pos=" + new Vec3(blockX, 0.0, blockZ);
 +                reason + ", context=" + getThreadContext() + ", world=" + WorldUtil.getWorldName(world) + ", block_pos=" + new Vec3(blockX, 0.0, blockZ) + " - " + getTickThreadInformation(world.getServer()); // Purpur - parallel world ticking (DivineMC)
-             LOGGER.error(ex, new Throwable());
-             throw new IllegalStateException(ex);
+-            LOGGER.error(ex, new Throwable());
+-            throw new IllegalStateException(ex);
++            if (HARD_THROW) LOGGER.error(ex, new Throwable()); // Leaf - respect disable-hard-throw on positional checks
++            if (HARD_THROW) throw new IllegalStateException(ex); // Leaf - respect disable-hard-throw on positional checks
          }
      }
  
 +    // Purpur start - parallel world ticking (DivineMC)
 +    public static void ensureTickThread(final net.minecraft.server.level.ServerLevel world, final String reason) {
 +        if (!isTickThreadFor(world)) {
-+            LOGGER.error("Thread " + Thread.currentThread().getName() + " failed main thread check: " + reason + " @ world " + world.getWorld().getName() + " - " + getTickThreadInformation(world.getServer()), new Throwable());
++            if (HARD_THROW) LOGGER.error("Thread " + Thread.currentThread().getName() + " failed main thread check: " + reason + " @ world " + world.getWorld().getName() + " - " + getTickThreadInformation(world.getServer()), new Throwable()); // Leaf
 +            if (HARD_THROW) throw new IllegalStateException(reason);
 +        }
 +    }
@@ -120,7 +133,7 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
 +        boolean isTickThread = isTickThread();
 +        boolean isServerLevelTickThread = isServerLevelTickThread();
 +        if (!isTickThread || isServerLevelTickThread) {
-+            LOGGER.error("Thread " + Thread.currentThread().getName() + " failed main thread ONLY tick thread check: " + reason, new Throwable());
++            if (HARD_THROW) LOGGER.error("Thread " + Thread.currentThread().getName() + " failed main thread ONLY tick thread check: " + reason, new Throwable()); // Leaf
 +            if (HARD_THROW) throw new IllegalStateException(reason);
 +        }
 +    }
@@ -130,7 +143,7 @@ index 69cdd304d255d52c9b7dc9b6a33ffdb630b79abe..496e09c00795e5d63aca8b0cde6eec7a
 +        boolean isAsyncThread = !isTickThread();
 +        boolean isValid = isAsyncThread || isValidTickThread;
 +        if (!isValid) {
-+            LOGGER.error("Thread " + Thread.currentThread().getName() + " failed main thread or async thread check: " + reason + " @ world " + world.getWorld().getName() + " - " + getTickThreadInformation(world.getServer()), new Throwable());
++            if (HARD_THROW) LOGGER.error("Thread " + Thread.currentThread().getName() + " failed main thread or async thread check: " + reason + " @ world " + world.getWorld().getName() + " - " + getTickThreadInformation(world.getServer()), new Throwable()); // Leaf
 +            if (HARD_THROW)
 +                throw new IllegalStateException(reason);
 +        }

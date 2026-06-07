@@ -50,7 +50,7 @@ public final class ReportUploader {
 
     private static Result uploadBlocking(String viewerBaseUrl, DiagnosticsReport report) {
         if (viewerBaseUrl == null || viewerBaseUrl.isBlank()) {
-            return new Result(false, null, "diagnostics viewer-url is not configured");
+            return new Result(false, null, "diagnostics viewer is not configured (set viewer-url or viewer-host/viewer-port)");
         }
         try {
             final byte[] body = gzip(GSON.toJson(report));

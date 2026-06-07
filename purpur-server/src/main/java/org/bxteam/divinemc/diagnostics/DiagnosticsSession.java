@@ -45,7 +45,7 @@ public final class DiagnosticsSession {
             final HeapHistogram.Snapshot heap = HeapHistogram.capture();
             HeapHistogram.fillTop(report, heap, DivineConfig.diagnosticsHeapHistogramTopN);
 
-            ReportUploader.upload(DivineConfig.diagnosticsViewerUrl, report).thenAccept(onResult);
+            ReportUploader.upload(DivineConfig.diagnosticsViewerBaseUrl(), report).thenAccept(onResult);
         });
     }
 
@@ -94,7 +94,7 @@ public final class DiagnosticsSession {
                 HeapHistogram.fillTop(report, heapEnd, DivineConfig.diagnosticsHeapHistogramTopN);
                 HeapHistogram.fillDelta(report, heapStart, heapEnd, DivineConfig.diagnosticsHeapHistogramTopN);
 
-                ReportUploader.upload(DivineConfig.diagnosticsViewerUrl, report).thenAccept(onResult);
+                ReportUploader.upload(DivineConfig.diagnosticsViewerBaseUrl(), report).thenAccept(onResult);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 onResult.accept(failed("debug session interrupted"));

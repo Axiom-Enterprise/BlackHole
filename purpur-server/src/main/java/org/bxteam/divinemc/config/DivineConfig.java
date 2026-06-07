@@ -187,6 +187,8 @@ public class DivineConfig {
 
     public static boolean diagnosticsEnabled = true;
     public static String diagnosticsViewerUrl = "";
+    public static String diagnosticsViewerHost = "";
+    public static int diagnosticsViewerPort = 8080;
     public static int diagnosticsProfilerDurationSeconds = 30;
     public static int diagnosticsSamplerIntervalMs = 10;
     public static double diagnosticsLagSpikeThresholdMs = 100.0;
@@ -197,7 +199,13 @@ public class DivineConfig {
         diagnosticsViewerUrl = getString(ConfigCategory.DIAGNOSTICS.key("viewer-url"), diagnosticsViewerUrl,
             "Base URL of your self-hosted Axiom diagnostics viewer (e.g. https://diag.example.com).",
             "Reports are POSTed to <viewer-url>/upload and the temporary link is returned to the player.",
-            "Leave empty to disable uploading.");
+            "Leave empty to build the URL from viewer-host and viewer-port instead.");
+        diagnosticsViewerHost = getString(ConfigCategory.DIAGNOSTICS.key("viewer-host"), diagnosticsViewerHost,
+            "Host of the diagnostics viewer, used only when viewer-url is empty.",
+            "The effective URL becomes http://<viewer-host>:<viewer-port>.",
+            "Leave empty (with no viewer-url) to disable uploading.");
+        diagnosticsViewerPort = getInt(ConfigCategory.DIAGNOSTICS.key("viewer-port"), diagnosticsViewerPort,
+            "Port of the diagnostics viewer, used only when viewer-url is empty.");
         diagnosticsProfilerDurationSeconds = getInt(ConfigCategory.DIAGNOSTICS.key("profiler-duration-seconds"), diagnosticsProfilerDurationSeconds,
             "Default duration of /axiomdebug when no argument is given.");
         diagnosticsSamplerIntervalMs = getInt(ConfigCategory.DIAGNOSTICS.key("sampler-interval-ms"), diagnosticsSamplerIntervalMs,
@@ -207,6 +215,21 @@ public class DivineConfig {
             "MSPT at or above which a sample is recorded as a lag spike.");
         diagnosticsHeapHistogramTopN = getInt(ConfigCategory.DIAGNOSTICS.key("heap-histogram-top-n"), diagnosticsHeapHistogramTopN,
             "How many top classes (by retained bytes) to include in the heap histogram.");
+    }
+
+    /**
+     * Resolves the diagnostics viewer base URL. An explicit {@code viewer-url}
+     * wins; otherwise it is built from {@code viewer-host} and {@code viewer-port}.
+     * Returns an empty string when neither is configured (uploading disabled).
+     */
+    public static String diagnosticsViewerBaseUrl() {
+        if (diagnosticsViewerUrl != null && !diagnosticsViewerUrl.isBlank()) {
+            return diagnosticsViewerUrl;
+        }
+        if (diagnosticsViewerHost != null && !diagnosticsViewerHost.isBlank()) {
+            return "http://" + diagnosticsViewerHost + ":" + diagnosticsViewerPort;
+        }
+        return "";
     }
 
     // Purpur start - async chunk sending (DivineMC)

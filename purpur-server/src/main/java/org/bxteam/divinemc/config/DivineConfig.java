@@ -260,6 +260,7 @@ public class DivineConfig {
         public static int parallelThreadCount = 4;
         public static boolean logContainerCreationStacktraces = false;
         public static boolean disableHardThrow = false;
+        public static boolean allowAsyncWorldReads = true; // Leaf - allow async world reads under parallel ticking (writes stay guarded)
         // Purpur end - parallel world ticking (DivineMC)
 
         // Purpur start - regionized chunk ticking (DivineMC)
@@ -372,6 +373,12 @@ public class DivineConfig {
             logContainerCreationStacktraces = getBoolean(ConfigCategory.ASYNC.key("parallel-world-ticking.log-container-creation-stacktraces"), logContainerCreationStacktraces);
             disableHardThrow = getBoolean(ConfigCategory.ASYNC.key("parallel-world-ticking.disable-hard-throw"), disableHardThrow,
                 "Disables annoying 'not on main thread' throws. But, THIS IS NOT RECOMMENDED because you SHOULD FIX THE ISSUES THEMSELVES instead of RISKING DATA CORRUPTION! If you lose something, take the blame on yourself.");
+            allowAsyncWorldReads = getBoolean(ConfigCategory.ASYNC.key("parallel-world-ticking.allow-async-world-reads"), allowAsyncWorldReads,
+                "Allows plugins to READ world state (biome, block state, light level, etc.) from async threads while",
+                "parallel world ticking is enabled, instead of hard-throwing. Async WRITES (set block/biome, spawn,",
+                "explosions) stay blocked because they can corrupt the world; a read cannot, worst case a plugin sees",
+                "a slightly stale value. Fixes log spam from async PlaceholderAPI/TAB expansions calling e.g.",
+                "Block#getBiome without weakening the write-safety guard. Set false to also hard-throw on async reads.");
         }
         // Purpur end - parallel world ticking (DivineMC)
 

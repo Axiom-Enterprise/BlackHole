@@ -250,7 +250,7 @@ public class PurpurConfig {
         disableGiveCommandDrops = getBoolean("settings.disable-give-dropping", disableGiveCommandDrops);
     }
 
-    public static String commandRamBarTitle = "<gray>Ram<yellow>:</yellow> <used>/<xmx> (<percent>)";
+    public static String commandRamBarTitle = "<gray>Ram<yellow>:</yellow> <used>/<xmx> (<percent>) <gray>NH<yellow>:</yellow> <nonheap> <gray>GC<yellow>:</yellow> <gc_count>/<gc_time> <gray>Thr<yellow>:</yellow> <threads>";
     public static BossBar.Overlay commandRamBarProgressOverlay = BossBar.Overlay.NOTCHED_20;
     public static BossBar.Color commandRamBarProgressColorGood = BossBar.Color.GREEN;
     public static BossBar.Color commandRamBarProgressColorMedium = BossBar.Color.YELLOW;
@@ -259,7 +259,7 @@ public class PurpurConfig {
     public static String commandRamBarTextColorMedium = "<gradient:#ffff55:#ffaa00><text></gradient>";
     public static String commandRamBarTextColorLow = "<gradient:#ff5555:#aa0000><text></gradient>";
     public static int commandRamBarTickInterval = 20;
-    public static String commandTPSBarTitle = "<gray>TPS<yellow>:</yellow> <tps> MSPT<yellow>:</yellow> <mspt> Ping<yellow>:</yellow> <ping>ms";
+    public static String commandTPSBarTitle = "<gray>TPS<yellow>:</yellow> <tps>/<tps5m>/<tps15m> MSPT<yellow>:</yellow> <mspt> CPU<yellow>:</yellow> <cpu>% Ping<yellow>:</yellow> <ping>ms <gray>P<yellow>:</yellow> <players> C<yellow>:</yellow> <chunks> E<yellow>:</yellow> <entities>";
     public static BossBar.Overlay commandTPSBarProgressOverlay = BossBar.Overlay.NOTCHED_20;
     public static TPSBarTask.FillMode commandTPSBarProgressFillMode = TPSBarTask.FillMode.MSPT;
     public static BossBar.Color commandTPSBarProgressColorGood = BossBar.Color.GREEN;

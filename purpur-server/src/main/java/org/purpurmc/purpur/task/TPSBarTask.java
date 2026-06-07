@@ -6,13 +6,32 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.purpurmc.purpur.PurpurConfig;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+
+import java.lang.management.ManagementFactory;
 
 public class TPSBarTask extends BossBarTask {
     private static TPSBarTask instance;
     private double tps = 20.0D;
+    private double tps5m = 20.0D;
+    private double tps15m = 20.0D;
     private double mspt = 0.0D;
+    private double cpu = 0.0D;
+    private int players = 0;
+    private int chunks = 0;
+    private int entities = 0;
     private int tick = 0;
+
+    private final com.sun.management.OperatingSystemMXBean osBean = resolveOsBean();
+
+    private static com.sun.management.OperatingSystemMXBean resolveOsBean() {
+        try {
+            return (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+        } catch (Throwable t) {
+            return null;
+        }
+    }
 
     public static TPSBarTask instance() {
         if (instance == null) {
@@ -32,8 +51,14 @@ public class TPSBarTask extends BossBarTask {
         bossbar.color(getBossBarColor());
         bossbar.name(MiniMessage.miniMessage().deserialize(PurpurConfig.commandTPSBarTitle,
                 Placeholder.component("tps", getTPSColor()),
+                Placeholder.component("tps5m", getTPSColor(tps5m)),
+                Placeholder.component("tps15m", getTPSColor(tps15m)),
                 Placeholder.component("mspt", getMSPTColor()),
-                Placeholder.component("ping", getPingColor(player.getPing()))
+                Placeholder.component("ping", getPingColor(player.getPing())),
+                Placeholder.unparsed("cpu", String.format("%.1f", cpu)),
+                Placeholder.unparsed("players", Integer.toString(players)),
+                Placeholder.unparsed("chunks", Integer.toString(chunks)),
+                Placeholder.unparsed("entities", Integer.toString(entities))
         ));
     }
 
@@ -44,8 +69,22 @@ public class TPSBarTask extends BossBarTask {
         }
         tick = 0;
 
-        this.tps = Math.max(Math.min(Bukkit.getTPS()[0], 20.0D), 0.0D);
+        double[] tpsArr = Bukkit.getTPS();
+        this.tps = Math.max(Math.min(tpsArr[0], 20.0D), 0.0D);
+        this.tps5m = Math.max(Math.min(tpsArr.length > 1 ? tpsArr[1] : tpsArr[0], 20.0D), 0.0D);
+        this.tps15m = Math.max(Math.min(tpsArr.length > 2 ? tpsArr[2] : tpsArr[0], 20.0D), 0.0D);
         this.mspt = Bukkit.getAverageTickTime();
+        this.cpu = osBean != null ? Math.max(osBean.getProcessCpuLoad() * 100.0D, 0.0D) : 0.0D;
+
+        this.players = Bukkit.getOnlinePlayers().size();
+        int chunkCount = 0;
+        int entityCount = 0;
+        for (World world : Bukkit.getWorlds()) {
+            chunkCount += world.getLoadedChunks().length;
+            entityCount += world.getEntities().size();
+        }
+        this.chunks = chunkCount;
+        this.entities = entityCount;
 
         super.run();
     }
@@ -73,6 +112,10 @@ public class TPSBarTask extends BossBarTask {
     }
 
     private boolean isGood(FillMode mode, int ping) {
+        return isGood(mode, ping, this.tps);
+    }
+
+    private boolean isGood(FillMode mode, int ping, double tps) {
         if (mode == FillMode.MSPT) {
             return mspt < 40;
         } else if (mode == FillMode.TPS) {
@@ -89,6 +132,10 @@ public class TPSBarTask extends BossBarTask {
     }
 
     private boolean isMedium(FillMode mode, int ping) {
+        return isMedium(mode, ping, this.tps);
+    }
+
+    private boolean isMedium(FillMode mode, int ping, double tps) {
         if (mode == FillMode.MSPT) {
             return mspt < 50;
         } else if (mode == FillMode.TPS) {
@@ -101,10 +148,14 @@ public class TPSBarTask extends BossBarTask {
     }
 
     private Component getTPSColor() {
+        return getTPSColor(this.tps);
+    }
+
+    private Component getTPSColor(double tps) {
         String color;
-        if (isGood(FillMode.TPS)) {
+        if (isGood(FillMode.TPS, 0, tps)) {
             color = PurpurConfig.commandTPSBarTextColorGood;
-        } else if (isMedium(FillMode.TPS)) {
+        } else if (isMedium(FillMode.TPS, 0, tps)) {
             color = PurpurConfig.commandTPSBarTextColorMedium;
         } else {
             color = PurpurConfig.commandTPSBarTextColorLow;

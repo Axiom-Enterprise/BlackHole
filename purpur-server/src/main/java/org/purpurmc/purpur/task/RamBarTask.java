@@ -7,8 +7,10 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.entity.Player;
 import org.purpurmc.purpur.PurpurConfig;
 
+import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
+import java.util.List;
 
 public class RamBarTask extends BossBarTask {
     private static RamBarTask instance;
@@ -16,6 +18,10 @@ public class RamBarTask extends BossBarTask {
     private long used = 0L;
     private long xmx = 0L;
     private long xms = 0L;
+    private long nonHeap = 0L;
+    private long gcCount = 0L;
+    private long gcTime = 0L;
+    private int threads = 0;
     private float percent = 0F;
     private int tick = 0;
 
@@ -40,6 +46,10 @@ public class RamBarTask extends BossBarTask {
                 Placeholder.component("used", format(this.used)),
                 Placeholder.component("xmx", format(this.xmx)),
                 Placeholder.component("xms", format(this.xms)),
+                Placeholder.component("nonheap", format(this.nonHeap)),
+                Placeholder.unparsed("gc_count", Long.toString(this.gcCount)),
+                Placeholder.unparsed("gc_time", this.gcTime + "ms"),
+                Placeholder.unparsed("threads", Integer.toString(this.threads)),
                 Placeholder.unparsed("percent", ((int) (this.percent * 100)) + "%")
         ));
     }
@@ -57,7 +67,21 @@ public class RamBarTask extends BossBarTask {
         this.used = heap.getUsed();
         this.xmx = heap.getMax();
         this.xms = heap.getInit();
+        this.nonHeap = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getUsed();
         this.percent = Math.max(Math.min((float) this.used / this.xmx, 1.0F), 0.0F);
+
+        long count = 0L;
+        long time = 0L;
+        List<GarbageCollectorMXBean> gcBeans = ManagementFactory.getGarbageCollectorMXBeans();
+        for (GarbageCollectorMXBean gc : gcBeans) {
+            long c = gc.getCollectionCount();
+            long t = gc.getCollectionTime();
+            if (c > 0) count += c;
+            if (t > 0) time += t;
+        }
+        this.gcCount = count;
+        this.gcTime = time;
+        this.threads = ManagementFactory.getThreadMXBean().getThreadCount();
 
         super.run();
     }

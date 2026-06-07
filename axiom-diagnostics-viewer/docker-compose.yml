@@ -1,0 +1,20 @@
+# Axiom Diagnostics Viewer — the metrics site behind metrics.axiomc.net.
+# Build the shadow jar first, then bring the service up:
+#   ../gradlew :axiom-diagnostics-viewer:shadowJar
+#   docker compose -f axiom-diagnostics-viewer/docker-compose.yml up -d --build
+#
+# The container is reached by the cloudflared tunnel on 127.0.0.1:8123.
+services:
+  viewer:
+    build: .
+    image: axiom-diagnostics-viewer:latest
+    container_name: axiom-diagnostics-viewer
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8123:8080"
+    environment:
+      # Public base of the returned links — must match the externally reachable URL.
+      PUBLIC_URL: https://metrics.axiomc.net
+      # Link lifetime; the app clamps this to a 60-minute ceiling.
+      TTL_MINUTES: "60"
+      PORT: "8080"

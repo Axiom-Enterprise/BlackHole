@@ -1,6 +1,43 @@
 --- a/net/minecraft/world/level/Level.java
 +++ b/net/minecraft/world/level/Level.java
-@@ -171,10 +_,54 @@
+@@ -120,7 +_,7 @@
+         .build();
+     public final List<TickingBlockEntity> blockEntityTickers = Lists.newArrayList();
+     protected final CollectingNeighborUpdater neighborUpdater;
+-    private final List<TickingBlockEntity> pendingBlockEntityTickers = Lists.newArrayList();
++    private final List<TickingBlockEntity> pendingBlockEntityTickers = java.util.Collections.synchronizedList(Lists.newArrayList()); // Purpur - regionized chunk ticking (DivineMC)
+     private boolean tickingBlockEntities;
+     public final Thread thread;
+     private final boolean isDebug;
+@@ -151,10 +_,24 @@
+ 
+     public boolean captureBlockStates = false;
+     public boolean captureTreeGeneration = false;
+-    public Map<BlockPos, org.bukkit.craftbukkit.block.CraftBlockState> capturedBlockStates = new java.util.LinkedHashMap<>(); // Paper
++    public Map<BlockPos, org.bukkit.craftbukkit.block.CraftBlockState> capturedBlockStates = java.util.Collections.synchronizedMap(new java.util.LinkedHashMap<>()); // Paper // Purpur - regionized chunk ticking (DivineMC)
+     public Map<BlockPos, BlockEntity> capturedTileEntities = new java.util.LinkedHashMap<>(); // Paper - Retain block place order when capturing blockstates
+-    @Nullable
+-    public List<net.minecraft.world.entity.item.ItemEntity> captureDrops;
++    // Axiom start - thread-local block-drop capture: under Regionized Chunk Ticking / Parallel World Ticking multiple
++    // region threads break blocks in the same level concurrently. A single shared captureDrops field races (one thread
++    // nulls it while another reads -> "Cannot invoke List.iterator() because items is null", and drops get captured into
++    // the wrong thread's list). Give each thread its own capture buffer; single-threaded behaviour is unchanged.
++    private final ThreadLocal<List<net.minecraft.world.entity.item.ItemEntity>> captureDropsTL = new ThreadLocal<>();
++    public @Nullable List<net.minecraft.world.entity.item.ItemEntity> getCaptureDrops() {
++        return this.captureDropsTL.get();
++    }
++    public void setCaptureDrops(final @Nullable List<net.minecraft.world.entity.item.ItemEntity> drops) {
++        if (drops == null) {
++            this.captureDropsTL.remove();
++        } else {
++            this.captureDropsTL.set(drops);
++        }
++    }
++    // Axiom end
+     public final it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap<SpawnCategory> ticksPerSpawnCategory = new it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap<>();
+     // Paper start - EAR 2
+     public int wakeupInactiveRemainingAnimals;
+@@ -171,9 +_,54 @@
      }
      // Paper end - add paper world config
  
@@ -8,7 +45,8 @@
      public static @Nullable BlockPos lastPhysicsProblem; // Spigot
      public final Map<ServerExplosion.CacheKey, Float> explosionDensityCache = new java.util.HashMap<>(); // Paper - Optimize explosions
      public java.util.ArrayDeque<net.minecraft.world.level.block.RedstoneTorchBlock.Toggle> redstoneUpdateInfos; // Paper - Faster redstone torch rapid clock removal; Move from Map in BlockRedstoneTorch to here
- 
++    public io.papermc.paper.redstone.RedstoneWireTurbo turbo; // Purpur - parallel world ticking (DivineMC) (moved to world)
++
 +    // Purpur start - Add adjustable breeding cooldown to config
 +    private com.google.common.cache.Cache<BreedingCooldownPair, Object> playerBreedingCooldowns;
 +
@@ -51,10 +89,9 @@
 +        }
 +    }
 +    // Purpur end - Add adjustable breeding cooldown to config
-+
+ 
      public CraftWorld getWorld() {
          return this.world;
-     }
 @@ -852,6 +_,8 @@
          final org.bukkit.NamespacedKey worldKey = CraftNamespacedKey.fromMinecraft(dimension.identifier()); // Paper
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(bukkitName, worldKey); // Spigot
@@ -63,6 +100,122 @@
 +        this.playerBreedingCooldowns = this.getNewBreedingCooldownCache(); // Purpur - Add adjustable breeding cooldown to config
          this.generator = generator;
          this.world = new CraftWorld((ServerLevel) this, worldKey, biomeProvider, environment);
+ 
+@@ -874,6 +_,7 @@
+         this.damageSources = new DamageSources(registryAccess);
+         this.entityLookup = new ca.spottedleaf.moonrise.patches.chunk_system.level.entity.dfl.DefaultEntityLookup(this); // Paper - rewrite chunk system
+         this.chunkPacketBlockController = this.paperConfig().anticheat.antiXray.enabled ? new io.papermc.paper.antixray.ChunkPacketBlockControllerAntiXray(this, executor) : io.papermc.paper.antixray.ChunkPacketBlockController.NO_OPERATION_INSTANCE; // Paper - Anti-Xray
++        this.turbo = org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking ? new io.papermc.paper.redstone.RedstoneWireTurbo((net.minecraft.world.level.block.RedStoneWireBlock) net.minecraft.world.level.block.Blocks.REDSTONE_WIRE) : null; // Purpur - parallel world ticking (DivineMC)
+     }
+ 
+     // Paper start - Cancel hit for vanished players
+@@ -1050,6 +_,7 @@
+ 
+     @Override
+     public boolean setBlock(final BlockPos pos, final BlockState blockState, @Block.UpdateFlags final int updateFlags, final int updateLimit) {
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)this, pos, "Updating block asynchronously"); // Purpur - parallel world ticking (DivineMC) (additional concurrency issues logs)
+         // CraftBukkit start - tree generation
+         if (this.captureTreeGeneration) {
+             // Paper start - Protect Bedrock and End Portal/Frames from being destroyed
+@@ -1481,10 +_,14 @@
+ 
+     public void tickBlockEntities() {
+         this.tickingBlockEntities = true;
+-        if (!this.pendingBlockEntityTickers.isEmpty()) {
+-            this.blockEntityTickers.addAll(this.pendingBlockEntityTickers);
+-            this.pendingBlockEntityTickers.clear();
++        // Purpur start - regionized chunk ticking (DivineMC) - synchronization fix
++        synchronized (pendingBlockEntityTickers) {
++            if (!this.pendingBlockEntityTickers.isEmpty()) {
++                this.blockEntityTickers.addAll(this.pendingBlockEntityTickers);
++                this.pendingBlockEntityTickers.clear();
++            }
+         }
++        // Purpur end - regionized chunk ticking (DivineMC) - synchronization fix
+ 
+         // Paper - Fix MC-117075 use removeAll - remove iterator in favour of indexed for loop, ensuring compile error if something uses iter incorrectly
+         boolean tickBlockEntities = this.tickRateManager().runsNormally();
+@@ -1500,11 +_,12 @@
+                 toRemove.add(ticker); // Paper - Fix MC-117075 use removeAll
+             } else if (tickBlockEntities && this.shouldTickBlocksAt(ticker.getPos())) {
+                 ticker.tick();
+-                // Paper start - rewrite chunk system
+-                if ((++tickedEntities & 7) == 0) {
+-                    ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemLevel)(Level)(Object)this).moonrise$midTickTasks();
++                // Purpur start - parallel world ticking (DivineMC)
++                ++tickedEntities;
++                if (!org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking && (tickedEntities & 7) == 0) {
++                    this.moonrise$midTickTasks();
+                 }
+-                // Paper end - rewrite chunk system
++                // Purpur end - parallel world ticking (DivineMC)
+             }
+         }
+ 
+@@ -1515,15 +_,19 @@
+     public <T extends Entity> void guardEntityTick(final Consumer<T> tick, final T entity) {
+         try {
+             tick.accept(entity);
+-        } catch (Throwable t) {
++        } catch (Throwable t) { // Pufferfish - diff on change ServerLevel.tick
+             // Paper start - Prevent block entity and entity crashes
+             final String msg = String.format("Entity threw exception at %s:%s,%s,%s", io.papermc.paper.util.MCUtil.getLevelName(entity.level()), entity.getX(), entity.getY(), entity.getZ());
+             MinecraftServer.LOGGER.error(msg, t);
+             getCraftServer().getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerInternalException(msg, t))); // Paper - ServerExceptionEvent
+-            entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
++            entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD); // Pufferfish - diff on change ServerLevel.tick
+             // Paper end - Prevent block entity and entity crashes
+         }
+-        this.moonrise$midTickTasks(); // Paper - rewrite chunk system
++        // Purpur start - parallel world ticking (DivineMC)
++        if (!org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) {
++            this.moonrise$midTickTasks(); // Paper - rewrite chunk system // Pufferfish - diff on change ServerLevel.tick
++        }
++        // Purpur end - parallel world ticking (DivineMC)
+     }
+ 
+     // Paper start - Option to prevent armor stands from doing entity lookups
+@@ -1674,6 +_,7 @@
+ 
+     @Override
+     public @Nullable BlockEntity getBlockEntity(final BlockPos pos) {
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThreadOrAsyncThread((ServerLevel) this, "Cannot read world asynchronously"); // Purpur - parallel world ticking (DivineMC)
+         // Paper start - Perf: Optimize capturedTileEntities lookup
+         net.minecraft.world.level.block.entity.BlockEntity blockEntity;
+         if (!this.capturedTileEntities.isEmpty() && (blockEntity = this.capturedTileEntities.get(pos)) != null) {
+@@ -1690,6 +_,7 @@
+     }
+ 
+     public void setBlockEntity(final BlockEntity blockEntity) {
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel) this, "Cannot modify world asynchronously"); // Purpur - parallel world ticking (DivineMC)
+         BlockPos pos = blockEntity.getBlockPos();
+         if (this.isInValidBounds(pos)) {
+             // CraftBukkit start
+@@ -1762,6 +_,7 @@
+ 
+     @Override
+     public List<Entity> getEntities(final @Nullable Entity except, final AABB bb, final Predicate<? super Entity> selector) {
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking && !org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)this, bb, "Cannot getEntities asynchronously"); // Purpur - parallel world ticking (DivineMC) (additional concurrency issues logs) // Purpur - async target finding (Leaf) - allow async goal thread reads
+         Profiler.get().incrementCounter("getEntities");
+         // Paper start - rewrite chunk system
+         final List<Entity> ret = new java.util.ArrayList<>();
+@@ -2109,8 +_,15 @@
+     public abstract RecipeAccess recipeAccess();
+ 
+     public BlockPos getBlockRandomPos(final int xo, final int yo, final int zo, final int yMask) {
+-        this.randValue = this.randValue * 3 + 1013904223;
+-        int val = this.randValue >> 2;
++        // Purpur start - parallel world ticking (DivineMC)
++        int val;
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) {
++            val = this.random.nextInt() >> 2;
++        } else {
++            this.randValue = this.randValue * 3 + 1013904223;
++            val = this.randValue >> 2;
++        }
++        // Purpur end - parallel world ticking (DivineMC)
+         return new BlockPos(xo + (val & 15), yo + (val >> 16 & yMask), zo + (val >> 8 & 15));
+     }
  
 @@ -2197,4 +_,14 @@
          return this.moonrise$getEntityLookup().getEntityCount(); // Paper - rewrite chunk system

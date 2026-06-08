@@ -8,6 +8,26 @@
          }
          // CraftBukkit end
  
+@@ -391,7 +_,7 @@
+ 
+         // CraftBukkit start
+         org.bukkit.block.BlockState bState = bblock.getState();
+-        this.level.captureDrops = new java.util.ArrayList<>();
++        this.level.setCaptureDrops(new java.util.ArrayList<>()); // Axiom - thread-local capture buffer
+         // CraftBukkit end
+         BlockState adjustedState = block.playerWillDestroy(this.level, pos, state, this.player);
+         boolean changed = this.level.removeBlock(pos, false);
+@@ -417,8 +_,8 @@
+         } // CraftBukkit
+ 
+         // CraftBukkit start
+-        List<net.minecraft.world.entity.item.ItemEntity> itemsToDrop = this.level.captureDrops; // Paper - capture all item additions to the world
+-        this.level.captureDrops = null; // Paper - capture all item additions to the world; Remove this earlier so that we can actually drop stuff
++        List<net.minecraft.world.entity.item.ItemEntity> itemsToDrop = this.level.getCaptureDrops(); // Paper - capture all item additions to the world // Axiom - thread-local capture buffer
++        this.level.setCaptureDrops(null); // Paper - capture all item additions to the world; Remove this earlier so that we can actually drop stuff // Axiom - thread-local capture buffer
+         if (event.isDropItems()) {
+             org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockDropItemEvent(bblock, bState, this.player, itemsToDrop); // Paper - capture all item additions to the world
+         }
 @@ -501,6 +_,7 @@
      public InteractionResult useItemOn(
          final ServerPlayer player, final Level level, final ItemStack itemStack, final InteractionHand hand, final BlockHitResult hitResult

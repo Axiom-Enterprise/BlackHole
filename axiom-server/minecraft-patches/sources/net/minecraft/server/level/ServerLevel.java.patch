@@ -1,5 +1,49 @@
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
+@@ -191,11 +_,32 @@
+     private static final Logger LOGGER = LogUtils.getLogger();
+     private static final int EMPTY_TIME_NO_TICK = 300;
+     private static final int MAX_SCHEDULED_TICKS_PER_TICK = 65536;
+-    private final List<ServerPlayer> players = Lists.newArrayList();
++    // Purpur start - async target finding (Leaf)
++    private final List<ServerPlayer> players;
++    {
++        // Leaf - the player list is iterated OFF the main thread by mob AI and spawner checks
++        // (getNearestPlayer / hasNearbyAlivePlayerThatAffectsSpawning) under parallel-world or
++        // regionized-chunk ticking, while player join/leave mutates it on the main thread ->
++        // ConcurrentModificationException. asyncTargetFinding is force-disabled when parallel-world-ticking
++        // is on (they are incompatible, see DivineConfig), so its COW gate alone never covers the parallel
++        // case - the list is plain exactly when it is read concurrently. Use a CopyOnWriteArrayList whenever
++        // any feature may read it off-thread: join/leave is rare so the array-copy cost is negligible, while
++        // reads stay lock-free and iterate a stable snapshot.
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding
++            || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking
++            || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking) {
++            this.players = Lists.newCopyOnWriteArrayList();
++        } else {
++            this.players = Lists.newArrayList();
++        }
++    }
++    // Purpur end - async target finding (Leaf)
+     public final ServerChunkCache chunkSource;
+     private final MinecraftServer server;
+     public final io.papermc.paper.world.saveddata.PaperLevelOverrides serverLevelData; // Paper - type
+-    private final EntityTickList entityTickList = new EntityTickList();
++    public final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.ChunkHolderManager.LevelHolderData chunkHolderData; // Purpur - optimize moonrise / chunk-system thread-safety (DivineMC)
++    public final EntityTickList entityTickList = new EntityTickList(this); // Purpur - async mob spawning (DivineMC) - needs public access for async spawn thread // Purpur - parallel world ticking (DivineMC)
++    public final org.dreeam.leaf.async.ai.@org.jetbrains.annotations.Nullable AsyncGoalExecutor asyncGoalExecutor; // Purpur - async target finding (Leaf)
+     private final ServerWaypointManager waypointManager;
+     private EnvironmentAttributeSystem environmentAttributes;
+     // Paper - rewrite chunk system
+@@ -207,7 +_,7 @@
+     private final LevelTicks<Block> blockTicks = new LevelTicks<>(this::isPositionTickingWithEntitiesLoaded);
+     private final LevelTicks<Fluid> fluidTicks = new LevelTicks<>(this::isPositionTickingWithEntitiesLoaded);
+     private final PathTypeCache pathTypesByPosCache = new PathTypeCache();
+-    private final Set<Mob> navigatingMobs = new ObjectOpenHashSet<>();
++    private final Set<Mob> navigatingMobs = java.util.Collections.synchronizedSet(new ObjectOpenHashSet<>()); // Purpur - regionized chunk ticking (DivineMC)
+     private volatile boolean isUpdatingNavigations;
+     protected final Raids raids;
+     private final ObjectLinkedOpenHashSet<BlockEventData> blockEvents = new ObjectLinkedOpenHashSet<>();
 @@ -219,6 +_,8 @@
      private final StructureManager structureManager;
      private final StructureCheck structureCheck;
@@ -9,6 +53,153 @@
      private final LevelDebugSynchronizers debugSynchronizers = new LevelDebugSynchronizers(this);
  
      // CraftBukkit start
+@@ -234,6 +_,9 @@
+     public boolean hasPhysicsEvent = true; // Paper - BlockPhysicsEvent
+     public boolean hasEntityMoveEvent; // Paper - Add EntityMoveEvent
+     private final alternate.current.wire.WireHandler wireHandler = new alternate.current.wire.WireHandler(this); // Paper - optimize redstone (Alternate Current)
++    public boolean hasRidableMoveEvent = false; // Purpur - Ridables
++    public org.bxteam.divinemc.util.tps.TPSCalculator tpsCalculator = new org.bxteam.divinemc.util.tps.TPSCalculator(); // Purpur - parallel world ticking (DivineMC) - missing-base TPS util plumbing
++    public java.util.concurrent.ExecutorService tickExecutor; // Purpur - parallel world ticking (DivineMC)
+ 
+     @Override
+     public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
+@@ -533,77 +_,96 @@
+    }
+     // Paper end - rewrite chunk system
+     // Paper start - chunk tick iteration
++    // Purpur start - regionized chunk ticking (DivineMC) - RCT sync fix
++    private final Object lock = new Object();
+     private final ca.spottedleaf.moonrise.common.list.ReferenceList<LevelChunk> playerTickingChunks = new ca.spottedleaf.moonrise.common.list.ReferenceList<>(EMPTY_LEVEL_CHUNKS);
+     private final it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap playerTickingRequests = new it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap();
+ 
+     @Override
+-    public final ca.spottedleaf.moonrise.common.list.ReferenceList<LevelChunk> moonrise$getPlayerTickingChunks() {
+-        return this.playerTickingChunks;
++    public synchronized final ca.spottedleaf.moonrise.common.list.ReferenceList<LevelChunk> moonrise$getPlayerTickingChunks() {
++        synchronized (lock) {
++            return this.playerTickingChunks;
++        }
+     }
+ 
+     @Override
+-    public final void moonrise$markChunkForPlayerTicking(final LevelChunk chunk) {
+-        final ChunkPos pos = chunk.getPos();
+-        if (!this.playerTickingRequests.containsKey(ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(pos))) {
+-            return;
+-        }
++    public synchronized final void moonrise$markChunkForPlayerTicking(final LevelChunk chunk) {
++        synchronized (lock) {
++            final ChunkPos pos = chunk.getPos();
++            if (!this.playerTickingRequests.containsKey(ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(pos))) {
++                return;
++            }
+ 
+-        this.playerTickingChunks.add(chunk);
++            this.playerTickingChunks.add(chunk);
++        }
+     }
+ 
+     @Override
+-    public final void moonrise$removeChunkForPlayerTicking(final LevelChunk chunk) {
+-        this.playerTickingChunks.remove(chunk);
++    public synchronized final void moonrise$removeChunkForPlayerTicking(final LevelChunk chunk) {
++        synchronized (lock) {
++            this.playerTickingChunks.remove(chunk);
++        }
+     }
+ 
+     @Override
+-    public final void moonrise$addPlayerTickingRequest(final int chunkX, final int chunkZ) {
+-        ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)(Object)this, chunkX, chunkZ, "Cannot add ticking request async");
++    public synchronized final void moonrise$addPlayerTickingRequest(final int chunkX, final int chunkZ) {
++        synchronized (lock) {
++            ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel) (Object) this, chunkX, chunkZ, "Cannot add ticking request async");
+ 
+-        final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
++            final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
+ 
+-        if (this.playerTickingRequests.addTo(chunkKey, 1) != 0) {
+-            // already added
+-            return;
+-        }
++            if (this.playerTickingRequests.addTo(chunkKey, 1) != 0) {
++                // already added
++                return;
++            }
+ 
+-        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)(ServerLevel)(Object)this).moonrise$getChunkTaskScheduler()
+-            .chunkHolderManager.getChunkHolder(chunkKey);
++            final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel) (ServerLevel) (Object) this).moonrise$getChunkTaskScheduler()
++                .chunkHolderManager.getChunkHolder(chunkKey);
+ 
+-        if (chunkHolder == null || !chunkHolder.isTickingReady()) {
+-            return;
+-        }
++            if (chunkHolder == null || !chunkHolder.isTickingReady()) {
++                return;
++            }
+ 
+-        this.playerTickingChunks.add((LevelChunk)chunkHolder.getCurrentChunk());
++            this.playerTickingChunks.add((LevelChunk) chunkHolder.getCurrentChunk());
++        }
+     }
+ 
+     @Override
+-    public final void moonrise$removePlayerTickingRequest(final int chunkX, final int chunkZ) {
+-        ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)(Object)this, chunkX, chunkZ, "Cannot remove ticking request async");
++    public synchronized final void moonrise$removePlayerTickingRequest(final int chunkX, final int chunkZ) {
++        synchronized (lock) {
++            ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel) (Object) this, chunkX, chunkZ, "Cannot remove ticking request async");
+ 
+-        final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
+-        final int val = this.playerTickingRequests.addTo(chunkKey, -1);
++            final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
++            final int val = this.playerTickingRequests.addTo(chunkKey, -1);
+ 
+-        if (val <= 0) {
+-            throw new IllegalStateException("Negative counter");
+-        }
++            if (val <= 0) {
++                throw new IllegalStateException("Negative counter");
++            }
+ 
+-        if (val != 1) {
+-            // still has at least one request
+-            return;
+-        }
++            if (val != 1) {
++                // still has at least one request
++                return;
++            }
+ 
+-        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)(ServerLevel)(Object)this).moonrise$getChunkTaskScheduler()
+-            .chunkHolderManager.getChunkHolder(chunkKey);
++            final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel) (ServerLevel) (Object) this).moonrise$getChunkTaskScheduler()
++                .chunkHolderManager.getChunkHolder(chunkKey);
+ 
+-        if (chunkHolder == null || !chunkHolder.isTickingReady()) {
+-            return;
+-        }
++            if (chunkHolder == null || !chunkHolder.isTickingReady()) {
++                return;
++            }
+ 
+-        this.playerTickingChunks.remove((LevelChunk)chunkHolder.getCurrentChunk());
++            this.playerTickingChunks.remove((LevelChunk) chunkHolder.getCurrentChunk());
++        }
+     }
++    // Purpur end - regionized chunk ticking (DivineMC) - RCT sync fix
+     // Paper end - chunk tick iteration
+ 
++    // Purpur start - per-world MSPT tracking (DivineMC)
++    public final MinecraftServer.TickTimes tickTimes5s = new MinecraftServer.TickTimes(100);
++    public final MinecraftServer.TickTimes tickTimes10s = new MinecraftServer.TickTimes(200);
++    public final MinecraftServer.TickTimes tickTimes60s = new MinecraftServer.TickTimes(1200);
++    // Purpur end - per-world MSPT tracking (DivineMC)
++
+     public ServerLevel(
+         final MinecraftServer server,
+         final Executor executor,
 @@ -643,8 +_,25 @@
          // CraftBukkit end
          this.tickTime = tickTime;
@@ -36,23 +227,154 @@
          ChunkGenerator generator = levelStem.generator();
          // CraftBukkit start
          // Paper start - per-world time
-@@ -738,6 +_,7 @@
+@@ -673,20 +_,39 @@
+         boolean syncWrites = server.forceSynchronousWrites();
+         DataFixer fixerUpper = server.getFixerUpper();
+         // Paper - rewrite chunk system
+-        this.chunkSource = new ServerChunkCache(
+-            this,
+-            levelStorage,
+-            fixerUpper,
+-            server.getStructureManager(),
+-            executor,
+-            generator,
+-            this.spigotConfig.viewDistance, // Spigot
+-            this.spigotConfig.simulationDistance, // Spigot
+-            syncWrites,
+-            null, // Paper - rewrite chunk system
+-            () -> server.overworld().getDataStorage()
+-            , savedDataStorage // Paper - initialize SavedDataStorage earlier
+-        );
++        // Purpur start - regionized chunk ticking (DivineMC)
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking) {
++            this.chunkSource = new org.bxteam.divinemc.async.rct.RegionizedChunkTicking(
++                this,
++                levelStorage,
++                fixerUpper,
++                server.getStructureManager(),
++                executor,
++                generator,
++                this.spigotConfig.viewDistance, // Spigot
++                this.spigotConfig.simulationDistance, // Spigot
++                syncWrites,
++                null, // Paper - rewrite chunk system
++                () -> server.overworld().getDataStorage()
++                , savedDataStorage // Paper - initialize SavedDataStorage earlier
++            );
++        } else {
++            this.chunkSource = new ServerChunkCache(
++                this,
++                levelStorage,
++                fixerUpper,
++                server.getStructureManager(),
++                executor,
++                generator,
++                this.spigotConfig.viewDistance, // Spigot
++                this.spigotConfig.simulationDistance, // Spigot
++                syncWrites,
++                null, // Paper - rewrite chunk system
++                () -> server.overworld().getDataStorage()
++                , savedDataStorage // Paper - initialize SavedDataStorage earlier
++            );
++        }
++        // Purpur end - regionized chunk ticking (DivineMC)
+         this.chunkSource.getGeneratorState().ensureStructuresGenerated();
+         this.portalForcer = new PortalForcer(this);
+         if (this.canHaveWeather()) {
+@@ -726,6 +_,7 @@
+         // Paper start - rewrite chunk system
+         this.moonrise$setEntityLookup(new ca.spottedleaf.moonrise.patches.chunk_system.level.entity.server.ServerEntityLookup((ServerLevel)(Object)this, ((ServerLevel)(Object)this).new EntityCallbacks()));
+         this.chunkTaskScheduler = new ca.spottedleaf.moonrise.patches.chunk_system.scheduling.ChunkTaskScheduler((ServerLevel)(Object)this);
++        this.chunkHolderData = new ca.spottedleaf.moonrise.patches.chunk_system.scheduling.ChunkHolderManager.LevelHolderData(); // Purpur - optimize moonrise / chunk-system thread-safety (DivineMC)
+         this.entityDataController = new ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.EntityDataController(
+             new ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.EntityDataController.EntityRegionFileStorage(
+                 new RegionStorageInfo(levelStorage.getLevelId(), dimension, "entities"),
+@@ -738,6 +_,21 @@
          this.chunkDataController = new ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.ChunkDataController((ServerLevel)(Object)this, this.chunkTaskScheduler);
          // Paper end - rewrite chunk system
          this.getCraftServer().addWorld(this.getWorld()); // CraftBukkit
 +        this.preciseTime = this.serverLevelData.getGameTime(); // Purpur - Configurable daylight cycle
++        // Purpur start - parallel world ticking (DivineMC)
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) {
++            this.tickExecutor = java.util.concurrent.Executors.newSingleThreadExecutor(new org.bxteam.divinemc.async.world.ServerLevelTickThreadFactory(getWorld().getName()));
++        } else {
++            this.tickExecutor = null;
++        }
++        // Purpur end - parallel world ticking (DivineMC)
++        // Purpur start - async target finding (Leaf)
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding) {
++            this.asyncGoalExecutor = new org.dreeam.leaf.async.ai.AsyncGoalExecutor(this);
++        } else {
++            this.asyncGoalExecutor = null;
++        }
++        // Purpur end - async target finding (Leaf)
      }
  
      // Paper start
-@@ -794,7 +_,7 @@
+@@ -793,8 +_,14 @@
+             profiler.pop();
          }
  
++        // Purpur start - parallel world ticking (DivineMC)
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking && (++this.tickedBlocksOrFluids & 7L) != 0L) {
++            this.moonrise$midTickTasks();
++        }
++        // Purpur end - parallel world ticking (DivineMC)
++
          int percentage = this.getGameRules().get(GameRules.PLAYERS_SLEEPING_PERCENTAGE);
 -        if (this.sleepStatus.areEnoughSleeping(percentage) && this.sleepStatus.areEnoughDeepSleeping(percentage, this.players)) {
 +        if (this.purpurConfig.playersSkipNight && this.sleepStatus.areEnoughSleeping(percentage) && this.sleepStatus.areEnoughDeepSleeping(percentage, this.players)) { // Purpur - Config for skipping night
              Optional<Holder<WorldClock>> defaultClock = this.dimensionType().defaultClock();
              org.bukkit.event.world.ClockTimeSkipEvent event = null; // Paper - per-world time
              if (this.getGameRules().get(GameRules.ADVANCE_TIME) && defaultClock.isPresent()) {
+@@ -865,10 +_,15 @@
+                 profiler.pop();
+             }
+ 
++            // Purpur start - regionized chunk ticking (DivineMC)
++            if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking) {
++                this.tickBlockEntities();
++            } else {
+             io.papermc.paper.entity.activation.ActivationRange.activateEntities(this); // Paper - EAR
+             this.entityTickList
+                 .forEach(
+                     entity -> {
++                        entity.activatedPriorityReset = false; // Pufferfish - DAB
+                         if (!entity.isRemoved()) {
+                             if (!tickRateManager.isEntityFrozen(entity)) {
+                                 profiler.push("checkDespawn");
+@@ -898,8 +_,12 @@
+             profiler.pop();
+             } // Paper - option to disable ticking
+             this.spigotConfig.currentPrimedTnt = 0; // Spigot
++            }
++            // Purpur end - regionized chunk ticking (DivineMC)
+         }
+ 
++        this.waypointManager.flushDirty(); // Leaf - batch waypoint updates: apply all per-tick moves once, on the tick thread
++
+         profiler.push("entityManagement");
+         // Paper - rewrite chunk system
+         profiler.pop();
+@@ -919,8 +_,7 @@
+     @Override
+     public boolean shouldTickBlocksAt(final long chunkPos) {
+         // Paper start - rewrite chunk system
+-        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder holder = this.moonrise$getChunkTaskScheduler().chunkHolderManager.getChunkHolder(chunkPos);
+-        return holder != null && holder.isTickingReady();
++        return this.moonrise$getChunkTaskScheduler().chunkHolderManager.blockTickingChunkHolders.contains(chunkPos); // Purpur - optimize moonrise / chunk-system thread-safety (DivineMC)
+         // Paper end - rewrite chunk system
+     }
+ 
+@@ -1028,7 +_,7 @@
+         int minZ = chunkPos.getMinBlockZ();
+         ProfilerFiller profiler = Profiler.get();
+         profiler.push("thunder");
+-        if (!this.paperConfig().environment.disableThunder && raining && this.isThundering() && this.spigotConfig.thunderChance > 0 && this.random.nextInt(this.spigotConfig.thunderChance) == 0) { // Spigot // Paper - Option to disable thunder
++        if (!this.paperConfig().environment.disableThunder && raining && this.isThundering() && this.spigotConfig.thunderChance > 0 && /*this.random.nextInt(this.spigotConfig.thunderChance) == 0*/ chunk.shouldDoLightning(this.random)) { // Spigot // Paper - Option to disable thunder // Pufferfish - replace random with shouldDoLightning
+             BlockPos pos = this.findLightningTargetAround(this.getBlockRandomPos(minX, 0, minZ, 15));
+             if (this.isRainingAt(pos)) {
+                 DifficultyInstance difficulty = this.getCurrentDifficultyAt(pos);
 @@ -1036,9 +_,18 @@
                      && this.random.nextDouble() < difficulty.getEffectiveDifficulty() * this.paperConfig().entities.spawning.skeletonHorseThunderSpawnChance.or(0.01) // Paper - Configurable spawn chances for skeleton horses
                      && !this.getBlockState(pos.below()).is(BlockTags.LIGHTNING_RODS);
@@ -161,6 +483,113 @@
          weatherData.setThundering(false, org.bukkit.event.weather.ThunderChangeEvent.Cause.SLEEP); // Paper - Add cause to Weather/ThunderChangeEvents
          // CraftBukkit start
          // If we stop due to everyone sleeping we should reset the weather duration to some other random value.
+@@ -1338,12 +_,12 @@
+         if (fluidState.is(type)) {
+             fluidState.tick(this, pos, blockState);
+         }
+-        // Paper start - rewrite chunk system
+-        if ((++this.tickedBlocksOrFluids & 7L) != 0L) {
+-            ((ca.spottedleaf.moonrise.patches.chunk_system.server.ChunkSystemMinecraftServer)this.server).moonrise$executeMidTickTasks();
++        // Purpur start - parallel world ticking (DivineMC)
++        ++this.tickedBlocksOrFluids;
++        if (!org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking && (this.tickedBlocksOrFluids & 7L) != 0L) {
++            this.server.moonrise$executeMidTickTasks();
+         }
+-        // Paper end - rewrite chunk system
+-
++        // Purpur end - parallel world ticking (DivineMC)
+     }
+ 
+     private void tickBlock(final BlockPos pos, final Block type) {
+@@ -1351,12 +_,12 @@
+         if (state.is(type)) {
+             state.tick(this, pos, this.random);
+         }
+-        // Paper start - rewrite chunk system
+-        if ((++this.tickedBlocksOrFluids & 7L) != 0L) {
+-            ((ca.spottedleaf.moonrise.patches.chunk_system.server.ChunkSystemMinecraftServer)this.server).moonrise$executeMidTickTasks();
++        // Purpur start - parallel world ticking (DivineMC)
++        ++this.tickedBlocksOrFluids;
++        if (!org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking && (this.tickedBlocksOrFluids & 7L) != 0L) {
++            this.server.moonrise$executeMidTickTasks();
+         }
+-        // Paper end - rewrite chunk system
+-
++        // Purpur end - parallel world ticking (DivineMC)
+     }
+ 
+     // Paper start - log detailed entity tick information
+@@ -1604,6 +_,7 @@
+     }
+ 
+     private void addPlayer(final ServerPlayer player) {
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this, "Cannot add player off-main"); // Purpur - parallel world ticking (DivineMC)
+         Entity existing = this.getEntity(player.getUUID());
+         if (existing != null) {
+             LOGGER.warn("Force-added player with duplicate UUID {}", player.getUUID());
+@@ -1616,7 +_,13 @@
+ 
+     // CraftBukkit start
+     private boolean addEntity(final Entity entity, final org.bukkit.event.entity.CreatureSpawnEvent.@Nullable SpawnReason spawnReason) {
+-        org.spigotmc.AsyncCatcher.catchOp("entity add"); // Spigot
++        // Purpur start - parallel world ticking (DivineMC)
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) {
++            ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(this, "Cannot add entity off-main");
++        } else {
++            org.spigotmc.AsyncCatcher.catchOp("entity add"); // Spigot
++        }
++        // Purpur end - parallel world ticking (DivineMC)
+         entity.generation = false; // Paper - Don't fire sync event during generation; Reset flag if it was added during a ServerLevel generation process
+         // Paper start - extra debug info
+         if (entity.valid) {
+@@ -1631,6 +_,7 @@
+         } else {
+             if (entity instanceof net.minecraft.world.entity.item.ItemEntity item && item.getItem().isEmpty()) return false; // Paper - Prevent empty items from being added
+             // Paper start - capture all item additions to the world
++            final List<net.minecraft.world.entity.item.ItemEntity> captureDrops = this.getCaptureDrops(); // Axiom - thread-local capture buffer
+             if (captureDrops != null && entity instanceof net.minecraft.world.entity.item.ItemEntity item) {
+                 captureDrops.add(item);
+                 return true;
+@@ -1837,7 +_,7 @@
+     }
+ 
+     @Override
+-    public void sendBlockUpdated(final BlockPos pos, final BlockState old, final BlockState current, final int updateFlags) {
++    public synchronized void sendBlockUpdated(final BlockPos pos, final BlockState old, final BlockState current, final int updateFlags) { // Purpur - regionized chunk ticking (DivineMC) - synchronized
+         if (this.isUpdatingNavigations) {
+             String message = "recursive call to sendBlockUpdated";
+             Util.logAndPauseIfInIde("recursive call to sendBlockUpdated", new IllegalStateException("recursive call to sendBlockUpdated"));
+@@ -1851,22 +_,16 @@
+         if (Shapes.joinIsNotEmpty(oldShape, newShape, BooleanOp.NOT_SAME)) {
+             List<PathNavigation> navigationsToUpdate = new ObjectArrayList<>();
+ 
+-            try { // Paper - catch CME see below why
+-            for (Mob navigatingMob : this.navigatingMobs) {
+-                PathNavigation pathNavigation = navigatingMob.getNavigation();
+-                if (pathNavigation.shouldRecomputePath(pos)) {
+-                    navigationsToUpdate.add(pathNavigation);
++            // Purpur start - regionized chunk ticking (DivineMC)
++            synchronized (this.navigatingMobs) {
++                for (Mob navigatingMob : this.navigatingMobs) {
++                    PathNavigation pathNavigation = navigatingMob.getNavigation();
++                    if (pathNavigation.shouldRecomputePath(pos)) {
++                        navigationsToUpdate.add(pathNavigation);
++                    }
+                 }
+             }
+-            // Paper start - catch CME see below why
+-            } catch (final java.util.ConcurrentModificationException concurrentModificationException) {
+-                // This can happen because the pathfinder update below may trigger a chunk load, which in turn may cause more navigators to register
+-                // In this case we just run the update again across all the iterators as the chunk will then be loaded
+-                // As this is a relative edge case it is much faster than copying navigators (on either read or write)
+-                this.sendBlockUpdated(pos, old, current, updateFlags);
+-                return;
+-            }
+-            // Paper end - catch CME see below why
++            // Purpur end - regionized chunk ticking (DivineMC)
+ 
+             try {
+                 this.isUpdatingNavigations = true;
 @@ -1989,7 +_,7 @@
          Explosion.BlockInteraction blockInteraction = switch (interactionType) {
              case NONE -> Explosion.BlockInteraction.KEEP;
@@ -170,6 +599,77 @@
                  ? this.getDestroyType(GameRules.MOB_EXPLOSION_DROP_DECAY)
                  : Explosion.BlockInteraction.KEEP;
              case TNT -> this.getDestroyType(GameRules.TNT_EXPLOSION_DROP_DECAY);
+@@ -2227,12 +_,19 @@
+     @Deprecated
+     public @Nullable Entity getEntityOrPart(final int id) {
+         Entity entity = this.getEntities().get(id);
+-        return entity != null ? entity : this.dragonParts.get(id);
++        if (entity != null) {
++            return entity;
++        }
++        // Leaf - dragonParts is a level-global Int2ObjectOpenHashMap mutated from entity tracking-start/end
++        // callbacks, which run from multiple region threads under parallel/regionized ticking; serialize on
++        // the map monitor (concurrent put/remove corrupts the table -> rehash AIOOBE).
++        synchronized (this.dragonParts) { return this.dragonParts.get(id); } // Leaf
+     }
+ 
+     @Override
+     public Collection<EnderDragonPart> dragonParts() {
+-        return this.dragonParts.values();
++        // Leaf - snapshot under the monitor so callers can iterate without racing a concurrent put/remove
++        synchronized (this.dragonParts) { return new java.util.ArrayList<>(this.dragonParts.values()); } // Leaf
+     }
+ 
+     public @Nullable BlockPos findNearestMapStructure(
+@@ -2598,7 +_,6 @@
+ 
+     @Override
+     public LevelEntityGetter<Entity> getEntities() {
+-        org.spigotmc.AsyncCatcher.catchOp("Chunk getEntities call"); // Spigot
+         return this.moonrise$getEntityLookup(); // Paper - rewrite chunk system
+     }
+ 
+@@ -2670,16 +_,13 @@
+ 
+     public boolean isPositionTickingWithEntitiesLoaded(final long key) {
+         // Paper start - rewrite chunk system
+-        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = this.moonrise$getChunkTaskScheduler().chunkHolderManager.getChunkHolder(key);
+-        // isTicking implies the chunk is loaded, and the chunk is loaded now implies the entities are loaded
+-        return chunkHolder != null && chunkHolder.isTickingReady();
++        return this.moonrise$getChunkTaskScheduler().chunkHolderManager.blockTickingChunkHolders.contains(key); // Purpur - optimize moonrise / chunk-system thread-safety (DivineMC)
+         // Paper end - rewrite chunk system
+     }
+ 
+     public boolean isPositionEntityTicking(final BlockPos pos) {
+         // Paper start - rewrite chunk system
+-        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = this.moonrise$getChunkTaskScheduler().chunkHolderManager.getChunkHolder(ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(pos));
+-        return chunkHolder != null && chunkHolder.isEntityTickingReady();
++        return this.moonrise$getChunkTaskScheduler().chunkHolderManager.entityTickingChunkHolders.contains(ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(pos)); // Purpur - optimize moonrise / chunk-system thread-safety (DivineMC)
+         // Paper end - rewrite chunk system
+     }
+ 
+@@ -2871,8 +_,10 @@
+             }
+ 
+             if (entity instanceof EnderDragon dragon) {
+-                for (EnderDragonPart subEntity : dragon.getSubEntities()) {
+-                    ServerLevel.this.dragonParts.put(subEntity.getId(), subEntity);
++                synchronized (ServerLevel.this.dragonParts) { // Leaf - serialize level-global map (parallel/regionized ticking)
++                    for (EnderDragonPart subEntity : dragon.getSubEntities()) {
++                        ServerLevel.this.dragonParts.put(subEntity.getId(), subEntity);
++                    }
+                 }
+             }
+ 
+@@ -2904,7 +_,7 @@
+                         }
+ 
+                         map.carriedByPlayers.remove(player);
+-                        if (map.carriedBy.removeIf(holdingPlayer -> holdingPlayer.player == player)) {
++                        if (map.carriedBy.removeIf(holdingPlayer -> holdingPlayer != null && holdingPlayer.player == player)) { // Purpur - async entity tracker (DivineMC)
+                             map.decorations.remove(player.getName().getString());
+                         }
+                     }
 @@ -2914,7 +_,7 @@
              // Spigot start
              if (entity.getBukkitEntity() instanceof org.bukkit.inventory.InventoryHolder && (!(entity instanceof ServerPlayer) || entity.getRemovalReason() != Entity.RemovalReason.KILLED)) { // SPIGOT-6876: closeInventory clears death message
@@ -179,3 +679,16 @@
                      merchant.getTrader().closeInventory(org.bukkit.event.inventory.InventoryCloseEvent.Reason.UNLOADED);
                  }
                  // Paper end - Fix merchant inventory not closing on entity removal
+@@ -2942,8 +_,10 @@
+             }
+ 
+             if (entity instanceof EnderDragon dragon) {
+-                for (EnderDragonPart subEntity : dragon.getSubEntities()) {
+-                    ServerLevel.this.dragonParts.remove(subEntity.getId());
++                synchronized (ServerLevel.this.dragonParts) { // Leaf - serialize level-global map (parallel/regionized ticking)
++                    for (EnderDragonPart subEntity : dragon.getSubEntities()) {
++                        ServerLevel.this.dragonParts.remove(subEntity.getId());
++                    }
+                 }
+             }
+ 

@@ -61,11 +61,22 @@
      public static void popResource(final Level level, final BlockPos pos, final ItemStack itemStack) {
          double halfHeight = EntityType.ITEM.getHeight() / 2.0;
          RandomSource random = level.getRandom();
+@@ -489,8 +_,9 @@
+             ItemEntity entity = entityFactory.get();
+             entity.setDefaultPickUpDelay();
+             // CraftBukkit start
+-            if (level.captureDrops != null) {
+-                level.captureDrops.add(entity);
++            final var captureDrops = level.getCaptureDrops(); // Axiom - thread-local capture buffer
++            if (captureDrops != null) {
++                captureDrops.add(entity);
+             } else {
+                 level.addFreshEntity(entity);
+             }
 @@ -548,7 +_,15 @@
      }
  
      public void setPlacedBy(final Level level, final BlockPos pos, final BlockState state, final @Nullable LivingEntity by, final ItemStack itemStack) {
--    }
 +        this.placer = placer; // Purpur - Store placer on Block when placed
 +    }
 +
@@ -73,7 +84,7 @@
 +    @Nullable protected LivingEntity placer = null;
 +    public void forgetPlacer() {
 +        this.placer = null;
-+    }
+     }
 +    // Purpur end - Store placer on Block when placed
  
      public boolean isPossibleToRespawnInThis(final BlockState state) {

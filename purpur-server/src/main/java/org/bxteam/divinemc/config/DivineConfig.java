@@ -37,6 +37,20 @@ public class DivineConfig {
     private static File configFile;
     public static final YamlFile config = new YamlFile();
 
+    /**
+     * True only while {@link #reload()} is re-running the config loaders on a live server. Boot-only
+     * side effects — the ones that construct thread pools or region-file backends — guard on this and
+     * skip re-initialization during a reload so they don't leak the running pool or orphan threads.
+     * Plain value reads run unconditionally, so their settings DO take effect on reload; only the
+     * infrastructure they wire up stays as it was at boot until the next restart.
+     */
+    private static volatile boolean reloading = false;
+
+    /** True while a live config reload is in progress (boot-only loaders skip their side effects). */
+    public static boolean isReloading() {
+        return reloading;
+    }
+
     public static void init(File configFile) {
         try {
             long begin = System.nanoTime();
@@ -60,6 +74,30 @@ public class DivineConfig {
             LOGGER.info("Config loaded in {}ms", (System.nanoTime() - begin) / 1_000_000);
         } catch (Exception e) {
             LOGGER.error("Failed to load config", e);
+        }
+    }
+
+
+    public static void reload() {
+        if (configFile == null) {
+            LOGGER.warn("Cannot reload config: no config file bound (server not fully started?).");
+            return;
+        }
+        reloading = true;
+        try {
+            long begin = System.nanoTime();
+            LOGGER.info("Reloading config...");
+
+            config.load(configFile);
+            readConfig(DivineConfig.class, null);
+            checkExperimentalFeatures();
+
+            LOGGER.info("Config reloaded in {}ms. Settings that wire up thread pools or region backends keep their boot values until a restart.",
+                (System.nanoTime() - begin) / 1_000_000);
+        } catch (Exception e) {
+            LOGGER.error("Failed to reload config", e);
+        } finally {
+            reloading = false;
         }
     }
 
@@ -221,6 +259,32 @@ public class DivineConfig {
             "class attribution and leak detection. The dump is live-only (post-GC) and deleted right after parsing.",
             "If a dump would exceed this size it is skipped and attribution falls back to the class histogram.",
             "Set to 0 to remove the ceiling. Lower this on very large heaps to bound disk and pause time.");
+    }
+
+    public static boolean threadWatchdogEnabled = true;
+    public static int threadWatchdogIntervalSeconds = 60;
+    public static int threadWatchdogPidsWarnPercent = 80;
+    public static int threadWatchdogGroupGrowthWarn = 32;
+    public static boolean threadWatchdogAllowInterrupt = false;
+    private static void threadWatchdog() {
+        threadWatchdogEnabled = getBoolean(ConfigCategory.DIAGNOSTICS.key("thread-watchdog.enabled"), threadWatchdogEnabled,
+            "Background watchdog that watches for thread leaks. It periodically groups live threads by pool",
+            "family and warns in the console when a group grows without bound or when the container's pid/thread",
+            "budget (cgroup pids.max) nears exhaustion — the early warning for \"unable to create native thread\"",
+            "crashes caused by a plugin leaking threads. It never kills anything on its own.");
+        threadWatchdogIntervalSeconds = getInt(ConfigCategory.DIAGNOSTICS.key("thread-watchdog.interval-seconds"), threadWatchdogIntervalSeconds,
+            "How often (seconds) the watchdog samples live threads and the pid budget. Minimum 5.");
+        threadWatchdogPidsWarnPercent = getInt(ConfigCategory.DIAGNOSTICS.key("thread-watchdog.pids-warn-percent"), threadWatchdogPidsWarnPercent,
+            "Warn loudly when the container's pid/thread usage reaches this percent of its limit (clamped 50..99).",
+            "Only applies on Linux containers that expose a cgroup pids controller.");
+        threadWatchdogGroupGrowthWarn = getInt(ConfigCategory.DIAGNOSTICS.key("thread-watchdog.group-growth-warn"), threadWatchdogGroupGrowthWarn,
+            "Warn when a single thread group grows by this many threads above its first-seen count (minimum 4).",
+            "Tune up if a legitimate pool scales past this; tune down to catch slower leaks sooner.");
+        threadWatchdogAllowInterrupt = getBoolean(ConfigCategory.DIAGNOSTICS.key("thread-watchdog.allow-interrupt"), threadWatchdogAllowInterrupt,
+            "Allow /axiomthreads interrupt <pattern> confirm to cooperatively interrupt matching threads.",
+            "Off by default. interrupt() only signals a thread to stop — threads that ignore it survive, and the",
+            "main thread, fork-owned pools, Netty, the scheduler and JVM/system threads are never interruptible.");
+        org.bxteam.divinemc.diagnostics.ThreadWatchdog.apply();
     }
 
     /**
@@ -409,7 +473,7 @@ public class DivineConfig {
                 "player quit and server shutdown saves always stay synchronous so data is",
                 "flushed before the connection drops or the process exits.");
 
-            if (asyncPlayerDataSave) {
+            if (asyncPlayerDataSave && !reloading) { // boot-only: building the pool again on reload would leak the running one
                 org.dreeam.leaf.async.AsyncPlayerDataSaving.init();
             }
         }
@@ -439,7 +503,7 @@ public class DivineConfig {
                 if (asyncPlayerDataSave) {
                     LOGGER.warn("Both async.player-save and async.async-playerdata-save are enabled; they target the same player .dat path and are mutually exclusive. async-playerdata-save takes precedence, disabling player-save.");
                     playerSaveEnabled = false;
-                } else {
+                } else if (!reloading) { // boot-only: re-init on reload would leak the running pool
                     org.bxteam.divinemc.async.PlayerSaveExecutor.init();
                 }
             }
@@ -469,7 +533,7 @@ public class DivineConfig {
                 if (asyncPlayerDataSave || playerSaveEnabled) {
                     LOGGER.warn("async.async-enhancements.async-player-nbt-compression is enabled together with a heavier player-save tier ({}); they target the same player .dat path. The heavier tier takes precedence and this feature stays inactive.",
                         asyncPlayerDataSave ? "async-playerdata-save" : "player-save");
-                } else {
+                } else if (!reloading) { // boot-only: re-init on reload would leak the running pool
                     org.bxteam.divinemc.async.AsyncIO.init();
                 }
             }
@@ -686,6 +750,9 @@ public class DivineConfig {
         }
 
         private static void flusher() {
+            if (reloading) {
+                return; // boot-only: a new flusher would orphan the running one's I/O threads; keep the existing one
+            }
             flusher = switch (regionFileType) {
                 case MCA -> null;
                 case LINEAR -> new LinearRegionFileFlusher(threadCount, linearIoFlushDelayMs);

@@ -9,11 +9,12 @@ diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/Mi
 index 9616dbe0166d30bdd813ad1d10353a4184d6c47b..5c587d5120ae4b7120de5aad135b446af8b1ab24 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1136,6 +1136,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1136,6 +1136,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          Util.shutdownExecutors();
          org.dreeam.leaf.async.ShutdownExecutors.shutdown(this); // Purpur - async playerdata save (Leaf) - drain pending async player I/O before exit
          org.bxteam.divinemc.async.PlayerSaveExecutor.shutdown(); // Purpur - player-save - drain pending async player-save writes before exit
 +        org.bxteam.divinemc.async.AsyncIO.shutdown(); // Purpur - async-enhancements
++        org.bxteam.divinemc.diagnostics.ThreadWatchdog.stop(); // Axiom - diagnostics (thread watchdog)
          this.onServerExit();
          // Paper end - Improved watchdog support - move final shutdown items here
      }

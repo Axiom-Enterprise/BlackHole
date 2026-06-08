@@ -40,11 +40,30 @@ import org.bxteam.divinemc.util.NamedAgnosticThreadFactory;
 import org.jetbrains.annotations.NotNull;
 
 public final class RegionizedChunkTicking extends ServerChunkCache {
-    public static final Executor REGION_EXECUTOR = Executors.newFixedThreadPool(DivineConfig.AsyncCategory.regionizedChunkTickingExecutorThreadCount, new NamedAgnosticThreadFactory<>("Region Ticking", TickThread::new, DivineConfig.AsyncCategory.regionizedChunkTickingExecutorThreadPriority));
+    public static final Executor REGION_EXECUTOR = buildRegionExecutor();
+
+    // Like Executors.newFixedThreadPool but with a finite keep-alive + allowCoreThreadTimeOut, so idle
+    // region-ticking threads are reaped after 60s of no work (e.g. an empty server) instead of pinning
+    // the full thread count for the lifetime of the process. The pool re-spawns threads on demand the
+    // next tick that has work, so steady-state behaviour under load is unchanged.
+    private static Executor buildRegionExecutor() {
+        final int n = Math.max(1, DivineConfig.AsyncCategory.regionizedChunkTickingExecutorThreadCount);
+        final java.util.concurrent.ThreadPoolExecutor pool = new java.util.concurrent.ThreadPoolExecutor(
+            n, n, 60L, java.util.concurrent.TimeUnit.SECONDS,
+            new java.util.concurrent.LinkedBlockingQueue<>(),
+            new NamedAgnosticThreadFactory<>("Region Ticking", TickThread::new, DivineConfig.AsyncCategory.regionizedChunkTickingExecutorThreadPriority));
+        pool.allowCoreThreadTimeOut(true);
+        return pool;
+    }
     private static final int LOG_INTERVAL = 18000;
     // Chunk-radius around an entity that must stay within its own region for the entity to be safely
     // ticked on a region thread. 1 covers normal per-tick movement (<1 chunk); border entities are
     // deferred to the sequential main-thread pass to avoid cross-region entityStatusChange races.
+    // NOTE: this is only the BASE margin. The effective margin is widened per-entity by its projected
+    // movement this tick (see entityReachChunks) so fast movers (projectiles, knockback, riptide,
+    // ender pearls, elytra) that would cross >1 chunk in a single tick are also deferred. Without this,
+    // a fast entity leaves its region's interior mid-tick and races a concurrently-ticking neighbour
+    // region on the same ChunkEntitySlices -> EntityLookup#entityStatusChange "is receiving update" abort.
     private static final int ENTITY_BORDER_MARGIN = 1;
     private final AvgTimeLogger avgTimeLogger;
     private int i = 0;
@@ -276,7 +295,7 @@ public final class RegionizedChunkTicking extends ServerChunkCache {
                         // which no thread touches during region ticking), it is safe; otherwise defer it to
                         // the sequential main-thread pass so its cross-slice entityStatusChange never races
                         // another region's tick (the "entity chunk is receiving update" abort).
-                        if (isRegionInterior(chunkToRegion, cp.x(), cp.z(), regionIndex)) {
+                        if (isRegionInterior(chunkToRegion, cp.x(), cp.z(), regionIndex, entityReachChunks(entity))) {
                             targetRegion.entities().add(entity);
                         } else {
                             firstTick.add(entity);
@@ -292,14 +311,34 @@ public final class RegionizedChunkTicking extends ServerChunkCache {
     }
 
     /**
-     * @return true if every chunk within {@link #ENTITY_BORDER_MARGIN} of (chunkX,chunkZ) belongs to
-     * {@code regionIndex} or to no region at all. Only then can an entity there be ticked on the region
-     * thread without its movement crossing into another concurrently-ticking region's slices.
+     * Projected chunk reach of an entity for the upcoming tick: the base {@link #ENTITY_BORDER_MARGIN}
+     * plus the number of chunks its current velocity can carry it horizontally in one tick. Computed from
+     * the pre-tick delta movement (set last tick, only read here), so a projectile/knockback/riptide/elytra
+     * entity that will travel several chunks is treated as a wide-radius entity and deferred to the
+     * sequential main-thread pass instead of being parallel-ticked into a neighbour region.
+     *
+     * <p>Velocity-less long jumps (enderman/chorus/command teleports) carry no pre-tick delta and remain
+     * caught by Moonrise's own {@code startPreventingStatusUpdates} guard, which aborts safely (no
+     * corruption) rather than racing; they are rare and unbounded, so no static margin can cover them.
+     */
+    private static int entityReachChunks(final Entity entity) {
+        final net.minecraft.world.phys.Vec3 v = entity.getDeltaMovement();
+        // chunks are 16 blocks; use Chebyshev (max of axes) since the interior check is a square ring
+        final double horizBlocks = Math.max(Math.abs(v.x), Math.abs(v.z));
+        return ENTITY_BORDER_MARGIN + (int) Math.ceil(horizBlocks / 16.0);
+    }
+
+    /**
+     * @return true if every chunk within {@code margin} of (chunkX,chunkZ) belongs to {@code regionIndex}
+     * or to no region at all. Only then can an entity there be ticked on the region thread without its
+     * movement this tick crossing into another concurrently-ticking region's slices. {@code margin} is the
+     * per-entity {@link #entityReachChunks} value, never below {@link #ENTITY_BORDER_MARGIN}.
      */
     private static boolean isRegionInterior(final Long2IntOpenHashMap chunkToRegion,
-                                            final int chunkX, final int chunkZ, final int regionIndex) {
-        for (int dx = -ENTITY_BORDER_MARGIN; dx <= ENTITY_BORDER_MARGIN; dx++) {
-            for (int dz = -ENTITY_BORDER_MARGIN; dz <= ENTITY_BORDER_MARGIN; dz++) {
+                                            final int chunkX, final int chunkZ, final int regionIndex,
+                                            final int margin) {
+        for (int dx = -margin; dx <= margin; dx++) {
+            for (int dz = -margin; dz <= margin; dz++) {
                 final int neighbour = chunkToRegion.get(CoordinateUtils.getChunkKey(chunkX + dx, chunkZ + dz));
                 if (neighbour != -1 && neighbour != regionIndex) {
                     return false;

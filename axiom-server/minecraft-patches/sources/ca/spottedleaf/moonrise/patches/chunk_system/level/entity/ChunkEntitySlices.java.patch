@@ -1,0 +1,213 @@
+--- a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
++++ b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
+@@ -55,6 +_,24 @@ public final class ChunkEntitySlices {
+     // Purpur end - async target finding (Leaf)
+     private final EntityList entities = new EntityList();
+ 
++    // Leaf start - parallel world ticking: serialize this slice's non-thread-safe entity storage
++    // (BasicEntityList / EntityList / entitiesBy{Type,Class}) against concurrent region tick threads.
++    // The store is single-writer by Moonrise design; parallel/regionized ticking lets two threads
++    // (e.g. a region thread discarding an item entity and another thread adding/removing one in the
++    // same boundary section) mutate it at once, tearing the backing arrays (negative size -> AIOOBE).
++    // Gated so non-parallel setups pay nothing (null lock -> no-op helpers).
++    private static final boolean STORE_GUARD =
++        org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking
++            || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking;
++    private final java.util.concurrent.locks.ReentrantReadWriteLock storeLock =
++        STORE_GUARD ? new java.util.concurrent.locks.ReentrantReadWriteLock() : null;
++
++    private void lockRead() { final java.util.concurrent.locks.ReentrantReadWriteLock l = this.storeLock; if (l != null) l.readLock().lock(); }
++    private void unlockRead() { final java.util.concurrent.locks.ReentrantReadWriteLock l = this.storeLock; if (l != null) l.readLock().unlock(); }
++    private void lockWrite() { final java.util.concurrent.locks.ReentrantReadWriteLock l = this.storeLock; if (l != null) l.writeLock().lock(); }
++    private void unlockWrite() { final java.util.concurrent.locks.ReentrantReadWriteLock l = this.storeLock; if (l != null) l.writeLock().unlock(); }
++    // Leaf end - parallel world ticking
++
+     public FullChunkStatus status;
+     public final ChunkData chunkData;
+ 
+@@ -207,18 +_,23 @@ public final class ChunkEntitySlices {
+     }
+ 
+     public List<Entity> getAllEntities() {
+-        final int len = this.entities.size();
+-        if (len == 0) {
+-            return new ArrayList<>();
+-        }
++        this.lockRead();
++        try {
++            final int len = this.entities.size();
++            if (len == 0) {
++                return new ArrayList<>();
++            }
+ 
+-        final Entity[] rawData = this.entities.getRawData();
+-        final List<Entity> collectedEntities = new ArrayList<>(len);
+-        for (int i = 0; i < len; ++i) {
+-            collectedEntities.add(rawData[i]);
+-        }
++            final Entity[] rawData = this.entities.getRawData();
++            final List<Entity> collectedEntities = new ArrayList<>(len);
++            for (int i = 0; i < Math.min(rawData.length, len); ++i) {
++                collectedEntities.add(rawData[i]);
++            }
+ 
+-        return collectedEntities;
++            return collectedEntities;
++        } finally {
++            this.unlockRead();
++        }
+     }
+ 
+     public boolean isEmpty() {
+@@ -265,6 +_,8 @@ public final class ChunkEntitySlices {
+     }
+ 
+     public boolean addEntity(final Entity entity, final int chunkSection) {
++        this.lockWrite();
++        try {
+         if (!this.entities.add(entity)) {
+             return false;
+         }
+@@ -308,9 +_,14 @@ public final class ChunkEntitySlices {
+         }
+ 
+         return true;
++        } finally {
++            this.unlockWrite();
++        }
+     }
+ 
+     public boolean removeEntity(final Entity entity, final int chunkSection) {
++        this.lockWrite();
++        try {
+         if (!this.entities.remove(entity)) {
+             return false;
+         }
+@@ -349,40 +_,68 @@ public final class ChunkEntitySlices {
+         byType.removeEntity(entity, sectionIndex);
+ 
+         return true;
++        } finally {
++            this.unlockWrite();
++        }
+     }
+ 
+     public void getHardCollidingEntities(final Entity except, final AABB box, final List<Entity> into, final Predicate<? super Entity> predicate) {
+-        this.hardCollidingEntities.getEntities(except, box, into, predicate);
++        this.lockRead();
++        try {
++            this.hardCollidingEntities.getEntities(except, box, into, predicate);
++        } finally {
++            this.unlockRead();
++        }
+     }
+ 
+     public void getEntities(final Entity except, final AABB box, final List<Entity> into, final Predicate<? super Entity> predicate) {
+-        this.allEntities.getEntities(except, box, into, predicate);
++        this.lockRead();
++        try {
++            this.allEntities.getEntities(except, box, into, predicate);
++        } finally {
++            this.unlockRead();
++        }
+     }
+ 
+ 
+     public boolean getEntities(final Entity except, final AABB box, final List<Entity> into, final Predicate<? super Entity> predicate,
+                                final int maxCount) {
+-        return this.allEntities.getEntitiesLimited(except, box, into, predicate, maxCount);
++        this.lockRead();
++        try {
++            return this.allEntities.getEntitiesLimited(except, box, into, predicate, maxCount);
++        } finally {
++            this.unlockRead();
++        }
+     }
+ 
+     public <T extends Entity> void getEntities(final EntityType<?> type, final AABB box, final List<? super T> into,
+                                                final Predicate<? super T> predicate) {
+-        final EntityCollectionBySection byType = this.entitiesByType.get(type);
++        this.lockRead();
++        try {
++            final EntityCollectionBySection byType = this.entitiesByType.get(type);
+ 
+-        if (byType != null) {
+-            byType.getEntities((Entity)null, box, (List)into, (Predicate) predicate);
++            if (byType != null) {
++                byType.getEntities((Entity)null, box, (List)into, (Predicate) predicate);
++            }
++        } finally {
++            this.unlockRead();
+         }
+     }
+ 
+     public <T extends Entity> boolean getEntities(final EntityType<?> type, final AABB box, final List<? super T> into,
+                                                   final Predicate<? super T> predicate, final int maxCount) {
+-        final EntityCollectionBySection byType = this.entitiesByType.get(type);
++        this.lockRead();
++        try {
++            final EntityCollectionBySection byType = this.entitiesByType.get(type);
+ 
+-        if (byType != null) {
+-            return byType.getEntitiesLimited((Entity)null, box, (List)into, (Predicate)predicate, maxCount);
+-        }
++            if (byType != null) {
++                return byType.getEntitiesLimited((Entity)null, box, (List)into, (Predicate)predicate, maxCount);
++            }
+ 
+-        return false;
++            return false;
++        } finally {
++            this.unlockRead();
++        }
+     }
+ 
+     protected EntityCollectionBySection initClass(final Class<? extends Entity> clazz) {
+@@ -410,23 +_,35 @@ public final class ChunkEntitySlices {
+ 
+     public <T extends Entity> void getEntities(final Class<? extends T> clazz, final Entity except, final AABB box, final List<? super T> into,
+                                                final Predicate<? super T> predicate) {
+-        EntityCollectionBySection collection = this.entitiesByClass.get(clazz);
+-        if (collection != null) {
+-            collection.getEntities(except, box, (List)into, (Predicate)predicate);
+-        } else {
+-            this.entitiesByClass.put(clazz, collection = this.initClass(clazz));
+-            collection.getEntities(except, box, (List)into, (Predicate)predicate);
++        // Leaf - parallel world ticking: write lock; this path lazily mutates entitiesByClass (initClass + put)
++        this.lockWrite();
++        try {
++            EntityCollectionBySection collection = this.entitiesByClass.get(clazz);
++            if (collection != null) {
++                collection.getEntities(except, box, (List)into, (Predicate)predicate);
++            } else {
++                this.entitiesByClass.put(clazz, collection = this.initClass(clazz));
++                collection.getEntities(except, box, (List)into, (Predicate)predicate);
++            }
++        } finally {
++            this.unlockWrite();
+         }
+     }
+ 
+     public <T extends Entity> boolean getEntities(final Class<? extends T> clazz, final Entity except, final AABB box, final List<? super T> into,
+                                                   final Predicate<? super T> predicate, final int maxCount) {
+-        EntityCollectionBySection collection = this.entitiesByClass.get(clazz);
+-        if (collection != null) {
+-            return collection.getEntitiesLimited(except, box, (List)into, (Predicate)predicate, maxCount);
+-        } else {
+-            this.entitiesByClass.put(clazz, collection = this.initClass(clazz));
+-            return collection.getEntitiesLimited(except, box, (List)into, (Predicate)predicate, maxCount);
++        // Leaf - parallel world ticking: write lock; this path lazily mutates entitiesByClass (initClass + put)
++        this.lockWrite();
++        try {
++            EntityCollectionBySection collection = this.entitiesByClass.get(clazz);
++            if (collection != null) {
++                return collection.getEntitiesLimited(except, box, (List)into, (Predicate)predicate, maxCount);
++            } else {
++                this.entitiesByClass.put(clazz, collection = this.initClass(clazz));
++                return collection.getEntitiesLimited(except, box, (List)into, (Predicate)predicate, maxCount);
++            }
++        } finally {
++            this.unlockWrite();
+         }
+     }
+ 

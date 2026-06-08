@@ -1,0 +1,110 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Mon, 8 Jun 2026 15:50:00 +0200
+Subject: [PATCH] fix: serialize village POI distance propagator under
+ parallel/regionized ticking
+
+
+diff --git a/src/main/java/ca/spottedleaf/moonrise/common/misc/Delayed26WayDistancePropagator3D.java b/src/main/java/ca/spottedleaf/moonrise/common/misc/Delayed26WayDistancePropagator3D.java
+index 460e27ab0..7fc537e4b 100644
+--- a/src/main/java/ca/spottedleaf/moonrise/common/misc/Delayed26WayDistancePropagator3D.java
++++ b/src/main/java/ca/spottedleaf/moonrise/common/misc/Delayed26WayDistancePropagator3D.java
+@@ -30,6 +30,15 @@ public final class Delayed26WayDistancePropagator3D {
+ 
+     protected final LevelChangeCallback changeCallback;
+ 
++    // Axiom start - serialize the single-writer BFS structure under DivineMC parallel/regionized ticking.
++    // This structure (sources/levels maps, WorkQueue arrays, level bitsets) is mutated by a BFS and is NOT
++    // thread-safe; under regionized chunk ticking multiple Region threads reach it via PoiManager.sectionsToVillage
++    // (mob AI village queries), corrupting the fastutil queues and causing AIOOBE (e.g. "Index 127 length 64").
++    // A ReentrantLock around the public entry points enforces mutual exclusion. Uncontended cost is a single CAS,
++    // negligible against the BFS it guards; entity ticking itself stays fully parallel.
++    private final java.util.concurrent.locks.ReentrantLock lock = new java.util.concurrent.locks.ReentrantLock();
++    // Axiom end
++
+     public Delayed26WayDistancePropagator3D() {
+         this(null);
+     }
+@@ -39,11 +48,16 @@ public final class Delayed26WayDistancePropagator3D {
+     }
+ 
+     public int getLevel(final long pos) {
+-        return this.levels.get(pos);
++        this.lock.lock(); // Axiom - serialize against concurrent BFS mutation
++        try {
++            return this.levels.get(pos);
++        } finally {
++            this.lock.unlock();
++        }
+     }
+ 
+     public int getLevel(final int x, final int y, final int z) {
+-        return this.levels.get(CoordinateUtils.getChunkSectionKey(x, y, z));
++        return this.getLevel(CoordinateUtils.getChunkSectionKey(x, y, z)); // Axiom - route through locked long overload
+     }
+ 
+     public void setSource(final int x, final int y, final int z, final int level) {
+@@ -55,15 +69,20 @@ public final class Delayed26WayDistancePropagator3D {
+             throw new IllegalArgumentException("Level must be in (0, 63], not " + level);
+         }
+ 
+-        final byte byteLevel = (byte)level;
+-        final byte oldLevel = this.sources.put(coordinate, byteLevel);
++        this.lock.lock(); // Axiom - serialize against concurrent BFS mutation
++        try {
++            final byte byteLevel = (byte)level;
++            final byte oldLevel = this.sources.put(coordinate, byteLevel);
+ 
+-        if (oldLevel == byteLevel) {
+-            return; // nothing to do
+-        }
++            if (oldLevel == byteLevel) {
++                return; // nothing to do
++            }
+ 
+-        // queue to update later
+-        this.updatedSources.add(coordinate);
++            // queue to update later
++            this.updatedSources.add(coordinate);
++        } finally {
++            this.lock.unlock();
++        }
+     }
+ 
+     public void removeSource(final int x, final int y, final int z) {
+@@ -71,8 +90,13 @@ public final class Delayed26WayDistancePropagator3D {
+     }
+ 
+     public void removeSource(final long coordinate) {
+-        if (this.sources.remove(coordinate) != 0) {
+-            this.updatedSources.add(coordinate);
++        this.lock.lock(); // Axiom - serialize against concurrent BFS mutation
++        try {
++            if (this.sources.remove(coordinate) != 0) {
++                this.updatedSources.add(coordinate);
++            }
++        } finally {
++            this.lock.unlock();
+         }
+     }
+ 
+@@ -117,6 +141,15 @@ public final class Delayed26WayDistancePropagator3D {
+     }
+ 
+     public boolean propagateUpdates() {
++        this.lock.lock(); // Axiom - serialize the whole BFS; propagateIncreases/Decreases mutate shared queues/bitsets
++        try {
++            return this.propagateUpdates0();
++        } finally {
++            this.lock.unlock();
++        }
++    }
++
++    private boolean propagateUpdates0() {
+         if (this.updatedSources.isEmpty()) {
+             return false;
+         }
+-- 
+2.50.1 (Apple Git-155)
+

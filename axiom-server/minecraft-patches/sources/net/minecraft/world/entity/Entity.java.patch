@@ -227,7 +227,7 @@
 +                        if (entity.portalProcess.isParallelCancelledByPlugin()) {
 +                            entity.portalProcess = null;
 +                            return;
-+                        }
+                         }
 +
 +                        TeleportTransition teleportTransition = this.portalProcess.getPortalDestination(level, this);
 +                        if (teleportTransition != null) {
@@ -235,7 +235,7 @@
 +                            if (level.isAllowedToEnterPortal(newLevel) && (newLevel.dimension() == level.dimension() || this.canTeleport(level, newLevel))) {
 +                                this.teleport(teleportTransition);
 +                            }
-                         }
++                        }
 +                    };
 +
 +                    if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) {
@@ -278,6 +278,26 @@
      public boolean touchingUnloadedChunk() {
          AABB box = this.getBoundingBox().inflate(1.0);
          int x0 = Mth.floor(box.minX);
+@@ -4952,10 +_,15 @@
+     public final void setPosRaw(double x, double y, double z, boolean forceBoundingBoxUpdate) {
+         // Paper start - rewrite chunk system
+         if (this.updatingSectionStatus) {
+-            LOGGER.error(
+-                "Refusing to update position for entity " + this + " to position " + new Vec3(x, y, z)
+-                    + " since it is processing a section status update", new Throwable()
+-            );
++            // Axiom start - suppress known false-positive spam under parallel/regionized ticking; control flow (early return) unchanged
++            if (!(org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking
++                || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking)) {
++                LOGGER.error(
++                    "Refusing to update position for entity " + this + " to position " + new Vec3(x, y, z)
++                        + " since it is processing a section status update", new Throwable()
++                );
++            }
++            // Axiom end
+             return;
+         }
+         // Paper end - rewrite chunk system
 @@ -4980,12 +_,14 @@
  
              this.levelCallback.onMove();

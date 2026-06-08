@@ -1,7 +1,6 @@
 --- a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
 +++ b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
-@@ -55,6 +_,24 @@ public final class ChunkEntitySlices {
-     // Purpur end - async target finding (Leaf)
+@@ -54,5 +_,23 @@ public final class ChunkEntitySlices {
      private final EntityList entities = new EntityList();
  
 +    // Leaf start - parallel world ticking: serialize this slice's non-thread-safe entity storage

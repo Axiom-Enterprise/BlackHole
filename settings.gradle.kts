@@ -60,8 +60,11 @@ gradle.lifecycle.beforeProject {
     val mcVersion = providers.gradleProperty("mcVersion").get().trim()
     val purpurChannel = providers.gradleProperty("channel").get().trim()
     val purpurBuildNumber = providers.environmentVariable("BUILD_NUMBER").orNull?.trim()?.toInt()
+    // Axiom - local builds used "$mcVersion.local-SNAPSHOT"; the ".local" dotted segment is parsed as a version
+    // component by plugins doing semver-style version detection (e.g. Images) and threw "unknown minor version".
+    // Use a hyphenated pre-release suffix instead so /version reads cleanly and stays parser-friendly.
     val versionString = if (purpurBuildNumber == null) {
-        "$mcVersion.local-SNAPSHOT"
+        "$mcVersion-DEV-SNAPSHOT"
     } else {
         "$mcVersion.build.$purpurBuildNumber-${purpurChannel.lowercase()}"
     }

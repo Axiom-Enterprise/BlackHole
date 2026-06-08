@@ -1,9 +1,10 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -2,6 +_,8 @@
+@@ -2,6 +_,9 @@
  import io.papermc.paperweight.attribute.DevBundleOutput
  import io.papermc.paperweight.util.*
  import java.time.Instant
++import java.time.OffsetDateTime // Axiom - build time from commit
 +import kotlin.io.path.createParentDirectories
 +import kotlin.io.path.writeText
  
@@ -102,7 +103,7 @@
          val mcVersion = rootProject.providers.gradleProperty("mcVersion").get()
          val build = System.getenv("BUILD_NUMBER") ?: null
 -        val buildTime = providers.environmentVariable("BUILD_STARTED_AT").map(Instant::parse).orElse(Instant.EPOCH).get()
-+        val buildTime = if (build != null) Instant.now() else Instant.EPOCH // Purpur
++        val buildTime = if (build != null) Instant.now() else runCatching { OffsetDateTime.parse(git.exec(providers, "show", "-s", "--format=%cI", "HEAD").get().trim()).toInstant() }.getOrElse { Instant.now() } // Axiom - real build/commit time instead of 1970 epoch placeholder
          val gitHash = git.exec(providers, "rev-parse", "--short=7", "HEAD").get().trim()
          val implementationVersion = "$mcVersion-${build ?: "DEV"}-$gitHash"
          val date = git.exec(providers, "show", "-s", "--format=%ci", gitHash).get().trim()

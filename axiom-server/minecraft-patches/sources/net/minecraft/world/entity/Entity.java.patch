@@ -8,6 +8,19 @@
      // CraftBukkit start
      private static final int CURRENT_LEVEL = 2;
      static boolean isLevelAtLeast(ValueInput input, int level) {
+@@ -287,7 +_,11 @@
+     public boolean minorHorizontalCollision;
+     public boolean hurtMarked;
+     protected Vec3 stuckSpeedMultiplier = Vec3.ZERO;
+-    private Entity.@Nullable RemovalReason removalReason;
++    private volatile Entity.@Nullable RemovalReason removalReason; // Axiom - volatile: atomic single-shot removal guard under parallel/regionized ticking
++    // Axiom start - atomic single-shot removal claim (prevents concurrent/duplicate removeEntity double-removing an entity)
++    private static final java.util.concurrent.atomic.AtomicReferenceFieldUpdater<Entity, Entity.RemovalReason> AXIOM_REMOVAL_REASON =
++        java.util.concurrent.atomic.AtomicReferenceFieldUpdater.newUpdater(Entity.class, Entity.RemovalReason.class, "removalReason");
++    // Axiom end
+     public static final float DEFAULT_BB_WIDTH = 0.6F;
+     public static final float DEFAULT_BB_HEIGHT = 1.8F;
+     public float moveDist;
 @@ -297,8 +_,9 @@
      public double xOld;
      public double yOld;
@@ -30,15 +43,20 @@
      private boolean hasGlowingTag;
      private final Set<String> tags = new io.papermc.paper.util.SizeLimitedSet<>(new it.unimi.dsi.fastutil.objects.ObjectOpenHashSet<>(), MAX_ENTITY_TAG_COUNT); // Paper - fully limit tag size - replace set impl
      private final double[] pistonDeltas = new double[]{0.0, 0.0, 0.0};
-@@ -382,6 +_,7 @@
+@@ -380,8 +_,12 @@
+     public boolean freezeLocked = false; // Paper - Freeze Tick Lock API
+     public boolean fixedPose = false; // Paper - Expand Pose API
      private final int despawnTime; // Paper - entity despawn time limit
++    public boolean activatedPriorityReset = false; // Pufferfish - DAB
++    public int activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; // Pufferfish - DAB (golf score)
++    public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // Pufferfish - reduce entity allocations
      public int totalEntityAge; // Paper - age-like counter for all entities
      public final io.papermc.paper.entity.activation.ActivationType activationType = io.papermc.paper.entity.activation.ActivationType.activationTypeFor(this); // Paper - EAR 2/tracking ranges
 +    public @Nullable Boolean immuneToFire = null; // Purpur - Fire immune API
      // Paper start - EAR 2
      public final boolean defaultActivationState;
      public long activatedTick = Integer.MIN_VALUE;
-@@ -549,10 +_,22 @@
+@@ -549,10 +_,37 @@
      }
      // Paper end - optimise entity tracker
  
@@ -47,6 +65,21 @@
 +        return true;
 +    }
 +    // Purpur end - Add canSaveToDisk to Entity
++
++    // Purpur start - copied from Mob - API for any mob to burn daylight
++    public boolean isSunBurnTick() {
++        if (!this.level().isClientSide() && this.level().environmentAttributes().getValue(EnvironmentAttributes.MONSTERS_BURN, this.position())) {
++            float br = this.getLightLevelDependentMagicValue();
++            BlockPos roundedPos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
++            boolean isInNonBurnableBlock = this.isInWaterOrRain() || this.isInPowderSnow || this.wasInPowderSnow;
++            if (br > 0.5F && this.random.nextFloat() * 30.0F < (br - 0.4F) * 2.0F && !isInNonBurnableBlock && this.level().canSeeSky(roundedPos)) {
++                return true;
++            }
++        }
++
++        return false;
++    }
++    // Purpur end - copied from Mob - API for any mob to burn daylight
 +
      public Entity(final EntityType<?> type, final Level level) {
          this.type = type;
@@ -61,6 +94,17 @@
          this.position = Vec3.ZERO;
          this.blockPosition = BlockPos.ZERO;
          this.chunkPosition = ChunkPos.ZERO;
+@@ -695,7 +_,9 @@
+     public void resendPossiblyDesyncedEntityData(ServerPlayer player) {
+         if (player.getBukkitEntity().canSee(this.getBukkitEntity())) {
+             ServerLevel level = (ServerLevel) this.level();
+-            net.minecraft.server.level.ChunkMap.TrackedEntity tracker = level == null ? null : level.getChunkSource().chunkMap.entityMap.get(this.getId());
++            // Leaf - guard entityMap read against concurrent structural mutation (parallel/regionized ticking)
++            net.minecraft.server.level.ChunkMap.TrackedEntity tracker = null;
++            if (level != null) { final var em = level.getChunkSource().chunkMap.entityMap; synchronized (em) { tracker = em.get(this.getId()); } }
+             if (tracker == null) {
+                 return;
+             }
 @@ -950,6 +_,7 @@
              && this.level.paperConfig().environment.netherCeilingVoidDamageHeight.test(v -> this.getY() >= v)
              && (!(this instanceof Player player) || !player.getAbilities().invulnerable))) {
@@ -117,6 +161,35 @@
                          // Paper start - EntityUnleashEvent
                          if (!org.bukkit.craftbukkit.event.CraftEventFactory.handlePlayerUnleashEntityEvent(
                              leashable, player, hand, !player.hasInfiniteMaterials(), true
+@@ -3375,6 +_,13 @@
+ 
+             this.passengers = ImmutableList.copyOf(newPassengers);
+         }
++
++        // Purpur start - Ridables
++        if (isRidable() && this.passengers.get(0) == passenger && passenger instanceof Player player) {
++            onMount(player);
++            this.rider = player;
++        }
++        // Purpur end - Ridables
+     }
+ 
+     // Paper start - Force entity dismount during teleportation
+@@ -3415,6 +_,14 @@
+             return false;
+         }
+         // CraftBukkit end
++
++        // Purpur start - Ridables
++        if (this.rider != null && this.passengers.get(0) == this.rider) {
++            onDismount(this.rider);
++            this.rider = null;
++        }
++        // Purpur end - Ridables
++
+         if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
+             this.passengers = ImmutableList.of();
+         } else {
 @@ -3500,15 +_,18 @@
          return Vec3.directionFromRotation(this.getRotationVector());
      }
@@ -137,6 +210,52 @@
              }
          }
      }
+@@ -3521,13 +_,32 @@
+                     ProfilerFiller profiler = Profiler.get();
+                     profiler.push("portal");
+                     this.setPortalCooldown();
+-                    TeleportTransition teleportTransition = this.portalProcess.getPortalDestination(level, this);
+-                    if (teleportTransition != null) {
+-                        ServerLevel newLevel = teleportTransition.newLevel();
+-                        if (level.isAllowedToEnterPortal(newLevel) && (newLevel.dimension() == level.dimension() || this.canTeleport(level, newLevel))) {
+-                            this.teleport(teleportTransition);
++                    // Purpur start - parallel world ticking (DivineMC)
++                    java.util.function.Consumer<Entity> portalEntityTask = entity -> {
++                        assert entity.portalProcess != null;
++                        if (entity.portalProcess == null) return; // Fixes NPE
++
++                        if (entity.portalProcess.isParallelCancelledByPlugin()) {
++                            entity.portalProcess = null;
++                            return;
++                        }
++
++                        TeleportTransition teleportTransition = this.portalProcess.getPortalDestination(level, this);
++                        if (teleportTransition != null) {
++                            ServerLevel newLevel = teleportTransition.newLevel();
++                            if (level.isAllowedToEnterPortal(newLevel) && (newLevel.dimension() == level.dimension() || this.canTeleport(level, newLevel))) {
++                                this.teleport(teleportTransition);
++                            }
+                         }
++                    };
++
++                    if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) {
++                        this.portalProcess.setParallelAsScheduled();
++                        this.getBukkitEntity().taskScheduler.schedule(portalEntityTask, entity -> {}, 0);
++                    } else {
++                        portalEntityTask.accept(this);
+                     }
++                    // Purpur end - parallel world ticking (DivineMC)
+ 
+                     profiler.pop();
+                 } else if (this.portalProcess.hasExpired()) {
+@@ -4102,6 +_,7 @@
+     }
+ 
+     private @Nullable Entity teleportCrossDimension(final ServerLevel oldLevel, final ServerLevel newLevel, final TeleportTransition transition) {
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread(newLevel, "Cannot teleport entity to another world off-main, from world " + oldLevel.getWorld().getName() + " to world " + newLevel.getWorld().getName()); // Purpur - parallel world ticking (DivineMC)
+         List<Entity> oldPassengers = this.getPassengers();
+         List<Entity> newPassengers = new ArrayList<>(oldPassengers.size());
+         this.ejectPassengers();
 @@ -4238,7 +_,7 @@
      }
  
@@ -159,6 +278,23 @@
      public boolean touchingUnloadedChunk() {
          AABB box = this.getBoundingBox().inflate(1.0);
          int x0 = Mth.floor(box.minX);
+@@ -4980,12 +_,14 @@
+ 
+             this.levelCallback.onMove();
+             if (!this.firstTick && this.level instanceof ServerLevel serverLevel && !this.isRemoved()) {
++                // Leaf - batch waypoint updates: mark dirty (O(1)) instead of running the full update on every
++                // sub-tick position change; ServerLevel flushes the dirty set once per tick.
+                 if (this instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
+-                    serverLevel.getWaypointManager().updateWaypoint(waypoint);
++                    serverLevel.getWaypointManager().markWaypointDirty(waypoint);
+                 }
+ 
+                 if (this instanceof ServerPlayer player && player.isReceivingWaypoints() && player.connection != null) {
+-                    serverLevel.getWaypointManager().updatePlayer(player);
++                    serverLevel.getWaypointManager().markPlayerDirty(player);
+                 }
+             }
+             // Paper start - Fix MC-44654
 @@ -5091,7 +_,7 @@
      }
  
@@ -168,3 +304,94 @@
      }
  
      public void onExplosionHit(final @Nullable Entity explosionCausedBy) {
+@@ -5110,15 +_,40 @@
+     public final void setRemoved(final Entity.RemovalReason reason, org.bukkit.event.entity.EntityRemoveEvent.@Nullable Cause cause) { // CraftBukkit - add Bukkit remove cause
+         // Paper start - rewrite chunk system
+         if (!((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemLevel)this.level).moonrise$getEntityLookup().canRemoveEntity((Entity)(Object)this)) {
+-            LOGGER.warn("Entity " + this + " is currently prevented from being removed from the world since it is processing section status updates", new Throwable());
++            // Axiom start - under parallel world / regionized chunk ticking a region thread can be mid section-status-update
++            // on this entity's slice while another thread tries to remove it. Removal is correctly refused here and retried
++            // automatically (e.g. ItemEntity re-discards an empty stack next tick), so the original WARN + new Throwable() is
++            // a false-positive single-thread invariant check that floods the log (and the ErrorCollector plugin). Control flow
++            // is unchanged; only the spurious diagnostic is gated off when the optimizations are enabled.
++            if (!(org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking
++                || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking)) {
++                LOGGER.warn("Entity " + this + " is currently prevented from being removed from the world since it is processing section status updates", new Throwable());
++            }
++            // Axiom end
+             return;
+         }
+         // Paper end - rewrite chunk system
+-        org.bukkit.craftbukkit.event.CraftEventFactory.callEntityRemoveEvent(this, cause); // CraftBukkit
+-        final boolean alreadyRemoved = this.removalReason != null; // Paper - Folia schedulers
+-        if (this.removalReason == null) {
+-            this.removalReason = reason;
++        // Axiom start - atomic single-shot removal guard: under parallel world ticking / regionized chunk ticking two
++        // threads (or a duplicate pickup/despawn) can both run the removal path on the same entity, double-removing it
++        // from the entity lookup -> "Cannot remove entity from null entity slices (-2147483648,-2147483648)" and
++        // "Failed to remove entity ... current entity mapped: null". Atomically claim the null->reason transition; only
++        // the claimant runs the destructive removal. unsetRemoved() resets the field, re-arming the guard for legitimate
++        // re-use (e.g. dimension change). When the optimizations are off, behaviour is byte-for-byte the original.
++        final boolean alreadyRemoved; // Paper - Folia schedulers
++        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking
++            || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking) {
++            if (!AXIOM_REMOVAL_REASON.compareAndSet(this, null, reason)) {
++                return; // another thread / duplicate call already claimed and is handling this entity's removal
++            }
++            alreadyRemoved = false;
++        } else {
++            alreadyRemoved = this.removalReason != null;
++            if (this.removalReason == null) {
++                this.removalReason = reason;
++            }
+         }
++        // Axiom end
++        org.bukkit.craftbukkit.event.CraftEventFactory.callEntityRemoveEvent(this, cause); // CraftBukkit
+ 
+         if (this.removalReason.shouldDestroy()) {
+             this.stopRiding();
+@@ -5385,4 +_,44 @@
+         return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
+     }
+     // Paper end - Expose entity id counter
++    // Purpur start - Ridables
++    @Nullable
++    private Player rider = null;
++
++    @Nullable
++    public Player getRider() {
++        return rider;
++    }
++
++    public boolean isRidable() {
++        return false;
++    }
++
++    public boolean isControllable() {
++        return true;
++    }
++
++    public void onMount(Player rider) {
++        if (this instanceof Mob) {
++            ((Mob) this).setTarget(null, null);
++            ((Mob) this).getNavigation().stop();
++        }
++        rider.setJumping(false); // fixes jump on mount
++    }
++
++    public void onDismount(Player player) {
++    }
++
++    public boolean onSpacebar() {
++        return false;
++    }
++
++    public boolean onClick(InteractionHand hand) {
++        return false;
++    }
++
++    public boolean processClick(InteractionHand hand) {
++        return false;
++    }
++    // Purpur end - Ridables
+ }

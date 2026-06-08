@@ -1,5 +1,17 @@
 --- a/net/minecraft/world/entity/item/ItemEntity.java
 +++ b/net/minecraft/world/entity/item/ItemEntity.java
+@@ -47,6 +_,11 @@
+     private static final short DEFAULT_PICKUP_DELAY = 0;
+     public int age = 0;
+     public int pickupDelay = 0;
++    // Axiom start - single-shot pickup claim: prevent two players on two ticking threads duplicating one item
++    private volatile int axiomPickupClaimed;
++    private static final java.util.concurrent.atomic.AtomicIntegerFieldUpdater<ItemEntity> AXIOM_PICKUP_CLAIMED =
++        java.util.concurrent.atomic.AtomicIntegerFieldUpdater.newUpdater(ItemEntity.class, "axiomPickupClaimed");
++    // Axiom end
+     public int health = 5;
+     public @Nullable EntityReference<Entity> thrower;
+     public @Nullable UUID target;
 @@ -54,6 +_,12 @@
      public boolean canMobPickup = true; // Paper - Item#canEntityPickup
      private int despawnRate = -1; // Paper - Alternative item-despawn-rate
@@ -30,6 +42,37 @@
 +        // Purpur end - Item entity immunities
              return false;
          }
+ 
+@@ -414,6 +_,16 @@
+     @Override
+     public void playerTouch(final Player player) {
+         if (!this.level().isClientSide()) {
++            // Axiom start - claim this item before processing the pickup so a second player on another ticking thread
++            // cannot run getInventory().add() on the same stack concurrently (which would duplicate the item). The claim
++            // is released in finally unless the item was actually consumed (removed); a partial/failed pickup stays pickable.
++            final boolean axiomPickupGuard = org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking
++                || org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableRegionizedChunkTicking;
++            if (axiomPickupGuard && !AXIOM_PICKUP_CLAIMED.compareAndSet(this, 0, 1)) {
++                return; // another thread is already processing this item's pickup
++            }
++            try {
++            // Axiom end
+             ItemStack itemStack = this.getItem();
+             Item item = itemStack.getItem();
+             int orgCount = itemStack.getCount();
+@@ -490,6 +_,13 @@
+                 player.awardStat(Stats.ITEM_PICKED_UP.get(item), orgCount);
+                 player.onItemPickup(this);
+             }
++            // Axiom start - release the pickup claim unless the item was consumed (removed)
++            } finally {
++                if (axiomPickupGuard && !this.isRemoved()) {
++                    AXIOM_PICKUP_CLAIMED.set(this, 0);
++                }
++            }
++            // Axiom end
+         }
+     }
  
 @@ -521,6 +_,12 @@
      public void setItem(final ItemStack itemStack) {

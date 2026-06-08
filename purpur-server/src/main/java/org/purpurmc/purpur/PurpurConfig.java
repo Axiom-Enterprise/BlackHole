@@ -190,6 +190,12 @@ public class PurpurConfig {
     public static String sleepSkippingNight = "default";
     public static String sleepingPlayersPercent = "default";
     public static String sleepNotPossible = "default";
+    public static String viewDistanceCommandSet = "<green>View distance set to <distance>";
+    public static String viewDistanceCommandGet = "<green>Current view distance is <distance>";
+    public static String simulationDistanceCommandSet = "<green>Simulation distance set to <distance>";
+    public static String simulationDistanceCommandGet = "<green>Current simulation distance is <distance>";
+    public static String maxPlayersCommandSet = "<green>Max players set to <max>";
+    public static String maxPlayersCommandGet = "<green>Current max players is <max>";
     private static void messages() {
         cannotRideMob = getString("settings.messages.cannot-ride-mob", cannotRideMob);
         afkBroadcastAway = getString("settings.messages.afk-broadcast-away", afkBroadcastAway);
@@ -209,6 +215,12 @@ public class PurpurConfig {
         sleepSkippingNight = getString("settings.messages.sleep-skipping-night", sleepSkippingNight);
         sleepingPlayersPercent = getString("settings.messages.sleeping-players-percent", sleepingPlayersPercent);
         sleepNotPossible = getString("settings.messages.sleep-not-possible", sleepNotPossible);
+        viewDistanceCommandSet = getString("settings.messages.view-distance-command-set", viewDistanceCommandSet);
+        viewDistanceCommandGet = getString("settings.messages.view-distance-command-get", viewDistanceCommandGet);
+        simulationDistanceCommandSet = getString("settings.messages.simulation-distance-command-set", simulationDistanceCommandSet);
+        simulationDistanceCommandGet = getString("settings.messages.simulation-distance-command-get", simulationDistanceCommandGet);
+        maxPlayersCommandSet = getString("settings.messages.max-players-command-set", maxPlayersCommandSet);
+        maxPlayersCommandGet = getString("settings.messages.max-players-command-get", maxPlayersCommandGet);
     }
 
     public static String deathMsgRunWithScissors = "<player> slipped and fell on their shears";

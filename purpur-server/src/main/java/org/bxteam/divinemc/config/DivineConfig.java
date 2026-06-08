@@ -272,7 +272,7 @@ public class DivineConfig {
         // Purpur end - regionized chunk ticking (DivineMC)
 
         // Async chunk sending settings
-        public static boolean asyncChunkSendingEnabled = false; // Purpur - default off
+        public static boolean asyncChunkSendingEnabled = true; // Leaf - default on: offloads chunk serialization off main thread, stable TPS at higher send rates
         public static int asyncChunkSendingMaxThreads = 4; // DivineMC - was 1; 1 bottlenecks anti-xray obfuscation on join
 
         // Async pathfinding settings // Purpur - async pathfinding (DivineMC)

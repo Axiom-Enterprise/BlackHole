@@ -14,7 +14,7 @@
              RaidCommand.register(this.dispatcher, context);
              DebugPathCommand.register(this.dispatcher);
              DebugMobSpawningCommand.register(this.dispatcher);
-@@ -299,6 +_,16 @@
+@@ -299,6 +_,19 @@
              StopCommand.register(this.dispatcher);
              TransferCommand.register(this.dispatcher);
              WhitelistCommand.register(this.dispatcher);
@@ -28,6 +28,9 @@
 +            org.purpurmc.purpur.command.CompassCommand.register(this.dispatcher); // Purpur - Add compass command
 +            org.purpurmc.purpur.command.RamBarCommand.register(this.dispatcher); // Purpur - Add rambar command
 +            org.purpurmc.purpur.command.RamCommand.register(this.dispatcher); // Purpur - Add ram command
++            org.purpurmc.purpur.command.ViewDistanceCommand.register(this.dispatcher); // Leaf - Add viewdistance command
++            org.purpurmc.purpur.command.SimulationDistanceCommand.register(this.dispatcher); // Leaf - Add simulationdistance command
++            org.purpurmc.purpur.command.SetMaxSlotCommand.register(this.dispatcher); // Leaf - Add setmaxslot command
          }
  
          if (commandSelection.includeIntegrated) {

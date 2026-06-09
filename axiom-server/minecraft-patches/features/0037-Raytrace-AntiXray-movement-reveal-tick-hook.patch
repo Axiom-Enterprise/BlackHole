@@ -6,10 +6,10 @@ Subject: [PATCH] Raytrace AntiXray movement reveal tick hook
 
 
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 750184c1e548281d0f6d99e78a89f5af5b8f8c67..19c6a83edef96a752c020aecbc4edfa43a0bcffb 100644
+index 6f5eab24b881de14373d24a8a026d6bfb0a5e43c..bfb89005974221e97118718f54fb5882ebb296bd 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1698,6 +1698,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1699,6 +1699,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.tickCount++;
          this.tickRateManager.tick();
          this.tickChildren(haveTime);

@@ -219,6 +219,7 @@
 -                        ServerLevel newLevel = teleportTransition.newLevel();
 -                        if (level.isAllowedToEnterPortal(newLevel) && (newLevel.dimension() == level.dimension() || this.canTeleport(level, newLevel))) {
 -                            this.teleport(teleportTransition);
+-                        }
 +                    // Purpur start - parallel world ticking (DivineMC)
 +                    java.util.function.Consumer<Entity> portalEntityTask = entity -> {
 +                        assert entity.portalProcess != null;
@@ -227,7 +228,7 @@
 +                        if (entity.portalProcess.isParallelCancelledByPlugin()) {
 +                            entity.portalProcess = null;
 +                            return;
-                         }
++                        }
 +
 +                        TeleportTransition teleportTransition = this.portalProcess.getPortalDestination(level, this);
 +                        if (teleportTransition != null) {
@@ -342,10 +343,6 @@
              return;
          }
          // Paper end - rewrite chunk system
--        org.bukkit.craftbukkit.event.CraftEventFactory.callEntityRemoveEvent(this, cause); // CraftBukkit
--        final boolean alreadyRemoved = this.removalReason != null; // Paper - Folia schedulers
--        if (this.removalReason == null) {
--            this.removalReason = reason;
 +        // Axiom start - atomic single-shot removal guard: under parallel world ticking / regionized chunk ticking two
 +        // threads (or a duplicate pickup/despawn) can both run the removal path on the same entity, double-removing it
 +        // from the entity lookup -> "Cannot remove entity from null entity slices (-2147483648,-2147483648)" and
@@ -364,9 +361,13 @@
 +            if (this.removalReason == null) {
 +                this.removalReason = reason;
 +            }
-         }
++        }
 +        // Axiom end
-+        org.bukkit.craftbukkit.event.CraftEventFactory.callEntityRemoveEvent(this, cause); // CraftBukkit
+         org.bukkit.craftbukkit.event.CraftEventFactory.callEntityRemoveEvent(this, cause); // CraftBukkit
+-        final boolean alreadyRemoved = this.removalReason != null; // Paper - Folia schedulers
+-        if (this.removalReason == null) {
+-            this.removalReason = reason;
+-        }
  
          if (this.removalReason.shouldDestroy()) {
              this.stopRiding();

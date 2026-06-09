@@ -29,18 +29,6 @@ index c26dd9cdd6fb0dcecc6a166dd71167c4a88a3d91..838898572cc30207a1b915dcea11f612
              level.updateLagCompensationTick(); // Paper - lag compensation
              net.minecraft.world.level.block.entity.HopperBlockEntity.skipHopperEvents = level.paperConfig().hopper.disableMoveEvent || org.bukkit.event.inventory.InventoryMoveItemEvent.getHandlerList().getRegisteredListeners().length == 0; // Paper - Perf: Optimize Hoppers
              profiler.push(() -> level + " " + level.dimension().identifier());
-diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 316fece122a3b71b5c809ed15c46c8cb37d1cdbf..ba1dba4903c8d3c023e9555af67e5d62ac3b3f55 100644
---- a/net/minecraft/server/level/ServerLevel.java
-+++ b/net/minecraft/server/level/ServerLevel.java
-@@ -236,6 +236,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-     public boolean hasPhysicsEvent = true; // Paper - BlockPhysicsEvent
-     public boolean hasEntityMoveEvent; // Paper - Add EntityMoveEvent
-     private final alternate.current.wire.WireHandler wireHandler = new alternate.current.wire.WireHandler(this); // Paper - optimize redstone (Alternate Current)
-+    public boolean hasRidableMoveEvent = false; // Purpur - Ridables
- 
-     @Override
-     public @Nullable LevelChunk getChunkIfLoaded(int x, int z) {
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
 index 3b655453f22be6eb65ea8b32f79e9d9b953120ee..228c81791dcc1ea0971e70bcb0cb289106466c67 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
@@ -74,86 +62,8 @@ index cf05034e3f37508466c61a41533e3f6c3ef2e3a5..3671945aa5d94052629c97dfbf6de581
                          // Entity in bucket - SPIGOT-4048 and SPIGOT-6859
                          if (itemType == Items.WATER_BUCKET && target instanceof net.minecraft.world.entity.animal.Bucketable && target instanceof LivingEntity && resendData) {
                              target.resendPossiblyDesyncedEntityData(ServerGamePacketListenerImpl.this.player); // Paper - The entire mob gets deleted, so resend it
-diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index a9a458c7e0a24d87c2f412e3689c1a8efe681b60..d46c6ee965693d243c75dcab4b4deda58982a950 100644
---- a/net/minecraft/world/entity/Entity.java
-+++ b/net/minecraft/world/entity/Entity.java
-@@ -3400,6 +3400,13 @@ public abstract class Entity
- 
-             this.passengers = ImmutableList.copyOf(newPassengers);
-         }
-+
-+        // Purpur start - Ridables
-+        if (isRidable() && this.passengers.get(0) == passenger && passenger instanceof Player player) {
-+            onMount(player);
-+            this.rider = player;
-+        }
-+        // Purpur end - Ridables
-     }
- 
-     // Paper start - Force entity dismount during teleportation
-@@ -3440,6 +3447,14 @@ public abstract class Entity
-             return false;
-         }
-         // CraftBukkit end
-+
-+        // Purpur start - Ridables
-+        if (this.rider != null && this.passengers.get(0) == this.rider) {
-+            onDismount(this.rider);
-+            this.rider = null;
-+        }
-+        // Purpur end - Ridables
-+
-         if (this.passengers.size() == 1 && this.passengers.get(0) == passenger) {
-             this.passengers = ImmutableList.of();
-         } else {
-@@ -5419,4 +5434,44 @@ public abstract class Entity
-         return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
-     }
-     // Paper end - Expose entity id counter
-+    // Purpur start - Ridables
-+    @Nullable
-+    private Player rider = null;
-+
-+    @Nullable
-+    public Player getRider() {
-+        return rider;
-+    }
-+
-+    public boolean isRidable() {
-+        return false;
-+    }
-+
-+    public boolean isControllable() {
-+        return true;
-+    }
-+
-+    public void onMount(Player rider) {
-+        if (this instanceof Mob) {
-+            ((Mob) this).setTarget(null, null);
-+            ((Mob) this).getNavigation().stop();
-+        }
-+        rider.setJumping(false); // fixes jump on mount
-+    }
-+
-+    public void onDismount(Player player) {
-+    }
-+
-+    public boolean onSpacebar() {
-+        return false;
-+    }
-+
-+    public boolean onClick(InteractionHand hand) {
-+        return false;
-+    }
-+
-+    public boolean processClick(InteractionHand hand) {
-+        return false;
-+    }
-+    // Purpur end - Ridables
- }
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index db699c07b1c55e7728f506d504c4a2417d387623..bcb78f6a944ac1726be3d906b4e4645a90654ef1 100644
+index 93191aa5a24f9390d0d8c7c384c700dbe18d0212..2e620309bedbd08d8791b165c6a60080c55589d8 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -243,9 +243,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -3862,7 +3772,7 @@ index c88545ac6fc99e5d055126ef39f799f9caef257b..1d02a5a037cb50844419ef41227be242
                  this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0);
              } else {
 diff --git a/net/minecraft/world/entity/monster/Shulker.java b/net/minecraft/world/entity/monster/Shulker.java
-index 1e3078df9bf6bfbc438bbcb0c79ccc1a49229573..30ddd77aab4dab1a9e3ea8da452c02eda8a45799 100644
+index 1f7a8b12a37b42fa38cb7136cd9ef5b3bab45d6b..746dfa496dc6cde62ab3c890aa6fbdbe68086ea9 100644
 --- a/net/minecraft/world/entity/monster/Shulker.java
 +++ b/net/minecraft/world/entity/monster/Shulker.java
 @@ -109,12 +109,31 @@ public class Shulker extends AbstractGolem implements Enemy {
@@ -5188,7 +5098,7 @@ index f99d5379a83dc9aabe8c8fef52bb2b0cccc40e19..4c35ca3877b88b13a1919d0625e5055b
                  if (this.level().purpurConfig.wanderingTraderAllowTrading) { // Purpur - Add config for villager trading
                  this.setTradingPlayer(player);
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index 5d7638d2ca9468f75fbdfe90af7ee3248eb077b4..52795af72a36d90ec69d59821adab42d786b038a 100644
+index 7c4ae5904081da7b0e4c135c243f2d9cebb161d9..3b0a0525cdca3ea5b91834e04b42696a7cedde10 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -193,6 +193,19 @@ public abstract class Player extends Avatar implements ContainerUser {

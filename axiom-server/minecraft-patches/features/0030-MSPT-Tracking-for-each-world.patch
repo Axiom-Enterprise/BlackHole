@@ -6,10 +6,10 @@ Subject: [PATCH] MSPT Tracking for each world
 
 
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 5c587d5120ae4b7120de5aad135b446af8b1ab24..b32dc47b20a462dc12d54c60c7e454dea3165f21 100644
+index 0c9c22d23b0df2da1f2f366589c4e6d001a37c87..8e7f14220ebd2e6d0fddb020d7ec8a07c1f05ae7 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1885,6 +1885,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1886,6 +1886,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              profiler.push(() -> level + " " + level.dimension().identifier());
              profiler.push("tick");
  
@@ -18,7 +18,7 @@ index 5c587d5120ae4b7120de5aad135b446af8b1ab24..b32dc47b20a462dc12d54c60c7e454de
              try {
                  level.tick(haveTime);
              } catch (Throwable t) {
-@@ -1892,6 +1894,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1893,6 +1895,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  level.fillReportDetails(report);
                  throw new ReportedException(report);
              }
@@ -30,20 +30,3 @@ index 5c587d5120ae4b7120de5aad135b446af8b1ab24..b32dc47b20a462dc12d54c60c7e454de
  
              profiler.pop();
              profiler.pop();
-diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index d156b872ed38f19df15290f07ab1b3866c14574f..0c64ed9c2ccebabe05e89dca9d0d82173cb93636 100644
---- a/net/minecraft/server/level/ServerLevel.java
-+++ b/net/minecraft/server/level/ServerLevel.java
-@@ -607,6 +607,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-     }
-     // Paper end - chunk tick iteration
- 
-+    // Purpur start - per-world MSPT tracking (DivineMC)
-+    public final MinecraftServer.TickTimes tickTimes5s = new MinecraftServer.TickTimes(100);
-+    public final MinecraftServer.TickTimes tickTimes10s = new MinecraftServer.TickTimes(200);
-+    public final MinecraftServer.TickTimes tickTimes60s = new MinecraftServer.TickTimes(1200);
-+    // Purpur end - per-world MSPT tracking (DivineMC)
-+
-     public ServerLevel(
-         final MinecraftServer server,
-         final Executor executor,

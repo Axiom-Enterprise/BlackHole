@@ -380,27 +380,6 @@ index 5fad52157fc22755196ce9eaddaa2bc23c5bb86b..61fb663cc5d9871be5a8ef384f6ba31b
          }
      }
  
-diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index e832db7e1493a47a05549d40172bd13e1626f6a9..d156b872ed38f19df15290f07ab1b3866c14574f 100644
---- a/net/minecraft/server/level/ServerLevel.java
-+++ b/net/minecraft/server/level/ServerLevel.java
-@@ -2674,7 +2674,6 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
- 
-     @Override
-     public LevelEntityGetter<Entity> getEntities() {
--        org.spigotmc.AsyncCatcher.catchOp("Chunk getEntities call"); // Spigot
-         return this.moonrise$getEntityLookup(); // Paper - rewrite chunk system
-     }
- 
-@@ -2980,7 +2979,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-                         }
- 
-                         map.carriedByPlayers.remove(player);
--                        if (map.carriedBy.removeIf(holdingPlayer -> holdingPlayer.player == player)) {
-+                        if (map.carriedBy.removeIf(holdingPlayer -> holdingPlayer != null && holdingPlayer.player == player)) { // Purpur - async entity tracker (DivineMC)
-                             map.decorations.remove(player.getName().getString());
-                         }
-                     }
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 index 3671945aa5d94052629c97dfbf6de581c9b20d04..68bcb8dff472c06901e0286158a9f57fac277d1e 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
@@ -414,7 +393,7 @@ index 3671945aa5d94052629c97dfbf6de581c9b20d04..68bcb8dff472c06901e0286158a9f57f
          if (this.player.isRemoved()) {
              LOGGER.info("Attempt to teleport removed player {} restricted", this.player.getScoreboardName());
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index dc56736203d68619f97ba2f4f2716b41bdeff714..1c6c9a6f4cc5919ceb0396a5a2262ff6beca396f 100644
+index 215149e07e0ae2a3b98d90336d8adf8d36e2bae0..60ead79fd769c53cc1d82557619637c0e53443a9 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -1356,13 +1356,13 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin

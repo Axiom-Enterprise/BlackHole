@@ -75,119 +75,144 @@
      @Override
 -    public final ca.spottedleaf.moonrise.common.list.ReferenceList<LevelChunk> moonrise$getPlayerTickingChunks() {
 -        return this.playerTickingChunks;
-+    public synchronized final ca.spottedleaf.moonrise.common.list.ReferenceList<LevelChunk> moonrise$getPlayerTickingChunks() {
-+        synchronized (lock) {
-+            return this.playerTickingChunks;
-+        }
-     }
- 
-     @Override
+-    }
+-
+-    @Override
 -    public final void moonrise$markChunkForPlayerTicking(final LevelChunk chunk) {
 -        final ChunkPos pos = chunk.getPos();
 -        if (!this.playerTickingRequests.containsKey(ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(pos))) {
 -            return;
 -        }
+-
+-        this.playerTickingChunks.add(chunk);
+-    }
+-
+-    @Override
+-    public final void moonrise$removeChunkForPlayerTicking(final LevelChunk chunk) {
+-        this.playerTickingChunks.remove(chunk);
+-    }
+-
+-    @Override
+-    public final void moonrise$addPlayerTickingRequest(final int chunkX, final int chunkZ) {
+-        ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)(Object)this, chunkX, chunkZ, "Cannot add ticking request async");
+-
+-        final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
+-
+-        if (this.playerTickingRequests.addTo(chunkKey, 1) != 0) {
+-            // already added
+-            return;
+-        }
+-
+-        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)(ServerLevel)(Object)this).moonrise$getChunkTaskScheduler()
+-            .chunkHolderManager.getChunkHolder(chunkKey);
+-
+-        if (chunkHolder == null || !chunkHolder.isTickingReady()) {
+-            return;
+-        }
+-
+-        this.playerTickingChunks.add((LevelChunk)chunkHolder.getCurrentChunk());
+-    }
+-
+-    @Override
+-    public final void moonrise$removePlayerTickingRequest(final int chunkX, final int chunkZ) {
+-        ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)(Object)this, chunkX, chunkZ, "Cannot remove ticking request async");
+-
+-        final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
+-        final int val = this.playerTickingRequests.addTo(chunkKey, -1);
+-
+-        if (val <= 0) {
+-            throw new IllegalStateException("Negative counter");
+-        }
+-
+-        if (val != 1) {
+-            // still has at least one request
+-            return;
+-        }
+-
+-        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)(ServerLevel)(Object)this).moonrise$getChunkTaskScheduler()
+-            .chunkHolderManager.getChunkHolder(chunkKey);
+-
+-        if (chunkHolder == null || !chunkHolder.isTickingReady()) {
+-            return;
+-        }
+-
+-        this.playerTickingChunks.remove((LevelChunk)chunkHolder.getCurrentChunk());
+-    }
++    public synchronized final ca.spottedleaf.moonrise.common.list.ReferenceList<LevelChunk> moonrise$getPlayerTickingChunks() {
++        synchronized (lock) {
++            return this.playerTickingChunks;
++        }
++    }
++
++    @Override
 +    public synchronized final void moonrise$markChunkForPlayerTicking(final LevelChunk chunk) {
 +        synchronized (lock) {
 +            final ChunkPos pos = chunk.getPos();
 +            if (!this.playerTickingRequests.containsKey(ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(pos))) {
 +                return;
 +            }
- 
--        this.playerTickingChunks.add(chunk);
++
 +            this.playerTickingChunks.add(chunk);
 +        }
-     }
- 
-     @Override
--    public final void moonrise$removeChunkForPlayerTicking(final LevelChunk chunk) {
--        this.playerTickingChunks.remove(chunk);
++    }
++
++    @Override
 +    public synchronized final void moonrise$removeChunkForPlayerTicking(final LevelChunk chunk) {
 +        synchronized (lock) {
 +            this.playerTickingChunks.remove(chunk);
 +        }
-     }
- 
-     @Override
--    public final void moonrise$addPlayerTickingRequest(final int chunkX, final int chunkZ) {
--        ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)(Object)this, chunkX, chunkZ, "Cannot add ticking request async");
++    }
++
++    @Override
 +    public synchronized final void moonrise$addPlayerTickingRequest(final int chunkX, final int chunkZ) {
 +        synchronized (lock) {
 +            ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel) (Object) this, chunkX, chunkZ, "Cannot add ticking request async");
- 
--        final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
++
 +            final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
- 
--        if (this.playerTickingRequests.addTo(chunkKey, 1) != 0) {
--            // already added
--            return;
--        }
++
 +            if (this.playerTickingRequests.addTo(chunkKey, 1) != 0) {
 +                // already added
 +                return;
 +            }
- 
--        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)(ServerLevel)(Object)this).moonrise$getChunkTaskScheduler()
--            .chunkHolderManager.getChunkHolder(chunkKey);
++
 +            final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel) (ServerLevel) (Object) this).moonrise$getChunkTaskScheduler()
 +                .chunkHolderManager.getChunkHolder(chunkKey);
- 
--        if (chunkHolder == null || !chunkHolder.isTickingReady()) {
--            return;
--        }
++
 +            if (chunkHolder == null || !chunkHolder.isTickingReady()) {
 +                return;
 +            }
- 
--        this.playerTickingChunks.add((LevelChunk)chunkHolder.getCurrentChunk());
++
 +            this.playerTickingChunks.add((LevelChunk) chunkHolder.getCurrentChunk());
 +        }
-     }
- 
-     @Override
--    public final void moonrise$removePlayerTickingRequest(final int chunkX, final int chunkZ) {
--        ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)(Object)this, chunkX, chunkZ, "Cannot remove ticking request async");
++    }
++
++    @Override
 +    public synchronized final void moonrise$removePlayerTickingRequest(final int chunkX, final int chunkZ) {
 +        synchronized (lock) {
 +            ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel) (Object) this, chunkX, chunkZ, "Cannot remove ticking request async");
- 
--        final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
--        final int val = this.playerTickingRequests.addTo(chunkKey, -1);
++
 +            final long chunkKey = ca.spottedleaf.moonrise.common.util.CoordinateUtils.getChunkKey(chunkX, chunkZ);
 +            final int val = this.playerTickingRequests.addTo(chunkKey, -1);
- 
--        if (val <= 0) {
--            throw new IllegalStateException("Negative counter");
--        }
++
 +            if (val <= 0) {
 +                throw new IllegalStateException("Negative counter");
 +            }
- 
--        if (val != 1) {
--            // still has at least one request
--            return;
--        }
++
 +            if (val != 1) {
 +                // still has at least one request
 +                return;
 +            }
- 
--        final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel)(ServerLevel)(Object)this).moonrise$getChunkTaskScheduler()
--            .chunkHolderManager.getChunkHolder(chunkKey);
++
 +            final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder chunkHolder = ((ca.spottedleaf.moonrise.patches.chunk_system.level.ChunkSystemServerLevel) (ServerLevel) (Object) this).moonrise$getChunkTaskScheduler()
 +                .chunkHolderManager.getChunkHolder(chunkKey);
- 
--        if (chunkHolder == null || !chunkHolder.isTickingReady()) {
--            return;
--        }
++
 +            if (chunkHolder == null || !chunkHolder.isTickingReady()) {
 +                return;
 +            }
- 
--        this.playerTickingChunks.remove((LevelChunk)chunkHolder.getCurrentChunk());
++
 +            this.playerTickingChunks.remove((LevelChunk) chunkHolder.getCurrentChunk());
 +        }
-     }
++    }
 +    // Purpur end - regionized chunk ticking (DivineMC) - RCT sync fix
      // Paper end - chunk tick iteration
  
@@ -343,19 +368,18 @@
                          if (!entity.isRemoved()) {
                              if (!tickRateManager.isEntityFrozen(entity)) {
                                  profiler.push("checkDespawn");
-@@ -898,8 +_,12 @@
+@@ -898,7 +_,11 @@
              profiler.pop();
              } // Paper - option to disable ticking
              this.spigotConfig.currentPrimedTnt = 0; // Spigot
 +            }
 +            // Purpur end - regionized chunk ticking (DivineMC)
          }
- 
-+        this.waypointManager.flushDirty(); // Leaf - batch waypoint updates: apply all per-tick moves once, on the tick thread
 +
++        this.waypointManager.flushDirty(); // Leaf - batch waypoint updates: apply all per-tick moves once, on the tick thread
+ 
          profiler.push("entityManagement");
          // Paper - rewrite chunk system
-         profiler.pop();
 @@ -919,8 +_,7 @@
      @Override
      public boolean shouldTickBlocksAt(final long chunkPos) {

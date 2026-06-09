@@ -205,23 +205,6 @@ index 4a3dd45139897c1cddec78b2bb6a9b58920ca2e1..870ef81c64c0ce61ec50598474a4e7e4
          // Purpur end - async chunk sending (DivineMC)
          // Paper end - Anti-Xray
          // Paper start - PlayerChunkLoadEvent
-diff --git a/net/minecraft/world/level/Level.java b/net/minecraft/world/level/Level.java
-index 02915bd43288a9144bd5de840f0ce15b65fc2238..221b53bf4f0a80ae9a21c4a9fed1cfe9c32e3c62 100644
---- a/net/minecraft/world/level/Level.java
-+++ b/net/minecraft/world/level/Level.java
-@@ -1150,12 +1150,6 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
-             return false;
-         }
- 
--        // DivineMC start - invalidate cached chunk obfuscation on any block change (keeps the per-chunk
--        // obfuscated-section cache correct: non-ore edits change the chunk packet too). Cheap no-op when off.
--        if (!this.isClientSide()) {
--            org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.onBlockChanged(this.getWorld(), pos.getX(), pos.getZ());
--        }
--        // DivineMC end
-         // DivineMC start - Raytrace AntiXray SDK block-change hook
-         if (org.bxteam.divinemc.config.DivineConfig.PerformanceCategory.antiXraySdk && !this.isClientSide()) {
-             final dev.imanity.antixray.sdk.AntiXrayAdapter antiXrayAdapter = dev.imanity.antixray.sdk.AntiXraySDK.getAdapter();
 diff --git a/net/minecraft/world/level/chunk/PalettedContainer.java b/net/minecraft/world/level/chunk/PalettedContainer.java
 index 832c5260d804edeeaf97ee2c6eb004b3b30bf88e..66a05adab494f8674f0636f8b34533f8ef640028 100644
 --- a/net/minecraft/world/level/chunk/PalettedContainer.java

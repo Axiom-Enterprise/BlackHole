@@ -1,6 +1,7 @@
 --- a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
 +++ b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
-@@ -54,5 +_,23 @@ public final class ChunkEntitySlices {
+@@ -53,6 +_,24 @@
+     private final Reference2ObjectOpenHashMap<EntityType<?>, EntityCollectionBySection> entitiesByType;
      private final EntityList entities = new EntityList();
  
 +    // Leaf start - parallel world ticking: serialize this slice's non-thread-safe entity storage
@@ -24,7 +25,7 @@
      public FullChunkStatus status;
      public final ChunkData chunkData;
  
-@@ -207,18 +_,23 @@ public final class ChunkEntitySlices {
+@@ -199,18 +_,23 @@
      }
  
      public List<Entity> getAllEntities() {
@@ -32,25 +33,27 @@
 -        if (len == 0) {
 -            return new ArrayList<>();
 -        }
+-
+-        final Entity[] rawData = this.entities.getRawData();
+-        final List<Entity> collectedEntities = new ArrayList<>(len);
+-        for (int i = 0; i < len; ++i) {
+-            collectedEntities.add(rawData[i]);
+-        }
+-
+-        return collectedEntities;
 +        this.lockRead();
 +        try {
 +            final int len = this.entities.size();
 +            if (len == 0) {
 +                return new ArrayList<>();
 +            }
- 
--        final Entity[] rawData = this.entities.getRawData();
--        final List<Entity> collectedEntities = new ArrayList<>(len);
--        for (int i = 0; i < len; ++i) {
--            collectedEntities.add(rawData[i]);
--        }
++
 +            final Entity[] rawData = this.entities.getRawData();
 +            final List<Entity> collectedEntities = new ArrayList<>(len);
 +            for (int i = 0; i < Math.min(rawData.length, len); ++i) {
 +                collectedEntities.add(rawData[i]);
 +            }
- 
--        return collectedEntities;
++
 +            return collectedEntities;
 +        } finally {
 +            this.unlockRead();
@@ -58,7 +61,7 @@
      }
  
      public boolean isEmpty() {
-@@ -265,6 +_,8 @@ public final class ChunkEntitySlices {
+@@ -257,6 +_,8 @@
      }
  
      public boolean addEntity(final Entity entity, final int chunkSection) {
@@ -67,7 +70,7 @@
          if (!this.entities.add(entity)) {
              return false;
          }
-@@ -308,9 +_,14 @@ public final class ChunkEntitySlices {
+@@ -288,9 +_,14 @@
          }
  
          return true;
@@ -82,7 +85,7 @@
          if (!this.entities.remove(entity)) {
              return false;
          }
-@@ -349,40 +_,68 @@ public final class ChunkEntitySlices {
+@@ -317,40 +_,68 @@
          byType.removeEntity(entity, sectionIndex);
  
          return true;
@@ -143,26 +146,27 @@
      public <T extends Entity> boolean getEntities(final EntityType<?> type, final AABB box, final List<? super T> into,
                                                    final Predicate<? super T> predicate, final int maxCount) {
 -        final EntityCollectionBySection byType = this.entitiesByType.get(type);
+-
+-        if (byType != null) {
+-            return byType.getEntitiesLimited((Entity)null, box, (List)into, (Predicate)predicate, maxCount);
 +        this.lockRead();
 +        try {
 +            final EntityCollectionBySection byType = this.entitiesByType.get(type);
- 
--        if (byType != null) {
--            return byType.getEntitiesLimited((Entity)null, box, (List)into, (Predicate)predicate, maxCount);
--        }
++
 +            if (byType != null) {
 +                return byType.getEntitiesLimited((Entity)null, box, (List)into, (Predicate)predicate, maxCount);
 +            }
- 
--        return false;
++
 +            return false;
 +        } finally {
 +            this.unlockRead();
-+        }
+         }
+-
+-        return false;
      }
  
      protected EntityCollectionBySection initClass(final Class<? extends Entity> clazz) {
-@@ -410,23 +_,35 @@ public final class ChunkEntitySlices {
+@@ -378,23 +_,35 @@
  
      public <T extends Entity> void getEntities(final Class<? extends T> clazz, final Entity except, final AABB box, final List<? super T> into,
                                                 final Predicate<? super T> predicate) {

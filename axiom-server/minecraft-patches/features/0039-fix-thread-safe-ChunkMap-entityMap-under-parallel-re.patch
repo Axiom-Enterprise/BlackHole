@@ -136,18 +136,3 @@ index ce2140ca11d0644d7376a679827408906f8ddcfd..5a6f787d7dc0ca9a88e1a918ead64719
              if (entity.seenBy.contains(player.connection)) {
                  consumer.accept(entity.entity);
              }
-diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index fd99b1c9d5819cacb1b9230c203236b11ce43b8c..5b32486a68d302e40cfc56f4d7f7818784e82d03 100644
---- a/net/minecraft/world/entity/Entity.java
-+++ b/net/minecraft/world/entity/Entity.java
-@@ -728,7 +728,9 @@ public abstract class Entity
-     public void resendPossiblyDesyncedEntityData(ServerPlayer player) {
-         if (player.getBukkitEntity().canSee(this.getBukkitEntity())) {
-             ServerLevel level = (ServerLevel) this.level();
--            net.minecraft.server.level.ChunkMap.TrackedEntity tracker = level == null ? null : level.getChunkSource().chunkMap.entityMap.get(this.getId());
-+            // Leaf - guard entityMap read against concurrent structural mutation (parallel/regionized ticking)
-+            net.minecraft.server.level.ChunkMap.TrackedEntity tracker = null;
-+            if (level != null) { final var em = level.getChunkSource().chunkMap.entityMap; synchronized (em) { tracker = em.get(this.getId()); } }
-             if (tracker == null) {
-                 return;
-             }

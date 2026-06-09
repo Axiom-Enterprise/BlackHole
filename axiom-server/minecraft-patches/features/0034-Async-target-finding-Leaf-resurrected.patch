@@ -35,108 +35,8 @@ net.minecraft.util.Util, GameRules/tag renames handled. FollowBoatGoal
 dropped (removed upstream). Default-off keeps the OFF path identical to
 vanilla; the feature itself stays experimental/crash-prone as upstream.
 
-diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
-index 8d9ce3d301d5f7e4106587ae00adb8dd5b8b6f88..3b75fdd510b211891fe143fbe09152e3b893de76 100644
---- a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
-+++ b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
-@@ -49,8 +49,10 @@ public final class ChunkEntitySlices {
- 
-     private final EntityCollectionBySection allEntities;
-     private final EntityCollectionBySection hardCollidingEntities;
--    private final Reference2ObjectOpenHashMap<Class<? extends Entity>, EntityCollectionBySection> entitiesByClass;
--    private final Reference2ObjectOpenHashMap<EntityType<?>, EntityCollectionBySection> entitiesByType;
-+    // Purpur start - async target finding (Leaf)
-+    private final it.unimi.dsi.fastutil.objects.Reference2ObjectMap<Class<? extends Entity>, EntityCollectionBySection> entitiesByClass;
-+    private final it.unimi.dsi.fastutil.objects.Reference2ObjectMap<EntityType<?>, EntityCollectionBySection> entitiesByType;
-+    // Purpur end - async target finding (Leaf)
-     private final EntityList entities = new EntityList();
- 
-     public FullChunkStatus status;
-@@ -76,9 +78,15 @@ public final class ChunkEntitySlices {
- 
-         this.allEntities = new EntityCollectionBySection(this);
-         this.hardCollidingEntities = new EntityCollectionBySection(this);
--        this.entitiesByClass = new Reference2ObjectOpenHashMap<>();
--        this.entitiesByType = new Reference2ObjectOpenHashMap<>();
--
-+        // Purpur start - async target finding (Leaf)
-+        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding) {
-+            this.entitiesByClass = it.unimi.dsi.fastutil.objects.Reference2ObjectMaps.synchronize(new Reference2ObjectOpenHashMap<>());
-+            this.entitiesByType = it.unimi.dsi.fastutil.objects.Reference2ObjectMaps.synchronize(new Reference2ObjectOpenHashMap<>());
-+        } else {
-+            this.entitiesByClass = new Reference2ObjectOpenHashMap<>();
-+            this.entitiesByType = new Reference2ObjectOpenHashMap<>();
-+        }
-+        // Purpur end - async target finding (Leaf)
-         this.status = status;
-         this.chunkData = chunkData;
-     }
-@@ -270,14 +278,26 @@ public final class ChunkEntitySlices {
-             this.hardCollidingEntities.addEntity(entity, sectionIndex);
-         }
- 
--        for (final Iterator<Reference2ObjectMap.Entry<Class<? extends Entity>, EntityCollectionBySection>> iterator =
--             this.entitiesByClass.reference2ObjectEntrySet().fastIterator(); iterator.hasNext();) {
--            final Reference2ObjectMap.Entry<Class<? extends Entity>, EntityCollectionBySection> entry = iterator.next();
-+        // Purpur start - async target finding (Leaf)
-+        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding) {
-+            synchronized (this.entitiesByClass) {
-+                for (final var entry : this.entitiesByClass.reference2ObjectEntrySet()) {
-+                    if (entry.getKey().isInstance(entity)) {
-+                        entry.getValue().addEntity(entity, sectionIndex);
-+                    }
-+                }
-+            }
-+        } else {
-+            for (final Iterator<Reference2ObjectMap.Entry<Class<? extends Entity>, EntityCollectionBySection>> iterator =
-+                 this.entitiesByClass.reference2ObjectEntrySet().iterator(); iterator.hasNext(); ) {
-+                final Reference2ObjectMap.Entry<Class<? extends Entity>, EntityCollectionBySection> entry = iterator.next();
- 
--            if (entry.getKey().isInstance(entity)) {
--                entry.getValue().addEntity(entity, sectionIndex);
-+                if (entry.getKey().isInstance(entity)) {
-+                    entry.getValue().addEntity(entity, sectionIndex);
-+                }
-             }
-         }
-+        // Purpur end - async target finding (Leaf)
- 
-         EntityCollectionBySection byType = this.entitiesByType.get(entity.getType());
-         if (byType != null) {
-@@ -304,14 +324,26 @@ public final class ChunkEntitySlices {
-             this.hardCollidingEntities.removeEntity(entity, sectionIndex);
-         }
- 
--        for (final Iterator<Reference2ObjectMap.Entry<Class<? extends Entity>, EntityCollectionBySection>> iterator =
--             this.entitiesByClass.reference2ObjectEntrySet().fastIterator(); iterator.hasNext();) {
--            final Reference2ObjectMap.Entry<Class<? extends Entity>, EntityCollectionBySection> entry = iterator.next();
-+        // Purpur start - async target finding (Leaf)
-+        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding) {
-+            synchronized (this.entitiesByClass) {
-+                for (final var entry : this.entitiesByClass.reference2ObjectEntrySet()) {
-+                    if (entry.getKey().isInstance(entity)) {
-+                        entry.getValue().removeEntity(entity, sectionIndex);
-+                    }
-+                }
-+            }
-+        } else {
-+            for (final Iterator<Reference2ObjectMap.Entry<Class<? extends Entity>, EntityCollectionBySection>> iterator =
-+                 this.entitiesByClass.reference2ObjectEntrySet().iterator(); iterator.hasNext();) {
-+                final Reference2ObjectMap.Entry<Class<? extends Entity>, EntityCollectionBySection> entry = iterator.next();
- 
--            if (entry.getKey().isInstance(entity)) {
--                entry.getValue().removeEntity(entity, sectionIndex);
-+                if (entry.getKey().isInstance(entity)) {
-+                    entry.getValue().removeEntity(entity, sectionIndex);
-+                }
-             }
-         }
-+        // Purpur end - async target finding (Leaf)
- 
-         final EntityCollectionBySection byType = this.entitiesByType.get(entity.getType());
-         byType.removeEntity(entity, sectionIndex);
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 8b930596f44a4d804863131f5e4611b841b5b606..5466690f0ba818878ac0265a85a70d734bd9c89e 100644
+index decbb32735456e5330c24986539c9fbe2a10d2a2..8d828bfac5b7f4d312ecdc9e828e49640a1c6d0a 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -342,6 +342,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -163,49 +63,8 @@ index 8b12d3a95cbdc72770cd3432f68992de95cc4fde..a56d43f29146a1d2afe323628cdcf499
  
          // this.worldData.setGameType(properties.gameMode.get()); // CraftBukkit - moved to world loading
          LOGGER.info("Default game type: {}", properties.gameMode.get());
-diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 8875af04089764e016ec8ec27413c755a007b616..a14efcd396053dd9e2addc57bed23fa600c97aad 100644
---- a/net/minecraft/server/level/ServerLevel.java
-+++ b/net/minecraft/server/level/ServerLevel.java
-@@ -191,11 +191,21 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-     private static final Logger LOGGER = LogUtils.getLogger();
-     private static final int EMPTY_TIME_NO_TICK = 300;
-     private static final int MAX_SCHEDULED_TICKS_PER_TICK = 65536;
--    private final List<ServerPlayer> players = Lists.newArrayList();
-+    // Purpur start - async target finding (Leaf)
-+    private final List<ServerPlayer> players;
-+    {
-+        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding) {
-+            this.players = Lists.newCopyOnWriteArrayList();
-+        } else {
-+            this.players = Lists.newArrayList();
-+        }
-+    }
-+    // Purpur end - async target finding (Leaf)
-     public final ServerChunkCache chunkSource;
-     private final MinecraftServer server;
-     public final io.papermc.paper.world.saveddata.PaperLevelOverrides serverLevelData; // Paper - type
-     public final EntityTickList entityTickList = new EntityTickList(this); // Purpur - async mob spawning (DivineMC) - needs public access for async spawn thread // Purpur - parallel world ticking (DivineMC)
-+    public final org.dreeam.leaf.async.ai.@org.jetbrains.annotations.Nullable AsyncGoalExecutor asyncGoalExecutor; // Purpur - async target finding (Leaf)
-     private final ServerWaypointManager waypointManager;
-     private EnvironmentAttributeSystem environmentAttributes;
-     // Paper - rewrite chunk system
-@@ -806,6 +816,13 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-             this.tickExecutor = null;
-         }
-         // Purpur end - parallel world ticking (DivineMC)
-+        // Purpur start - async target finding (Leaf)
-+        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding) {
-+            this.asyncGoalExecutor = new org.dreeam.leaf.async.ai.AsyncGoalExecutor(this);
-+        } else {
-+            this.asyncGoalExecutor = null;
-+        }
-+        // Purpur end - async target finding (Leaf)
-     }
- 
-     // Paper start
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 1c6c9a6f4cc5919ceb0396a5a2262ff6beca396f..b03cac4dee66585986be3a09b460cc8bbf49c46a 100644
+index 60ead79fd769c53cc1d82557619637c0e53443a9..46df59a6d792b7e62e6757c35de6ea82b68f6382 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -748,6 +748,12 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -1839,16 +1698,3 @@ index afdc8ea8b3d8dfcecac269ff2c655b1c6d63e32b..6586f40599effbdeae0503b4835cc02c
      }
  
      private static class DrownedGoToWaterGoal extends Goal {
-diff --git a/net/minecraft/world/level/Level.java b/net/minecraft/world/level/Level.java
-index eca3dc5613d65bd6acbcb005002c8e8cb83cfc90..f04d332f416e9dfdf9b5192a63f120e2c6dd3cd9 100644
---- a/net/minecraft/world/level/Level.java
-+++ b/net/minecraft/world/level/Level.java
-@@ -1822,7 +1822,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
- 
-     @Override
-     public List<Entity> getEntities(final @Nullable Entity except, final AABB bb, final Predicate<? super Entity> selector) {
--        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)this, bb, "Cannot getEntities asynchronously"); // Purpur - parallel world ticking (DivineMC) (additional concurrency issues logs)
-+        if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking && !org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncTargetFinding) ca.spottedleaf.moonrise.common.util.TickThread.ensureTickThread((ServerLevel)this, bb, "Cannot getEntities asynchronously"); // Purpur - parallel world ticking (DivineMC) (additional concurrency issues logs) // Purpur - async target finding (Leaf) - allow async goal thread reads
-         Profiler.get().incrementCounter("getEntities");
-         // Paper start - rewrite chunk system
-         final List<Entity> ret = new java.util.ArrayList<>();

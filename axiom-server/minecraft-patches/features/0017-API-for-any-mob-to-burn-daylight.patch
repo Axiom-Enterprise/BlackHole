@@ -5,34 +5,8 @@ Subject: [PATCH] API for any mob to burn daylight
 
 Co-authored by: Encode42 <me@encode42.dev>
 
-diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index d46c6ee965693d243c75dcab4b4deda58982a950..b3f48ec80aa75fe2ce0738326b0240b84c904dab 100644
---- a/net/minecraft/world/entity/Entity.java
-+++ b/net/minecraft/world/entity/Entity.java
-@@ -558,6 +558,21 @@ public abstract class Entity
-     }
-     // Purpur end - Add canSaveToDisk to Entity
- 
-+    // Purpur start - copied from Mob - API for any mob to burn daylight
-+    public boolean isSunBurnTick() {
-+        if (!this.level().isClientSide() && this.level().environmentAttributes().getValue(EnvironmentAttributes.MONSTERS_BURN, this.position())) {
-+            float br = this.getLightLevelDependentMagicValue();
-+            BlockPos roundedPos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
-+            boolean isInNonBurnableBlock = this.isInWaterOrRain() || this.isInPowderSnow || this.wasInPowderSnow;
-+            if (br > 0.5F && this.random.nextFloat() * 30.0F < (br - 0.4F) * 2.0F && !isInNonBurnableBlock && this.level().canSeeSky(roundedPos)) {
-+                return true;
-+            }
-+        }
-+
-+        return false;
-+    }
-+    // Purpur end - copied from Mob - API for any mob to burn daylight
-+
-     public Entity(final EntityType<?> type, final Level level) {
-         this.type = type;
-         this.level = level;
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index fc44456ab76fc64e831497ce302b5628ffb88742..dc56736203d68619f97ba2f4f2716b41bdeff714 100644
+index c3bf8c3d9e34940c40a0bf453bea3ca4191b2411..215149e07e0ae2a3b98d90336d8adf8d36e2bae0 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -291,6 +291,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin

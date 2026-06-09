@@ -66,10 +66,10 @@ index 49e0e86483551ba30e9337a405d827163867e82f..80f47fdd8b9ad638ecc2c1fb881035e2
              }
              if (entity instanceof final Mob mob && mob.getTarget() != null) {
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 5466690f0ba818878ac0265a85a70d734bd9c89e..750184c1e548281d0f6d99e78a89f5af5b8f8c67 100644
+index 8d828bfac5b7f4d312ecdc9e828e49640a1c6d0a..6f5eab24b881de14373d24a8a026d6bfb0a5e43c 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -2861,6 +2861,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2862,6 +2862,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      // CraftBukkit end
  
      private ProfilerFiller createProfiler() {
@@ -115,27 +115,6 @@ index 61fb663cc5d9871be5a8ef384f6ba31b19d484c7..6b09a844880a35ff17ac96e442ecbc59
  
                  if (this.entity.needsSync || this.trackDelta || this.entity instanceof LivingEntity && ((LivingEntity)this.entity).isFallFlying()) {
                      Vec3 movement = this.entity.getDeltaMovement();
-diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 221ee325ba4878a5dd78dcf39443af49f23ec925..5659b0797a2e9bd8f91f7993a615e5859fe9e3ac 100644
---- a/net/minecraft/server/level/ServerLevel.java
-+++ b/net/minecraft/server/level/ServerLevel.java
-@@ -966,6 +966,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-             this.entityTickList
-                 .forEach(
-                     entity -> {
-+                        entity.activatedPriorityReset = false; // Pufferfish - DAB
-                         if (!entity.isRemoved()) {
-                             if (!tickRateManager.isEntityFrozen(entity)) {
-                                 profiler.push("checkDespawn");
-@@ -1126,7 +1127,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-         int minZ = chunkPos.getMinBlockZ();
-         ProfilerFiller profiler = Profiler.get();
-         profiler.push("thunder");
--        if (!this.paperConfig().environment.disableThunder && raining && this.isThundering() && this.spigotConfig.thunderChance > 0 && this.random.nextInt(this.spigotConfig.thunderChance) == 0) { // Spigot // Paper - Option to disable thunder
-+        if (!this.paperConfig().environment.disableThunder && raining && this.isThundering() && this.spigotConfig.thunderChance > 0 && /*this.random.nextInt(this.spigotConfig.thunderChance) == 0*/ chunk.shouldDoLightning(this.random)) { // Spigot // Paper - Option to disable thunder // Pufferfish - replace random with shouldDoLightning
-             BlockPos pos = this.findLightningTargetAround(this.getBlockRandomPos(minX, 0, minZ, 15));
-             if (this.isRainingAt(pos)) {
-                 DifficultyInstance difficulty = this.getCurrentDifficultyAt(pos);
 diff --git a/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 index 68bcb8dff472c06901e0286158a9f57fac277d1e..1c88df3f5ebc43413fccbac70c509801f0b94c8f 100644
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
@@ -148,20 +127,6 @@ index 68bcb8dff472c06901e0286158a9f57fac277d1e..1c88df3f5ebc43413fccbac70c509801
          // Paper start - Book size limits
          final io.papermc.paper.configuration.type.number.IntOr.Disabled pageMax = io.papermc.paper.configuration.GlobalConfiguration.get().itemValidation.bookSize.pageMax;
          if (!this.cserver.isPrimaryThread() && pageMax.enabled()) {
-diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 297a55d659ad356b0eb24c1de968c99674ebb3d0..fd99b1c9d5819cacb1b9230c203236b11ce43b8c 100644
---- a/net/minecraft/world/entity/Entity.java
-+++ b/net/minecraft/world/entity/Entity.java
-@@ -382,6 +382,9 @@ public abstract class Entity
-     public boolean freezeLocked = false; // Paper - Freeze Tick Lock API
-     public boolean fixedPose = false; // Paper - Expand Pose API
-     private final int despawnTime; // Paper - entity despawn time limit
-+    public boolean activatedPriorityReset = false; // Pufferfish - DAB
-+    public int activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; // Pufferfish - DAB (golf score)
-+    public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // Pufferfish - reduce entity allocations
-     public int totalEntityAge; // Paper - age-like counter for all entities
-     public final io.papermc.paper.entity.activation.ActivationType activationType = io.papermc.paper.entity.activation.ActivationType.activationTypeFor(this); // Paper - EAR 2/tracking ranges
-     public @Nullable Boolean immuneToFire = null; // Purpur - Fire immune API
 diff --git a/net/minecraft/world/entity/EntityType.java b/net/minecraft/world/entity/EntityType.java
 index c2d4f6a164a18c8809d143793921567907363a17..c992c35e1b22d49bb8ec55b96cd61af16f6e5ded 100644
 --- a/net/minecraft/world/entity/EntityType.java
@@ -549,31 +514,6 @@ index 989bb69cf749f6b1a8339bb24d3cfbae53615459..38c75829c932d917acea99204393cc2e
                  fight.tryRespawn(above); // Paper - Perf: Do crystal-portal proximity check before entity lookup
              }
          }
-diff --git a/net/minecraft/world/level/Level.java b/net/minecraft/world/level/Level.java
-index f04d332f416e9dfdf9b5192a63f120e2c6dd3cd9..9c522a0948ebb06a5bb5478f5415d36149455fb6 100644
---- a/net/minecraft/world/level/Level.java
-+++ b/net/minecraft/world/level/Level.java
-@@ -1569,17 +1569,17 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
-     public <T extends Entity> void guardEntityTick(final Consumer<T> tick, final T entity) {
-         try {
-             tick.accept(entity);
--        } catch (Throwable t) {
-+        } catch (Throwable t) { // Pufferfish - diff on change ServerLevel.tick
-             // Paper start - Prevent block entity and entity crashes
-             final String msg = String.format("Entity threw exception at %s:%s,%s,%s", io.papermc.paper.util.MCUtil.getLevelName(entity.level()), entity.getX(), entity.getY(), entity.getZ());
-             MinecraftServer.LOGGER.error(msg, t);
-             getCraftServer().getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerInternalException(msg, t))); // Paper - ServerExceptionEvent
--            entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
-+            entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD); // Pufferfish - diff on change ServerLevel.tick
-             // Paper end - Prevent block entity and entity crashes
-         }
-         // Purpur start - parallel world ticking (DivineMC)
-         if (!org.bxteam.divinemc.config.DivineConfig.AsyncCategory.enableParallelWorldTicking) {
--            this.moonrise$midTickTasks(); // Paper - rewrite chunk system
-+            this.moonrise$midTickTasks(); // Paper - rewrite chunk system // Pufferfish - diff on change ServerLevel.tick
-         }
-         // Purpur end - parallel world ticking (DivineMC)
-     }
 diff --git a/net/minecraft/world/level/chunk/LevelChunk.java b/net/minecraft/world/level/chunk/LevelChunk.java
 index b71c29692e4470913378ef884d97f1e9f389a75a..57da62fda8af78848092ff074312fb9532fca7e4 100644
 --- a/net/minecraft/world/level/chunk/LevelChunk.java

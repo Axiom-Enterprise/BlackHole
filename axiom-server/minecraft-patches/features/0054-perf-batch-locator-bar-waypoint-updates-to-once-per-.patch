@@ -31,19 +31,6 @@ index 6ef6ef65ab8a2a6eb9b57faa447624552cf1fe7f..2f33815195f77fa09c75705db96c0214
              }
          }
      }
-diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 19e6e76702d99ddb5b01d765bb7e7eaacaccd7b4..bcbaef4380c5d272941f1e610b978956f8d17ad3 100644
---- a/net/minecraft/server/level/ServerLevel.java
-+++ b/net/minecraft/server/level/ServerLevel.java
-@@ -1000,6 +1000,8 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-             // Purpur end - regionized chunk ticking (DivineMC)
-         }
- 
-+        this.waypointManager.flushDirty(); // Leaf - batch waypoint updates: apply all per-tick moves once, on the tick thread
-+
-         profiler.push("entityManagement");
-         // Paper - rewrite chunk system
-         profiler.pop();
 diff --git a/net/minecraft/server/waypoints/ServerWaypointManager.java b/net/minecraft/server/waypoints/ServerWaypointManager.java
 index 0dd5c37c41f0372bd08f5a269ec7a3609f941f8c..d486347fb130da0cb1eef7d283954c9e7855f49e 100644
 --- a/net/minecraft/server/waypoints/ServerWaypointManager.java
@@ -106,24 +93,3 @@ index 0dd5c37c41f0372bd08f5a269ec7a3609f941f8c..d486347fb130da0cb1eef7d283954c9e
      // Paper start - optimize ServerWaypointManager with locator bar disabled
      // Avoid a gamerule lookup for each player
      private boolean isLocatorBarEnabledFor(final ServerPlayer player) {
-diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 5b32486a68d302e40cfc56f4d7f7818784e82d03..401256b226bcdf512a5555f83d497010b05cdfa7 100644
---- a/net/minecraft/world/entity/Entity.java
-+++ b/net/minecraft/world/entity/Entity.java
-@@ -5069,12 +5069,14 @@ public abstract class Entity
- 
-             this.levelCallback.onMove();
-             if (!this.firstTick && this.level instanceof ServerLevel serverLevel && !this.isRemoved()) {
-+                // Leaf - batch waypoint updates: mark dirty (O(1)) instead of running the full update on every
-+                // sub-tick position change; ServerLevel flushes the dirty set once per tick.
-                 if (this instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
--                    serverLevel.getWaypointManager().updateWaypoint(waypoint);
-+                    serverLevel.getWaypointManager().markWaypointDirty(waypoint);
-                 }
- 
-                 if (this instanceof ServerPlayer player && player.isReceivingWaypoints() && player.connection != null) {
--                    serverLevel.getWaypointManager().updatePlayer(player);
-+                    serverLevel.getWaypointManager().markPlayerDirty(player);
-                 }
-             }
-             // Paper start - Fix MC-44654

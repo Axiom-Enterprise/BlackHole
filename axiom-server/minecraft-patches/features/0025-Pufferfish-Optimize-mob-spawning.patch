@@ -174,19 +174,6 @@ index 396ab3cdcf6f726ce7133395bb39594ef4b1c011..b9ee0abeefade44ec94d8e2c98ec60c5
      }
  
      private void getFullChunk(final long chunkKey, final Consumer<LevelChunk> output) {
-diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index ba1dba4903c8d3c023e9555af67e5d62ac3b3f55..e832db7e1493a47a05549d40172bd13e1626f6a9 100644
---- a/net/minecraft/server/level/ServerLevel.java
-+++ b/net/minecraft/server/level/ServerLevel.java
-@@ -195,7 +195,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
-     public final ServerChunkCache chunkSource;
-     private final MinecraftServer server;
-     public final io.papermc.paper.world.saveddata.PaperLevelOverrides serverLevelData; // Paper - type
--    private final EntityTickList entityTickList = new EntityTickList();
-+    public final EntityTickList entityTickList = new EntityTickList(); // Purpur - async mob spawning (DivineMC) - needs public access for async spawn thread
-     private final ServerWaypointManager waypointManager;
-     private EnvironmentAttributeSystem environmentAttributes;
-     // Paper - rewrite chunk system
 diff --git a/net/minecraft/world/level/entity/EntityTickList.java b/net/minecraft/world/level/entity/EntityTickList.java
 index a30409eddfaded878a3ac54bb526fd2e4b887c57..3a583e598cadc9fafc3e72b06904f37604a7420c 100644
 --- a/net/minecraft/world/level/entity/EntityTickList.java

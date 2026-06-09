@@ -1,0 +1,40 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Sat, 6 Jun 2026 12:08:06 +0200
+Subject: [PATCH] revert: remove built-in raytrace anti-xray, restore vanilla
+ anti-xray
+
+Drop all custom anti-xray integration; hiding is left entirely to Paper
+engine-mode anti-xray (unchanged upstream behaviour).
+
+- MinecraftServer: remove reveal-engine tickServer hook
+- Level / ServerPlayerGameMode: remove Imanity SDK block-change and
+  left-click hooks
+- PlayerChunkSender: plain Paper send (comment cleanup)
+
+diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
+index bfb89005974221e97118718f54fb5882ebb296bd..6f5eab24b881de14373d24a8a026d6bfb0a5e43c 100644
+--- a/net/minecraft/server/MinecraftServer.java
++++ b/net/minecraft/server/MinecraftServer.java
+@@ -1699,7 +1699,6 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         this.tickCount++;
+         this.tickRateManager.tick();
+         this.tickChildren(haveTime);
+-        org.bxteam.divinemc.antixray.RaytraceAntiXrayEngine.tickServer(); // DivineMC - raytrace anti-xray movement reveal pass
+         if (nano - this.lastServerStatus >= STATUS_EXPIRE_TIME_NANOS) {
+             this.lastServerStatus = nano;
+             this.status = this.buildServerStatus();
+diff --git a/net/minecraft/server/network/PlayerChunkSender.java b/net/minecraft/server/network/PlayerChunkSender.java
+index 870ef81c64c0ce61ec50598474a4e7e45ea09be2..cd8d7ef49bf52c5fc9dbaaf3844a72b9af597d20 100644
+--- a/net/minecraft/server/network/PlayerChunkSender.java
++++ b/net/minecraft/server/network/PlayerChunkSender.java
+@@ -94,8 +94,6 @@ public class PlayerChunkSender {
+         // Paper start - Anti-Xray
+         final boolean shouldModify = level.chunkPacketBlockController.shouldModify(connection.player, chunk);
+         // Purpur start - async chunk sending (DivineMC)
+-        // Hiding is handled by Paper engine-mode anti-xray (shouldModify); the built-in raytrace engine only
+-        // reveals ores on a clear line of sight on top of that - no custom chunk-packet rewrite here.
+         if (org.bxteam.divinemc.config.DivineConfig.AsyncCategory.asyncChunkSendingEnabled) {
+             var blockEntities = chunk.blockEntities.values().toArray(new net.minecraft.world.level.block.entity.BlockEntity[0]);
+             java.util.Map<net.minecraft.world.level.levelgen.Heightmap.Types, long[]> heightmaps = new java.util.concurrent.ConcurrentHashMap<>();

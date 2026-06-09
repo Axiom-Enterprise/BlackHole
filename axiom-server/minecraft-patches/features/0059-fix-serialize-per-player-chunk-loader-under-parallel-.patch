@@ -1,0 +1,86 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?= <killergamerpls@gmail.com>
+Date: Tue, 9 Jun 2026 13:55:05 +0200
+Subject: [PATCH] fix: serialize per-player chunk loader under parallel ticking
+
+ConcurrentModificationException in ChunkHolderManager.performTicketUpdates when a
+player's RegionizedPlayerChunkLoader is updated concurrently from the region tick
+thread and from move-packet handling on the server thread. Guard add/update/
+updateQueues/remove with a per-player reentrant lock so the per-player state
+(delayedTicketOps/sendQueue/sentChunks) is mutated by one thread at a time.
+
+diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/player/RegionizedPlayerChunkLoader.java b/ca/spottedleaf/moonrise/patches/chunk_system/player/RegionizedPlayerChunkLoader.java
+index 4a9a873..62c47e2 100644
+--- a/ca/spottedleaf/moonrise/patches/chunk_system/player/RegionizedPlayerChunkLoader.java
++++ b/ca/spottedleaf/moonrise/patches/chunk_system/player/RegionizedPlayerChunkLoader.java
+@@ -197,13 +197,23 @@ public final class RegionizedPlayerChunkLoader {
+         final PlayerChunkLoaderData loader = new PlayerChunkLoaderData(this.world, player);
+ 
+         ((ChunkSystemServerPlayer)player).moonrise$setChunkLoader(loader);
+-        loader.add();
++        loader.updateLock.lock(); // Axiom - async ticking: serialize per-player loader mutation
++        try {
++            loader.add();
++        } finally {
++            loader.updateLock.unlock();
++        }
+     }
+ 
+     public void updatePlayer(final ServerPlayer player) {
+         final PlayerChunkLoaderData loader = ((ChunkSystemServerPlayer)player).moonrise$getChunkLoader();
+         if (loader != null) {
+-            loader.update();
++            loader.updateLock.lock(); // Axiom - async ticking: serialize per-player loader mutation
++            try {
++                loader.update();
++            } finally {
++                loader.updateLock.unlock();
++            }
+             // update view distances for nearby players
+             ((ChunkSystemServerLevel)loader.world).moonrise$getNearbyPlayers().tickPlayer(player);
+         }
+@@ -221,7 +231,12 @@ public final class RegionizedPlayerChunkLoader {
+             return;
+         }
+ 
+-        loader.remove();
++        loader.updateLock.lock(); // Axiom - async ticking: serialize per-player loader mutation
++        try {
++            loader.remove();
++        } finally {
++            loader.updateLock.unlock();
++        }
+         ((ChunkSystemServerPlayer)player).moonrise$setChunkLoader(null);
+     }
+ 
+@@ -312,8 +327,13 @@ public final class RegionizedPlayerChunkLoader {
+                 // not our problem anymore
+                 continue;
+             }
+-            loader.update(); // can't invoke plugin logic
+-            loader.updateQueues(currTime);
++            loader.updateLock.lock(); // Axiom - async ticking: serialize per-player loader mutation
++            try {
++                loader.update(); // can't invoke plugin logic
++                loader.updateQueues(currTime);
++            } finally {
++                loader.updateLock.unlock();
++            }
+         }
+     }
+ 
+@@ -344,6 +364,11 @@ public final class RegionizedPlayerChunkLoader {
+         private boolean canGenerateChunks = true;
+ 
+         private final ArrayDeque<ChunkHolderManager.TicketOperation<?, ?>> delayedTicketOps = new ArrayDeque<>();
++        // Axiom - async ticking: serialize per-player loader mutation. Under parallel world ticking the loader
++        // update path runs both from the region tick thread and from move-packet handling on the server thread,
++        // racing the per-player state (delayedTicketOps/sendQueue/sentChunks) and throwing CME. Reentrant so the
++        // add() -> update() nested call holds the same monitor.
++        final java.util.concurrent.locks.ReentrantLock updateLock = new java.util.concurrent.locks.ReentrantLock();
+         // Purpur start - async entity tracker (DivineMC)
+         private final LongOpenHashSet sentChunks = org.bxteam.divinemc.config.DivineConfig.AsyncCategory.multithreadedEnabled && !org.bxteam.divinemc.config.DivineConfig.AsyncCategory.multithreadedCompatModeEnabled
+             ? new org.bxteam.divinemc.util.map.ConcurrentLongHashSet()
+-- 
+2.50.1 (Apple Git-155)
+

@@ -1,0 +1,146 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Tue, 9 Jun 2026 03:00:37 +0200
+Subject: [PATCH] perf: trim player tick hot paths and drop player-entity
+ streams
+
+Replace stream pipelines with imperative loops and remove per-tick
+allocations on the player/living-entity tick path.
+
+- Player.aiStep: lazy-allocate xp-orb list (skip ArrayList when none)
+- Player.isEquipped: defer EQUIPPABLE component lookup until item matches
+- LivingEntity.updateSynchronizedMobEffectParticles: stream -> loop
+- LivingEntity.stabbedEntities: stream count -> loop
+- LivingEntity.updateFallFlying: glider-slot stream -> loop
+- ServerPlayer.tellNeutralMobsThatIDied: stream -> loop
+
+diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
+index d62047e7b8b3ce7549130a0f0ed94fd5deb4ebb2..fe64e6d0f7c86781ecc9b4df2a12eec7760aa094 100644
+--- a/net/minecraft/server/level/ServerPlayer.java
++++ b/net/minecraft/server/level/ServerPlayer.java
+@@ -1267,11 +1267,13 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+ 
+     private void tellNeutralMobsThatIDied() {
+         AABB aabb = new AABB(this.blockPosition()).inflate(32.0, 10.0, 32.0);
+-        this.level()
+-            .getEntitiesOfClass(Mob.class, aabb, EntitySelector.NO_SPECTATORS)
+-            .stream()
+-            .filter(mob -> mob instanceof NeutralMob)
+-            .forEach(mob -> ((NeutralMob)mob).playerDied(this.level(), this));
++        // Leaf start - imperative neutral-mob notify (no stream/lambda allocation)
++        for (Mob mob : this.level().getEntitiesOfClass(Mob.class, aabb, EntitySelector.NO_SPECTATORS)) {
++            if (mob instanceof NeutralMob neutralMob) {
++                neutralMob.playerDied(this.level(), this);
++            }
++        }
++        // Leaf end
+     }
+ 
+     @Override
+diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
+index 38ee2444cff124a656c0884d27f4e9a2492d45f2..bf768dbb9b5f55c87db3ba4544a04c65a4f83707 100644
+--- a/net/minecraft/world/entity/LivingEntity.java
++++ b/net/minecraft/world/entity/LivingEntity.java
+@@ -1047,13 +1047,16 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+     }
+ 
+     private void updateSynchronizedMobEffectParticles() {
+-        List<ParticleOptions> visibleEffectParticles = this.activeEffects
+-            .values()
+-            .stream()
+-            .filter(MobEffectInstance::isVisible)
+-            .map(MobEffectInstance::getParticleOptions)
+-            .toList();
++        // Leaf start - imperative effect-particle collection (no stream/lambda allocation)
++        java.util.Collection<MobEffectInstance> effects = this.activeEffects.values();
++        List<ParticleOptions> visibleEffectParticles = new java.util.ArrayList<>(effects.size());
++        for (MobEffectInstance effect : effects) {
++            if (effect.isVisible()) {
++                visibleEffectParticles.add(effect.getParticleOptions());
++            }
++        }
+         this.entityData.set(DATA_EFFECT_PARTICLES, visibleEffectParticles);
++        // Leaf end
+         this.entityData.set(DATA_EFFECT_AMBIENCE_ID, areAllEffectsAmbient(this.activeEffects.values()));
+     }
+ 
+@@ -3606,7 +3609,18 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+     }
+ 
+     public int stabbedEntities(final Predicate<Entity> filter) {
+-        return this.recentKineticEnemies == null ? 0 : (int)this.recentKineticEnemies.keySet().stream().filter(filter).count();
++        // Leaf start - imperative count (no stream allocation)
++        if (this.recentKineticEnemies == null) {
++            return 0;
++        }
++        int count = 0;
++        for (Entity enemy : this.recentKineticEnemies.keySet()) {
++            if (filter.test(enemy)) {
++                count++;
++            }
++        }
++        return count;
++        // Leaf end
+     }
+ 
+     public boolean stabAttack(
+@@ -4008,7 +4022,14 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+             if (checkFallFlyTicks % 10 == 0) {
+                 int freeFallInterval = checkFallFlyTicks / 10;
+                 if (freeFallInterval % 2 == 0) {
+-                    List<EquipmentSlot> slotsWithGliders = EquipmentSlot.VALUES.stream().filter(slot -> canGlideUsing(this.getItemBySlot(slot), slot)).toList();
++                    // Leaf start - imperative glider-slot collection (no stream/lambda allocation)
++                    List<EquipmentSlot> slotsWithGliders = new java.util.ArrayList<>(EquipmentSlot.VALUES.size());
++                    for (EquipmentSlot slot : EquipmentSlot.VALUES) {
++                        if (canGlideUsing(this.getItemBySlot(slot), slot)) {
++                            slotsWithGliders.add(slot);
++                        }
++                    }
++                    // Leaf end
+                     EquipmentSlot slotToDamage = Util.getRandom(slotsWithGliders, this.random);
+                     // Purpur start - Implement elytra settings
+                     int damage = level().purpurConfig.elytraDamagePerSecond;
+diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
+index 4d80fd91a1f610e5af0ad258f94dc16f2f77ef0d..03d9cb1cff80f3fe1f82986e82486da750e9cd7b 100644
+--- a/net/minecraft/world/entity/player/Player.java
++++ b/net/minecraft/world/entity/player/Player.java
+@@ -386,8 +386,11 @@ public abstract class Player extends Avatar implements ContainerUser {
+     private boolean isEquipped(final Item item) {
+         for (EquipmentSlot slot : EquipmentSlot.VALUES) {
+             ItemStack itemStack = this.getItemBySlot(slot);
++            if (!itemStack.is(item)) { // Leaf - check cheap item match before component lookup
++                continue;
++            }
+             Equippable equippable = itemStack.get(DataComponents.EQUIPPABLE);
+-            if (itemStack.is(item) && equippable != null && equippable.slot() == slot) {
++            if (equippable != null && equippable.slot() == slot) {
+                 return true;
+             }
+         }
+@@ -541,19 +544,23 @@ public abstract class Player extends Avatar implements ContainerUser {
+             }
+ 
+             List<Entity> entities = this.level().getEntities(this, pickupArea);
+-            List<Entity> orbs = Lists.newArrayList();
++            List<Entity> orbs = null; // Leaf start - lazy-allocate orb list to avoid per-tick allocation
+ 
+             for (Entity entity : entities) {
+                 if (entity.is(EntityType.EXPERIENCE_ORB) && entity.level().purpurConfig.playerExpPickupDelay >= 0) { // Purpur - Configurable player pickup exp delay
++                    if (orbs == null) {
++                        orbs = Lists.newArrayList();
++                    }
+                     orbs.add(entity);
+                 } else if (!entity.isRemoved()) {
+                     this.touch(entity);
+                 }
+             }
+ 
+-            if (!orbs.isEmpty()) {
++            if (orbs != null) { // orbs is non-null only when populated
+                 this.touch(Util.getRandom(orbs, this.random));
+             }
++            // Leaf end - lazy-allocate orb list
+         }
+ 
+         this.handleShoulderEntities();

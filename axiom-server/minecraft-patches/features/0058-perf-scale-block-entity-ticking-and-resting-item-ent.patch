@@ -1,0 +1,151 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Tue, 9 Jun 2026 03:11:12 +0200
+Subject: [PATCH] perf: scale block-entity ticking and resting item-entity load
+
+Reduce per-tick cost on the two hottest paths for giant farms that
+accumulate thousands of dropped items and block entities.
+
+- ItemEntity.tick: resting-item fast path. On the throttled ticks of an
+  item at rest out of fluid (the ticks vanilla already skips move()),
+  also skip applyGravity and the per-tick noCollision query. Full
+  physics still runs every 4th tick, so falling and un-sticking are
+  preserved. Drops the dominant per-item cost from one collision query
+  per tick to one per four ticks.
+- Level.tickBlockEntities: lazy-allocate the removal set and skip the
+  O(N) removeAll scan over the ticker list when no ticker was removed
+  this tick (the common case), avoiding a per-tick allocation and full
+  scan that scaled with total block-entity count.
+
+diff --git a/net/minecraft/world/entity/item/ItemEntity.java b/net/minecraft/world/entity/item/ItemEntity.java
+index 8eb83a05b4e945d38cb5bad52696936191180ce7..4bc160fd6229b84f485b4a08c1fa4f79e7213cfc 100644
+--- a/net/minecraft/world/entity/item/ItemEntity.java
++++ b/net/minecraft/world/entity/item/ItemEntity.java
+@@ -172,45 +172,62 @@ public class ItemEntity extends Entity implements TraceableEntity {
+             this.yo = this.getY();
+             this.zo = this.getZ();
+             Vec3 oldMovement = this.getDeltaMovement();
+-            if (this.isInWater() && this.getFluidHeight(FluidTags.WATER) > 0.1F) {
+-                this.setUnderwaterMovement();
+-            } else if (this.isInLava() && this.getFluidHeight(FluidTags.LAVA) > 0.1F) {
+-                this.setUnderLavaMovement();
+-            } else {
+-                this.applyGravity();
+-            }
+-
+-            if (this.level().isClientSide()) {
+-                this.noPhysics = false;
++            // Leaf start - resting-item fast path: on the throttled (non-move) ticks of an item at rest
++            // out of fluid, also skip gravity and the per-tick noCollision query. Vanilla already skips
++            // move() on these ticks; full physics still runs every 4th tick, so falling/un-sticking is
++            // preserved (at most a few ticks delayed, as it already was). Cuts a collision query per item
++            // per tick to once per 4 ticks - the dominant cost for farms with thousands of dropped items.
++            boolean inWater = this.isInWater() && this.getFluidHeight(FluidTags.WATER) > 0.1F;
++            boolean inLava = !inWater && this.isInLava() && this.getFluidHeight(FluidTags.LAVA) > 0.1F;
++            boolean restingTick = this.onGround()
++                && !inWater
++                && !inLava
++                && !(this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-5F)
++                && (this.tickCount + this.getId()) % 4 != 0;
++            if (restingTick) {
++                this.applyEffectsFromBlocksForLastMovements();
+             } else {
+-                this.noPhysics = !this.level().noCollision(this, this.getBoundingBox().deflate(1.0E-7));
+-                if (this.noPhysics) {
+-                    this.moveTowardsClosestSpace(this.getX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
++                if (inWater) {
++                    this.setUnderwaterMovement();
++                } else if (inLava) {
++                    this.setUnderLavaMovement();
++                } else {
++                    this.applyGravity();
+                 }
+-            }
+ 
+-            if (this.onGround() && !(this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-5F) && (this.tickCount + this.getId()) % 4 != 0) { // Paper - Diff on change; ActivationRange immunity
+-                this.applyEffectsFromBlocksForLastMovements();
+-            } else {
+-                this.move(MoverType.SELF, this.getDeltaMovement());
+-                this.applyEffectsFromBlocks();
+-                float friction = 0.98F;
+-                // Paper start - Friction API
+-                if (this.frictionState == net.kyori.adventure.util.TriState.FALSE) {
+-                    friction = 1F;
+-                } else if (this.onGround()) {
+-                    // Paper end - Friction API
+-                    friction = this.level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getBlock().getFriction() * 0.98F;
++                if (this.level().isClientSide()) {
++                    this.noPhysics = false;
++                } else {
++                    this.noPhysics = !this.level().noCollision(this, this.getBoundingBox().deflate(1.0E-7));
++                    if (this.noPhysics) {
++                        this.moveTowardsClosestSpace(this.getX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
++                    }
+                 }
+ 
+-                this.setDeltaMovement(this.getDeltaMovement().multiply(friction, 0.98, friction));
+-                if (this.onGround()) {
+-                    Vec3 movement = this.getDeltaMovement();
+-                    if (movement.y < 0.0) {
+-                        this.setDeltaMovement(movement.multiply(1.0, -0.5, 1.0));
++                if (this.onGround() && !(this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-5F) && (this.tickCount + this.getId()) % 4 != 0) { // Paper - Diff on change; ActivationRange immunity
++                    this.applyEffectsFromBlocksForLastMovements();
++                } else {
++                    this.move(MoverType.SELF, this.getDeltaMovement());
++                    this.applyEffectsFromBlocks();
++                    float friction = 0.98F;
++                    // Paper start - Friction API
++                    if (this.frictionState == net.kyori.adventure.util.TriState.FALSE) {
++                        friction = 1F;
++                    } else if (this.onGround()) {
++                        // Paper end - Friction API
++                        friction = this.level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getBlock().getFriction() * 0.98F;
++                    }
++
++                    this.setDeltaMovement(this.getDeltaMovement().multiply(friction, 0.98, friction));
++                    if (this.onGround()) {
++                        Vec3 movement = this.getDeltaMovement();
++                        if (movement.y < 0.0) {
++                            this.setDeltaMovement(movement.multiply(1.0, -0.5, 1.0));
++                        }
+                     }
+                 }
+             }
++            // Leaf end - resting-item fast path
+ 
+             boolean moved = Mth.floor(this.xo) != Mth.floor(this.getX())
+                 || Mth.floor(this.yo) != Mth.floor(this.getY())
+diff --git a/net/minecraft/world/level/Level.java b/net/minecraft/world/level/Level.java
+index 7b7f8c56f41590d7cc26f2c1b9b2d8007537a5d7..69d26be2800016b5c386da447441e3477ad9b787 100644
+--- a/net/minecraft/world/level/Level.java
++++ b/net/minecraft/world/level/Level.java
+@@ -1558,12 +1558,17 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+ 
+         int tickedEntities = 0; // Paper - rewrite chunk system
+         // Paper start - Fix MC-117075 use removeAll
+-        final it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet<@Nullable TickingBlockEntity> toRemove = new it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet<>();
+-        toRemove.add(null);
++        // Leaf - lazy-allocate the removal set; most ticks remove nothing, so skip the per-tick
++        // allocation and the O(N) removeAll scan over the (potentially huge) ticker list entirely.
++        it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet<@Nullable TickingBlockEntity> toRemove = null;
+         for (int tickerIndex = 0; tickerIndex < this.blockEntityTickers.size(); tickerIndex++) {
+             final TickingBlockEntity ticker = this.blockEntityTickers.get(tickerIndex);
+         // Paper end - Fix MC-117075 use removeAll
+             if (ticker.isRemoved()) {
++                if (toRemove == null) { // Leaf - lazy allocation
++                    toRemove = new it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet<>();
++                    toRemove.add(null);
++                }
+                 toRemove.add(ticker); // Paper - Fix MC-117075 use removeAll
+             } else if (tickBlockEntities && this.shouldTickBlocksAt(ticker.getPos())) {
+                 ticker.tick();
+@@ -1576,7 +1581,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+             }
+         }
+ 
+-        this.blockEntityTickers.removeAll(toRemove); // Paper - Fix MC-117075 use removeAll
++        if (toRemove != null) this.blockEntityTickers.removeAll(toRemove); // Paper - Fix MC-117075 use removeAll // Leaf - skip when nothing removed
+         this.tickingBlockEntities = false;
+     }
+ 

@@ -13,7 +13,7 @@ and async patches** plus a built-in **diagnostics suite** for profiling a live
 server.
 
 If you run a busy server and the main thread is your bottleneck, Axiom is for
-you. It is a **drop-in replacement** — same plugins, same worlds, same API.
+you. It is a **drop-in replacement** same plugins, same worlds, same API.
 
 </div>
 
@@ -123,7 +123,7 @@ Paper).
 
 ## Diagnostics
 
-Axiom ships a self-profiling suite — think spark, but built in.
+Axiom ships a self-profiling suite think spark, but built in.
 
 ```
 /axiommetrics          # snapshot: TPS, MSPT, heap, CPU, GC, threads

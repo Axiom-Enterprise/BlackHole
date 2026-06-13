@@ -60,3 +60,6 @@ manifest.mf
 /paper-api
 *.jar
 test-plugin.settings.gradle.kts
+
+# server logs (leaked report tokens + player IPs)
+*.log

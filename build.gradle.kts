@@ -65,6 +65,7 @@ subprojects {
         mavenCentral()
         maven(paperMavenPublicUrl)
         maven("https://jitpack.io")
+        maven("https://repo.infernalsuite.com/repository/maven-snapshots/") // ASP
     }
 
     extensions.configure<PublishingExtension> {

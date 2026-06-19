@@ -1,0 +1,185 @@
+package com.infernalsuite.asp.level.chunk;
+
+import ca.spottedleaf.moonrise.patches.chunk_system.level.poi.PoiChunk;
+import ca.spottedleaf.moonrise.patches.chunk_system.scheduling.NewChunkHolder;
+import com.infernalsuite.asp.Converter;
+import com.infernalsuite.asp.api.utils.NibbleArray;
+import com.infernalsuite.asp.api.world.SlimeChunk;
+import com.infernalsuite.asp.api.world.SlimeChunkSection;
+import com.infernalsuite.asp.util.NmsUtil;
+import com.mojang.serialization.Codec;
+import ca.spottedleaf.moonrise.patches.chunk_system.level.entity.ChunkEntitySlices;
+import net.kyori.adventure.nbt.BinaryTag;
+import net.kyori.adventure.nbt.CompoundBinaryTag;
+import net.kyori.adventure.nbt.ListBinaryTag;
+import net.kyori.adventure.nbt.LongArrayBinaryTag;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.lighting.LevelLightEngine;
+import net.minecraft.world.level.storage.TagValueOutput;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+
+public class NMSSlimeChunk implements SlimeChunk {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NMSSlimeChunk.class);
+
+    private LevelChunk chunk;
+    private final Map<String, BinaryTag> extra;
+    private final CompoundBinaryTag upgradeData;
+
+    public NMSSlimeChunk(LevelChunk chunk, SlimeChunk reference) {
+        this.chunk = chunk;
+        this.extra = reference == null ? new HashMap<>() : reference.getExtraData();
+        this.upgradeData = reference == null ? null : reference.getUpgradeData();
+    }
+
+    public void updatePersistentDataContainer() {
+        this.extra.put("ChunkBukkitValues", Converter.convertTag(chunk.persistentDataContainer.toTagCompound()));
+    }
+
+    @Override
+    public int getX() {
+        return chunk.getPos().x;
+    }
+
+    @Override
+    public int getZ() {
+        return chunk.getPos().z;
+    }
+
+    @Override
+    public SlimeChunkSection[] getSections() {
+        SlimeChunkSection[] sections = new SlimeChunkSection[this.chunk.getSectionsCount()];
+        LevelLightEngine lightEngine = chunk.getLevel().getChunkSource().getLightEngine();
+
+        Registry<Biome> biomeRegistry = chunk.getLevel().registryAccess().lookupOrThrow(Registries.BIOME);
+
+        for (int sectionId = 0; sectionId < chunk.getSections().length; sectionId++) {
+            LevelChunkSection section = chunk.getSections()[sectionId];
+            // Sections CANNOT be null in 1.18
+
+            // Block Light Nibble Array
+            NibbleArray blockLightArray = Converter.convertArray(lightEngine.getLayerListener(LightLayer.BLOCK).getDataLayerData(SectionPos.of(chunk.getPos(), sectionId)));
+
+            // Sky light Nibble Array
+            NibbleArray skyLightArray = Converter.convertArray(lightEngine.getLayerListener(LightLayer.SKY).getDataLayerData(SectionPos.of(chunk.getPos(), sectionId)));
+
+            sections[sectionId] = SlimeChunkConverter.convertChunkSection(chunk.level.palettedContainerFactory().biomeContainerCodec(),
+                    chunk.level.palettedContainerFactory().blockStatesContainerCodec(), section, blockLightArray, skyLightArray);
+        }
+
+        return sections;
+    }
+
+    @Override
+    public @Nullable ListBinaryTag getFluidTicks() {
+        return SlimeChunkConverter.convertSavedFluidTicks(this.chunk.getTicksForSerialization(chunk.level.getGameTime()).fluids());
+    }
+
+    @Override
+    public @Nullable CompoundBinaryTag getPoiChunkSections() {
+        NewChunkHolder chunkHolder = NmsUtil.getChunkHolder(chunk);
+        if(chunkHolder == null) return null;
+
+        PoiChunk slices = chunkHolder.getPoiChunk();
+        return getPoiChunkSections(slices);
+    }
+
+    public CompoundBinaryTag getPoiChunkSections(PoiChunk poiChunk) {
+        return SlimeChunkConverter.toSlimeSections(poiChunk);
+    }
+
+    @Override
+    public @Nullable ListBinaryTag getBlockTicks() {
+        return SlimeChunkConverter.convertSavedBlockTicks(this.chunk.getTicksForSerialization(chunk.level.getGameTime()).blocks());
+    }
+
+    @Override
+    public CompoundBinaryTag getHeightMaps() {
+        CompoundBinaryTag.Builder heightMapsTagBuilder = CompoundBinaryTag.builder();
+
+        this.chunk.heightmaps.forEach((type, map) -> {
+            if (type.keepAfterWorldgen()) {
+                heightMapsTagBuilder.put(type.name(), LongArrayBinaryTag.longArrayBinaryTag(map.getRawData()));
+            }
+        });
+
+        return heightMapsTagBuilder.build();
+    }
+
+    @Override
+    public List<CompoundBinaryTag> getTileEntities() {
+        Collection<BlockEntity> blockEntities = this.chunk.blockEntities.values();
+        List<CompoundBinaryTag> tileEntities = new ArrayList<>(blockEntities.size());
+
+        for (BlockEntity entity : blockEntities) {
+            CompoundTag entityNbt = entity.saveWithFullMetadata(net.minecraft.server.MinecraftServer.getServer().registryAccess());
+            tileEntities.add(Converter.convertTag(entityNbt));
+        }
+
+        return tileEntities;
+    }
+
+    @Override
+    public List<CompoundBinaryTag> getEntities() {
+        NewChunkHolder chunkHolder = NmsUtil.getChunkHolder(chunk);
+        if(chunkHolder == null) return new ArrayList<>();
+
+        ChunkEntitySlices slices = chunkHolder.getEntityChunk();
+        return getEntities(slices);
+    }
+
+    public List<CompoundBinaryTag> getEntities(ChunkEntitySlices slices) {
+        if (slices == null) return new ArrayList<>();
+        List<CompoundBinaryTag> entities = new ArrayList<>(slices.entities.size());
+
+        try(final ProblemReporter.ScopedCollector scopedCollector = new ProblemReporter.ScopedCollector(ChunkAccess.problemPath(chunk.getPos()), LOGGER))  {
+            // Work by <gunther@gameslabs.net>
+            for (Entity entity : slices.entities) {
+                try {
+                    TagValueOutput tagValueOutput = TagValueOutput.createWithContext(scopedCollector, entity.registryAccess());
+
+                    if (entity.save(tagValueOutput))
+                        entities.add(Converter.convertTag(tagValueOutput.buildResult()));
+                } catch (final Exception e) {
+                    LOGGER.error("Could not save the entity = {}, exception = {}", entity, e);
+                }
+            }
+        }
+
+        return entities;
+    }
+
+
+    @Override
+    public Map<String, BinaryTag> getExtraData() {
+        return extra;
+    }
+
+    @Override
+    public CompoundBinaryTag getUpgradeData() {
+        return upgradeData;
+    }
+
+    public LevelChunk getChunk() {
+        return chunk;
+    }
+
+    public void setChunk(LevelChunk chunk) {
+        this.chunk = chunk;
+    }
+
+}

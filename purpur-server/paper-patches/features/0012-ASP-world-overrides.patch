@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Axiom Team <team@axiom.gg>
+Date: Thu, 19 Jun 2026 00:00:00 +0000
+Subject: [PATCH] ASP: Allow slime worlds to override default dimensions
+
+
+diff --git a/src/main/java/io/papermc/paper/world/PaperWorldLoader.java b/src/main/java/io/papermc/paper/world/PaperWorldLoader.java
+index cd3e7cc8c..5d4addb45 100644
+--- a/src/main/java/io/papermc/paper/world/PaperWorldLoader.java
++++ b/src/main/java/io/papermc/paper/world/PaperWorldLoader.java
+@@ -133,9 +133,16 @@
+         final LevelStem overworldStem = requireNonNull(levelStemRegistry.getValue(LevelStem.OVERWORLD), "Overworld stem missing");
+-        this.loadInitialWorld(overworldStem, hasWorldData);
+-        for (final LevelStem stem : levelStemRegistry) {
+-            if (stem == overworldStem) {
+-                continue;
+-            }
+-            this.loadInitialWorld(stem, hasWorldData);
+-        }
++        // ASP start - allow slime worlds to override default dimensions
++        if (!com.infernalsuite.asp.SlimeNMSBridgeImpl.instance().loadOverworldOverride()) {
++            this.loadInitialWorld(overworldStem, hasWorldData);
++        }
++        for (final LevelStem stem : levelStemRegistry) {
++            if (stem == overworldStem) {
++                continue;
++            }
++            final ResourceKey<LevelStem> stemKey = levelStemRegistry.getResourceKey(stem).orElse(null);
++            if (stemKey == LevelStem.NETHER && com.infernalsuite.asp.SlimeNMSBridgeImpl.instance().loadNetherOverride()) continue;
++            if (stemKey == LevelStem.END && com.infernalsuite.asp.SlimeNMSBridgeImpl.instance().loadEndOverride()) continue;
++            // ASP end
++            this.loadInitialWorld(stem, hasWorldData);
++        }
+

@@ -45,6 +45,27 @@
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
+@@ -1343,6 +_,8 @@
+             return false;
+         }
+ 
++        com.infernalsuite.asp.AdvancedSlimePaper.instance().onWorldUnload(world.getName()); // ASP
++
+         try {
+             if (save) {
+                 handle.save(null, true, false); // Paper - Fix saving in unloadWorld
+@@ -1350,6 +_,11 @@
+ 
+             handle.getChunkSource().close(save);
+             io.papermc.paper.FeatureHooks.closeEntityManager(handle, save); // SPIGOT-6722: close entityManager // Paper - chunk system
++            // ASP start - delete temp directory for slime worlds
++            if (handle instanceof com.infernalsuite.asp.level.SlimeLevelInstance asp) {
++                asp.deleteTempFiles();
++            }
++            // ASP end
+         } catch (Exception ex) {
+             this.getLogger().log(Level.SEVERE, null, ex);
+         }
 @@ -1479,6 +_,60 @@
          return true;
      }

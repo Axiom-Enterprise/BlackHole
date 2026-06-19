@@ -25,7 +25,7 @@
      @Override
      public boolean isBrandCompatible(final @NotNull Key brandId) {
 -        return brandId.equals(this.brandId);
-+        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID); // Purpur - Fix pufferfish issues // Purpur - Rebrand
++        return brandId.equals(this.brandId) || brandId.equals(BRAND_PAPER_ID) || brandId.equals(net.kyori.adventure.key.Key.key("infernalsuite", "advancedslimepaper")); // Purpur - Fix pufferfish issues // Purpur - Rebrand // ASP
      }
  
      @Override

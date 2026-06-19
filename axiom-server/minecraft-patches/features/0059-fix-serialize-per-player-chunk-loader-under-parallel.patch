@@ -10,7 +10,7 @@ updateQueues/remove with a per-player reentrant lock so the per-player state
 (delayedTicketOps/sendQueue/sentChunks) is mutated by one thread at a time.
 
 diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/player/RegionizedPlayerChunkLoader.java b/ca/spottedleaf/moonrise/patches/chunk_system/player/RegionizedPlayerChunkLoader.java
-index 4a9a873..62c47e2 100644
+index 4a9a8732c364dc98d2a713a3cf35aa36ef947a45..62c47e2fce41ba798c59fc7e6a35795d557c3dc1 100644
 --- a/ca/spottedleaf/moonrise/patches/chunk_system/player/RegionizedPlayerChunkLoader.java
 +++ b/ca/spottedleaf/moonrise/patches/chunk_system/player/RegionizedPlayerChunkLoader.java
 @@ -197,13 +197,23 @@ public final class RegionizedPlayerChunkLoader {
@@ -81,6 +81,3 @@ index 4a9a873..62c47e2 100644
          // Purpur start - async entity tracker (DivineMC)
          private final LongOpenHashSet sentChunks = org.bxteam.divinemc.config.DivineConfig.AsyncCategory.multithreadedEnabled && !org.bxteam.divinemc.config.DivineConfig.AsyncCategory.multithreadedCompatModeEnabled
              ? new org.bxteam.divinemc.util.map.ConcurrentLongHashSet()
--- 
-2.50.1 (Apple Git-155)
-

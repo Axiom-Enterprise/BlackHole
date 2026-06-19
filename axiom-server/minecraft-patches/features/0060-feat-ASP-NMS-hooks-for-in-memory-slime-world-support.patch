@@ -1,0 +1,186 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlo=20Maria=20Card=C3=AD?=
+ <112445885+MathsAnalysis@users.noreply.github.com>
+Date: Fri, 19 Jun 2026 19:42:54 +0200
+Subject: [PATCH] feat: ASP NMS hooks for in-memory slime world support
+
+
+diff --git a/ca/spottedleaf/moonrise/paper/PaperHooks.java b/ca/spottedleaf/moonrise/paper/PaperHooks.java
+index 4a3f07daad8b48eaf3bea02bdacbfb0670dddf90..d0dcea4ad88785bdc6d37618645b7ab5493b6af8 100644
+--- a/ca/spottedleaf/moonrise/paper/PaperHooks.java
++++ b/ca/spottedleaf/moonrise/paper/PaperHooks.java
+@@ -224,6 +224,12 @@ public final class PaperHooks extends BaseChunkSystemHooks implements PlatformHo
+ 
+     @Override
+     public boolean forceNoSave(final ChunkAccess chunk) {
++        // ASP start - slime worlds handle their own persistence
++        if (chunk instanceof LevelChunk levelChunk
++                && levelChunk.level instanceof com.infernalsuite.asp.level.SlimeLevelInstance) {
++            return true;
++        }
++        // ASP end
+         return chunk instanceof LevelChunk levelChunk && levelChunk.mustNotSave;
+     }
+ 
+diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
+index 0e5acfbfe70183e78979d8e3ce886ddc593c6893..ef69082a9ec14a0703406729cbb44be4b8cc1a98 100644
+--- a/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
++++ b/ca/spottedleaf/moonrise/patches/chunk_system/level/entity/ChunkEntitySlices.java
+@@ -51,7 +51,7 @@ public final class ChunkEntitySlices {
+     private final EntityCollectionBySection hardCollidingEntities;
+     private final Reference2ObjectOpenHashMap<Class<? extends Entity>, EntityCollectionBySection> entitiesByClass;
+     private final Reference2ObjectOpenHashMap<EntityType<?>, EntityCollectionBySection> entitiesByType;
+-    private final EntityList entities = new EntityList();
++    public final EntityList entities = new EntityList(); // ASP
+ 
+     // Leaf start - parallel world ticking: serialize this slice's non-thread-safe entity storage
+     // (BasicEntityList / EntityList / entitiesBy{Type,Class}) against concurrent region tick threads.
+diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/ChunkHolderManager.java b/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/ChunkHolderManager.java
+index db07b391c7c09460d515b6d124e8ea4c2119fb9e..489b18a0115e16a0b43d9141b4eaf3f87192296b 100644
+--- a/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/ChunkHolderManager.java
++++ b/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/ChunkHolderManager.java
+@@ -203,7 +203,12 @@ public final class ChunkHolderManager {
+         };
+     }
+ 
+-    public void close(final boolean save, final boolean halt) {
++    public void close(boolean save, boolean halt) { // ASP - parameters not final
++        // ASP start - skip normal save for slime worlds
++        if (this.world instanceof com.infernalsuite.asp.level.SlimeLevelInstance) {
++            save = false;
++        }
++        // ASP end
+         TickThread.ensureTickThread("Closing world off-main");
+         if (halt) {
+             LOGGER.info("Waiting 60s for chunk system to halt for world '" + WorldUtil.getWorldName(this.world) + "'");
+diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/NewChunkHolder.java b/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/NewChunkHolder.java
+index 2d2e4c9a53dbc8d745ca88584b1f82b13406271a..8a1dc486766e0c639537afe422785a8a78ca29c4 100644
+--- a/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/NewChunkHolder.java
++++ b/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/NewChunkHolder.java
+@@ -897,6 +897,11 @@ public final class NewChunkHolder {
+             }
+ 
+             if (chunk instanceof LevelChunk levelChunk) {
++                // ASP start - let slime world handle its own unload
++                if (this.world instanceof com.infernalsuite.asp.level.SlimeLevelInstance slimeLevel) {
++                    slimeLevel.getSlimeInstance().onChunkWillUnload(levelChunk);
++                }
++                // ASP end
+                 this.world.unload(levelChunk);
+             }
+ 
+@@ -906,7 +911,11 @@ public final class NewChunkHolder {
+         // unload entity data
+         if (entityChunk != null) {
+             final Completable<CompoundTag>[] entityWrite = new Completable[1];
++            // ASP start - skip entity save for slime worlds
++            if (!(this.world instanceof com.infernalsuite.asp.level.SlimeLevelInstance)) {
+             this.saveEntities(entityChunk, true, entityWrite);
++            }
++            // ASP end
+ 
+             if (entityChunk.unload()) {
+                 final ReentrantAreaLock.Node schedulingLock = this.scheduler.schedulingLockArea.lock(this.chunkX, this.chunkZ);
+@@ -1706,6 +1715,11 @@ public final class NewChunkHolder {
+         boolean canSaveChunk = !forceNoSaveChunk && (chunk != null && ((shutdown || chunk instanceof LevelChunk) && chunk.isUnsaved()));
+         boolean canSavePOI = !forceNoSaveChunk && (poi != null && poi.isDirty());
+         boolean canSaveEntities = entities != null;
++        // ASP start - slime worlds manage their own entity persistence
++        if (this.world instanceof com.infernalsuite.asp.level.SlimeLevelInstance) {
++            canSaveEntities = false;
++        }
++        // ASP end
+ 
+         if (canSaveChunk) {
+             canSaveChunk = this.saveChunk(chunk, false, null);
+diff --git a/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/task/ChunkLoadTask.java b/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/task/ChunkLoadTask.java
+index 7463cf5bf871033a0e5f6d54dd0d427c474d7cd4..0a05bbd142b644586345e0f07a7bfcbce83084e2 100644
+--- a/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/task/ChunkLoadTask.java
++++ b/ca/spottedleaf/moonrise/patches/chunk_system/scheduling/task/ChunkLoadTask.java
+@@ -33,7 +33,7 @@ public final class ChunkLoadTask extends ChunkProgressionTask {
+     private static final Logger LOGGER = LoggerFactory.getLogger(ChunkLoadTask.class);
+ 
+     private final NewChunkHolder chunkHolder;
+-    private final ChunkDataLoadTask loadTask;
++    private final com.infernalsuite.asp.level.moonrise.CommonLoadTask loadTask; // ASP
+ 
+     private volatile boolean cancelled;
+     private NewChunkHolder.GenericDataLoadTaskCallback entityLoadTask;
+@@ -45,11 +45,24 @@ public final class ChunkLoadTask extends ChunkProgressionTask {
+                          final NewChunkHolder chunkHolder, final Priority priority) {
+         super(scheduler, world, chunkX, chunkZ);
+         this.chunkHolder = chunkHolder;
+-        this.loadTask = new ChunkDataLoadTask(scheduler, world, chunkX, chunkZ, priority);
+-        this.loadTask.addCallback((final GenericDataLoadTask.TaskResult<ChunkAccess, Throwable> result) -> {
++        // ASP start - route slime worlds through in-memory chunk loader
++        if (world instanceof com.infernalsuite.asp.level.SlimeLevelInstance) {
++            this.loadTask = new com.infernalsuite.asp.level.moonrise.ChunkDataLoadTask(
++                this, scheduler, world, chunkX, chunkZ, priority,
++                (final GenericDataLoadTask.TaskResult<ChunkAccess, Throwable> result) -> {
++                    ChunkLoadTask.this.loadResult = result;
++                    ChunkLoadTask.this.tryCompleteLoad();
++                }
++            );
++        } else {
++        // ASP end
++        final ChunkDataLoadTask chunkDataLoadTask = new ChunkDataLoadTask(scheduler, world, chunkX, chunkZ, priority);
++        this.loadTask = chunkDataLoadTask;
++        chunkDataLoadTask.addCallback((final GenericDataLoadTask.TaskResult<ChunkAccess, Throwable> result) -> {
+             ChunkLoadTask.this.loadResult = result; // must be before getAndDecrement
+             ChunkLoadTask.this.tryCompleteLoad();
+         });
++        } // ASP
+     }
+ 
+     private void tryCompleteLoad() {
+@@ -276,7 +289,7 @@ public final class ChunkLoadTask extends ChunkProgressionTask {
+ 
+     private static record ReadChunk(ProtoChunk protoChunk, SerializableChunkData chunkData) {}
+ 
+-    private static final class ChunkDataLoadTask extends CallbackDataLoadTask<ReadChunk, ChunkAccess> {
++    private static final class ChunkDataLoadTask extends CallbackDataLoadTask<ReadChunk, ChunkAccess> implements com.infernalsuite.asp.level.moonrise.CommonLoadTask { // ASP
+         private ChunkDataLoadTask(final ChunkTaskScheduler scheduler, final ServerLevel world, final int chunkX,
+                                   final int chunkZ, final Priority priority) {
+             super(scheduler, world, chunkX, chunkZ, MoonriseRegionFileIO.RegionFileType.CHUNK_DATA, priority);
+diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
+index 6f5eab24b881de14373d24a8a026d6bfb0a5e43c..e5885c70a50f965055240fb8bd10a894a89422e7 100644
+--- a/net/minecraft/server/MinecraftServer.java
++++ b/net/minecraft/server/MinecraftServer.java
+@@ -272,7 +272,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     private final WorldGenSettings worldGenSettings;
+     private final ServerScoreboard scoreboard = new ServerScoreboard(this);
+     private @Nullable Stopwatches stopwatches;
+-    private @Nullable CommandStorage commandStorage;
++    public @Nullable CommandStorage commandStorage; // ASP
+     private final CustomBossEvents customBossEvents;
+     private final RandomSequences randomSequences;
+     // Paper - per-level WeatherData
+diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
+index 696ad6b01540f4944611d615ecb10af7cc2e0e49..bc69ef245441fe264b59db024c3ad87c5627b1b9 100644
+--- a/net/minecraft/server/level/ServerLevel.java
++++ b/net/minecraft/server/level/ServerLevel.java
+@@ -337,8 +337,9 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
+     // Paper start - rewrite chunk system
+     private final ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.ViewDistanceHolder viewDistanceHolder = new ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader.ViewDistanceHolder();
+     private final ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader chunkLoader = new ca.spottedleaf.moonrise.patches.chunk_system.player.RegionizedPlayerChunkLoader((ServerLevel)(Object)this);
+-    private final ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.EntityDataController entityDataController;
+-    private final ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.PoiDataController poiDataController;
++    protected ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.EntityDataController entityDataController; // ASP - non-final for SlimeLevelInstance
++    protected ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.PoiDataController poiDataController; // ASP - non-final for SlimeLevelInstance
++    public com.infernalsuite.asp.level.SlimeInMemoryWorld slimeInstance; // ASP
+     private final ca.spottedleaf.moonrise.patches.chunk_system.io.datacontroller.ChunkDataController chunkDataController;
+     private final ca.spottedleaf.moonrise.patches.chunk_system.scheduling.ChunkTaskScheduler chunkTaskScheduler;
+     private long lastMidTickFailure;
+@@ -413,6 +414,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
+         return this.chunkLoader;
+     }
+ 
++    // ASP start
++    public com.infernalsuite.asp.level.SlimeInMemoryWorld getSlimeInstance() {
++        return this.slimeInstance;
++    }
++    // ASP end
++
+     @Override
+     public final void moonrise$loadChunksAsync(final BlockPos pos, final int radiusBlocks,
+                                                final ca.spottedleaf.concurrentutil.util.Priority priority,
